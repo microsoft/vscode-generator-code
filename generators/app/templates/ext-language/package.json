@@ -1,0 +1,19 @@
+{
+	"name": <%- JSON.stringify(name) %>,
+	"version": "0.0.1",
+	"engines": {
+		"vscode": ">=0.9.0-pre.1"
+	},
+	"contributes": {
+		"language": [{
+			"id": <%- JSON.stringify(languageId) %>,
+			"aliases": [<%- JSON.stringify(languageName) %>, <%- JSON.stringify(languageId) %>],
+			"extensions": <%- JSON.stringify(languageExtensions) %>
+		}],
+		"tmSyntax": [{
+			"languageId": <%- JSON.stringify(languageId) %>,
+			"scopeName": <%- JSON.stringify(languageScopeName) %>,
+			"path": <%- JSON.stringify("./syntaxes/" + languageId + ".tmLanguage") %>
+		}]
+	}
+}
