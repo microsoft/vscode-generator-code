@@ -60,7 +60,7 @@ module.exports = yeoman.generators.Base.extend({
       this.prompt({
         type: 'input',
         name: 'themeURL',
-        message: 'Enter the URL (http, https) or file name of the tmTheme file to create an extension for:',
+        message: 'Enter the URL (http, https) or file name of the tmTheme file:',
         default: 'http://www.monokai.nl/blog/wp-content/asdev/Monokai.tmTheme',
       }, function (urlAnswer) {
         var location = urlAnswer.themeURL;
@@ -137,7 +137,7 @@ module.exports = yeoman.generators.Base.extend({
       this.prompt({
         type: 'input',
         name: 'tmLanguageURL',
-        message: 'Enter the URL (http, https) or file name of the tmLanguage file to create an extension for:',
+        message: 'Enter the URL (http, https) or file name of the tmLanguage file:',
         default: 'https://raw.githubusercontent.com/deadfoxygrandpa/Elm.tmLanguage/master/Syntaxes/Elm.tmLanguage',
       }, function (urlAnswer) {
         var location = urlAnswer.tmLanguageURL;
@@ -230,7 +230,7 @@ module.exports = yeoman.generators.Base.extend({
       this.prompt({
         type: 'input',
         name: 'name',
-        message: 'What\'s the name of your extension? That name will be used as the name of the extension folder.',
+        message: 'What\'s the name of your extension?',
         default: this.extensionConfig.name
       }, function (nameAnswer) {
         this.extensionConfig.name = nameAnswer.name;
@@ -267,7 +267,7 @@ module.exports = yeoman.generators.Base.extend({
       this.prompt({
         type: 'input',
         name: 'themeName',
-        message: 'What\'s the name of your theme? This name will be shown in the color theme selection dialog',
+        message: 'What\'s the name of your theme? This name will be shown in the color theme selection dialog:',
         default: this.extensionConfig.themeName,
       }, function (nameAnswer) {
         this.extensionConfig.themeName = nameAnswer.themeName;
@@ -313,7 +313,7 @@ module.exports = yeoman.generators.Base.extend({
     this.prompt({
       type: 'input',
       name: 'languageId',
-      message: 'Verify the detected id of the language. The id is an internal identifier and is single, lower-case name such as \'php\', \'javascript\'',
+      message: 'Verify the detected id of the language. The id is an internal identifier and is single, lower-case name such as \'php\', \'javascript\':',
       default: this.extensionConfig.languageId,
     }, function (idAnswer) {
       this.extensionConfig.languageId = idAnswer.languageId;
@@ -331,7 +331,7 @@ module.exports = yeoman.generators.Base.extend({
     this.prompt({
       type: 'input',
       name: 'languageName',
-      message: 'Verify the detected name of the language. The name will be shown in the VS code editor mode selector',
+      message: 'Verify the detected name of the language. The name will be shown in the VS code editor mode selector:',
       default: this.extensionConfig.languageName,
     }, function (nameAnswer) {
       this.extensionConfig.languageName = nameAnswer.languageName;
@@ -349,7 +349,7 @@ module.exports = yeoman.generators.Base.extend({
     this.prompt({
       type: 'input',
       name: 'languageExtensions',
-      message: 'Verify the detected file existiins of the language. Use commas to separate multiple entries, e.g. .ruby, .rb',
+      message: 'Verify the detected file existiins of the language. Use commas to separate multiple entries (e.g. .ruby, .rb):',
       default: this.extensionConfig.languageExtensions.join(', '),
     }, function (extAnswer) {
       this.extensionConfig.languageExtensions = extAnswer.languageExtensions.split(',').map(function (e) { return e.trim(); });
