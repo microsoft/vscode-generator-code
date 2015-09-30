@@ -18,7 +18,7 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   initializing: {
-    
+
     // Welcome
     welcome: function () {
       this.log(yosay('Welcome to the Visual Studio Code Extension generator!'));
@@ -26,7 +26,7 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   prompting: {
-    
+
     // Ask for extension type
     askForType: function () {
       var done = this.async();
@@ -60,7 +60,7 @@ module.exports = yeoman.generators.Base.extend({
       this.prompt({
         type: 'input',
         name: 'themeURL',
-        message: 'Enter the URL (http, https) or file name of the tmTheme file:',
+        message: 'URL (http, https) or file name of the tmTheme file:',
         default: 'http://www.monokai.nl/blog/wp-content/asdev/Monokai.tmTheme',
       }, function (urlAnswer) {
         var location = urlAnswer.themeURL;
@@ -137,7 +137,7 @@ module.exports = yeoman.generators.Base.extend({
       this.prompt({
         type: 'input',
         name: 'tmLanguageURL',
-        message: 'Enter the URL (http, https) or file name of the tmLanguage file:',
+        message: 'URL (http, https) or file name of the tmLanguage file:',
         default: 'https://raw.githubusercontent.com/deadfoxygrandpa/Elm.tmLanguage/master/Syntaxes/Elm.tmLanguage',
       }, function (urlAnswer) {
         var location = urlAnswer.tmLanguageURL;
@@ -148,13 +148,13 @@ module.exports = yeoman.generators.Base.extend({
             var languageInfo = result.value;
 
             extensionConfig.languageName = languageInfo.name || '';
-            
+
             // evaluate language id
             var languageId = '';
 
             if (languageInfo.scopeName) {
               extensionConfig.languageScopeName = languageInfo.scopeName;
-              
+
               var lastIndexOfDot = languageInfo.scopeName.lastIndexOf('.');
               if (lastIndexOfDot) {
                 languageId = languageInfo.scopeName.substring(lastIndexOfDot + 1);
@@ -171,7 +171,7 @@ module.exports = yeoman.generators.Base.extend({
             }
             extensionConfig.languageId = languageId;
             extensionConfig.name = languageId;
-            
+
             // evaluate file extensions
             if (Array.isArray(languageInfo.fileTypes)) {
               extensionConfig.languageExtensions = languageInfo.fileTypes.map(function (ft) { return '.' + ft; });
@@ -222,7 +222,7 @@ module.exports = yeoman.generators.Base.extend({
         }
       }.bind(this));
     },
-    
+
 
     // Ask for extension name
     askForExtensionName: function () {
@@ -237,7 +237,7 @@ module.exports = yeoman.generators.Base.extend({
         done();
       }.bind(this));
     },
-    
+
     // Ask to init Git
     askForGit: function () {
       var done = this.async();
@@ -267,7 +267,7 @@ module.exports = yeoman.generators.Base.extend({
       this.prompt({
         type: 'input',
         name: 'themeName',
-        message: 'What\'s the name of your theme? This name will be shown in the color theme selection dialog:',
+        message: 'What\'s the name of your theme shown to the user?',
         default: this.extensionConfig.themeName,
       }, function (nameAnswer) {
         this.extensionConfig.themeName = nameAnswer.themeName;
@@ -355,7 +355,7 @@ module.exports = yeoman.generators.Base.extend({
       this.extensionConfig.languageExtensions = extAnswer.languageExtensions.split(',').map(function (e) { return e.trim(); });
       done();
     }.bind(this));
-  },  
+  },
 
   // Write files
   writing: function () {
@@ -373,7 +373,7 @@ module.exports = yeoman.generators.Base.extend({
         break;
     }
   },
-  
+
   // Write Color Theme Extension
   _writingColorTheme: function () {
     var context = {
@@ -385,10 +385,10 @@ module.exports = yeoman.generators.Base.extend({
     };
 
     this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
-    this.directory(this.sourceRoot() + '/.vscode', context.name + '/.vscode');
+    //this.directory(this.sourceRoot() + '/.vscode', context.name + '/.vscode');
     this.template(this.sourceRoot() + '/themes/theme.tmTheme', context.name + '/themes/' + context.themeFileName, context);
-  }, 
-  
+  },
+
   // Write Language Extension
   _writingLanguage: function () {
     var context = {
@@ -401,10 +401,10 @@ module.exports = yeoman.generators.Base.extend({
     };
 
     this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
-    this.directory(this.sourceRoot() + '/.vscode', context.name + '/.vscode');
+    //this.directory(this.sourceRoot() + '/.vscode', context.name + '/.vscode');
     this.template(this.sourceRoot() + '/syntaxes/language.tmLanguage', context.name + '/syntaxes/' + context.languageId + '.tmLanguage', context);
-  },   
-  
+  },
+
   // Installation
   install: function () {
     process.chdir(this.extensionConfig.name);
@@ -414,10 +414,10 @@ module.exports = yeoman.generators.Base.extend({
       bower: false
     });
   },
-  
+
   // End
   end: function () {
-    
+
     // Git init
     if (this.extensionConfig.gitInit) {
       this.spawnCommand('git', ['init', '--quiet']);
