@@ -349,7 +349,7 @@ module.exports = yeoman.generators.Base.extend({
     this.prompt({
       type: 'input',
       name: 'languageExtensions',
-      message: 'Verify the detected file existiins of the language. Use commas to separate multiple entries (e.g. .ruby, .rb):',
+      message: 'Verify the detected file extensions of the language. Use commas to separate multiple entries (e.g. .ruby, .rb):',
       default: this.extensionConfig.languageExtensions.join(', '),
     }, function (extAnswer) {
       this.extensionConfig.languageExtensions = extAnswer.languageExtensions.split(',').map(function (e) { return e.trim(); });
