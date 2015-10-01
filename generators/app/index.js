@@ -59,10 +59,11 @@ module.exports = yeoman.generators.Base.extend({
       }
       this.extensionConfig.isCustomization = true;
 
+      this.log("URL (http, https) or file name of the tmTheme file, e.g., http://www.monokai.nl/blog/wp-content/asdev/Monokai.tmTheme.")
       this.prompt({
         type: 'input',
         name: 'themeURL',
-        message: 'URL (http, https) or file name of the tmTheme file:'
+        message: 'URL or file name:'
       }, function (urlAnswer) {
         var location = urlAnswer.themeURL;
 
@@ -137,10 +138,11 @@ module.exports = yeoman.generators.Base.extend({
 
       this.extensionConfig.isCustomization = true;
 
+      this.log("URL (http, https) or file name of the tmLanguage file, e.g., http://raw.githubusercontent.com/textmate/ant.tmbundle/master/Syntaxes/Ant.tmLanguage.");
       this.prompt({
         type: 'input',
         name: 'tmLanguageURL',
-        message: 'URL (http, https) or file name of the tmLanguage file:',
+        message: 'URL or file:',
       }, function (urlAnswer) {
         var location = urlAnswer.tmLanguageURL;
 
