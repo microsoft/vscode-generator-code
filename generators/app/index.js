@@ -15,6 +15,7 @@ module.exports = yeoman.generators.Base.extend({
     yeoman.generators.Base.apply(this, arguments);
 
     this.extensionConfig = Object.create(null);
+    this.extensionConfig.installDependencies = false;
   },
 
   initializing: {
@@ -238,7 +239,7 @@ module.exports = yeoman.generators.Base.extend({
       }.bind(this));
     },
 
-    // Ask to init Git
+    // Ask to init Git - NOT USED currently
     askForGit: function () {
       var done = this.async();
       if (this.extensionConfig.type === 'ext-colortheme' || this.extensionConfig.type === 'ext-language') {
@@ -409,10 +410,12 @@ module.exports = yeoman.generators.Base.extend({
   install: function () {
     process.chdir(this.extensionConfig.name);
 
-    this.installDependencies({
-      npm: true,
-      bower: false
-    });
+    if (this.extensionConfig.installDependencies) {
+      this.installDependencies({
+        npm: true,
+        bower: false
+      });
+    }
   },
 
   // End
