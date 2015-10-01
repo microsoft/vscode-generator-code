@@ -6,7 +6,7 @@
 	},
 	"publisher": "none",
 	"contributes": {
-		"language": [{
+		"languages": [{
 			"id": <%- JSON.stringify(languageId) %>,
 			"aliases": [<%- JSON.stringify(languageName) %>, <%- JSON.stringify(languageId) %>],
 			"extensions": <%- JSON.stringify(languageExtensions) %>
