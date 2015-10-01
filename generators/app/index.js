@@ -57,6 +57,7 @@ module.exports = yeoman.generators.Base.extend({
         done();
         return;
       }
+      this.extensionConfig.isCustomization = true;
 
       this.prompt({
         type: 'input',
@@ -134,6 +135,8 @@ module.exports = yeoman.generators.Base.extend({
         done();
         return;
       }
+
+      this.extensionConfig.isCustomization = true;
 
       this.prompt({
         type: 'input',
@@ -426,13 +429,20 @@ module.exports = yeoman.generators.Base.extend({
       this.spawnCommand('git', ['init', '--quiet']);
     }
 
-    this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
     this.log('');
-    this.log('To start editing with Visual Studio Code, use the following commands:');
+    if (this.extensionConfig.isCustomization) {
+      this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
+      this.log('');
+      this.log('To start using it with Visual Studio Code copy it into the .vscode/extensions folder and restart Code.');
+    } else {
+      this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
+      this.log('');
+      this.log('To start editing with Visual Studio Code, use the following commands:');
+      this.log('');
+      this.log('     cd ' + this.extensionConfig.name);
+      this.log('     code .');
+    }
     this.log('');
-    this.log('     cd ' + this.extensionConfig.name);
-    this.log('     code .');
-    this.log(' ');
     this.log('For more information, visit http://code.visualstudio.com and follow us @code.');
     this.log('\r\n');
   }
