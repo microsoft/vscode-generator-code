@@ -62,8 +62,7 @@ module.exports = yeoman.generators.Base.extend({
       this.prompt({
         type: 'input',
         name: 'themeURL',
-        message: 'URL (http, https) or file name of the tmTheme file:',
-        default: 'http://www.monokai.nl/blog/wp-content/asdev/Monokai.tmTheme',
+        message: 'URL (http, https) or file name of the tmTheme file:'
       }, function (urlAnswer) {
         var location = urlAnswer.themeURL;
 
@@ -142,7 +141,6 @@ module.exports = yeoman.generators.Base.extend({
         type: 'input',
         name: 'tmLanguageURL',
         message: 'URL (http, https) or file name of the tmLanguage file:',
-        default: 'https://raw.githubusercontent.com/deadfoxygrandpa/Elm.tmLanguage/master/Syntaxes/Elm.tmLanguage',
       }, function (urlAnswer) {
         var location = urlAnswer.tmLanguageURL;
 
@@ -314,10 +312,11 @@ module.exports = yeoman.generators.Base.extend({
       return;
     }
 
+    this.log('Verify the id of the language. The id is an identifier and is single, lower-case name such as \'php\', \'javascript\'');
     this.prompt({
       type: 'input',
       name: 'languageId',
-      message: 'Verify the detected id of the language. The id is an internal identifier and is single, lower-case name such as \'php\', \'javascript\':',
+      message: 'Detected languageId:',
       default: this.extensionConfig.languageId,
     }, function (idAnswer) {
       this.extensionConfig.languageId = idAnswer.languageId;
@@ -332,10 +331,11 @@ module.exports = yeoman.generators.Base.extend({
       return;
     }
 
+    this.log('Verify the name of the language. The name will be shown in the VS code editor mode selector.');
     this.prompt({
       type: 'input',
       name: 'languageName',
-      message: 'Verify the detected name of the language. The name will be shown in the VS code editor mode selector:',
+      message: 'Detected name:',
       default: this.extensionConfig.languageName,
     }, function (nameAnswer) {
       this.extensionConfig.languageName = nameAnswer.languageName;
@@ -350,10 +350,11 @@ module.exports = yeoman.generators.Base.extend({
       return;
     }
 
+    this.log('Verify the file extensions of the language. Use commas to separate multiple entries (e.g. .ruby, .rb)');
     this.prompt({
       type: 'input',
       name: 'languageExtensions',
-      message: 'Verify the detected file extensions of the language. Use commas to separate multiple entries (e.g. .ruby, .rb):',
+      message: 'Detected file extensions:',
       default: this.extensionConfig.languageExtensions.join(', '),
     }, function (extAnswer) {
       this.extensionConfig.languageExtensions = extAnswer.languageExtensions.split(',').map(function (e) { return e.trim(); });
