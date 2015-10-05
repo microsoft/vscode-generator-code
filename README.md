@@ -3,7 +3,7 @@ visual studio code generator
 
 > A [Yeoman](http://yeoman.io) Generator for [Visual Studio Code](http://code.visualstudio.com)
 
-<img width="491" alt="generator-code" src="">
+<img width="473" alt="generator-code" src="https://cloud.githubusercontent.com/assets/1487073/10296669/9416cb08-6b7f-11e5-90be-3464116d9033.png">
 
 ## Getting Started
 
