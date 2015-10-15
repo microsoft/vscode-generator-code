@@ -436,7 +436,7 @@ module.exports = yeoman.generators.Base.extend({
     if (this.extensionConfig.isCustomization) {
       this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
       this.log('');
-      this.log('To start using it with Visual Studio Code copy it into the .vscode/extensions folder and restart Code.');
+      this.log('To start using it with Visual Studio Code copy it into the <user home>/.vscode/extensions folder and restart Code.');
     } else {
       this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
       this.log('');
