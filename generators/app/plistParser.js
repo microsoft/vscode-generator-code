@@ -21,7 +21,10 @@ function parse(content) {
         errors.push(e.message);
     };
     parser.ontext = function (s) {
-        text = s;
+        text += s;
+    };
+    parser.oncdata = function (s) {
+        text += s;
     };
     parser.onopentag = function (tag) {
         switch (tag.name) {

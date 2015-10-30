@@ -8,12 +8,17 @@ var path = require('path');
 var fs = require('fs');
 var request = require('request');
 var plistParser = require('./plistParser');
+var snippetConverter = require('./snippetConverter');
 
 module.exports = yeoman.generators.Base.extend({
 
   constructor: function () {
     yeoman.generators.Base.apply(this, arguments);
-
+    this.argument('extensionType', { type: String, required: false });
+    this.argument('extensionName', { type: String, required: false });
+    this.argument('extensionParam', { type: String, required: false });
+    this.argument('extensionParam2', { type: String, required: false });
+    
     this.extensionConfig = Object.create(null);
     this.extensionConfig.installDependencies = false;
   },
@@ -30,6 +35,16 @@ module.exports = yeoman.generators.Base.extend({
 
     // Ask for extension type
     askForType: function () {
+      if (this.extensionType) {
+        var extensionTypes = ['colortheme', 'language', 'snippets'];
+        if (extensionTypes.indexOf(this.extensionType) !== -1) {
+          this.extensionConfig.type = 'ext-' + this.extensionType;
+        } else {
+          this.env.error("Invalid extension type: " + this.extensionType + '. Possible types are :' + extensionTypes.join(', '));
+        }
+        return;
+      }   
+      
       var done = this.async();
       this.prompt({
         type: 'list',
@@ -43,7 +58,11 @@ module.exports = yeoman.generators.Base.extend({
           {
             name: 'New Language Support',
             value: 'ext-language'
-          }
+          },
+          {
+            name: 'New Code Snippets',
+            value: 'ext-snippets'
+          }          
         ]
       }, function (typeAnswer) {
         this.extensionConfig.type = typeAnswer.type;
@@ -227,9 +246,50 @@ module.exports = yeoman.generators.Base.extend({
       }.bind(this));
     },
 
+    askForSnippetsInfo: function () {
+      var done = this.async();   
+      if (this.extensionConfig.type !== 'ext-snippets') {
+        done();
+        return;
+      }
+      
+      this.extensionConfig.isCustomization = true;
+      
+      if (this.extensionParam) {
+        var count = snippetConverter.processSnippetFolder(this.extensionParam, this);
+        if (count <= 0) {
+          this.env.error('')
+        }
+        done();
+        return;
+      }
+      
+      this.log("Folder location that contains Text Mate (.tmSnippet) and Sublime snippets (.sublime-snippet)");
+      
+      var snippetPrompt = (function (done) {
+        this.prompt({
+          type: 'input',
+          name: 'snippetPath',
+          message: 'Folder name:'
+        }, function (snippetAnswer) {
+          var count = snippetConverter.processSnippetFolder(snippetAnswer.snippetPath, this);
+          if (count < 0) {
+            snippetPrompt(done);
+          } else {
+            done();
+          }
+        }.bind(this));
+      }).bind(this);
+      snippetPrompt(done);
+    },
 
     // Ask for extension name
     askForExtensionName: function () {
+      if (this.extensionName) {
+        this.extensionConfig.name = this.extensionName;
+        return;
+      }
+      
       var done = this.async();
       this.prompt({
         type: 'input',
@@ -245,7 +305,7 @@ module.exports = yeoman.generators.Base.extend({
     // Ask to init Git - NOT USED currently
     askForGit: function () {
       var done = this.async();
-      if (this.extensionConfig.type === 'ext-colortheme' || this.extensionConfig.type === 'ext-language') {
+      if (['ext-colortheme', 'ext-language', 'ext-snippets'].indexOf(this.extensionConfig.type) > 0) {
         done();
         return;
       }
@@ -364,6 +424,31 @@ module.exports = yeoman.generators.Base.extend({
     }.bind(this));
   },
 
+  askForSnippetLangauge: function () {
+    var done = this.async();
+    if (this.extensionConfig.type !== 'ext-snippets') {
+      done();
+      return;
+    }
+
+    if (this.extensionParam2) {
+      this.extensionConfig.languageId = this.extensionParam2;
+      done();
+      return;
+    }
+    
+    this.log('Enter the language for which the snippets should appear. The id is an identifier and is single, lower-case name such as \'php\', \'javascript\'');
+    this.prompt({
+      type: 'input',
+      name: 'languageId',
+      message: 'Language id:',
+      default: this.extensionConfig.languageId
+    }, function (idAnswer) {
+      this.extensionConfig.languageId = idAnswer.languageId;
+      done();
+    }.bind(this));
+  },
+
   // Write files
   writing: function () {
     this.sourceRoot(path.join(__dirname, './templates/' + this.extensionConfig.type));
@@ -375,6 +460,8 @@ module.exports = yeoman.generators.Base.extend({
       case 'ext-language':
         this._writingLanguage();
         break;
+      case 'ext-snippets':
+        this._writingSnippets();
       default:
         //unknown project type
         break;
@@ -411,6 +498,19 @@ module.exports = yeoman.generators.Base.extend({
     //this.directory(this.sourceRoot() + '/.vscode', context.name + '/.vscode');
     this.template(this.sourceRoot() + '/syntaxes/language.tmLanguage', context.name + '/syntaxes/' + context.languageId + '.tmLanguage', context);
   },
+  
+   // Write Language Extension
+  _writingSnippets: function () {
+    var context = {
+      name: this.extensionConfig.name,
+      languageId: this.extensionConfig.languageId,
+      snippets: this.extensionConfig.snippets
+    };
+
+    this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
+    //this.directory(this.sourceRoot() + '/.vscode', context.name + '/.vscode');
+    this.template(this.sourceRoot() + '/snippets/snippets.json', context.name + '/snippets/snippets.json', context);
+  }, 
 
   // Installation
   install: function () {
