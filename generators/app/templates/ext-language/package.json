@@ -1,14 +1,15 @@
 {
 	"name": <%- JSON.stringify(name) %>,
+	"description": <%- JSON.stringify(description) %>,
 	"version": "0.0.1",
+	"publisher": <%- JSON.stringify(publisher) %>,
+	"license": <%- JSON.stringify(license) %>,
 	"engines": {
 		"vscode": <%- JSON.stringify(vsCodeEngine) %>
 	},
 	"categories": [
 		"Languages"
 	],
-	"publisher": "none",
-	"license": <%- JSON.stringify(license) %>,	
 	"contributes": {
 		"languages": [{
 			"id": <%- JSON.stringify(languageId) %>,

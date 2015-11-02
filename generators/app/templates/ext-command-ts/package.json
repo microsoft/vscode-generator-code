@@ -1,0 +1,30 @@
+{
+	"name": <%- JSON.stringify(name) %>,
+	"description": <%- JSON.stringify(description) %>,
+	"version": "0.0.1",
+	"publisher": <%- JSON.stringify(publisher) %>,
+	"license": <%- JSON.stringify(license) %>,
+	"engines": {
+		"vscode": <%- JSON.stringify(vsCodeEngine) %>
+	},
+	"categories": [
+		"Others"
+	],
+	"activationEvents": [
+		"command:extension.sayHello"
+	],
+	"main": "./out/extension",
+	"contributes": {
+		"commands": [{
+			"onCommand": "extension.sayHello",
+			"title": "Hello World"
+		}]
+	},
+	"scripts": {
+		"vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+		"compile": "node ./node_modules/vscode/bin/compile -watch -p ./"
+	},
+	"devDependencies": {
+		"vscode": "*"
+	}
+}

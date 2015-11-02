@@ -8,15 +8,19 @@
 		"vscode": <%- JSON.stringify(vsCodeEngine) %>
 	},
 	"categories": [
-		"Themes"
+		"Others"
 	],
+	"activationEvents": [
+		"command:extension.sayHello"
+	],
+	"main": "./extension",
 	"contributes": {
-		"themes": [
-			{
-				"label": <%- JSON.stringify(themeName) %>,
-				"uiTheme": <%- JSON.stringify(themeBase) %>,
-				"path": <%- JSON.stringify("./themes/" + themeFileName) %>
-			}
-		]
+		"commands": [{
+			"onCommand": "extension.sayHello",
+			"title": "Hello World"
+		}]
+	},
+	"devDependencies": {
+		"vscode": "*"
 	}
 }

@@ -10,8 +10,6 @@ var request = require('request');
 var plistParser = require('./plistParser');
 var snippetConverter = require('./snippetConverter');
 
-var VSCODE_ENGINE_VERSION = '^0.10.0';
-
 module.exports = yeoman.generators.Base.extend({
 
   constructor: function () {
@@ -20,9 +18,10 @@ module.exports = yeoman.generators.Base.extend({
     this.argument('extensionName', { type: String, required: false });
     this.argument('extensionParam', { type: String, required: false });
     this.argument('extensionParam2', { type: String, required: false });
-    
+
     this.extensionConfig = Object.create(null);
     this.extensionConfig.installDependencies = false;
+    this.extensionConfig.vsCodeEngine = '^0.10.0';
   },
 
   initializing: {
@@ -38,15 +37,15 @@ module.exports = yeoman.generators.Base.extend({
     // Ask for extension type
     askForType: function () {
       if (this.extensionType) {
-        var extensionTypes = ['colortheme', 'language', 'snippets'];
+        var extensionTypes = ['colortheme', 'language', 'snippets', 'command-ts', 'command-js'];
         if (extensionTypes.indexOf(this.extensionType) !== -1) {
           this.extensionConfig.type = 'ext-' + this.extensionType;
         } else {
           this.env.error("Invalid extension type: " + this.extensionType + '. Possible types are :' + extensionTypes.join(', '));
         }
         return;
-      }   
-      
+      }
+
       var done = this.async();
       this.prompt({
         type: 'list',
@@ -64,7 +63,15 @@ module.exports = yeoman.generators.Base.extend({
           {
             name: 'New Code Snippets',
             value: 'ext-snippets'
-          }          
+          },
+          {
+            name: 'New Command (TypeScript)',
+            value: 'ext-command-ts'
+          },
+          {
+            name: 'New Command (JavaScript)',
+            value: 'ext-command-js'
+          }
         ]
       }, function (typeAnswer) {
         this.extensionConfig.type = typeAnswer.type;
@@ -249,14 +256,14 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     askForSnippetsInfo: function () {
-      var done = this.async();   
+      var done = this.async();
       if (this.extensionConfig.type !== 'ext-snippets') {
         done();
         return;
       }
-      
+
       this.extensionConfig.isCustomization = true;
-      
+
       if (this.extensionParam) {
         var count = snippetConverter.processSnippetFolder(this.extensionParam, this);
         if (count <= 0) {
@@ -265,9 +272,8 @@ module.exports = yeoman.generators.Base.extend({
         done();
         return;
       }
-      
       this.log("Folder location that contains Text Mate (.tmSnippet) and Sublime snippets (.sublime-snippet)");
-      
+
       var snippetPrompt = (function (done) {
         this.prompt({
           type: 'input',
@@ -291,7 +297,7 @@ module.exports = yeoman.generators.Base.extend({
         this.extensionConfig.name = this.extensionName;
         return;
       }
-      
+
       var done = this.async();
       this.prompt({
         type: 'input',
@@ -304,10 +310,52 @@ module.exports = yeoman.generators.Base.extend({
       }.bind(this));
     },
 
-    // Ask to init Git - NOT USED currently
+    // Ask for extension description
+    askForExtensionDescription: function () {
+      var done = this.async();
+      this.prompt({
+        type: 'input',
+        name: 'description',
+        message: 'What\'s the description of your extension?'
+      }, function (descriptionAnswer) {
+        this.extensionConfig.description = descriptionAnswer.description;
+        done();
+      }.bind(this));
+    },
+
+    // Ask for publisher name
+    askForPublisherName: function () {
+      var done = this.async();
+      this.prompt({
+        type: 'input',
+        name: 'publisher',
+        message: 'What\'s your publisher name?',
+        store: true
+      }, function (publisherAnswer) {
+        this.extensionConfig.publisher = publisherAnswer.publisher;
+        done();
+      }.bind(this));
+    },
+
+    askForLicense: function () {
+      var done = this.async();
+
+      this.log('Enter the license under which you want to publish this extension. Use a SPDX license expression syntax string. See https://spdx.org/licenses/ for more information.');
+      this.prompt({
+        type: 'input',
+        name: 'license',
+        message: 'License:',
+        default: 'ISC'
+      }, function (licenseAnswer) {
+        this.extensionConfig.license = licenseAnswer.license;
+        done();
+      }.bind(this));
+    },
+
+
     askForGit: function () {
       var done = this.async();
-      if (['ext-colortheme', 'ext-language', 'ext-snippets'].indexOf(this.extensionConfig.type) >= 0) {
+      if (['ext-command-ts', 'ext-command-js'].indexOf(this.extensionConfig.type) === -1) {
         done();
         return;
       }
@@ -366,104 +414,89 @@ module.exports = yeoman.generators.Base.extend({
         this.extensionConfig.themeBase = themeBase.themeBase;
         done();
       }.bind(this));
-    }
-  },
+    },
 
-  askForLanguageId: function () {
-    var done = this.async();
-    if (this.extensionConfig.type !== 'ext-language') {
-      done();
-      return;
-    }
+    askForLanguageId: function () {
+      var done = this.async();
+      if (this.extensionConfig.type !== 'ext-language') {
+        done();
+        return;
+      }
 
-    this.log('Verify the id of the language. The id is an identifier and is single, lower-case name such as \'php\', \'javascript\'');
-    this.prompt({
-      type: 'input',
-      name: 'languageId',
-      message: 'Detected languageId:',
-      default: this.extensionConfig.languageId,
-    }, function (idAnswer) {
-      this.extensionConfig.languageId = idAnswer.languageId;
-      done();
-    }.bind(this));
-  },
-  
-  askForLicense: function () {
-    var done = this.async();
-    
-    this.log('Enter the license under which you want to publish this extension. Use a SPDX license expression syntax string. See https://spdx.org/licenses/ for more information.');
-    this.prompt({
-      type: 'input',
-      name: 'license',
-      message: 'License:',
-      default: 'ISC'
-    }, function (licenseAnswer) {
-      this.extensionConfig.license = licenseAnswer.license;
-      done();
-    }.bind(this));
-  },  
+      this.log('Verify the id of the language. The id is an identifier and is single, lower-case name such as \'php\', \'javascript\'');
+      this.prompt({
+        type: 'input',
+        name: 'languageId',
+        message: 'Detected languageId:',
+        default: this.extensionConfig.languageId,
+      }, function (idAnswer) {
+        this.extensionConfig.languageId = idAnswer.languageId;
+        done();
+      }.bind(this));
+    },
 
-  askForLanguageName: function () {
-    var done = this.async();
-    if (this.extensionConfig.type !== 'ext-language') {
-      done();
-      return;
-    }
+    askForLanguageName: function () {
+      var done = this.async();
+      if (this.extensionConfig.type !== 'ext-language') {
+        done();
+        return;
+      }
 
-    this.log('Verify the name of the language. The name will be shown in the VS code editor mode selector.');
-    this.prompt({
-      type: 'input',
-      name: 'languageName',
-      message: 'Detected name:',
-      default: this.extensionConfig.languageName,
-    }, function (nameAnswer) {
-      this.extensionConfig.languageName = nameAnswer.languageName;
-      done();
-    }.bind(this));
-  },
+      this.log('Verify the name of the language. The name will be shown in the VS code editor mode selector.');
+      this.prompt({
+        type: 'input',
+        name: 'languageName',
+        message: 'Detected name:',
+        default: this.extensionConfig.languageName,
+      }, function (nameAnswer) {
+        this.extensionConfig.languageName = nameAnswer.languageName;
+        done();
+      }.bind(this));
+    },
 
-  askForLanguageExtensions: function () {
-    var done = this.async();
-    if (this.extensionConfig.type !== 'ext-language') {
-      done();
-      return;
-    }
+    askForLanguageExtensions: function () {
+      var done = this.async();
+      if (this.extensionConfig.type !== 'ext-language') {
+        done();
+        return;
+      }
 
-    this.log('Verify the file extensions of the language. Use commas to separate multiple entries (e.g. .ruby, .rb)');
-    this.prompt({
-      type: 'input',
-      name: 'languageExtensions',
-      message: 'Detected file extensions:',
-      default: this.extensionConfig.languageExtensions.join(', '),
-    }, function (extAnswer) {
-      this.extensionConfig.languageExtensions = extAnswer.languageExtensions.split(',').map(function (e) { return e.trim(); });
-      done();
-    }.bind(this));
-  },
+      this.log('Verify the file extensions of the language. Use commas to separate multiple entries (e.g. .ruby, .rb)');
+      this.prompt({
+        type: 'input',
+        name: 'languageExtensions',
+        message: 'Detected file extensions:',
+        default: this.extensionConfig.languageExtensions.join(', '),
+      }, function (extAnswer) {
+        this.extensionConfig.languageExtensions = extAnswer.languageExtensions.split(',').map(function (e) { return e.trim(); });
+        done();
+      }.bind(this));
+    },
 
-  askForSnippetLangauge: function () {
-    var done = this.async();
-    if (this.extensionConfig.type !== 'ext-snippets') {
-      done();
-      return;
-    }
+    askForSnippetLangauge: function () {
+      var done = this.async();
+      if (this.extensionConfig.type !== 'ext-snippets') {
+        done();
+        return;
+      }
 
-    if (this.extensionParam2) {
-      this.extensionConfig.languageId = this.extensionParam2;
-      done();
-      return;
-    }
-    
-    this.log('Enter the language for which the snippets should appear. The id is an identifier and is single, lower-case name such as \'php\', \'javascript\'');
-    this.prompt({
-      type: 'input',
-      name: 'languageId',
-      message: 'Language id:',
-      default: this.extensionConfig.languageId
-    }, function (idAnswer) {
-      this.extensionConfig.languageId = idAnswer.languageId;
-      done();
-    }.bind(this));
+      if (this.extensionParam2) {
+        this.extensionConfig.languageId = this.extensionParam2;
+        done();
+        return;
+      }
+
+      this.log('Enter the language for which the snippets should appear. The id is an identifier and is single, lower-case name such as \'php\', \'javascript\'');
+      this.prompt({
+        type: 'input',
+        name: 'languageId',
+        message: 'Language id:',
+        default: this.extensionConfig.languageId
+      }, function (idAnswer) {
+        this.extensionConfig.languageId = idAnswer.languageId;
+        done();
+      }.bind(this));
+    },
   },
 
   // Write files
@@ -479,23 +512,25 @@ module.exports = yeoman.generators.Base.extend({
         break;
       case 'ext-snippets':
         this._writingSnippets();
+        break;
+      case 'ext-command-ts':
+        this._writingCommandTs();
+        break;
+      case 'ext-command-js':
+        this._writingCommandJs();
+        break;
       default:
         //unknown project type
         break;
     }
   },
-
+ 
   // Write Color Theme Extension
   _writingColorTheme: function () {
-    var context = {
-      vsCodeEngine: VSCODE_ENGINE_VERSION,
-      name: this.extensionConfig.name,
-      themeName: this.extensionConfig.themeName,
-      themeBase: this.extensionConfig.themeBase,
-      themeContent: this.extensionConfig.themeContent,
-      themeFileName: this.extensionConfig.themeFileName,
-      license: this.extensionConfig.license
-    };
+    
+    var context = this.extensionConfig;
+
+    console.log('publisher: ' + context.publisher);
 
     this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
     this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
@@ -504,36 +539,59 @@ module.exports = yeoman.generators.Base.extend({
 
   // Write Language Extension
   _writingLanguage: function () {
-    var context = {
-      vsCodeEngine: VSCODE_ENGINE_VERSION,
-      name: this.extensionConfig.name,
-      languageId: this.extensionConfig.languageId,
-      languageName: this.extensionConfig.languageName,
-      languageExtensions: this.extensionConfig.languageExtensions,
-      languageScopeName: this.extensionConfig.languageScopeName,
-      languageContent: this.extensionConfig.languageContent,
-      license: this.extensionConfig.license
-    };
+    var context = this.extensionConfig;
 
     this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
     this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
     this.template(this.sourceRoot() + '/syntaxes/language.tmLanguage', context.name + '/syntaxes/' + context.languageId + '.tmLanguage', context);
   },
   
-   // Write Language Extension
+  // Write Language Extension
   _writingSnippets: function () {
-    var context = {
-      vsCodeEngine: VSCODE_ENGINE_VERSION,
-      name: this.extensionConfig.name,
-      languageId: this.extensionConfig.languageId,
-      snippets: this.extensionConfig.snippets,
-      license: this.extensionConfig.license
-    };
+    var context = this.extensionConfig;
 
     this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
     this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
     this.template(this.sourceRoot() + '/snippets/snippets.json', context.name + '/snippets/snippets.json', context);
   }, 
+  
+  // Write Command Extension (TypeScript)
+  _writingCommandTs: function () {
+    var context = this.extensionConfig;
+
+    this.directory(this.sourceRoot() + '/.vscode', context.name + '/.vscode');
+    this.directory(this.sourceRoot() + '/typings', context.name + '/typings');
+
+    this.copy(this.sourceRoot() + '/.vscodeignore', context.name + '/.vscodeignore');
+    this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+    this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
+    this.copy(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md');
+    this.copy(this.sourceRoot() + '/tsconfig.json', context.name + '/tsconfig.json');
+
+    this.template(this.sourceRoot() + '/extension.ts', context.name + '/extension.ts', context);
+    this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
+  
+    this.extensionConfig.installDependencies = true;
+  },
+
+  // Write Command Extension (JavaScript)
+  _writingCommandJs: function () {
+    var context = this.extensionConfig;
+
+    this.directory(this.sourceRoot() + '/.vscode', context.name + '/.vscode');
+    this.directory(this.sourceRoot() + '/typings', context.name + '/typings');
+
+    this.copy(this.sourceRoot() + '/.vscodeignore', context.name + '/.vscodeignore');
+    this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+    this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
+    this.copy(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md');
+    this.copy(this.sourceRoot() + '/jsconfig.json', context.name + '/jsconfig.json');
+
+    this.template(this.sourceRoot() + '/extension.js', context.name + '/extension.js', context);
+    this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
+  
+    this.extensionConfig.installDependencies = true;
+  },
 
   // Installation
   install: function () {
