@@ -10,6 +10,8 @@ var request = require('request');
 var plistParser = require('./plistParser');
 var snippetConverter = require('./snippetConverter');
 
+var VSCODE_ENGINE_VERSION = '^0.10.0';
+
 module.exports = yeoman.generators.Base.extend({
 
   constructor: function () {
@@ -305,7 +307,7 @@ module.exports = yeoman.generators.Base.extend({
     // Ask to init Git - NOT USED currently
     askForGit: function () {
       var done = this.async();
-      if (['ext-colortheme', 'ext-language', 'ext-snippets'].indexOf(this.extensionConfig.type) > 0) {
+      if (['ext-colortheme', 'ext-language', 'ext-snippets'].indexOf(this.extensionConfig.type) >= 0) {
         done();
         return;
       }
@@ -385,6 +387,21 @@ module.exports = yeoman.generators.Base.extend({
       done();
     }.bind(this));
   },
+  
+  askForLicense: function () {
+    var done = this.async();
+    
+    this.log('Enter the license under which you want to publish this extension. Use a SPDX license expression syntax string. See https://spdx.org/licenses/ for more information.');
+    this.prompt({
+      type: 'input',
+      name: 'license',
+      message: 'License:',
+      default: 'ISC'
+    }, function (licenseAnswer) {
+      this.extensionConfig.license = licenseAnswer.license;
+      done();
+    }.bind(this));
+  },  
 
   askForLanguageName: function () {
     var done = this.async();
@@ -471,44 +488,50 @@ module.exports = yeoman.generators.Base.extend({
   // Write Color Theme Extension
   _writingColorTheme: function () {
     var context = {
+      vsCodeEngine: VSCODE_ENGINE_VERSION,
       name: this.extensionConfig.name,
       themeName: this.extensionConfig.themeName,
       themeBase: this.extensionConfig.themeBase,
       themeContent: this.extensionConfig.themeContent,
-      themeFileName: this.extensionConfig.themeFileName
+      themeFileName: this.extensionConfig.themeFileName,
+      license: this.extensionConfig.license
     };
 
     this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
-    //this.directory(this.sourceRoot() + '/.vscode', context.name + '/.vscode');
+    this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
     this.template(this.sourceRoot() + '/themes/theme.tmTheme', context.name + '/themes/' + context.themeFileName, context);
   },
 
   // Write Language Extension
   _writingLanguage: function () {
     var context = {
+      vsCodeEngine: VSCODE_ENGINE_VERSION,
       name: this.extensionConfig.name,
       languageId: this.extensionConfig.languageId,
       languageName: this.extensionConfig.languageName,
       languageExtensions: this.extensionConfig.languageExtensions,
       languageScopeName: this.extensionConfig.languageScopeName,
-      languageContent: this.extensionConfig.languageContent
+      languageContent: this.extensionConfig.languageContent,
+      license: this.extensionConfig.license
     };
 
     this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
-    //this.directory(this.sourceRoot() + '/.vscode', context.name + '/.vscode');
+    this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
     this.template(this.sourceRoot() + '/syntaxes/language.tmLanguage', context.name + '/syntaxes/' + context.languageId + '.tmLanguage', context);
   },
   
    // Write Language Extension
   _writingSnippets: function () {
     var context = {
+      vsCodeEngine: VSCODE_ENGINE_VERSION,
       name: this.extensionConfig.name,
       languageId: this.extensionConfig.languageId,
-      snippets: this.extensionConfig.snippets
+      snippets: this.extensionConfig.snippets,
+      license: this.extensionConfig.license
     };
 
     this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
-    //this.directory(this.sourceRoot() + '/.vscode', context.name + '/.vscode');
+    this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
     this.template(this.sourceRoot() + '/snippets/snippets.json', context.name + '/snippets/snippets.json', context);
   }, 
 

@@ -2,9 +2,13 @@
 	"name": <%- JSON.stringify(name) %>,
 	"version": "0.0.1",
 	"engines": {
-		"vscode": ">=0.9.0-pre.1"
+		"vscode": <%- JSON.stringify(vsCodeEngine) %>
 	},
+	"categories": [
+		"Snippets"
+	],	
 	"publisher": "none",
+	"license": <%- JSON.stringify(license) %>,
 	"contributes": {
 		"snippets": [
 			{
