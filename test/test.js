@@ -167,7 +167,7 @@ describe('test theme generator', function () {
             "vscode": "^0.10.0"
           },
           "activationEvents": [
-            "command:extension.sayHello"
+            "onCommand:extension.sayHello"
           ],
           "devDependencies": {
            "vscode": "*"
@@ -183,7 +183,7 @@ describe('test theme generator', function () {
           ],
           "contributes": {
             "commands": [{
-              "onCommand": "extension.sayHello",
+              "command": "extension.sayHello",
               "title": "Hello World"
 
             }]

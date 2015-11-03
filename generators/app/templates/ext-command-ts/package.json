@@ -11,12 +11,12 @@
 		"Others"
 	],
 	"activationEvents": [
-		"command:extension.sayHello"
+		"onCommand:extension.sayHello"
 	],
 	"main": "./out/extension",
 	"contributes": {
 		"commands": [{
-			"onCommand": "extension.sayHello",
+			"command": "extension.sayHello",
 			"title": "Hello World"
 		}]
 	},
