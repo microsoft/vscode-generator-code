@@ -53,6 +53,14 @@ module.exports = yeoman.generators.Base.extend({
         message: 'What type of extension do you want to create?',
         choices: [
           {
+            name: 'New Extension (TypeScript)',
+            value: 'ext-command-ts'
+          },
+          {
+            name: 'New Extension (JavaScript)',
+            value: 'ext-command-js'
+          },          
+          {
             name: 'New Color Theme',
             value: 'ext-colortheme'
           },
@@ -63,14 +71,6 @@ module.exports = yeoman.generators.Base.extend({
           {
             name: 'New Code Snippets',
             value: 'ext-snippets'
-          },
-          {
-            name: 'New Command (TypeScript)',
-            value: 'ext-command-ts'
-          },
-          {
-            name: 'New Command (JavaScript)',
-            value: 'ext-command-js'
           }
         ]
       }, function (typeAnswer) {
