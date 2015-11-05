@@ -162,14 +162,13 @@ describe('test theme generator', function () {
             "onCommand:extension.sayHello"
           ],
           "devDependencies": {
-           "vscode": "*"
+           "vscode": "next"
           },
           "main": "./out/extension",
           "scripts": {
             "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
            "vscode:prepublish": "node ./node_modules/vscode/bin/compile"
           },
-
           "categories": [
             "Others"
           ],
@@ -177,7 +176,6 @@ describe('test theme generator', function () {
             "commands": [{
               "command": "extension.sayHello",
               "title": "Hello World"
-
             }]
           }
         };
