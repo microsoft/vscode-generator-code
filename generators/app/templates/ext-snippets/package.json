@@ -3,14 +3,12 @@
 	"description": <%- JSON.stringify(description) %>,
 	"version": "0.0.1",
 	"publisher": <%- JSON.stringify(publisher) %>,
-	"license": <%- JSON.stringify(license) %>,
 	"engines": {
 		"vscode": <%- JSON.stringify(vsCodeEngine) %>
 	},
 	"categories": [
 		"Snippets"
 	],
-	"license": <%- JSON.stringify(license) %>,
 	"contributes": {
 		"snippets": [
 			{

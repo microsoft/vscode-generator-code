@@ -14,7 +14,6 @@ describe('test theme generator', function () {
         name: 'testTheme',
         description: 'My TestTheme',
         publisher: 'Microsoft',
-        license: 'MIT',
         themeName: 'Green',
         themeBase: 'vs-dark',
       }) // Mock the prompt answers
@@ -24,7 +23,6 @@ describe('test theme generator', function () {
           "description": "My TestTheme",
           "version": "0.0.1",
           "publisher": 'Microsoft',
-          "license": "MIT",
           "engines": {
             "vscode": "^0.10.0"
           },
@@ -60,7 +58,6 @@ describe('test theme generator', function () {
         name: 'testLan',
         description: 'My TestLan',
         publisher: 'Microsoft',
-        license: 'ISC',
         languageId: 'ant',
         languageName: 'ANT',
         languageScopeName: 'source.ant',
@@ -72,7 +69,6 @@ describe('test theme generator', function () {
           "description": "My TestLan",
           "version": "0.0.1",
           "publisher": 'Microsoft',
-          "license": "ISC",
           "engines": {
             "vscode": "^0.10.0"
           },
@@ -112,7 +108,6 @@ describe('test theme generator', function () {
         name: 'testSnip',
         description: 'My TestSnip',
         publisher: 'Microsoft',
-        license: 'ISC',
         languageId: 'python'
       }) // Mock the prompt answers
       .on('end', function () {
@@ -121,7 +116,6 @@ describe('test theme generator', function () {
           "description": "My TestSnip",
           "version": "0.0.1",
           "publisher": 'Microsoft',
-          "license": "ISC",
           "engines": {
             "vscode": "^0.10.0"
           },
@@ -153,7 +147,6 @@ describe('test theme generator', function () {
         name: 'testCom',
         description: 'My TestCom',
         publisher: 'Microsoft',
-        license: 'ISC',
         gitInit: false
       }) // Mock the prompt answers
       .on('end', function () {
@@ -162,7 +155,6 @@ describe('test theme generator', function () {
           "description": "My TestCom",
           "version": "0.0.1",
           "publisher": 'Microsoft',
-          "license": "ISC",
           "engines": {
             "vscode": "^0.10.0"
           },

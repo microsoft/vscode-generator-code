@@ -337,22 +337,6 @@ module.exports = yeoman.generators.Base.extend({
       }.bind(this));
     },
 
-    askForLicense: function () {
-      var done = this.async();
-
-      this.log('Enter the license under which you want to publish this extension. Use a SPDX license expression syntax string. See https://spdx.org/licenses/ for more information.');
-      this.prompt({
-        type: 'input',
-        name: 'license',
-        message: 'License:',
-        default: 'ISC'
-      }, function (licenseAnswer) {
-        this.extensionConfig.license = licenseAnswer.license;
-        done();
-      }.bind(this));
-    },
-
-
     askForGit: function () {
       var done = this.async();
       if (['ext-command-ts', 'ext-command-js'].indexOf(this.extensionConfig.type) === -1) {
