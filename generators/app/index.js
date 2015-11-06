@@ -9,6 +9,7 @@ var fs = require('fs');
 var request = require('request');
 var plistParser = require('./plistParser');
 var snippetConverter = require('./snippetConverter');
+var env = require('./env');
 
 module.exports = yeoman.generators.Base.extend({
 
@@ -21,7 +22,8 @@ module.exports = yeoman.generators.Base.extend({
 
     this.extensionConfig = Object.create(null);
     this.extensionConfig.installDependencies = false;
-    this.extensionConfig.vsCodeEngine = '^0.10.0';
+    this.extensionConfig.vsCodeEngine = env.vsCodeEngine;
+    this.extensionConfig.vsCodeAPI = env.vsCodeAPI;
   },
 
   initializing: {

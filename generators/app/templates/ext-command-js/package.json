@@ -20,6 +20,6 @@
 		}]
 	},
 	"devDependencies": {
-		"vscode": "next"
+		"vscode": <%- JSON.stringify(vsCodeAPI) %>
 	}
 }

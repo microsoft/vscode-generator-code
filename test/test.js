@@ -2,6 +2,8 @@ var path = require('path');
 var assert = require('yeoman-generator').assert;
 var helpers = require('yeoman-generator').test;
 
+var env = require('../generators/app/env');
+
 var fs = require('fs');
 
 describe('test theme generator', function () {
@@ -24,7 +26,7 @@ describe('test theme generator', function () {
           "version": "0.0.1",
           "publisher": 'Microsoft',
           "engines": {
-            "vscode": "^0.10.0"
+            "vscode": env.vsCodeEngine
           },
           "categories": [
             "Themes"
@@ -70,7 +72,7 @@ describe('test theme generator', function () {
           "version": "0.0.1",
           "publisher": 'Microsoft',
           "engines": {
-            "vscode": "^0.10.0"
+            "vscode": env.vsCodeEngine
           },
           "categories": [
             "Languages"
@@ -117,7 +119,7 @@ describe('test theme generator', function () {
           "version": "0.0.1",
           "publisher": 'Microsoft',
           "engines": {
-            "vscode": "^0.10.0"
+            "vscode": env.vsCodeEngine
           },
           "categories": [
             "Snippets"
@@ -156,13 +158,13 @@ describe('test theme generator', function () {
           "version": "0.0.1",
           "publisher": 'Microsoft',
           "engines": {
-            "vscode": "^0.10.0"
+            "vscode": env.vsCodeEngine
           },
           "activationEvents": [
             "onCommand:extension.sayHello"
           ],
           "devDependencies": {
-           "vscode": "next"
+           "vscode": env.vsCodeAPI
           },
           "main": "./out/extension",
           "scripts": {
