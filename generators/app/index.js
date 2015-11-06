@@ -543,10 +543,11 @@ module.exports = yeoman.generators.Base.extend({
   _writingCommandTs: function () {
     var context = this.extensionConfig;
 
-    this.directory(this.sourceRoot() + '/.vscode', context.name + '/.vscode');
+    this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
     this.directory(this.sourceRoot() + '/typings', context.name + '/typings');
+    this.directory(this.sourceRoot() + '/test', context.name + '/test');
 
-    this.copy(this.sourceRoot() + '/.vscodeignore', context.name + '/.vscodeignore');
+    this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
     this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
     this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
     this.copy(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md');
@@ -562,10 +563,11 @@ module.exports = yeoman.generators.Base.extend({
   _writingCommandJs: function () {
     var context = this.extensionConfig;
 
-    this.directory(this.sourceRoot() + '/.vscode', context.name + '/.vscode');
+    this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
     this.directory(this.sourceRoot() + '/typings', context.name + '/typings');
+		this.directory(this.sourceRoot() + '/test', context.name + '/test');
 
-    this.copy(this.sourceRoot() + '/.vscodeignore', context.name + '/.vscodeignore');
+		this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
     this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
     this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
     this.copy(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md');

@@ -1,7 +1,6 @@
 .vscode/**
 typings/**
-**/*.ts
-**/*.map
+test/**
 .gitignore
-tsconfig.json
+jsconfig.json
 vsc-extension-quickstart.md
