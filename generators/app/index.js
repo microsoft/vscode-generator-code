@@ -516,8 +516,7 @@ module.exports = yeoman.generators.Base.extend({
     
     var context = this.extensionConfig;
 
-    console.log('publisher: ' + context.publisher);
-
+    this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
     this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
     this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
     this.template(this.sourceRoot() + '/themes/theme.tmTheme', context.name + '/themes/' + context.themeFileName, context);
@@ -527,6 +526,7 @@ module.exports = yeoman.generators.Base.extend({
   _writingLanguage: function () {
     var context = this.extensionConfig;
 
+    this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
     this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
     this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
     this.template(this.sourceRoot() + '/syntaxes/language.tmLanguage', context.name + '/syntaxes/' + context.languageId + '.tmLanguage', context);
@@ -536,6 +536,7 @@ module.exports = yeoman.generators.Base.extend({
   _writingSnippets: function () {
     var context = this.extensionConfig;
 
+    this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
     this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
     this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
     this.template(this.sourceRoot() + '/snippets/snippets.json', context.name + '/snippets/snippets.json', context);
