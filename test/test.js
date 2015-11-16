@@ -173,9 +173,6 @@ describe('test theme generator', function () {
             "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
            "vscode:prepublish": "node ./node_modules/vscode/bin/compile"
           },
-          "categories": [
-            "Others"
-          ],
           "contributes": {
             "commands": [{
               "command": "extension.sayHello",
