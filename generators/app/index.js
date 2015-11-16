@@ -203,6 +203,11 @@ module.exports = yeoman.generators.Base.extend({
             if (!languageId && languageInfo.name) {
               languageId = languageInfo.name.toLowerCase().replace(/[^\w-_]/, '');
             }
+            if (!fileName) {
+              fileName = languageId + '.tmLanguage';
+            }
+            
+            extensionConfig.languageFileName = fileName;
             extensionConfig.languageId = languageId;
             extensionConfig.name = languageId;
 
@@ -235,7 +240,7 @@ module.exports = yeoman.generators.Base.extend({
               }
               processContent(this.extensionConfig, fileName, body);
             } else {
-              this.env.error("Problems loading language definition file: " + error.message);
+              this.env.error("Problems loading language definition file: " + error);
             }
             done();
           }.bind(this));
@@ -518,6 +523,7 @@ module.exports = yeoman.generators.Base.extend({
 
     this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
     this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
+    this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
     this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
     this.template(this.sourceRoot() + '/themes/theme.tmTheme', context.name + '/themes/' + context.themeFileName, context);
   },
@@ -529,7 +535,9 @@ module.exports = yeoman.generators.Base.extend({
     this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
     this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
     this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
-    this.template(this.sourceRoot() + '/syntaxes/language.tmLanguage', context.name + '/syntaxes/' + context.languageId + '.tmLanguage', context);
+    this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
+    this.template(this.sourceRoot() + '/language.configuration.json', context.name + '/' + context.languageId + '.configuration.json', context);
+    this.template(this.sourceRoot() + '/syntaxes/language.tmLanguage', context.name + '/syntaxes/' + context.languageFileName, context);
   },
   
   // Write Snippets Extension
@@ -538,6 +546,7 @@ module.exports = yeoman.generators.Base.extend({
 
     this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
     this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
+    this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
     this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
     this.template(this.sourceRoot() + '/snippets/snippets.json', context.name + '/snippets/snippets.json', context);
   }, 
@@ -553,7 +562,7 @@ module.exports = yeoman.generators.Base.extend({
     this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
     this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
     this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
-    this.copy(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md');
+    this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
     this.copy(this.sourceRoot() + '/tsconfig.json', context.name + '/tsconfig.json');
 
     this.template(this.sourceRoot() + '/src/extension.ts', context.name + '/src/extension.ts', context);
@@ -573,7 +582,7 @@ module.exports = yeoman.generators.Base.extend({
 		this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
     this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
     this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
-    this.copy(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md');
+    this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
     this.copy(this.sourceRoot() + '/jsconfig.json', context.name + '/jsconfig.json');
 
     this.template(this.sourceRoot() + '/extension.js', context.name + '/extension.js', context);
@@ -603,20 +612,17 @@ module.exports = yeoman.generators.Base.extend({
     }
 
     this.log('');
-    if (this.extensionConfig.isCustomization) {
-      this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
-      this.log('');
-      this.log('To start using it with Visual Studio Code copy it into the <user home>/.vscode/extensions folder and restart Code.');
-    } else {
-      this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
-      this.log('');
-      this.log('To start editing with Visual Studio Code, use the following commands:');
-      this.log('');
-      this.log('     cd ' + this.extensionConfig.name);
-      this.log('     code .');
-    }
+    this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
     this.log('');
-    this.log('For more information, visit http://code.visualstudio.com and follow us @code.');
+    this.log('To start editing with Visual Studio Code, use the following commands:');
+    this.log('');
+    this.log('     cd ' + this.extensionConfig.name);
+    this.log('     code .');
+    this.log('');
+    this.log('Open vsc-extension-quickstart.md inside the new extension for further instructions');
+    this.log('on how to modify, test and publish your extension.');
+    this.log('');
+    this.log('For more information, also visit http://code.visualstudio.com and follow us @code.');
     this.log('\r\n');
   }
 

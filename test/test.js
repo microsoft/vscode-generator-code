@@ -41,7 +41,7 @@ describe('test theme generator', function () {
             ]
           }
         };
-        assert.file(['package.json', 'README.md', 'themes/Monokai.tmTheme']);
+        assert.file(['package.json', 'README.md', 'themes/Monokai.tmTheme', 'vsc-extension-quickstart.md']);
         
         var body = fs.readFileSync('package.json', 'utf8');
 
@@ -81,7 +81,8 @@ describe('test theme generator', function () {
             "languages": [{
               "id": "ant",
               "aliases": ["ANT", "ant"],
-              "extensions": [".ant"]
+              "extensions": [".ant"],
+              "configuration": "./ant.configuration.json"
             }],
             "grammars": [{
               "language": "ant",
@@ -90,7 +91,7 @@ describe('test theme generator', function () {
             }]
           }
         };
-        assert.file(['package.json', 'README.md', 'syntaxes/ant.tmLanguage']);
+        assert.file(['package.json', 'README.md', 'syntaxes/ant.tmLanguage', 'ant.configuration.json', 'vsc-extension-quickstart.md']);
         
         var body = fs.readFileSync('package.json', 'utf8');
 
@@ -131,7 +132,7 @@ describe('test theme generator', function () {
             }]
           }
         };
-        assert.file(['package.json', 'README.md', 'snippets/snippets.json']);
+        assert.file(['package.json', 'README.md', 'snippets/snippets.json', 'vsc-extension-quickstart.md']);
         
         var body = fs.readFileSync('package.json', 'utf8');
 
@@ -164,9 +165,10 @@ describe('test theme generator', function () {
             "onCommand:extension.sayHello"
           ],
           "devDependencies": {
+           "typescript": "^1.6.2",
            "vscode": env.vsCodeAPI
           },
-          "main": "./out/extension",
+          "main": "./out/src/extension",
           "scripts": {
             "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
            "vscode:prepublish": "node ./node_modules/vscode/bin/compile"
@@ -181,7 +183,7 @@ describe('test theme generator', function () {
             }]
           }
         };
-        assert.file(['package.json', 'README.md', '.vscodeignore', 'extension.ts', '.gitignore', 'tsconfig.json']);
+        assert.file(['package.json', 'README.md', '.vscodeignore', 'src/extension.ts', 'test/extension.test.ts', 'test/index.ts', '.gitignore', 'tsconfig.json']);
         
         var body = fs.readFileSync('package.json', 'utf8');
 
