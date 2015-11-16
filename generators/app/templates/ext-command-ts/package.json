@@ -6,6 +6,9 @@
 	"engines": {
 		"vscode": <%- JSON.stringify(vsCodeEngine) %>
 	},
+	"categories": [
+		"Other"
+	],
 	"activationEvents": [
 		"onCommand:extension.sayHello"
 	],
