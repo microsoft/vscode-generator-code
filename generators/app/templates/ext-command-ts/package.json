@@ -12,7 +12,7 @@
 	"activationEvents": [
 		"onCommand:extension.sayHello"
 	],
-	"main": "./out/extension",
+	"main": "./out/src/extension",
 	"contributes": {
 		"commands": [{
 			"command": "extension.sayHello",

@@ -532,7 +532,7 @@ module.exports = yeoman.generators.Base.extend({
     this.template(this.sourceRoot() + '/syntaxes/language.tmLanguage', context.name + '/syntaxes/' + context.languageId + '.tmLanguage', context);
   },
   
-  // Write Language Extension
+  // Write Snippets Extension
   _writingSnippets: function () {
     var context = this.extensionConfig;
 
@@ -556,7 +556,7 @@ module.exports = yeoman.generators.Base.extend({
     this.copy(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md');
     this.copy(this.sourceRoot() + '/tsconfig.json', context.name + '/tsconfig.json');
 
-    this.template(this.sourceRoot() + '/extension.ts', context.name + '/extension.ts', context);
+    this.template(this.sourceRoot() + '/src/extension.ts', context.name + '/src/extension.ts', context);
     this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
   
     this.extensionConfig.installDependencies = true;
