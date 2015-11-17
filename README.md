@@ -1,30 +1,37 @@
 # vscode-generator-code
 visual studio code generator
 
-> A [Yeoman](http://yeoman.io) Generator for [Visual Studio Code](http://code.visualstudio.com)
+# Yo Code - Extension and Customization Generator
+We have written a Yeoman generator to help get you started. We plan to add templates for most extension/customization types into this.
 
-<img width="473" alt="generator-code" src="https://cloud.githubusercontent.com/assets/1487073/10296669/9416cb08-6b7f-11e5-90be-3464116d9033.png">
 
-## Getting Started
 
-To run Yeoman you will need to [install node](https://nodejs.org) for your platform. The setup will also install the [Node Package Manager](https://www.npmjs.com/) (npm) which you use to download Yeoman, generators, and many other software packages.
+## Install the Generator
 
-It is recommended that you install Yeoman and generators globally using  the `npm -g` switch so that you can run the generator from any folder.
+Install Yeoman and the VS Code Extension generator:
 
 ```bash
 npm install -g yo generator-code
 ```
 
-Make a new directory and then cd into it.
+## Run Yo Code
+The Yeoman generator will walk you through the steps required to create your customization or extension prompting for the required information.
 
-```bash
-mkdir myApp && cd $_
-```
+To launch the generator simply type:
 
-Run the Code generator:
 ```bash
 yo code
 ```
+
+![The command generator](yocode.png)
+
+## Generator Output
+
+These templates will
+* Create a base folder structure
+* Template out a rough `package.json`
+* Import any assets required for your extension e.g. tmBundles or the VS Code Library
+* For Extensions: Set-up `launch.json` for running your extension and attaching to a process
 
 ## License
 
