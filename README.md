@@ -1,6 +1,3 @@
-# vscode-generator-code
-visual studio code generator
-
 # Yo Code - Extension and Customization Generator
 We have written a Yeoman generator to help get you started. We plan to add templates for most extension/customization types into this.
 
