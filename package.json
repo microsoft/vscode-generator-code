@@ -26,6 +26,10 @@
   "engines": {
     "node": ">=0.10.0"
   },
+  "scripts": {
+    "test": "mocha",
+    "prepublish": "mocha"
+  },
   "dependencies": {
     "yeoman-generator": "^0.20.3",
     "yosay": "^1.0.5",
