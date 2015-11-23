@@ -8,6 +8,7 @@ var path = require('path');
 var fs = require('fs');
 var request = require('request');
 var plistParser = require('./plistParser');
+var validator = require('./validator');
 var snippetConverter = require('./snippetConverter');
 var env = require('./env');
 
@@ -298,8 +299,27 @@ module.exports = yeoman.generators.Base.extend({
       snippetPrompt(done);
     },
 
-    // Ask for extension name
-    askForExtensionName: function () {
+    // Ask for extension display name ("displayName" in package.json)
+    askForExtensionDisplayName: function () {
+      if (this.extensionDisplayName) {
+        this.extensionConfig.displayName = this.extensionDisplayName;
+        return;
+      }
+
+      var done = this.async();
+      this.prompt({
+        type: 'input',
+        name: 'displayName',
+        message: 'What\'s the name of your extension?',
+        default: this.extensionConfig.displayName
+      }, function (displayNameAnswer) {
+        this.extensionConfig.displayName = displayNameAnswer.displayName;
+        done();
+      }.bind(this));
+    },
+    
+    // Ask for extension id ("name" in package.json)
+    askForExtensionId: function () {
       if (this.extensionName) {
         this.extensionConfig.name = this.extensionName;
         return;
@@ -309,14 +329,14 @@ module.exports = yeoman.generators.Base.extend({
       this.prompt({
         type: 'input',
         name: 'name',
-        message: 'What\'s the name of your extension?',
-        default: this.extensionConfig.name
+        message: 'What\'s the identifier of your extension?',
+        default: this.extensionConfig.name || this.extensionConfig.displayName.toLowerCase().replace(/[^a-z0-9]/g, '-')
       }, function (nameAnswer) {
         this.extensionConfig.name = nameAnswer.name;
         done();
       }.bind(this));
     },
-
+    
     // Ask for extension description
     askForExtensionDescription: function () {
       var done = this.async();
@@ -625,5 +645,4 @@ module.exports = yeoman.generators.Base.extend({
     this.log('For more information, also visit http://code.visualstudio.com and follow us @code.');
     this.log('\r\n');
   }
-
 });

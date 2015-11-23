@@ -14,6 +14,7 @@ describe('test theme generator', function () {
         type: 'ext-colortheme',
         themeURL: 'http://www.monokai.nl/blog/wp-content/asdev/Monokai.tmTheme',
         name: 'testTheme',
+        displayName: 'Test Theme',
         description: 'My TestTheme',
         publisher: 'Microsoft',
         themeName: 'Green',
@@ -22,6 +23,7 @@ describe('test theme generator', function () {
       .on('end', function () {
         var expected = {
           "name": "testTheme",
+          "displayName": "Test Theme",
           "description": "My TestTheme",
           "version": "0.0.1",
           "publisher": 'Microsoft',
@@ -58,6 +60,7 @@ describe('test theme generator', function () {
         type: 'ext-language',
         tmLanguageURL: 'http://raw.githubusercontent.com/textmate/ant.tmbundle/master/Syntaxes/Ant.tmLanguage',
         name: 'testLan',
+        displayName: 'Test Lan',
         description: 'My TestLan',
         publisher: 'Microsoft',
         languageId: 'ant',
@@ -68,6 +71,7 @@ describe('test theme generator', function () {
       .on('end', function () {
         var expected = {
           "name": "testLan",
+          "displayName": "Test Lan",
           "description": "My TestLan",
           "version": "0.0.1",
           "publisher": 'Microsoft',
@@ -109,6 +113,7 @@ describe('test theme generator', function () {
         type: 'ext-snippets',
         snippetPath: path.join(__dirname, 'fixtures/tmsnippets'),
         name: 'testSnip',
+        displayName: 'Test Snip',
         description: 'My TestSnip',
         publisher: 'Microsoft',
         languageId: 'python'
@@ -116,6 +121,7 @@ describe('test theme generator', function () {
       .on('end', function () {
         var expected = {
           "name": "testSnip",
+          "displayName": 'Test Snip',
           "description": "My TestSnip",
           "version": "0.0.1",
           "publisher": 'Microsoft',
@@ -148,6 +154,7 @@ describe('test theme generator', function () {
       .withPrompts({
         type: 'ext-command-ts',
         name: 'testCom',
+        displayName: 'Test Com',
         description: 'My TestCom',
         publisher: 'Microsoft',
         gitInit: false
@@ -155,6 +162,7 @@ describe('test theme generator', function () {
       .on('end', function () {
         var expected = {
           "name": "testCom",
+          "displayName": 'Test Com',
           "description": "My TestCom",
           "version": "0.0.1",
           "publisher": 'Microsoft',
