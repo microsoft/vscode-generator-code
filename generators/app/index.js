@@ -330,7 +330,8 @@ module.exports = yeoman.generators.Base.extend({
         type: 'input',
         name: 'name',
         message: 'What\'s the identifier of your extension?',
-        default: this.extensionConfig.name || this.extensionConfig.displayName.toLowerCase().replace(/[^a-z0-9]/g, '-')
+        default: this.extensionConfig.name || this.extensionConfig.displayName.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+        validate: validator.validateExtensionId
       }, function (nameAnswer) {
         this.extensionConfig.name = nameAnswer.name;
         done();
@@ -357,7 +358,8 @@ module.exports = yeoman.generators.Base.extend({
         type: 'input',
         name: 'publisher',
         message: 'What\'s your publisher name?',
-        store: true
+        store: true,
+        validate: validator.validatePublisher
       }, function (publisherAnswer) {
         this.extensionConfig.publisher = publisherAnswer.publisher;
         done();
