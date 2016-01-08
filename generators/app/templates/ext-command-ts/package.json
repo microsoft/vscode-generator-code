@@ -26,7 +26,7 @@
         "postinstall": "node ./node_modules/vscode/bin/install"
 	},
 	"devDependencies": {
-		"typescript": "^1.6.2",
+		"typescript": "^1.7.5",
 		"vscode": "~0.2.0-pre"
 	}
 }
