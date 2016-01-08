@@ -174,12 +174,13 @@ describe('test theme generator', function () {
           ],
           "devDependencies": {
            "typescript": "^1.6.2",
-           "vscode": "0.2.0"
+           "vscode": "~0.2.0-pre"
           },
           "main": "./out/src/extension",
           "scripts": {
             "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
-           "vscode:prepublish": "node ./node_modules/vscode/bin/compile"
+            "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+            "postinstall": "node ./node_modules/vscode/bin/install"
           },
           "categories": [
             "Other"
