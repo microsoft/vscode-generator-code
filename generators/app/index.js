@@ -24,7 +24,6 @@ module.exports = yeoman.generators.Base.extend({
     this.extensionConfig = Object.create(null);
     this.extensionConfig.installDependencies = false;
     this.extensionConfig.vsCodeEngine = env.vsCodeEngine;
-    this.extensionConfig.vsCodeAPI = env.vsCodeAPI;
   },
 
   initializing: {

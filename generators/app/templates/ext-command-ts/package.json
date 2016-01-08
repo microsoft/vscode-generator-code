@@ -22,10 +22,11 @@
 	},
 	"scripts": {
 		"vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-		"compile": "node ./node_modules/vscode/bin/compile -watch -p ./"
+		"compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install"
 	},
 	"devDependencies": {
 		"typescript": "^1.6.2",
-		"vscode": <%- JSON.stringify(vsCodeAPI) %>
+		"vscode": "~0.2.0-pre"
 	}
 }

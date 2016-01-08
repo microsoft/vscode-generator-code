@@ -20,7 +20,10 @@
 			"title": "Hello World"
 		}]
 	},
+    "scripts": {
+        "postinstall": "node ./node_modules/vscode/bin/install"
+	},
 	"devDependencies": {
-		"vscode": <%- JSON.stringify(vsCodeAPI) %>
+		"vscode": "~0.2.0-pre"
 	}
 }
