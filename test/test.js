@@ -174,7 +174,7 @@ describe('test theme generator', function () {
           ],
           "devDependencies": {
            "typescript": "^1.7.5",
-           "vscode": "~0.2.0-pre"
+           "vscode": "^0.2.0"
           },
           "main": "./out/src/extension",
           "scripts": {
