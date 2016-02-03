@@ -1,6 +1,6 @@
 {
   "name": "generator-code",
-  "version": "0.10.7-pre6",
+  "version": "0.10.7-pre7",
   "description": "Yeoman generator for Visual Studio Code Extensions",
   "keywords": [
     "yeoman-generator",
