@@ -180,7 +180,7 @@ describe('test theme generator', function () {
                         "onCommand:extension.sayHello"
                     ],
                     "devDependencies": {
-                        "typescript": "^1.7.5",
+                        "typescript": "^1.8.5",
                         "vscode": "^0.11.0"
                     },
                     "main": "./out/src/extension",
