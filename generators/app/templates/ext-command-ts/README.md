@@ -1,5 +1,5 @@
 # README
-## This is the README for your extension "<%= name %>" 
+## This is the README for your extension "<%= name %>"
 You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
 
 * Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
@@ -10,4 +10,4 @@ You can author your README using Visual Studio Code.  Here are some useful edito
 * [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
 * [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 
-** Enjoy!**
+**Enjoy!**
