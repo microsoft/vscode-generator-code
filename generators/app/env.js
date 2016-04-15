@@ -1,3 +1,3 @@
 module.exports = {
-    vsCodeEngine: '^0.10.10'
+    vsCodeEngine: '^1.0.0'
 }
