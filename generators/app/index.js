@@ -180,6 +180,9 @@ module.exports = yeoman.generators.Base.extend({
                 var location = urlAnswer.tmLanguageURL;
 
                 function processContent(extensionConfig, fileName, body) {
+                    if (body.indexOf('<!DOCTYPE plist') === -1) {
+                        this.env.error("Language definition file does not contain 'DOCTYPE plist'. Make sure the file content is really plist-XML.");
+                    }
                     var result = plistParser.parse(body);
                     if (result.value) {
                         var languageInfo = result.value;
