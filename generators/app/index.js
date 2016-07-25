@@ -563,7 +563,7 @@ module.exports = yeoman.generators.Base.extend({
         this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
-        this.template(this.sourceRoot() + '/language.configuration.json', context.name + '/' + context.languageId + '.configuration.json', context);
+        this.template(this.sourceRoot() + '/language-configuration.json', context.name + '/language-configuration.json', context);
         this.template(this.sourceRoot() + '/syntaxes/language.tmLanguage', context.name + '/syntaxes/' + context.languageFileName, context);
     },
 

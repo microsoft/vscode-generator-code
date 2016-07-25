@@ -15,7 +15,7 @@
             "id": <%- JSON.stringify(languageId) %>,
             "aliases": [<%- JSON.stringify(languageName) %>, <%- JSON.stringify(languageId) %>],
             "extensions": <%- JSON.stringify(languageExtensions) %>,
-            "configuration": <%- JSON.stringify("./" + languageId + ".configuration.json") %>
+            "configuration": "./language-configuration.json"
         }],
         "grammars": [{
             "language": <%- JSON.stringify(languageId) %>,

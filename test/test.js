@@ -57,7 +57,7 @@ describe('test theme generator', function () {
 
     it('language', function (done) {
         this.timeout(10000);
-        
+
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
                 type: 'ext-language',
@@ -89,7 +89,7 @@ describe('test theme generator', function () {
                             "id": "ant",
                             "aliases": ["ANT", "ant"],
                             "extensions": [".ant"],
-                            "configuration": "./ant.configuration.json"
+                            "configuration": "./language-configuration.json"
                         }],
                         "grammars": [{
                             "language": "ant",
@@ -98,7 +98,7 @@ describe('test theme generator', function () {
                         }]
                     }
                 };
-                assert.file(['package.json', 'README.md', 'syntaxes/ant.tmLanguage', 'ant.configuration.json', 'vsc-extension-quickstart.md']);
+                assert.file(['package.json', 'README.md', 'syntaxes/ant.tmLanguage', 'language-configuration.json', 'vsc-extension-quickstart.md']);
 
                 var body = fs.readFileSync('package.json', 'utf8');
 
@@ -112,7 +112,7 @@ describe('test theme generator', function () {
 
     it('snippet', function (done) {
         this.timeout(10000);
-        
+
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
                 type: 'ext-snippets',
@@ -156,7 +156,7 @@ describe('test theme generator', function () {
 
     it('command-ts', function (done) {
         this.timeout(10000);
-        
+
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
                 type: 'ext-command-ts',
