@@ -180,13 +180,16 @@ describe('test theme generator', function () {
                         "onCommand:extension.sayHello"
                     ],
                     "devDependencies": {
-                        "typescript": "^1.8.5",
-                        "vscode": "^0.11.0"
+                        "typescript": "^2.0.3",
+                        "vscode": "^1.0.0",
+                        "mocha": "^2.3.3",
+                        "@types/node": "^6.0.40",
+                        "@types/mocha": "^2.2.32"
                     },
                     "main": "./out/src/extension",
                     "scripts": {
-                        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
-                        "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+                        "vscode:prepublish": "tsc -p ./",
+                        "compile": "tsc -watch -p ./",
                         "postinstall": "node ./node_modules/vscode/bin/install"
                     },
                     "categories": [
