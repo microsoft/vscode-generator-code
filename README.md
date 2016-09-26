@@ -30,6 +30,11 @@ These templates will
 * Import any assets required for your extension e.g. tmBundles or the VS Code Library
 * For Extensions: Set-up `launch.json` for running your extension and attaching to a process
 
+## History
+
+* 1.0.0: Generates a VS Code extension for TypeScript 2.0.3
+* 0.10.x: Generates a VS Code extension for TypeScript 1.8.10
+
 ## License
 
 [MIT](LICENSE)
