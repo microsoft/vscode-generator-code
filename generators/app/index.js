@@ -583,7 +583,6 @@ module.exports = yeoman.generators.Base.extend({
         var context = this.extensionConfig;
 
         this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
-        this.directory(this.sourceRoot() + '/typings', context.name + '/typings');
         this.directory(this.sourceRoot() + '/test', context.name + '/test');
 
         this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
@@ -603,7 +602,6 @@ module.exports = yeoman.generators.Base.extend({
         var context = this.extensionConfig;
 
         this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
-        this.directory(this.sourceRoot() + '/typings', context.name + '/typings');
         this.directory(this.sourceRoot() + '/test', context.name + '/test');
 
         this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
@@ -614,6 +612,7 @@ module.exports = yeoman.generators.Base.extend({
 
         this.template(this.sourceRoot() + '/extension.js', context.name + '/extension.js', context);
         this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
+        this.template(this.sourceRoot() + '/.eslintrc.json', context.name + '/.eslintrc.json', context);
 
         this.extensionConfig.installDependencies = true;
     },
