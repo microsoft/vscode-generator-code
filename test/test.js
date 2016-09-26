@@ -181,7 +181,7 @@ describe('test theme generator', function () {
                     ],
                     "devDependencies": {
                         "typescript": "^2.0.3",
-                        "vscode": "^1.0.0",
+                        "vscode": "^1.0.0-beta.1",
                         "mocha": "^2.3.3",
                         "@types/node": "^6.0.40",
                         "@types/mocha": "^2.2.32"
