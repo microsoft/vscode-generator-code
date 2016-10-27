@@ -20,7 +20,7 @@
         "grammars": [{
             "language": <%- JSON.stringify(languageId) %>,
             "scopeName": <%- JSON.stringify(languageScopeName) %>,
-            "path": <%- JSON.stringify("./syntaxes/" + languageId + ".tmLanguage") %>
+            "path": <%- JSON.stringify("./syntaxes/" + languageFileName) %>
         }]
     }
 }
