@@ -44,7 +44,7 @@ describe('test theme generator', function () {
                         ]
                     }
                 };
-                assert.file(['package.json', 'README.md', 'themes/Monokai.tmTheme', 'vsc-extension-quickstart.md']);
+                assert.file(['package.json', 'README.md', 'CHANGELOG.md','themes/Monokai.tmTheme', 'vsc-extension-quickstart.md']);
 
                 var body = fs.readFileSync('package.json', 'utf8');
 
@@ -98,7 +98,7 @@ describe('test theme generator', function () {
                         }]
                     }
                 };
-                assert.file(['package.json', 'README.md', 'syntaxes/ant.tmLanguage', 'language-configuration.json', 'vsc-extension-quickstart.md']);
+                assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'syntaxes/ant.tmLanguage', 'language-configuration.json', 'vsc-extension-quickstart.md']);
 
                 var body = fs.readFileSync('package.json', 'utf8');
 
@@ -143,7 +143,7 @@ describe('test theme generator', function () {
                         }]
                     }
                 };
-                assert.file(['package.json', 'README.md', 'snippets/snippets.json', 'vsc-extension-quickstart.md']);
+                assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'snippets/snippets.json', 'vsc-extension-quickstart.md']);
 
                 var body = fs.readFileSync('package.json', 'utf8');
 
@@ -202,7 +202,7 @@ describe('test theme generator', function () {
                         }]
                     }
                 };
-                assert.file(['package.json', 'README.md', '.vscodeignore', 'src/extension.ts', 'test/extension.test.ts', 'test/index.ts', '.gitignore', 'tsconfig.json']);
+                assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'test/extension.test.ts', 'test/index.ts', '.gitignore', 'tsconfig.json']);
 
                 var body = fs.readFileSync('package.json', 'utf8');
 

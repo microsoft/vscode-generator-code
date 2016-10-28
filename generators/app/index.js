@@ -552,6 +552,7 @@ module.exports = yeoman.generators.Base.extend({
         this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
+        this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/themes/theme.tmTheme', context.name + '/themes/' + context.themeFileName, context);
     },
 
@@ -562,6 +563,7 @@ module.exports = yeoman.generators.Base.extend({
         this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
         this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
+        this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
         this.template(this.sourceRoot() + '/language-configuration.json', context.name + '/language-configuration.json', context);
         this.template(this.sourceRoot() + '/syntaxes/language.tmLanguage', context.name + '/syntaxes/' + context.languageFileName, context);
@@ -575,6 +577,7 @@ module.exports = yeoman.generators.Base.extend({
         this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
+        this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/snippets/snippets.json', context.name + '/snippets/snippets.json', context);
     },
 
@@ -588,6 +591,7 @@ module.exports = yeoman.generators.Base.extend({
         this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
         this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
+        this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
         this.copy(this.sourceRoot() + '/tsconfig.json', context.name + '/tsconfig.json');
 
@@ -607,6 +611,7 @@ module.exports = yeoman.generators.Base.extend({
         this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
         this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
+        this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
         this.copy(this.sourceRoot() + '/jsconfig.json', context.name + '/jsconfig.json');
 
