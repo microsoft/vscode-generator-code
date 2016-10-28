@@ -188,9 +188,10 @@ module.exports = yeoman.Base.extend({
 
                         // evaluate language id
                         var languageId = '';
+                        var languageScopeName;
 
                         if (languageInfo.scopeName) {
-                            extensionConfig.languageScopeName = languageInfo.scopeName;
+                            languageScopeName = languageInfo.scopeName;
 
                             var lastIndexOfDot = languageInfo.scopeName.lastIndexOf('.');
                             if (lastIndexOfDot) {
@@ -209,10 +210,15 @@ module.exports = yeoman.Base.extend({
                         if (!fileName) {
                             fileName = languageId + '.tmLanguage';
                         }
+                        if (!languageScopeName) {
+                            languageScopeName = 'source.' + languageId;
+                            generator.log("Grammar does not define the scope name. Setting to '" + languageScopeName + "' instead");
+                        }
 
                         extensionConfig.languageFileName = fileName;
                         extensionConfig.languageId = languageId;
                         extensionConfig.name = languageId;
+                        extensionConfig.languageScopeName = languageScopeName;
 
                         // evaluate file extensions
                         if (Array.isArray(languageInfo.fileTypes)) {
