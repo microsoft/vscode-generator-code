@@ -5,7 +5,6 @@
 
 var yeoman = require('yeoman-generator');
 var yosay = require('yosay');
-var chalk = require('chalk');
 
 var path = require('path');
 var fs = require('fs');
@@ -15,14 +14,14 @@ var validator = require('./validator');
 var snippetConverter = require('./snippetConverter');
 var env = require('./env');
 
-module.exports = yeoman.generators.Base.extend({
+module.exports = yeoman.Base.extend({
 
     constructor: function () {
-        yeoman.generators.Base.apply(this, arguments);
-        this.argument('extensionType', { type: String, required: false });
-        this.argument('extensionName', { type: String, required: false });
-        this.argument('extensionParam', { type: String, required: false });
-        this.argument('extensionParam2', { type: String, required: false });
+        yeoman.Base.apply(this, arguments);
+        this.option('extensionType', { type: String, required: false });
+        this.option('extensionName', { type: String, required: false });
+        this.option('extensionParam', { type: String, required: false });
+        this.option('extensionParam2', { type: String, required: false });
 
         this.extensionConfig = Object.create(null);
         this.extensionConfig.installDependencies = false;
@@ -41,18 +40,18 @@ module.exports = yeoman.generators.Base.extend({
 
         // Ask for extension type
         askForType: function () {
-            if (this.extensionType) {
+            var generator = this;
+            if (generator.extensionType) {
                 var extensionTypes = ['colortheme', 'language', 'snippets', 'command-ts', 'command-js'];
-                if (extensionTypes.indexOf(this.extensionType) !== -1) {
-                    this.extensionConfig.type = 'ext-' + this.extensionType;
+                if (extensionTypes.indexOf(generator.extensionType) !== -1) {
+                    generator.extensionConfig.type = 'ext-' + generator.extensionType;
                 } else {
-                    this.env.error("Invalid extension type: " + this.extensionType + '. Possible types are :' + extensionTypes.join(', '));
+                    generator.env.error("Invalid extension type: " + generator.extensionType + '. Possible types are :' + extensionTypes.join(', '));
                 }
-                return;
+                return Promise.resolve();
             }
 
-            var done = this.async();
-            this.prompt({
+            return generator.prompt({
                 type: 'list',
                 name: 'type',
                 message: 'What type of extension do you want to create?',
@@ -78,26 +77,24 @@ module.exports = yeoman.generators.Base.extend({
                         value: 'ext-snippets'
                     }
                 ]
-            }, function (typeAnswer) {
-                this.extensionConfig.type = typeAnswer.type;
-                done();
-            }.bind(this));
+            }).then(function (typeAnswer) {
+                generator.extensionConfig.type = typeAnswer.type;
+            });
         },
 
         askForThemeInfo: function () {
-            var done = this.async();
-            if (this.extensionConfig.type !== 'ext-colortheme') {
-                done();
-                return;
+            let generator = this;
+            if (generator.extensionConfig.type !== 'ext-colortheme') {
+                return Promise.resolve();
             }
-            this.extensionConfig.isCustomization = true;
+            generator.extensionConfig.isCustomization = true;
 
-            this.log("URL (http, https) or file name of the tmTheme file, e.g., http://www.monokai.nl/blog/wp-content/asdev/Monokai.tmTheme.")
-            this.prompt({
+            generator.log("URL (http, https) or file name of the tmTheme file, e.g., http://www.monokai.nl/blog/wp-content/asdev/Monokai.tmTheme.")
+            return generator.prompt({
                 type: 'input',
                 name: 'themeURL',
                 message: 'URL or file name:'
-            }, function (urlAnswer) {
+            }).then(function (urlAnswer) {
                 var location = urlAnswer.themeURL;
 
                 function processContent(extensionConfig, fileName, body) {
@@ -120,68 +117,68 @@ module.exports = yeoman.generators.Base.extend({
 
                 if (location.match(/\w*:\/\//)) {
                     // load from url
-                    request(location, function (error, response, body) {
-                        if (!error && response.statusCode == 200) {
-                            var contentDisposition = response.headers['content-disposition'];
-                            var fileName = '';
+                    return new Promise(function(resolve, reject) {
+                        request(location, function (error, response, body) {
+                            if (!error && response.statusCode == 200) {
+                                var contentDisposition = response.headers['content-disposition'];
+                                var fileName = '';
 
-                            if (contentDisposition) {
-                                var fileNameMatch = contentDisposition.match(/filename="([^"]*)/);
-                                if (fileNameMatch) {
-                                    fileName = fileNameMatch[1];
+                                if (contentDisposition) {
+                                    var fileNameMatch = contentDisposition.match(/filename="([^"]*)/);
+                                    if (fileNameMatch) {
+                                        fileName = fileNameMatch[1];
+                                    }
                                 }
-                            }
-                            if (!fileName) {
-                                var lastSlash = location.lastIndexOf('/');
-                                if (lastSlash) {
-                                    fileName = location.substr(lastSlash + 1);
+                                if (!fileName) {
+                                    var lastSlash = location.lastIndexOf('/');
+                                    if (lastSlash) {
+                                        fileName = location.substr(lastSlash + 1);
+                                    }
                                 }
-                            }
 
-                            processContent(this.extensionConfig, fileName, body);
-                        } else {
-                            this.env.error("Problems loading theme: " + error);
-                        }
-                        done();
-                    }.bind(this));
+                                processContent(generator.extensionConfig, fileName, body);
+                            } else {
+                                generator.env.error("Problems loading theme: " + error);
+                            }
+                            resolve();
+                        });
+                    });
                 } else {
                     // load from disk
                     var body = null;
                     try {
                         body = fs.readFileSync(location);
                     } catch (error) {
-                        this.env.error("Problems loading theme: " + error.message);
+                        generator.env.error("Problems loading theme: " + error.message);
                     }
                     if (body) {
-                        processContent(this.extensionConfig, path.basename(location), body.toString());
+                        processContent(generator.extensionConfig, path.basename(location), body.toString());
                     } else {
-                        this.env.error("Problems loading theme: Not found");
+                        generator.env.error("Problems loading theme: Not found");
                     }
-                    done();
                 }
-            }.bind(this));
+            });
         },
 
         askForLanguageInfo: function () {
-            var done = this.async();
-            if (this.extensionConfig.type !== 'ext-language') {
-                done();
-                return;
+            var generator = this;
+            if (generator.extensionConfig.type !== 'ext-language') {
+                return Promise.resolve();
             }
 
-            this.extensionConfig.isCustomization = true;
+            generator.extensionConfig.isCustomization = true;
 
-            this.log("URL (http, https) or file name of the tmLanguage file, e.g., http://raw.githubusercontent.com/textmate/ant.tmbundle/master/Syntaxes/Ant.tmLanguage.");
-            this.prompt({
+            generator.log("URL (http, https) or file name of the tmLanguage file, e.g., http://raw.githubusercontent.com/textmate/ant.tmbundle/master/Syntaxes/Ant.tmLanguage.");
+            return generator.prompt({
                 type: 'input',
                 name: 'tmLanguageURL',
                 message: 'URL or file:',
-            }, function (urlAnswer) {
+            }).then(function (urlAnswer) {
                 var location = urlAnswer.tmLanguageURL;
 
                 function processContent(extensionConfig, fileName, body) {
                     if (body.indexOf('<!DOCTYPE plist') === -1) {
-                        this.env.error("Language definition file does not contain 'DOCTYPE plist'. Make sure the file content is really plist-XML.");
+                        generator.env.error("Language definition file does not contain 'DOCTYPE plist'. Make sure the file content is really plist-XML.");
                     }
                     var result = plistParser.parse(body);
                     if (result.value) {
@@ -234,187 +231,175 @@ module.exports = yeoman.generators.Base.extend({
 
                 if (location.match(/\w*:\/\//)) {
                     // load from url
-                    request(location, function (error, response, body) {
-                        if (!error && response.statusCode == 200) {
-                            var contentDisposition = response.headers['content-disposition'];
-                            var fileName = '';
-                            if (contentDisposition) {
-                                var fileNameMatch = contentDisposition.match(/filename="([^"]*)/);
-                                if (fileNameMatch) {
-                                    fileName = fileNameMatch[1];
+                    return new Promise(function(resolve, reject) {
+                        request(location, function (error, response, body) {
+                            if (!error && response.statusCode == 200) {
+                                var contentDisposition = response.headers['content-disposition'];
+                                var fileName = '';
+                                if (contentDisposition) {
+                                    var fileNameMatch = contentDisposition.match(/filename="([^"]*)/);
+                                    if (fileNameMatch) {
+                                        fileName = fileNameMatch[1];
+                                    }
                                 }
+                                processContent(generator.extensionConfig, fileName, body);
+                            } else {
+                                generator.env.error("Problems loading language definition file: " + error);
                             }
-                            processContent(this.extensionConfig, fileName, body);
-                        } else {
-                            this.env.error("Problems loading language definition file: " + error);
-                        }
-                        done();
-                    }.bind(this));
+                            resolve();
+                        });
+                    });
                 } else {
                     // load from disk
                     var body = null;
                     try {
                         body = fs.readFileSync(location);
                     } catch (error) {
-                        this.env.error("Problems loading language definition file: " + error.message);
+                        generator.env.error("Problems loading language definition file: " + error.message);
                     }
                     if (body) {
-                        processContent(this.extensionConfig, path.basename(location), body.toString());
+                        processContent(generator.extensionConfig, path.basename(location), body.toString());
                     } else {
-                        this.env.error("Problems loading language definition file: Not found");
+                        generator.env.error("Problems loading language definition file: Not found");
                     }
-                    done();
                 }
-            }.bind(this));
+            });
         },
 
         askForSnippetsInfo: function () {
-            var done = this.async();
-            if (this.extensionConfig.type !== 'ext-snippets') {
-                done();
-                return;
+            var generator = this;
+            if (generator.extensionConfig.type !== 'ext-snippets') {
+                return Promise.resolve();
             }
 
-            this.extensionConfig.isCustomization = true;
+            generator.extensionConfig.isCustomization = true;
 
-            if (this.extensionParam) {
-                var count = snippetConverter.processSnippetFolder(this.extensionParam, this);
+            if (generator.extensionParam) {
+                var count = snippetConverter.processSnippetFolder(generator.extensionParam, generator);
                 if (count <= 0) {
-                    this.env.error('')
+                    generator.env.error('')
                 }
-                done();
-                return;
+                return Promise.resolve();
             }
-            this.log("Folder location that contains Text Mate (.tmSnippet) and Sublime snippets (.sublime-snippet)");
+            generator.log("Folder location that contains Text Mate (.tmSnippet) and Sublime snippets (.sublime-snippet)");
 
-            var snippetPrompt = (function (done) {
-                this.prompt({
+            var snippetPrompt = function () {
+                return generator.prompt({
                     type: 'input',
                     name: 'snippetPath',
                     message: 'Folder name:'
-                }, function (snippetAnswer) {
-                    var count = snippetConverter.processSnippetFolder(snippetAnswer.snippetPath, this);
+                }).then(function (snippetAnswer) {
+                    var count = snippetConverter.processSnippetFolder(snippetAnswer.snippetPath, generator);
                     if (count < 0) {
-                        snippetPrompt(done);
-                    } else {
-                        done();
+                        return snippetPrompt();
                     }
-                }.bind(this));
-            }).bind(this);
-            snippetPrompt(done);
+                });
+            };
+            return snippetPrompt();
         },
 
         // Ask for extension display name ("displayName" in package.json)
         askForExtensionDisplayName: function () {
-            if (this.extensionDisplayName) {
-                this.extensionConfig.displayName = this.extensionDisplayName;
+            var generator = this;
+            if (generator.extensionDisplayName) {
+                generator.extensionConfig.displayName = generator.extensionDisplayName;
                 return;
             }
 
-            var done = this.async();
-            this.prompt({
+            return generator.prompt({
                 type: 'input',
                 name: 'displayName',
                 message: 'What\'s the name of your extension?',
-                default: this.extensionConfig.displayName
-            }, function (displayNameAnswer) {
-                this.extensionConfig.displayName = displayNameAnswer.displayName;
-                done();
-            }.bind(this));
+                default: generator.extensionConfig.displayName
+            }).then(function (displayNameAnswer) {
+                generator.extensionConfig.displayName = displayNameAnswer.displayName;
+            });
         },
 
         // Ask for extension id ("name" in package.json)
         askForExtensionId: function () {
-            if (this.extensionName) {
-                this.extensionConfig.name = this.extensionName;
+            var generator = this;
+            if (generator.extensionName) {
+                generator.extensionConfig.name = generator.extensionName;
                 return;
             }
 
-            var done = this.async();
-            this.prompt({
+            return generator.prompt({
                 type: 'input',
                 name: 'name',
                 message: 'What\'s the identifier of your extension?',
-                default: this.extensionConfig.name || this.extensionConfig.displayName.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+                default: generator.extensionConfig.name || generator.extensionConfig.displayName.toLowerCase().replace(/[^a-z0-9]/g, '-'),
                 validate: validator.validateExtensionId
-            }, function (nameAnswer) {
-                this.extensionConfig.name = nameAnswer.name;
-                done();
-            }.bind(this));
+            }).then(function (nameAnswer) {
+                generator.extensionConfig.name = nameAnswer.name;
+            });
         },
 
         // Ask for extension description
         askForExtensionDescription: function () {
-            var done = this.async();
-            this.prompt({
+            var generator = this;
+            return generator.prompt({
                 type: 'input',
                 name: 'description',
                 message: 'What\'s the description of your extension?'
-            }, function (descriptionAnswer) {
-                this.extensionConfig.description = descriptionAnswer.description;
-                done();
-            }.bind(this));
+            }).then(function (descriptionAnswer) {
+                generator.extensionConfig.description = descriptionAnswer.description;
+            });
         },
 
         // Ask for publisher name
         askForPublisherName: function () {
-            var done = this.async();
-            this.prompt({
+            var generator = this;
+            return generator.prompt({
                 type: 'input',
                 name: 'publisher',
                 message: 'What\'s your publisher name?',
                 store: true,
                 validate: validator.validatePublisher
-            }, function (publisherAnswer) {
-                this.extensionConfig.publisher = publisherAnswer.publisher;
-                done();
-            }.bind(this));
+            }).then(function (publisherAnswer) {
+                generator.extensionConfig.publisher = publisherAnswer.publisher;
+            });
         },
 
         askForGit: function () {
-            var done = this.async();
-            if (['ext-command-ts', 'ext-command-js'].indexOf(this.extensionConfig.type) === -1) {
-                done();
-                return;
+            var generator = this;
+            if (['ext-command-ts', 'ext-command-js'].indexOf(generator.extensionConfig.type) === -1) {
+                return Promise.resolve();
             }
 
-            this.prompt({
+            return generator.prompt({
                 type: 'confirm',
                 name: 'gitInit',
                 message: 'Initialize a git repository?',
                 default: true
-            }, function (gitAnswer) {
-                this.extensionConfig.gitInit = gitAnswer.gitInit;
-                done();
-            }.bind(this));
+            }).then(function (gitAnswer) {
+                generator.extensionConfig.gitInit = gitAnswer.gitInit;
+            });
         },
 
         askForThemeName: function () {
-            var done = this.async();
-            if (this.extensionConfig.type !== 'ext-colortheme') {
-                done();
-                return;
+            var generator = this;
+            if (generator.extensionConfig.type !== 'ext-colortheme') {
+                return Promise.resolve();
             }
 
-            this.prompt({
+            return generator.prompt({
                 type: 'input',
                 name: 'themeName',
                 message: 'What\'s the name of your theme shown to the user?',
-                default: this.extensionConfig.themeName,
-            }, function (nameAnswer) {
-                this.extensionConfig.themeName = nameAnswer.themeName;
-                done();
-            }.bind(this));
+                default: generator.extensionConfig.themeName,
+            }).then(function (nameAnswer) {
+                generator.extensionConfig.themeName = nameAnswer.themeName;
+            });
         },
 
         askForBaseTheme: function () {
-            var done = this.async();
-            if (this.extensionConfig.type !== 'ext-colortheme') {
-                done();
-                return;
+            var generator = this;
+            if (generator.extensionConfig.type !== 'ext-colortheme') {
+                return Promise.resolve();
             }
 
-            this.prompt({
+            return generator.prompt({
                 type: 'list',
                 name: 'themeBase',
                 message: 'Select a base theme:',
@@ -428,92 +413,83 @@ module.exports = yeoman.generators.Base.extend({
                         value: "vs"
                     }
                 ]
-            }, function (themeBase) {
-                this.extensionConfig.themeBase = themeBase.themeBase;
-                done();
-            }.bind(this));
+            }).then(function (themeBase) {
+                generator.extensionConfig.themeBase = themeBase.themeBase;
+            });
         },
 
         askForLanguageId: function () {
-            var done = this.async();
-            if (this.extensionConfig.type !== 'ext-language') {
-                done();
-                return;
+            var generator = this;
+            if (generator.extensionConfig.type !== 'ext-language') {
+                return Promise.resolve();
             }
 
-            this.log('Verify the id of the language. The id is an identifier and is single, lower-case name such as \'php\', \'javascript\'');
-            this.prompt({
+            generator.log('Verify the id of the language. The id is an identifier and is single, lower-case name such as \'php\', \'javascript\'');
+
+            return generator.prompt({
                 type: 'input',
                 name: 'languageId',
                 message: 'Detected languageId:',
-                default: this.extensionConfig.languageId,
-            }, function (idAnswer) {
-                this.extensionConfig.languageId = idAnswer.languageId;
-                done();
-            }.bind(this));
+                default: generator.extensionConfig.languageId,
+            }).then(function (idAnswer) {
+                generator.extensionConfig.languageId = idAnswer.languageId;
+            });
         },
 
         askForLanguageName: function () {
-            var done = this.async();
-            if (this.extensionConfig.type !== 'ext-language') {
-                done();
-                return;
+            var generator = this;
+            if (generator.extensionConfig.type !== 'ext-language') {
+                return Promise.resolve();
             }
 
-            this.log('Verify the name of the language. The name will be shown in the VS code editor mode selector.');
-            this.prompt({
+            generator.log('Verify the name of the language. The name will be shown in the VS code editor mode selector.');
+            return generator.prompt({
                 type: 'input',
                 name: 'languageName',
                 message: 'Detected name:',
-                default: this.extensionConfig.languageName,
-            }, function (nameAnswer) {
-                this.extensionConfig.languageName = nameAnswer.languageName;
-                done();
-            }.bind(this));
+                default: generator.extensionConfig.languageName,
+            }).then(function (nameAnswer) {
+                generator.extensionConfig.languageName = nameAnswer.languageName;
+            });
         },
 
         askForLanguageExtensions: function () {
-            var done = this.async();
-            if (this.extensionConfig.type !== 'ext-language') {
-                done();
-                return;
+            var generator = this;
+            if (generator.extensionConfig.type !== 'ext-language') {
+                return Promise.resolve();
             }
 
-            this.log('Verify the file extensions of the language. Use commas to separate multiple entries (e.g. .ruby, .rb)');
-            this.prompt({
+            generator.log('Verify the file extensions of the language. Use commas to separate multiple entries (e.g. .ruby, .rb)');
+            return generator.prompt({
                 type: 'input',
                 name: 'languageExtensions',
                 message: 'Detected file extensions:',
-                default: this.extensionConfig.languageExtensions.join(', '),
-            }, function (extAnswer) {
-                this.extensionConfig.languageExtensions = extAnswer.languageExtensions.split(',').map(function (e) { return e.trim(); });
-                done();
-            }.bind(this));
+                default: generator.extensionConfig.languageExtensions.join(', '),
+            }).then(function (extAnswer) {
+                generator.extensionConfig.languageExtensions = extAnswer.languageExtensions.split(',').map(function (e) { return e.trim(); });
+            });
         },
 
         askForSnippetLangauge: function () {
-            var done = this.async();
-            if (this.extensionConfig.type !== 'ext-snippets') {
-                done();
-                return;
+            var generator = this;
+            if (generator.extensionConfig.type !== 'ext-snippets') {
+                return Promise.resolve();
             }
 
-            if (this.extensionParam2) {
-                this.extensionConfig.languageId = this.extensionParam2;
-                done();
-                return;
+            if (generator.extensionParam2) {
+                generator.extensionConfig.languageId = generator.extensionParam2;
+                return Promise.resolve();
             }
 
-            this.log('Enter the language for which the snippets should appear. The id is an identifier and is single, lower-case name such as \'php\', \'javascript\'');
-            this.prompt({
+            generator.log('Enter the language for which the snippets should appear. The id is an identifier and is single, lower-case name such as \'php\', \'javascript\'');
+            return generator.prompt({
                 type: 'input',
                 name: 'languageId',
                 message: 'Language id:',
-                default: this.extensionConfig.languageId
-            }, function (idAnswer) {
-                this.extensionConfig.languageId = idAnswer.languageId;
-                done();
-            }.bind(this));
+                default: generator.extensionConfig.languageId
+            }).then(function (idAnswer) {
+                generator.extensionConfig.languageId = idAnswer.languageId;
+            });
         },
     },
 

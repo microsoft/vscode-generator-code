@@ -1,6 +1,6 @@
 var path = require('path');
-var assert = require('yeoman-generator').assert;
-var helpers = require('yeoman-generator').test;
+var assert = require('yeoman-assert')
+var helpers = require('yeoman-test');
 
 var env = require('../generators/app/env');
 
@@ -21,7 +21,7 @@ describe('test theme generator', function () {
                 themeName: 'Green',
                 themeBase: 'vs-dark',
             }) // Mock the prompt answers
-            .on('end', function () {
+            .toPromise().then(function () {
                 var expected = {
                     "name": "testTheme",
                     "displayName": "Test Theme",
@@ -52,7 +52,7 @@ describe('test theme generator', function () {
                 assert.deepEqual(expected, actual);
 
                 done();
-            });
+            }, done);
     });
 
     it('language', function (done) {
@@ -71,7 +71,7 @@ describe('test theme generator', function () {
                 languageScopeName: 'source.ant',
                 languageExtensions: '.ant'
             }) // Mock the prompt answers
-            .on('end', function () {
+            .toPromise().then(function () {
                 var expected = {
                     "name": "testLan",
                     "displayName": "Test Lan",
@@ -123,7 +123,7 @@ describe('test theme generator', function () {
                 publisher: 'Microsoft',
                 languageId: 'python'
             }) // Mock the prompt answers
-            .on('end', function () {
+            .toPromise().then(function () {
                 var expected = {
                     "name": "testSnip",
                     "displayName": 'Test Snip',
@@ -166,7 +166,7 @@ describe('test theme generator', function () {
                 publisher: 'Microsoft',
                 gitInit: false
             }) // Mock the prompt answers
-            .on('end', function () {
+            .toPromise().then(function () {
                 var expected = {
                     "name": "testCom",
                     "displayName": 'Test Com',
