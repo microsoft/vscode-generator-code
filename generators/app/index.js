@@ -69,8 +69,12 @@ module.exports = yeoman.Base.extend({
                         value: 'ext-colortheme'
                     },
                     {
-                        name: 'New Language Support',
-                        value: 'ext-language'
+                        name: 'New Language Support (JavaScript)',
+                        value: 'ext-language-js'
+                    },
+                    {
+                        name: 'New Language Support (TypeScript)',
+                        value: 'ext-language-ts'
                     },
                     {
                         name: 'New Code Snippets',
@@ -162,7 +166,7 @@ module.exports = yeoman.Base.extend({
 
         askForLanguageInfo: function () {
             var generator = this;
-            if (generator.extensionConfig.type !== 'ext-language') {
+            if (generator.extensionConfig.type !== 'ext-language-js'&& generator.extensionConfig.type !== 'ext-language-ts') {
                 return Promise.resolve();
             }
 
@@ -426,7 +430,7 @@ module.exports = yeoman.Base.extend({
 
         askForLanguageId: function () {
             var generator = this;
-            if (generator.extensionConfig.type !== 'ext-language') {
+            if (generator.extensionConfig.type !== 'ext-language-js' && generator.extensionConfig.type !== 'ext-language-ts') {
                 return Promise.resolve();
             }
 
@@ -444,7 +448,7 @@ module.exports = yeoman.Base.extend({
 
         askForLanguageName: function () {
             var generator = this;
-            if (generator.extensionConfig.type !== 'ext-language') {
+            if (generator.extensionConfig.type !== 'ext-language-js' && generator.extensionConfig.type !== 'ext-language-ts') {
                 return Promise.resolve();
             }
 
@@ -461,7 +465,7 @@ module.exports = yeoman.Base.extend({
 
         askForLanguageExtensions: function () {
             var generator = this;
-            if (generator.extensionConfig.type !== 'ext-language') {
+            if (generator.extensionConfig.type !== 'ext-language-js' && generator.extensionConfig.type !== 'ext-language-ts') {
                 return Promise.resolve();
             }
 
@@ -507,7 +511,8 @@ module.exports = yeoman.Base.extend({
             case 'ext-colortheme':
                 this._writingColorTheme();
                 break;
-            case 'ext-language':
+            case 'ext-language-js':
+            case 'ext-language-ts':
                 this._writingLanguage();
                 break;
             case 'ext-snippets':
