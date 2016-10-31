@@ -55,7 +55,7 @@ describe('test theme generator', function () {
             }, done);
     });
 
-    it('language', function (done) {
+    it('language import', function (done) {
         this.timeout(10000);
 
         helpers.run(path.join(__dirname, '../generators/app'))
@@ -68,7 +68,7 @@ describe('test theme generator', function () {
                 publisher: 'Microsoft',
                 languageId: 'ant',
                 languageName: 'ANT',
-                languageScopeName: 'source.ant',
+                languageScopeName: 'text.xml.ant',
                 languageExtensions: '.ant'
             }) // Mock the prompt answers
             .toPromise().then(function () {
@@ -98,15 +98,82 @@ describe('test theme generator', function () {
                         }]
                     }
                 };
-                assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'syntaxes/ant.tmLanguage', 'language-configuration.json', 'vsc-extension-quickstart.md']);
+                try {
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'syntaxes/ant.tmLanguage', 'language-configuration.json', 'vsc-extension-quickstart.md']);
 
-                var body = fs.readFileSync('package.json', 'utf8');
+                    var body = fs.readFileSync('package.json', 'utf8');
 
-                var actual = JSON.parse(body);
-                assert.deepEqual(expected, actual);
+                    var actual = JSON.parse(body);
+                    assert.deepEqual(expected, actual);
+                    done();
+                } catch(e) {
+                    done(e);
+                }
+            }, done);
+    });
 
-                done();
-            });
+ it('language', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-language',
+                tmLanguageURL: '',
+                name: 'crusty',
+                displayName: 'Crusty',
+                description: 'Crusty, the language',
+                publisher: 'Microsoft',
+                languageId: 'crusty',
+                languageName: 'Crusty',
+                languageScopeName: 'source.crusty',
+                languageExtensions: '.crusty'
+            }) // Mock the prompt answers
+            .toPromise().then(function () {
+                var expected = {
+                    "name": "crusty",
+                    "displayName": "Crusty",
+                    "description": "Crusty, the language",
+                    "version": "0.0.1",
+                    "publisher": 'Microsoft',
+                    "engines": {
+                        "vscode": env.vsCodeEngine
+                    },
+                    "categories": [
+                        "Languages"
+                    ],
+                    "contributes": {
+                        "languages": [{
+                            "id": "crusty",
+                            "aliases": ["Crusty", "crusty"],
+                            "extensions": [".crusty"],
+                            "configuration": "./language-configuration.json"
+                        }],
+                        "grammars": [{
+                            "language": "crusty",
+                            "scopeName": "source.crusty",
+                            "path": "./syntaxes/crusty.tmLanguage.json"
+                        }]
+                    }
+                };
+                try {
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'syntaxes/crusty.tmLanguage.json', 'language-configuration.json', 'vsc-extension-quickstart.md']);
+
+                    var body = fs.readFileSync('package.json', 'utf8');
+
+                    var actual = JSON.parse(body);
+                    assert.deepEqual(expected, actual);
+
+                    var grammar = fs.readFileSync('syntaxes/crusty.tmLanguage.json', 'utf8');
+
+                    var actualGrammar = JSON.parse(grammar);
+                    assert.equal("Crusty", actualGrammar.name);
+                    assert.equal("source.crusty", actualGrammar.scopeName);
+
+                    done();
+                } catch(e) {
+                    done(e);
+                }
+            }, done);
     });
 
 

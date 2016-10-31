@@ -162,19 +162,28 @@ module.exports = yeoman.Base.extend({
 
         askForLanguageInfo: function () {
             var generator = this;
+
             if (generator.extensionConfig.type !== 'ext-language') {
                 return Promise.resolve();
             }
 
             generator.extensionConfig.isCustomization = true;
-
-            generator.log("URL (http, https) or file name of the tmLanguage file, e.g., http://raw.githubusercontent.com/textmate/ant.tmbundle/master/Syntaxes/Ant.tmLanguage.");
+            generator.log("Enter the URL (http, https) or the file path of the tmLanguage grammar or press ENTER to start with an new grammar.");
             return generator.prompt({
                 type: 'input',
                 name: 'tmLanguageURL',
-                message: 'URL or file:',
+                message: 'URL, file to import, or none for new:',
             }).then(function (urlAnswer) {
+                generator.extensionConfig.languageId = '';
+                generator.extensionConfig.languageName = '';
+                generator.extensionConfig.languageScopeName = '';
+                generator.extensionConfig.languageExtensions = [];
+
                 var location = urlAnswer.tmLanguageURL;
+                if (!location) {
+                    generator.extensionConfig.languageContent= '';
+                    return Promise.resolve();
+                }
 
                 function processContent(extensionConfig, fileName, body) {
                     if (body.indexOf('<!DOCTYPE plist') === -1) {
@@ -210,10 +219,6 @@ module.exports = yeoman.Base.extend({
                         if (!fileName) {
                             fileName = languageId + '.tmLanguage';
                         }
-                        if (!languageScopeName) {
-                            languageScopeName = 'source.' + languageId;
-                            generator.log("Grammar does not define the scope name. Setting to '" + languageScopeName + "' instead");
-                        }
 
                         extensionConfig.languageFileName = fileName;
                         extensionConfig.languageId = languageId;
@@ -226,11 +231,6 @@ module.exports = yeoman.Base.extend({
                         } else {
                             extensionConfig.languageExtensions = languageId ? ['.' + languageId] : [];
                         }
-                    } else {
-                        extensionConfig.languageId = '';
-                        extensionConfig.languageName = '';
-                        extensionConfig.languageScopeName = '';
-                        extensionConfig.languageExtensions = [];
                     }
                     extensionConfig.languageContent = body;
                 };
@@ -430,12 +430,11 @@ module.exports = yeoman.Base.extend({
                 return Promise.resolve();
             }
 
-            generator.log('Verify the id of the language. The id is an identifier and is single, lower-case name such as \'php\', \'javascript\'');
-
+            generator.log('Enter the id of the language. The id is an identifier and is single, lower-case name such as \'php\', \'javascript\'');
             return generator.prompt({
                 type: 'input',
                 name: 'languageId',
-                message: 'Detected languageId:',
+                message: 'Language id:',
                 default: generator.extensionConfig.languageId,
             }).then(function (idAnswer) {
                 generator.extensionConfig.languageId = idAnswer.languageId;
@@ -448,11 +447,11 @@ module.exports = yeoman.Base.extend({
                 return Promise.resolve();
             }
 
-            generator.log('Verify the name of the language. The name will be shown in the VS code editor mode selector.');
+            generator.log('Enter the name of the language. The name will be shown in the VS code editor mode selector.');
             return generator.prompt({
                 type: 'input',
                 name: 'languageName',
-                message: 'Detected name:',
+                message: 'Language name:',
                 default: generator.extensionConfig.languageName,
             }).then(function (nameAnswer) {
                 generator.extensionConfig.languageName = nameAnswer.languageName;
@@ -465,18 +464,34 @@ module.exports = yeoman.Base.extend({
                 return Promise.resolve();
             }
 
-            generator.log('Verify the file extensions of the language. Use commas to separate multiple entries (e.g. .ruby, .rb)');
+            generator.log('Enter the file extensions of the language. Use commas to separate multiple entries (e.g. .ruby, .rb)');
             return generator.prompt({
                 type: 'input',
                 name: 'languageExtensions',
-                message: 'Detected file extensions:',
+                message: 'File extensions:',
                 default: generator.extensionConfig.languageExtensions.join(', '),
             }).then(function (extAnswer) {
                 generator.extensionConfig.languageExtensions = extAnswer.languageExtensions.split(',').map(function (e) { return e.trim(); });
             });
         },
 
-        askForSnippetLangauge: function () {
+        askForLanguageScopeName: function () {
+            var generator = this;
+            if (generator.extensionConfig.type !== 'ext-language') {
+                return Promise.resolve();
+            }
+            generator.log('Enter the root scope name of the grammar (e.g. source.ruby)');
+            return generator.prompt({
+                type: 'input',
+                name: 'languageScopeName',
+                message: 'Scope names:',
+                default: generator.extensionConfig.languageScopeName,
+            }).then(function (extAnswer) {
+                generator.extensionConfig.languageScopeName = extAnswer.languageScopeName;
+            });
+        },
+
+        askForSnippetLanguage: function () {
             var generator = this;
             if (generator.extensionConfig.type !== 'ext-snippets') {
                 return Promise.resolve();
@@ -541,6 +556,13 @@ module.exports = yeoman.Base.extend({
     // Write Language Extension
     _writingLanguage: function () {
         var context = this.extensionConfig;
+        if (!context.languageContent) {
+            context.languageFileName = context.languageId + '.tmLanguage.json';
+
+            this.template(this.sourceRoot() + '/syntaxes/new.tmLanguage.json', context.name + '/syntaxes/' + context.languageFileName, context);
+        } else {
+            this.template(this.sourceRoot() + '/syntaxes/language.tmLanguage', context.name + '/syntaxes/' + context.languageFileName, context);
+        }
 
         this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
         this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
@@ -548,7 +570,6 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
         this.template(this.sourceRoot() + '/language-configuration.json', context.name + '/language-configuration.json', context);
-        this.template(this.sourceRoot() + '/syntaxes/language.tmLanguage', context.name + '/syntaxes/' + context.languageFileName, context);
     },
 
     // Write Snippets Extension
