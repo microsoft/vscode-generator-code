@@ -359,7 +359,7 @@ module.exports = yeoman.Base.extend({
             return generator.prompt({
                 type: 'input',
                 name: 'publisher',
-                message: 'What\'s your publisher name? Read more about publishers here: https://code.visualstudio.com/docs/tools/vscecli#_publishing-extensions',
+                message: 'What\'s your publisher name (more info: https://code.visualstudio.com/docs/tools/vscecli#_publishing-extensions)?',
                 store: true,
                 validate: validator.validatePublisher
             }).then(function (publisherAnswer) {
