@@ -4,7 +4,7 @@
 * This folder contains all of the files necessary for your extension
 * `package.json` - this is the manifest file that defines the location of the snippet file
 and specifies the language of the snippets
-* `snippets/snippets.json` - the file containing all snippets 
+* `snippets/snippets.json` - the file containing all snippets
 
 ## Get up and running straight away
 * press `F5` to open a new window with your extension loaded
