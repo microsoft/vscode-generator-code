@@ -322,7 +322,7 @@ module.exports = yeoman.Base.extend({
                 name: 'addExtensions',
                 message: 'Add the currently installed extensions to the extension pack?',
                 default: true
-            }).then(function (adAddgeneiondExtensionsAnswer) {
+            }).then(function (addExtensionsAnswer) {
 
                 generator.extensionConfig.extensionList = ["publisher.extension_identifier"];
 
