@@ -13,6 +13,7 @@ var plistParser = require('./plistParser');
 var validator = require('./validator');
 var snippetConverter = require('./snippetConverter');
 var env = require('./env');
+var childProcess = require('child_process');
 
 module.exports = yeoman.Base.extend({
 
@@ -42,7 +43,7 @@ module.exports = yeoman.Base.extend({
         askForType: function () {
             var generator = this;
             if (generator.extensionType) {
-                var extensionTypes = ['colortheme', 'language', 'snippets', 'command-ts', 'command-js'];
+                var extensionTypes = ['colortheme', 'language', 'snippets', 'command-ts', 'command-js', 'extensionpack'];
                 if (extensionTypes.indexOf(generator.extensionType) !== -1) {
                     generator.extensionConfig.type = 'ext-' + generator.extensionType;
                 } else {
@@ -75,6 +76,10 @@ module.exports = yeoman.Base.extend({
                     {
                         name: 'New Code Snippets',
                         value: 'ext-snippets'
+                    },
+                    {
+                        name: 'New Extension Pack',
+                        value: 'ext-extensionpack'
                     }
                 ]
             }).then(function (typeAnswer) {
@@ -302,6 +307,38 @@ module.exports = yeoman.Base.extend({
                 });
             };
             return snippetPrompt();
+        },
+
+        askForExtensionPackInfo: function () {
+            var generator = this;
+            if (generator.extensionConfig.type !== 'ext-extensionpack') {
+                return Promise.resolve();
+            }
+
+            generator.extensionConfig.isCustomization = true;
+
+            return generator.prompt({
+                type: 'confirm',
+                name: 'addExtensions',
+                message: 'Add the currently installed extensions to the extension pack?',
+                default: true
+            }).then(function (adAddgeneiondExtensionsAnswer) {
+
+                generator.extensionConfig.extensionList = ["publisher.extension_identifier"];
+
+                if (addExtensionsAnswer.addExtensions) {
+                    return new Promise(function (resolve, reject) {
+                        childProcess.exec('code --list-extensions', function(error, stdout, stderr) {
+                            if (error) {
+                                reject();
+                                return;
+                            }
+                            generator.extensionConfig.extensionList = stdout.trim().split(/\s/);
+                            resolve();
+                        });
+                    });
+                }
+            });
         },
 
         // Ask for extension display name ("displayName" in package.json)
@@ -534,10 +571,25 @@ module.exports = yeoman.Base.extend({
             case 'ext-command-js':
                 this._writingCommandJs();
                 break;
+            case 'ext-extensionpack':
+                this._writingExtensionPack();
+                break;
             default:
                 //unknown project type
                 break;
         }
+    },
+
+    // Write Color Theme Extension
+    _writingExtensionPack: function () {
+
+        var context = this.extensionConfig;
+
+        this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
+        this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
+        this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
+        this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
+        this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
     },
 
     // Write Color Theme Extension
