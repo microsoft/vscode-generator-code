@@ -14,6 +14,7 @@ var validator = require('./validator');
 var snippetConverter = require('./snippetConverter');
 var env = require('./env');
 var childProcess = require('child_process');
+var chalk = require('chalk');
 
 module.exports = yeoman.Base.extend({
 
@@ -711,6 +712,12 @@ module.exports = yeoman.Base.extend({
         this.log('Open vsc-extension-quickstart.md inside the new extension for further instructions');
         this.log('on how to modify, test and publish your extension.');
         this.log('');
+
+        if (this.extensionConfig.type === 'ext-extensionpack') {
+            this.log(chalk.yellow('Please review the "extensionDependencies" in the "package.json" before publishing the extension pack.'));
+            this.log('');
+        }
+
         this.log('For more information, also visit http://code.visualstudio.com and follow us @code.');
         this.log('\r\n');
     }
