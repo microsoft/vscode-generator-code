@@ -8,7 +8,7 @@
         "vscode": <%- JSON.stringify(vsCodeEngine) %>
     },
     "categories": [
-        "Extension Pack"
+        "Extension Packs"
     ],
     "extensionDependencies": [ <% for (i=0; i<extensionList.length-1; i++) { %>
         "<%- extensionList[i] %>", <%}%>

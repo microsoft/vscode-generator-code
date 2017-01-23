@@ -330,10 +330,13 @@ module.exports = yeoman.Base.extend({
                     return new Promise(function (resolve, reject) {
                         childProcess.exec('code --list-extensions', function(error, stdout, stderr) {
                             if (error) {
-                                reject();
+                                generator.env.error("Problems starting Code: " + error);
                                 return;
                             }
-                            generator.extensionConfig.extensionList = stdout.trim().split(/\s/);
+                            var out = stdout.trim();
+                            if (out.length > 0) {
+                                generator.extensionConfig.extensionList = out.split(/\s/);
+                            }
                             resolve();
                         });
                     });
