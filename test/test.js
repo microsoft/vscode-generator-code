@@ -6,7 +6,7 @@ var env = require('../generators/app/env');
 
 var fs = require('fs');
 
-describe('test theme generator', function () {
+describe('test code generator', function () {
     this.timeout(10000);
 
     it('theme', function (done) {
@@ -279,5 +279,43 @@ describe('test theme generator', function () {
 
                 done();
             });
+    });
+
+    it('extension-pack', function (done) {
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                addExtensions: 'n',
+                type: 'ext-extensionpack',
+                name: 'testExtensionPack',
+                displayName: 'Test Extension Pack',
+                description: 'My Test Extension Pack',
+                publisher: 'Microsoft'
+            }) // Mock the prompt answers
+            .toPromise().then(function () {
+                var expected = {
+                    "name": "testExtensionPack",
+                    "displayName": "Test Extension Pack",
+                    "description": "My Test Extension Pack",
+                    "version": "0.0.1",
+                    "publisher": 'Microsoft',
+                    "engines": {
+                        "vscode": env.vsCodeEngine
+                    },
+                    "categories": [
+                        "Extension Packs"
+                    ],
+                    "extensionDependencies": [
+                        "publisher.extension_identifier"
+                    ]
+                };
+                assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md']);
+
+                var body = fs.readFileSync('package.json', 'utf8');
+
+                var actual = JSON.parse(body);
+                assert.deepEqual(expected, actual);
+
+                done();
+            }, done);
     });
 });
