@@ -325,7 +325,7 @@ module.exports = yeoman.Base.extend({
                 default: true
             }).then(function (addExtensionsAnswer) {
 
-                generator.extensionConfig.extensionList = ["publisher.extension_identifier"];
+                generator.extensionConfig.extensionList = ["publisher.extensionName"];
 
                 if (addExtensionsAnswer.addExtensions) {
                     return new Promise(function (resolve, reject) {
