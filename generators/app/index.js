@@ -329,7 +329,7 @@ module.exports = yeoman.Base.extend({
 
                 if (addExtensionsAnswer.addExtensions) {
                     return new Promise(function (resolve, reject) {
-                        childProcess.exec('code1 --list-extensions', function(error, stdout, stderr) {
+                        childProcess.exec('code --list-extensions', function(error, stdout, stderr) {
                             if (error) {
                                 generator.env.error("Problems starting Code: " + error);
                             } else {
