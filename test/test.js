@@ -284,7 +284,7 @@ describe('test code generator', function () {
     it('extension-pack', function (done) {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
-                addExtensions: 'n',
+                addExtensions: false,
                 type: 'ext-extensionpack',
                 name: 'testExtensionPack',
                 displayName: 'Test Extension Pack',
@@ -305,7 +305,7 @@ describe('test code generator', function () {
                         "Extension Packs"
                     ],
                     "extensionDependencies": [
-                        "publisher.extension_identifier"
+                        "publisher.extensionName"
                     ]
                 };
                 assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md']);

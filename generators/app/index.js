@@ -329,14 +329,14 @@ module.exports = yeoman.Base.extend({
 
                 if (addExtensionsAnswer.addExtensions) {
                     return new Promise(function (resolve, reject) {
-                        childProcess.exec('code --list-extensions', function(error, stdout, stderr) {
+                        childProcess.exec('code1 --list-extensions', function(error, stdout, stderr) {
                             if (error) {
                                 generator.env.error("Problems starting Code: " + error);
-                                return;
-                            }
-                            var out = stdout.trim();
-                            if (out.length > 0) {
-                                generator.extensionConfig.extensionList = out.split(/\s/);
+                            } else {
+                                var out = stdout.trim();
+                                if (out.length > 0) {
+                                    generator.extensionConfig.extensionList = out.split(/\s/);
+                                }
                             }
                             resolve();
                         });
