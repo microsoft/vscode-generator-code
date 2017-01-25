@@ -1,4 +1,3 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-    "typescript.tsdk": "./node_modules/typescript/lib" // we want to use the TS server from our node_modules folder to control its version
 }
