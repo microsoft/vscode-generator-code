@@ -13,7 +13,7 @@
             "type": "node",
             "request": "launch",
             "name": "yeoman code",
-            "program": "${workspaceRoot}/node_modules/.bin/yo",
+            "program": "${workspaceRoot}/node_modules/yo/lib/cli.js",
             "args": [ "code" ],
             "cwd": "${workspaceRoot}",
             "console": "integratedTerminal",
