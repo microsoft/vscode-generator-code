@@ -35,7 +35,7 @@ and this useful [blog post](http://www.apeth.com/nonblog/stories/textmatebundle.
   * `activeLinkForeground`: Color of active links.
   * `hoverHighlight`: Background color when hovered.
   * `referenceHighlight`: Background color of a reference when finding all references.
-  * `invisible`: Color of the whitespace symbols.
+  * `invisibles`: Color of the whitespace symbols.
   * `guide`: Color of the indentation guides which indicate nesting levels.
 
 ## Install your extension
