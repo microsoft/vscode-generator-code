@@ -112,7 +112,7 @@ describe('test code generator', function () {
             }, done);
     });
 
- it('language', function (done) {
+    it('language', function (done) {
         this.timeout(10000);
 
         helpers.run(path.join(__dirname, '../generators/app'))
