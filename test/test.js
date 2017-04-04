@@ -9,7 +9,7 @@ var fs = require('fs');
 describe('test code generator', function () {
     this.timeout(10000);
 
-    it('theme', function (done) {
+    it('theme import', function (done) {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
                 type: 'ext-colortheme',
@@ -44,14 +44,70 @@ describe('test code generator', function () {
                         ]
                     }
                 };
-                assert.file(['package.json', 'README.md', 'CHANGELOG.md','themes/Monokai.tmTheme', 'vsc-extension-quickstart.md']);
+                try {
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Monokai.tmTheme', 'vsc-extension-quickstart.md']);
 
-                var body = fs.readFileSync('package.json', 'utf8');
+                    var body = fs.readFileSync('package.json', 'utf8');
 
-                var actual = JSON.parse(body);
-                assert.deepEqual(expected, actual);
+                    var actual = JSON.parse(body);
+                    assert.deepEqual(expected, actual);
 
-                done();
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+
+            }, done);
+    });
+
+    it('theme new', function (done) {
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-colortheme',
+                themeURL: '',
+                name: 'testTheme',
+                displayName: 'Test Theme',
+                description: 'My TestTheme',
+                publisher: 'Microsoft',
+                themeName: 'Funky',
+                themeBase: 'vs',
+            }) // Mock the prompt answers
+            .toPromise().then(function () {
+                var expected = {
+                    "name": "testTheme",
+                    "displayName": "Test Theme",
+                    "description": "My TestTheme",
+                    "version": "0.0.1",
+                    "publisher": 'Microsoft',
+                    "engines": {
+                        "vscode": env.vsCodeEngine
+                    },
+                    "categories": [
+                        "Themes"
+                    ],
+                    "contributes": {
+                        "themes": [
+                            {
+                                "label": "Funky",
+                                "uiTheme": "vs",
+                                "path": "./themes/Funky.tmTheme"
+                            }
+                        ]
+                    }
+                };
+                try {
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Funky.tmTheme', 'vsc-extension-quickstart.md']);
+
+                    var body = fs.readFileSync('package.json', 'utf8');
+
+                    var actual = JSON.parse(body);
+
+                    assert.deepEqual(expected, actual);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
             }, done);
     });
 
@@ -106,13 +162,13 @@ describe('test code generator', function () {
                     var actual = JSON.parse(body);
                     assert.deepEqual(expected, actual);
                     done();
-                } catch(e) {
+                } catch (e) {
                     done(e);
                 }
             }, done);
     });
 
- it('language', function (done) {
+    it('language new', function (done) {
         this.timeout(10000);
 
         helpers.run(path.join(__dirname, '../generators/app'))
@@ -170,46 +226,46 @@ describe('test code generator', function () {
                     assert.equal("source.crusty", actualGrammar.scopeName);
 
                     done();
-                } catch(e) {
+                } catch (e) {
                     done(e);
                 }
             }, done);
     });
 
-    describe('snippet', function () {
-        it('should be able to create a new snippets extension', function (done) {
-            this.timeout(10000);
+    it('snippet new', function (done) {
+        this.timeout(10000);
 
-            helpers.run(path.join(__dirname, '../generators/app'))
-                .withPrompts({
-                    type: 'ext-snippets',
-                    snippetPath: '',
-                    name: 'testSnip',
-                    displayName: 'Test Snip',
-                    description: 'My TestSnip',
-                    publisher: 'Microsoft',
-                    languageId: 'python'
-                }) // Mock the prompt answers
-                .toPromise().then(function () {
-                    var expected = {
-                        "name": "testSnip",
-                        "displayName": 'Test Snip',
-                        "description": "My TestSnip",
-                        "version": "0.0.1",
-                        "publisher": 'Microsoft',
-                        "engines": {
-                            "vscode": env.vsCodeEngine
-                        },
-                        "categories": [
-                            "Snippets"
-                        ],
-                        "contributes": {
-                            "snippets": [{
-                                "language": "python",
-                                "path": "./snippets/snippets.json"
-                            }]
-                        }
-                    };
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-snippets',
+                snippetPath: '',
+                name: 'testSnip',
+                displayName: 'Test Snip',
+                description: 'My TestSnip',
+                publisher: 'Microsoft',
+                languageId: 'python'
+            }) // Mock the prompt answers
+            .toPromise().then(function () {
+                var expected = {
+                    "name": "testSnip",
+                    "displayName": 'Test Snip',
+                    "description": "My TestSnip",
+                    "version": "0.0.1",
+                    "publisher": 'Microsoft',
+                    "engines": {
+                        "vscode": env.vsCodeEngine
+                    },
+                    "categories": [
+                        "Snippets"
+                    ],
+                    "contributes": {
+                        "snippets": [{
+                            "language": "python",
+                            "path": "./snippets/snippets.json"
+                        }]
+                    }
+                };
+                try {
                     assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'snippets/snippets.json', 'vsc-extension-quickstart.md']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
@@ -218,42 +274,47 @@ describe('test code generator', function () {
                     assert.deepEqual(expected, actual);
 
                     done();
-                });
-        });
+                } catch (e) {
+                    done(e);
+                }
 
-        it('should be able to convert textmate snippets', function (done) {
-            this.timeout(10000);
+            });
+    });
 
-            helpers.run(path.join(__dirname, '../generators/app'))
-                .withPrompts({
-                    type: 'ext-snippets',
-                    snippetPath: path.join(__dirname, 'fixtures/tmsnippets'),
-                    name: 'testSnip',
-                    displayName: 'Test Snip',
-                    description: 'My TestSnip',
-                    publisher: 'Microsoft',
-                    languageId: 'python'
-                }) // Mock the prompt answers
-                .toPromise().then(function () {
-                    var expected = {
-                        "name": "testSnip",
-                        "displayName": 'Test Snip',
-                        "description": "My TestSnip",
-                        "version": "0.0.1",
-                        "publisher": 'Microsoft',
-                        "engines": {
-                            "vscode": env.vsCodeEngine
-                        },
-                        "categories": [
-                            "Snippets"
-                        ],
-                        "contributes": {
-                            "snippets": [{
-                                "language": "python",
-                                "path": "./snippets/snippets.json"
-                            }]
-                        }
-                    };
+    it('snippet import', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-snippets',
+                snippetPath: path.join(__dirname, 'fixtures/tmsnippets'),
+                name: 'testSnip',
+                displayName: 'Test Snip',
+                description: 'My TestSnip',
+                publisher: 'Microsoft',
+                languageId: 'python'
+            }) // Mock the prompt answers
+            .toPromise().then(function () {
+                var expected = {
+                    "name": "testSnip",
+                    "displayName": 'Test Snip',
+                    "description": "My TestSnip",
+                    "version": "0.0.1",
+                    "publisher": 'Microsoft',
+                    "engines": {
+                        "vscode": env.vsCodeEngine
+                    },
+                    "categories": [
+                        "Snippets"
+                    ],
+                    "contributes": {
+                        "snippets": [{
+                            "language": "python",
+                            "path": "./snippets/snippets.json"
+                        }]
+                    }
+                };
+                try {
                     assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'snippets/snippets.json', 'vsc-extension-quickstart.md']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
@@ -262,8 +323,10 @@ describe('test code generator', function () {
                     assert.deepEqual(expected, actual);
 
                     done();
-                });
-        });
+                } catch (e) {
+                    done(e);
+                }
+            });
     });
 
     it('command-ts', function (done) {
@@ -315,14 +378,20 @@ describe('test code generator', function () {
                         }]
                     }
                 };
-                assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'test/extension.test.ts', 'test/index.ts', '.gitignore', 'tsconfig.json']);
+                try {
 
-                var body = fs.readFileSync('package.json', 'utf8');
 
-                var actual = JSON.parse(body);
-                assert.deepEqual(expected, actual);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'test/extension.test.ts', 'test/index.ts', '.gitignore', 'tsconfig.json']);
 
-                done();
+                    var body = fs.readFileSync('package.json', 'utf8');
+
+                    var actual = JSON.parse(body);
+                    assert.deepEqual(expected, actual);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
             });
     });
 
@@ -353,14 +422,18 @@ describe('test code generator', function () {
                         "publisher.extensionName"
                     ]
                 };
-                assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md']);
+                try {
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md']);
 
-                var body = fs.readFileSync('package.json', 'utf8');
+                    var body = fs.readFileSync('package.json', 'utf8');
 
-                var actual = JSON.parse(body);
-                assert.deepEqual(expected, actual);
+                    var actual = JSON.parse(body);
+                    assert.deepEqual(expected, actual);
 
-                done();
+                    done();
+                } catch (e) {
+                    done(e);
+                }
             }, done);
     });
 });
