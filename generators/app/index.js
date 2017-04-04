@@ -299,9 +299,18 @@ module.exports = yeoman.Base.extend({
                 return generator.prompt({
                     type: 'input',
                     name: 'snippetPath',
-                    message: 'Folder name:'
+                    message: 'Folder name (optional):'
                 }).then(function (snippetAnswer) {
-                    var count = snippetConverter.processSnippetFolder(snippetAnswer.snippetPath, generator);
+                    var count = 0;
+                    var snippetPath = snippetAnswer.snippetPath;
+
+                    if (typeof snippetPath === 'string' && snippetPath.length > 0) {
+                        snippetConverter.processSnippetFolder(snippetPath, generator);
+                    } else {
+                        generator.extensionConfig.snippets = {};
+                        generator.extensionConfig.languageId = null;
+                    }
+
                     if (count < 0) {
                         return snippetPrompt();
                     }
