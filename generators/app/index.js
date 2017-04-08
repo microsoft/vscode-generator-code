@@ -95,11 +95,11 @@ module.exports = yeoman.Base.extend({
             }
             generator.extensionConfig.isCustomization = true;
 
-            generator.log("URL (http, https) or file name of the tmTheme file, e.g., http://www.monokai.nl/blog/wp-content/asdev/Monokai.tmTheme.")
+            generator.log("URL (http, https) or file name of the tmTheme file, e.g., http://www.monokai.nl/blog/wp-content/asdev/Monokai.tmTheme or press ENTER to start with an new theme.");
             return generator.prompt({
                 type: 'input',
                 name: 'themeURL',
-                message: 'URL or file name:'
+                message: 'URL or file name to import, or none for new:'
             }).then(function (urlAnswer) {
                 var location = urlAnswer.themeURL;
 
@@ -120,10 +120,12 @@ module.exports = yeoman.Base.extend({
                     extensionConfig.themeName = themeName;
                     extensionConfig.name = 'theme-' + themeName.toLowerCase().replace(/[^\w-]/, '');
                 };
-
-                if (location.match(/\w*:\/\//)) {
+                if (!location) {
+                    generator.extensionConfig.themeFileName = '';
+                    generator.extensionConfig.themeContent = '';
+                } else if (location.match(/\w*:\/\//)) {
                     // load from url
-                    return new Promise(function(resolve, reject) {
+                    return new Promise(function (resolve, reject) {
                         request(location, function (error, response, body) {
                             if (!error && response.statusCode == 200) {
                                 var contentDisposition = response.headers['content-disposition'];
@@ -178,7 +180,7 @@ module.exports = yeoman.Base.extend({
             return generator.prompt({
                 type: 'input',
                 name: 'tmLanguageURL',
-                message: 'URL, file to import, or none for new:',
+                message: 'URL or file to import, or none for new:',
             }).then(function (urlAnswer) {
                 generator.extensionConfig.languageId = '';
                 generator.extensionConfig.languageName = '';
@@ -187,7 +189,7 @@ module.exports = yeoman.Base.extend({
 
                 var location = urlAnswer.tmLanguageURL;
                 if (!location) {
-                    generator.extensionConfig.languageContent= '';
+                    generator.extensionConfig.languageContent = '';
                     return Promise.resolve();
                 }
 
@@ -243,7 +245,7 @@ module.exports = yeoman.Base.extend({
 
                 if (location.match(/\w*:\/\//)) {
                     // load from url
-                    return new Promise(function(resolve, reject) {
+                    return new Promise(function (resolve, reject) {
                         request(location, function (error, response, body) {
                             if (!error && response.statusCode == 200) {
                                 var contentDisposition = response.headers['content-disposition'];
@@ -293,15 +295,24 @@ module.exports = yeoman.Base.extend({
                 }
                 return Promise.resolve();
             }
-            generator.log("Folder location that contains Text Mate (.tmSnippet) and Sublime snippets (.sublime-snippet)");
+            generator.log("Folder location that contains Text Mate (.tmSnippet) and Sublime snippets (.sublime-snippet) or press ENTER to start with an new snippet file.");
 
             var snippetPrompt = function () {
                 return generator.prompt({
                     type: 'input',
                     name: 'snippetPath',
-                    message: 'Folder name:'
+                    message: 'Folder name for import or none for new:'
                 }).then(function (snippetAnswer) {
-                    var count = snippetConverter.processSnippetFolder(snippetAnswer.snippetPath, generator);
+                    var count = 0;
+                    var snippetPath = snippetAnswer.snippetPath;
+
+                    if (typeof snippetPath === 'string' && snippetPath.length > 0) {
+                        snippetConverter.processSnippetFolder(snippetPath, generator);
+                    } else {
+                        generator.extensionConfig.snippets = {};
+                        generator.extensionConfig.languageId = null;
+                    }
+
                     if (count < 0) {
                         return snippetPrompt();
                     }
@@ -329,7 +340,7 @@ module.exports = yeoman.Base.extend({
 
                 if (addExtensionsAnswer.addExtensions) {
                     return new Promise(function (resolve, reject) {
-                        childProcess.exec('code --list-extensions', function(error, stdout, stderr) {
+                        childProcess.exec('code --list-extensions', function (error, stdout, stderr) {
                             if (error) {
                                 generator.env.error("Problems starting Code: " + error);
                             } else {
@@ -458,6 +469,11 @@ module.exports = yeoman.Base.extend({
                     {
                         name: "Light",
                         value: "vs"
+                    },
+,
+                    {
+                        name: "High Contrast",
+                        value: "hc-black"
                     }
                 ]
             }).then(function (themeBase) {
@@ -600,13 +616,19 @@ module.exports = yeoman.Base.extend({
     _writingColorTheme: function () {
 
         var context = this.extensionConfig;
+        if (!context.themeFileName) {
+            context.themeFileName = context.themeName + '.tmTheme';
+
+            this.template(this.sourceRoot() + '/themes/new.tmTheme', context.name + '/themes/' + context.themeFileName, context);
+        } else {
+            this.template(this.sourceRoot() + '/themes/theme.tmTheme', context.name + '/themes/' + context.themeFileName, context);
+        }
 
         this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
         this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
-        this.template(this.sourceRoot() + '/themes/theme.tmTheme', context.name + '/themes/' + context.themeFileName, context);
     },
 
     // Write Language Extension
