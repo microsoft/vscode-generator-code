@@ -7,12 +7,10 @@ var yeoman = require('yeoman-generator');
 var yosay = require('yosay');
 
 var path = require('path');
-var fs = require('fs');
-var request = require('request');
-var plistParser = require('./plistParser');
 var validator = require('./validator');
 var snippetConverter = require('./snippetConverter');
 var themeConverter = require('./themeConverter');
+var grammarConverter = require('./grammarConverter');
 var env = require('./env');
 var childProcess = require('child_process');
 var chalk = require('chalk');
@@ -146,101 +144,7 @@ module.exports = yeoman.Base.extend({
                 name: 'tmLanguageURL',
                 message: 'URL or file to import, or none for new:',
             }).then(function (urlAnswer) {
-                generator.extensionConfig.languageId = '';
-                generator.extensionConfig.languageName = '';
-                generator.extensionConfig.languageScopeName = '';
-                generator.extensionConfig.languageExtensions = [];
-
-                var location = urlAnswer.tmLanguageURL;
-                if (!location) {
-                    generator.extensionConfig.languageContent = '';
-                    return Promise.resolve();
-                }
-
-                function processContent(extensionConfig, fileName, body) {
-                    if (body.indexOf('<!DOCTYPE plist') === -1) {
-                        generator.env.error("Language definition file does not contain 'DOCTYPE plist'. Make sure the file content is really plist-XML.");
-                    }
-                    var result = plistParser.parse(body);
-                    if (result.value) {
-                        var languageInfo = result.value;
-
-                        extensionConfig.languageName = languageInfo.name || '';
-
-                        // evaluate language id
-                        var languageId = '';
-                        var languageScopeName;
-
-                        if (languageInfo.scopeName) {
-                            languageScopeName = languageInfo.scopeName;
-
-                            var lastIndexOfDot = languageInfo.scopeName.lastIndexOf('.');
-                            if (lastIndexOfDot) {
-                                languageId = languageInfo.scopeName.substring(lastIndexOfDot + 1);
-                            }
-                        }
-                        if (!languageId && fileName) {
-                            var lastIndexOfDot2 = fileName.lastIndexOf('.');
-                            if (lastIndexOfDot2 && fileName.substring(lastIndexOfDot2 + 1) == 'tmLanguage') {
-                                languageId = fileName.substring(0, lastIndexOfDot2);
-                            }
-                        }
-                        if (!languageId && languageInfo.name) {
-                            languageId = languageInfo.name.toLowerCase().replace(/[^\w-_]/, '');
-                        }
-                        if (!fileName) {
-                            fileName = languageId + '.tmLanguage';
-                        }
-
-                        extensionConfig.languageFileName = sanitize(fileName);
-                        extensionConfig.languageId = languageId;
-                        extensionConfig.name = languageId;
-                        extensionConfig.languageScopeName = languageScopeName;
-
-                        // evaluate file extensions
-                        if (Array.isArray(languageInfo.fileTypes)) {
-                            extensionConfig.languageExtensions = languageInfo.fileTypes.map(function (ft) { return '.' + ft; });
-                        } else {
-                            extensionConfig.languageExtensions = languageId ? ['.' + languageId] : [];
-                        }
-                    }
-                    extensionConfig.languageContent = body;
-                };
-
-                if (location.match(/\w*:\/\//)) {
-                    // load from url
-                    return new Promise(function (resolve, reject) {
-                        request(location, function (error, response, body) {
-                            if (!error && response.statusCode == 200) {
-                                var contentDisposition = response.headers['content-disposition'];
-                                var fileName = '';
-                                if (contentDisposition) {
-                                    var fileNameMatch = contentDisposition.match(/filename="([^"]*)/);
-                                    if (fileNameMatch) {
-                                        fileName = fileNameMatch[1];
-                                    }
-                                }
-                                processContent(generator.extensionConfig, fileName, body);
-                            } else {
-                                generator.env.error("Problems loading language definition file: " + error);
-                            }
-                            resolve();
-                        });
-                    });
-                } else {
-                    // load from disk
-                    var body = null;
-                    try {
-                        body = fs.readFileSync(location);
-                    } catch (error) {
-                        generator.env.error("Problems loading language definition file: " + error.message);
-                    }
-                    if (body) {
-                        processContent(generator.extensionConfig, path.basename(location), body.toString());
-                    } else {
-                        generator.env.error("Problems loading language definition file: Not found");
-                    }
-                }
+                return grammarConverter.convertGrammar(urlAnswer.tmLanguageURL, generator.extensionConfig);
             });
         },
 
@@ -605,7 +509,7 @@ module.exports = yeoman.Base.extend({
 
             this.template(this.sourceRoot() + '/syntaxes/new.tmLanguage.json', context.name + '/syntaxes/' + context.languageFileName, context);
         } else {
-            this.template(this.sourceRoot() + '/syntaxes/language.tmLanguage', context.name + '/syntaxes/' + context.languageFileName, context);
+            this.template(this.sourceRoot() + '/syntaxes/language.tmLanguage', context.name + '/syntaxes/' + sanitize(context.languageFileName), context);
         }
 
         this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
