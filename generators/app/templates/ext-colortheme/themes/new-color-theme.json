@@ -16,35 +16,35 @@
 			}
 		},
 		{
-			"name": "Comment",
+			"name": "Comments",
 			"scope": "comment",
 			"settings": {
 				"foreground": "#384887"
 			}
 		},
 		{
-			"name": "String",
+			"name": "Strings",
 			"scope": "string",
 			"settings": {
 				"foreground": "#22aa44"
 			}
 		},
 		{
-			"name": "Number",
+			"name": "Numbers",
 			"scope": "constant.numeric",
 			"settings": {
 				"foreground": "#f280d0"
 			}
 		},
 		{
-			"name": "Built-in constant",
+			"name": "Built-in constants",
 			"scope": "constant.language",
 			"settings": {
 				"foreground": "#f280d0"
 			}
 		},
 		{
-			"name": "User-defined constant",
+			"name": "User-defined constants",
 			"scope": [
 				"constant.character",
 				"constant.other"
@@ -54,14 +54,14 @@
 			}
 		},
 		{
-			"name": "Variable",
+			"name": "Variables",
 			"scope": "variable",
 			"settings": {
 				"fontStyle": ""
 			}
 		},
 		{
-			"name": "Keyword",
+			"name": "Keywords",
 			"scope": "keyword",
 			"settings": {
 				"foreground": "#225588"
@@ -76,7 +76,7 @@
 			}
 		},
 		{
-			"name": "Storage type",
+			"name": "Storage types",
 			"scope": "storage.type",
 			"settings": {
 				"fontStyle": "italic",
@@ -84,7 +84,7 @@
 			}
 		},
 		{
-			"name": "Class name",
+			"name": "Class names",
 			"scope": [
 				"entity.name.class",
 				"entity.name.type"
@@ -103,7 +103,7 @@
 			}
 		},
 		{
-			"name": "Function name",
+			"name": "Function names",
 			"scope": "entity.name.function",
 			"settings": {
 				"fontStyle": "",
@@ -111,7 +111,7 @@
 			}
 		},
 		{
-			"name": "Function argument",
+			"name": "Function arguments",
 			"scope": "variable.parameter",
 			"settings": {
 				"fontStyle": "italic",
@@ -119,7 +119,7 @@
 			}
 		},
 		{
-			"name": "Tag name",
+			"name": "Tag names",
 			"scope": "entity.name.tag",
 			"settings": {
 				"fontStyle": "",
@@ -127,7 +127,7 @@
 			}
 		},
 		{
-			"name": "Tag attribute",
+			"name": "Tag attributes",
 			"scope": "entity.other.attribute-name",
 			"settings": {
 				"fontStyle": "",
@@ -135,7 +135,7 @@
 			}
 		},
 		{
-			"name": "Library function",
+			"name": "Library functions",
 			"scope": "support.function",
 			"settings": {
 				"fontStyle": "",
@@ -143,7 +143,7 @@
 			}
 		},
 		{
-			"name": "Library constant",
+			"name": "Library constants",
 			"scope": "support.constant",
 			"settings": {
 				"fontStyle": "",
@@ -151,7 +151,7 @@
 			}
 		},
 		{
-			"name": "Library class/type",
+			"name": "Library classes/types",
 			"scope": [
 				"support.type",
 				"support.class"
@@ -162,26 +162,9 @@
 			}
 		},
 		{
-			"name": "Library variable",
-			"scope": "support.other.variable",
-			"settings": {
-				"fontStyle": ""
-			}
-		},
-		{
 			"name": "Invalid",
 			"scope": "invalid",
 			"settings": {
-				"background": "#F92672",
-				"fontStyle": "",
-				"foreground": "#F8F8F0"
-			}
-		},
-		{
-			"name": "Invalid deprecated",
-			"scope": "invalid.deprecated",
-			"settings": {
-				"background": "#AE81FF",
 				"foreground": "#F8F8F0"
 			}
 		},
@@ -192,7 +175,6 @@
 				"meta.diff.header"
 			],
 			"settings": {
-				"background": "#b58900",
 				"fontStyle": "italic",
 				"foreground": "#E0EDDD"
 			}
@@ -201,8 +183,6 @@
 			"name": "diff: deleted",
 			"scope": "markup.deleted",
 			"settings": {
-				"background": "#eee8d5",
-				"fontStyle": "",
 				"foreground": "#dc322f"
 			}
 		},
@@ -210,8 +190,6 @@
 			"name": "diff: changed",
 			"scope": "markup.changed",
 			"settings": {
-				"background": "#eee8d5",
-				"fontStyle": "",
 				"foreground": "#cb4b16"
 			}
 		},
@@ -219,7 +197,6 @@
 			"name": "diff: inserted",
 			"scope": "markup.inserted",
 			"settings": {
-				"background": "#eee8d5",
 				"foreground": "#219186"
 			}
 		},
@@ -244,7 +221,6 @@
 			"name": "Markup Inline",
 			"scope": "markup.inline.raw",
 			"settings": {
-				"fontStyle": "",
 				"foreground": "#9966b8"
 			}
 		},
@@ -252,7 +228,6 @@
 			"name": "Markup Setext Header",
 			"scope": "markup.heading.setext",
 			"settings": {
-				"fontStyle": "",
 				"foreground": "#ddbb88"
 			}
 		}

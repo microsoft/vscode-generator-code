@@ -80,7 +80,7 @@ function processContent(extensionConfig, tmThemeFileName, body) {
         extensionConfig.tmThemeContent = body;
     }
     extensionConfig.themeName = themeName;
-    extensionConfig.name = 'theme-' + themeName.toLowerCase().replace(/[^\w-]/, '');
+    extensionConfig.displayName = themeName;
 };
 
 // mapping from old tmTheme setting to new workbench color ids

@@ -97,7 +97,7 @@ module.exports = yeoman.Base.extend({
             return generator.prompt({
                 type: 'list',
                 name: 'themeImportType',
-                message: 'Do you want to import or convert an existing color theme?',
+                message: 'Do you want to import or convert an existing TextMate color theme?',
                 choices: [
                     {
                         name: 'Import an existing theme but keep it as tmTheme file.',
@@ -108,15 +108,15 @@ module.exports = yeoman.Base.extend({
                         value: 'import-inline'
                     },
                     {
-                        name: 'Start without any existing colors',
+                        name: 'Start fresh',
                         value: 'new'
                     }
                 ]
             }).then(function (answer) {
                 let inline = true;
-                generator.log("Enter the location (URL (http, https) or file name) of the syntax token , e.g., http://www.monokai.nl/blog/wp-content/asdev/Monokai.tmTheme or press ENTER to start with an new theme.");
                 let type = answer.themeImportType;
                 if (type === 'import-keep' || type === 'import-inline') {
+                    generator.log("Enter the location (URL (http, https) or file name) of the tmTheme file, e.g., http://www.monokai.nl/blog/wp-content/asdev/Monokai.tmTheme.");
                     return generator.prompt({
                         type: 'input',
                         name: 'themeURL',
@@ -489,6 +489,7 @@ module.exports = yeoman.Base.extend({
         }
         context.themeFileName = sanitize(context.themeName + '-color-theme.json');
         if (context.themeContent) {
+            context.themeContent.name = context.themeName;
             this.template(this.sourceRoot() + '/themes/color-theme.json', context.name + '/themes/' + context.themeFileName, context);
         } else {
             this.template(this.sourceRoot() + '/themes/new-color-theme.json', context.name + '/themes/' + context.themeFileName, context);
