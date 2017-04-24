@@ -18,6 +18,21 @@
             "cwd": "${workspaceRoot}",
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Mocha Tests",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+            "args": [
+                "-u",
+                "tdd",
+                "--timeout",
+                "999999",
+                "--colors",
+                "${workspaceRoot}/test"
+            ],
+            "internalConsoleOptions": "openOnSessionStart"
         }
     ]
 }

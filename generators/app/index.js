@@ -12,9 +12,11 @@ var request = require('request');
 var plistParser = require('./plistParser');
 var validator = require('./validator');
 var snippetConverter = require('./snippetConverter');
+var themeConverter = require('./themeConverter');
 var env = require('./env');
 var childProcess = require('child_process');
 var chalk = require('chalk');
+var sanitize = require("sanitize-filename");
 
 module.exports = yeoman.Base.extend({
 
@@ -94,76 +96,38 @@ module.exports = yeoman.Base.extend({
                 return Promise.resolve();
             }
             generator.extensionConfig.isCustomization = true;
-
-            generator.log("URL (http, https) or file name of the tmTheme file, e.g., http://www.monokai.nl/blog/wp-content/asdev/Monokai.tmTheme or press ENTER to start with an new theme.");
             return generator.prompt({
-                type: 'input',
-                name: 'themeURL',
-                message: 'URL or file name to import, or none for new:'
-            }).then(function (urlAnswer) {
-                var location = urlAnswer.themeURL;
-
-                function processContent(extensionConfig, fileName, body) {
-                    var themeNameMatch = body.match(/<key>name<\/key>\s*<string>([^<]*)/);
-                    var themeName = themeNameMatch ? themeNameMatch[1] : '';
-
-                    if (fileName && fileName.indexOf('.tmTheme') === -1) {
-                        fileName = fileName + '.tmTheme';
+                type: 'list',
+                name: 'themeImportType',
+                message: 'Do you want to import or convert an existing color theme?',
+                choices: [
+                    {
+                        name: 'Import an existing theme but keep it as tmTheme file.',
+                        value: 'import-keep'
+                    },
+                    {
+                        name: 'Import an existing theme and inline it in the Visual Studio Code color theme file.',
+                        value: 'import-inline'
+                    },
+                    {
+                        name: 'Start without any existing colors',
+                        value: 'new'
                     }
-
-                    if (!fileName) {
-                        fileName = 'theme.tmTheme';
-                    }
-
-                    extensionConfig.themeFileName = fileName;
-                    extensionConfig.themeContent = body;
-                    extensionConfig.themeName = themeName;
-                    extensionConfig.name = 'theme-' + themeName.toLowerCase().replace(/[^\w-]/, '');
-                };
-                if (!location) {
-                    generator.extensionConfig.themeFileName = '';
-                    generator.extensionConfig.themeContent = '';
-                } else if (location.match(/\w*:\/\//)) {
-                    // load from url
-                    return new Promise(function (resolve, reject) {
-                        request(location, function (error, response, body) {
-                            if (!error && response.statusCode == 200) {
-                                var contentDisposition = response.headers['content-disposition'];
-                                var fileName = '';
-
-                                if (contentDisposition) {
-                                    var fileNameMatch = contentDisposition.match(/filename="([^"]*)/);
-                                    if (fileNameMatch) {
-                                        fileName = fileNameMatch[1];
-                                    }
-                                }
-                                if (!fileName) {
-                                    var lastSlash = location.lastIndexOf('/');
-                                    if (lastSlash) {
-                                        fileName = location.substr(lastSlash + 1);
-                                    }
-                                }
-
-                                processContent(generator.extensionConfig, fileName, body);
-                            } else {
-                                generator.env.error("Problems loading theme: " + error);
-                            }
-                            resolve();
-                        });
+                ]
+            }).then(function (answer) {
+                let inline = true;
+                generator.log("Enter the location (URL (http, https) or file name) of the syntax token , e.g., http://www.monokai.nl/blog/wp-content/asdev/Monokai.tmTheme or press ENTER to start with an new theme.");
+                let type = answer.themeImportType;
+                if (type === 'import-keep' || type === 'import-inline') {
+                    return generator.prompt({
+                        type: 'input',
+                        name: 'themeURL',
+                        message: 'URL or file name to import:'
+                    }).then(function (urlAnswer) {
+                        return themeConverter.convertTheme(urlAnswer.themeURL, generator.extensionConfig, type === 'import-inline');
                     });
                 } else {
-                    // load from disk
-                    var body = null;
-                    try {
-                        body = fs.readFileSync(location);
-                    } catch (error) {
-                        generator.env.error("Problems loading theme: " + error.message);
-                    }
-                    if (body) {
-                        processContent(generator.extensionConfig, path.basename(location), body.toString());
-                    } else {
-                        generator.env.error("Problems loading theme: Not found");
-                    }
+                    return themeConverter.convertTheme(null, generator.extensionConfig, false);
                 }
             });
         },
@@ -228,7 +192,7 @@ module.exports = yeoman.Base.extend({
                             fileName = languageId + '.tmLanguage';
                         }
 
-                        extensionConfig.languageFileName = fileName;
+                        extensionConfig.languageFileName = sanitize(fileName);
                         extensionConfig.languageId = languageId;
                         extensionConfig.name = languageId;
                         extensionConfig.languageScopeName = languageScopeName;
@@ -616,12 +580,14 @@ module.exports = yeoman.Base.extend({
     _writingColorTheme: function () {
 
         var context = this.extensionConfig;
-        if (!context.themeFileName) {
-            context.themeFileName = context.themeName + '.tmTheme';
-
-            this.template(this.sourceRoot() + '/themes/new.tmTheme', context.name + '/themes/' + context.themeFileName, context);
+        if (context.tmThemeFileName) {
+            this.template(this.sourceRoot() + '/themes/theme.tmTheme', context.name + '/themes/' + context.tmThemeFileName, context);
+        }
+        context.themeFileName = sanitize(context.themeName + '-color-theme.json');
+        if (context.themeContent) {
+            this.template(this.sourceRoot() + '/themes/color-theme.json', context.name + '/themes/' + context.themeFileName, context);
         } else {
-            this.template(this.sourceRoot() + '/themes/theme.tmTheme', context.name + '/themes/' + context.themeFileName, context);
+            this.template(this.sourceRoot() + '/themes/new-color-theme.json', context.name + '/themes/' + context.themeFileName, context);
         }
 
         this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
@@ -635,7 +601,7 @@ module.exports = yeoman.Base.extend({
     _writingLanguage: function () {
         var context = this.extensionConfig;
         if (!context.languageContent) {
-            context.languageFileName = context.languageId + '.tmLanguage.json';
+            context.languageFileName = sanitize(context.languageId + '.tmLanguage.json');
 
             this.template(this.sourceRoot() + '/syntaxes/new.tmLanguage.json', context.name + '/syntaxes/' + context.languageFileName, context);
         } else {

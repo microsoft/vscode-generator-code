@@ -33,11 +33,12 @@
     "postversion": "git push && git push --tags"
   },
   "dependencies": {
+    "chalk": "^1.1.3",
+    "request": "^2.81.0",
+    "sanitize-filename": "^1.6.1",
+    "sax": "^1.2.2",
     "yeoman-generator": "^0.24.1",
-    "yosay": "^1.2.1",
-    "request": "^2.76.0",
-    "sax": "^1.2.1",
-    "chalk": "^1.1.3"
+    "yosay": "^1.2.1"
   },
   "devDependencies": {
     "mocha": "^3.1.2",

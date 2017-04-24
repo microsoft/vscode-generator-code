@@ -13,6 +13,7 @@ describe('test code generator', function () {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
                 type: 'ext-colortheme',
+                themeImportType: 'import-keep',
                 themeURL: 'http://www.monokai.nl/blog/wp-content/asdev/Monokai.tmTheme',
                 name: 'testTheme',
                 displayName: 'Test Theme',
@@ -22,7 +23,7 @@ describe('test code generator', function () {
                 themeBase: 'vs-dark',
             }) // Mock the prompt answers
             .toPromise().then(function () {
-                var expected = {
+                var expectedPackageJSON = {
                     "name": "testTheme",
                     "displayName": "Test Theme",
                     "description": "My TestTheme",
@@ -39,18 +40,35 @@ describe('test code generator', function () {
                             {
                                 "label": "Green",
                                 "uiTheme": "vs-dark",
-                                "path": "./themes/Monokai.tmTheme"
+                                "path": "./themes/Green-color-theme.json"
                             }
                         ]
                     }
                 };
+                var expectedColorTheme = {
+                    "name": "Green",
+                    "colors": {
+                        "editorBackground": "#272822",
+                        "editorCursor": "#F8F8F0",
+                        "editorForeground": "#F8F8F2",
+                        "editorLineHighlight": "#3E3D32",
+                        "editorSelection": "#49483E",
+                        "editorWhitespaces": "#3B3A32"
+                    },
+                    "tokenColors": "./themes/Monokai.tmTheme"
+                };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Monokai.tmTheme', 'vsc-extension-quickstart.md']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Green-color-theme.json', 'themes/Monokai.tmTheme', 'vsc-extension-quickstart.md']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
                     var actual = JSON.parse(body);
-                    assert.deepEqual(expected, actual);
+                    assert.deepEqual(actual, expectedPackageJSON);
+
+                    body = fs.readFileSync('themes/Green-color-theme.json', 'utf8');
+
+                    actual = JSON.parse(body);
+                    assert.deepEqual(actual, expectedColorTheme);
 
                     done();
                 } catch (e) {
@@ -64,7 +82,7 @@ describe('test code generator', function () {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
                 type: 'ext-colortheme',
-                themeURL: '',
+                themeImportType: 'new',
                 name: 'testTheme',
                 displayName: 'Test Theme',
                 description: 'My TestTheme',
@@ -73,7 +91,7 @@ describe('test code generator', function () {
                 themeBase: 'vs',
             }) // Mock the prompt answers
             .toPromise().then(function () {
-                var expected = {
+                var expectedPackageJSON = {
                     "name": "testTheme",
                     "displayName": "Test Theme",
                     "description": "My TestTheme",
@@ -90,20 +108,26 @@ describe('test code generator', function () {
                             {
                                 "label": "Funky",
                                 "uiTheme": "vs",
-                                "path": "./themes/Funky.tmTheme"
+                                "path": "./themes/Funky-color-theme.json"
                             }
                         ]
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Funky.tmTheme', 'vsc-extension-quickstart.md']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Funky-color-theme.json', 'vsc-extension-quickstart.md']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
                     var actual = JSON.parse(body);
 
-                    assert.deepEqual(expected, actual);
+                    assert.deepEqual(actual, expectedPackageJSON);
 
+                    body = fs.readFileSync('themes/Funky-color-theme.json', 'utf8');
+
+                    actual = JSON.parse(body);
+
+                    assert.equal(actual.name, "Funky");
+                    assert.equal(actual.colors.editorBackground, "#000c18");
                     done();
                 } catch (e) {
                     done(e);

@@ -1,0 +1,5 @@
+{
+	"name": <%-JSON.stringify(themeName)%>,
+    "colors": <%-JSON.stringify(themeContent.colors, null, '\t')%>,
+    "tokenColors": <%-JSON.stringify(themeContent.tokenColors, null, '\t')%>
+}
