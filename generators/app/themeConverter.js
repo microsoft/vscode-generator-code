@@ -143,7 +143,7 @@ function migrate(content, tmThemeFileName) {
             if (!tmThemeFileName) {
                 result.tokenColors = settings;
             } else {
-                result.tokenColors = './themes/' + tmThemeFileName;
+                result.tokenColors = './' + tmThemeFileName;
             }
             result.colors = colorMap;
         }
