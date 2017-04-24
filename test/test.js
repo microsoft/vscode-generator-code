@@ -55,7 +55,7 @@ describe('test code generator', function () {
                         "editorSelection": "#49483E",
                         "editorWhitespaces": "#3B3A32"
                     },
-                    "tokenColors": "./themes/Monokai.tmTheme"
+                    "tokenColors": "./Monokai.tmTheme"
                 };
                 try {
                     assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Green-color-theme.json', 'themes/Monokai.tmTheme', 'vsc-extension-quickstart.md']);
