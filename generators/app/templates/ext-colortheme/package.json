@@ -14,7 +14,6 @@
         "themes": [
             {
                 "label": <%- JSON.stringify(themeName) %>,
-                "uiTheme": <%- JSON.stringify(themeBase) %>,
                 "path": <%- JSON.stringify("./themes/" + themeFileName) %>
             }
         ]
