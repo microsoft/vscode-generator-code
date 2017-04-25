@@ -319,7 +319,7 @@ module.exports = yeoman.Base.extend({
             });
         },
 
-        askForThemeType: function () {
+        askForBaseTheme: function () {
             var generator = this;
             if (generator.extensionConfig.type !== 'ext-colortheme') {
                 return Promise.resolve();
@@ -327,25 +327,25 @@ module.exports = yeoman.Base.extend({
 
             return generator.prompt({
                 type: 'list',
-                name: 'themeType',
-                message: 'Select a theme type:',
+                name: 'themeBase',
+                message: 'Select a base theme:',
                 choices: [
                     {
                         name: "Dark",
-                        value: "dark"
+                        value: "vs-dark"
                     },
                     {
                         name: "Light",
-                        value: "light"
+                        value: "vs"
                     },
 ,
                     {
                         name: "High Contrast",
-                        value: "hc"
+                        value: "hc-black"
                     }
                 ]
             }).then(function (themeBase) {
-                generator.extensionConfig.themeType = themeBase.themeType;
+                generator.extensionConfig.themeBase = themeBase.themeBase;
             });
         },
 
@@ -490,7 +490,6 @@ module.exports = yeoman.Base.extend({
         context.themeFileName = sanitize(context.themeName + '-color-theme.json');
         if (context.themeContent) {
             context.themeContent.name = context.themeName;
-            context.themeContent.type = context.themeType;
             this.template(this.sourceRoot() + '/themes/color-theme.json', context.name + '/themes/' + context.themeFileName, context);
         } else {
             this.template(this.sourceRoot() + '/themes/new-color-theme.json', context.name + '/themes/' + context.themeFileName, context);

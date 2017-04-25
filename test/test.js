@@ -20,7 +20,7 @@ describe('test code generator', function () {
                 description: 'My TestTheme',
                 publisher: 'Microsoft',
                 themeName: 'Green',
-                themeType: 'dark',
+                themeBase: 'vs-dark',
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expectedPackageJSON = {
@@ -39,6 +39,7 @@ describe('test code generator', function () {
                         "themes": [
                             {
                                 "label": "Green",
+                                "uiTheme": "vs-dark",
                                 "path": "./themes/Green-color-theme.json"
                             }
                         ]
@@ -46,7 +47,6 @@ describe('test code generator', function () {
                 };
                 var expectedColorTheme = {
                     "name": "Green",
-                    "type": "dark",
                     "colors": {
                         "editorBackground": "#272822",
                         "editorCursor": "#F8F8F0",
@@ -88,7 +88,7 @@ describe('test code generator', function () {
                 description: 'My TestTheme',
                 publisher: 'Microsoft',
                 themeName: 'Funky',
-                themeType: 'light',
+                themeBase: 'vs',
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expectedPackageJSON = {
@@ -107,6 +107,7 @@ describe('test code generator', function () {
                         "themes": [
                             {
                                 "label": "Funky",
+                                "uiTheme": "vs",
                                 "path": "./themes/Funky-color-theme.json"
                             }
                         ]
@@ -126,7 +127,6 @@ describe('test code generator', function () {
                     actual = JSON.parse(body);
 
                     assert.equal(actual.name, "Funky");
-                    assert.equal(actual.type, "light");
                     assert.equal(actual.colors.editorBackground, "#000c18");
                     done();
                 } catch (e) {
