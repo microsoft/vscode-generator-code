@@ -314,6 +314,7 @@ module.exports = yeoman.Base.extend({
                 name: 'themeName',
                 message: 'What\'s the name of your theme shown to the user?',
                 default: generator.extensionConfig.themeName,
+                validate: validator.validateNonEmpty
             }).then(function (nameAnswer) {
                 generator.extensionConfig.themeName = nameAnswer.themeName;
             });
@@ -338,7 +339,6 @@ module.exports = yeoman.Base.extend({
                         name: "Light",
                         value: "vs"
                     },
-,
                     {
                         name: "High Contrast",
                         value: "hc-black"
