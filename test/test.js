@@ -48,12 +48,12 @@ describe('test code generator', function () {
                 var expectedColorTheme = {
                     "name": "Green",
                     "colors": {
-                        "editorBackground": "#272822",
-                        "editorCursor": "#F8F8F0",
-                        "editorForeground": "#F8F8F2",
-                        "editorLineHighlight": "#3E3D32",
-                        "editorSelection": "#49483E",
-                        "editorWhitespaces": "#3B3A32"
+                        "editor.background": "#272822",
+                        "editorCursor.foreground": "#F8F8F0",
+                        "editor.foreground": "#F8F8F2",
+                        "editor.lineHighlightBackground": "#3E3D32",
+                        "editor.selectionBackground": "#49483E",
+                        "editorWhitespace.foreground": "#3B3A32"
                     },
                     "tokenColors": "./Monokai.tmTheme"
                 };
