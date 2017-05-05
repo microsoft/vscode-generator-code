@@ -338,6 +338,32 @@ describe('test code generator', function () {
                         }]
                     }
                 };
+                var expectedSnippet = {
+                    "ase": {
+                        "prefix": "ase",
+                        "body": "self.assertEqual(${1:expected}, ${2:actual}${3:, '${4:message}'})$0",
+                        "description": "Assert Equal",
+                        "scope": "source.python"
+                    },
+                    "asne": {
+                        "prefix": "asne",
+                        "body": "self.assertNotEqual(${1:expected}, ${2:actual}${3:, '${4:message}'})$0",
+                        "description": "Assert Not Equal",
+                        "scope": "source.python"
+                    },
+                    "as": {
+                        "prefix": "as",
+                        "body": "self.assert_(${1:boolean expression}${2:, '${3:message}'})$0",
+                        "description": "Assert",
+                        "scope": "source.python"
+                    },
+                    "tab": {
+                        "prefix": "tab",
+                        "body": "\ttab()",
+                        "description": "Tab In Body",
+                        "scope": "source.python"
+                    }
+                };
                 try {
                     assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'snippets/snippets.json', 'vsc-extension-quickstart.md']);
 
@@ -345,6 +371,11 @@ describe('test code generator', function () {
 
                     var actual = JSON.parse(body);
                     assert.deepEqual(expected, actual);
+
+                    var snippet = fs.readFileSync('snippets/snippets.json', 'utf8');
+
+                    var actualSnippet = JSON.parse(snippet);
+                    assert.deepEqual(expectedSnippet, actualSnippet);
 
                     done();
                 } catch (e) {
