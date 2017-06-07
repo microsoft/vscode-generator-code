@@ -127,7 +127,7 @@ describe('test code generator', function () {
                     actual = JSON.parse(body);
 
                     assert.equal(actual.name, "Funky");
-                    assert.equal(actual.colors.editorBackground, "#000c18");
+                    assert.equal(actual.colors['editor.background'], "#ffffff");
                     done();
                 } catch (e) {
                     done(e);

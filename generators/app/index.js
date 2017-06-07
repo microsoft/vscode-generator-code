@@ -492,7 +492,13 @@ module.exports = yeoman.Base.extend({
             context.themeContent.name = context.themeName;
             this.template(this.sourceRoot() + '/themes/color-theme.json', context.name + '/themes/' + context.themeFileName, context);
         } else {
-            this.template(this.sourceRoot() + '/themes/new-color-theme.json', context.name + '/themes/' + context.themeFileName, context);
+            if (context.themeBase === 'vs') {
+                this.template(this.sourceRoot() + '/themes/new-light-color-theme.json', context.name + '/themes/' + context.themeFileName, context);
+            } else if (context.themeBase === 'hc') {
+                this.template(this.sourceRoot() + '/themes/new-hc-color-theme.json', context.name + '/themes/' + context.themeFileName, context);
+            } else {
+                this.template(this.sourceRoot() + '/themes/new-dark-color-theme.json', context.name + '/themes/' + context.themeFileName, context);
+            }
         }
 
         this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
