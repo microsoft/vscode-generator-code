@@ -78,6 +78,75 @@ describe('test code generator', function () {
             }, done);
     });
 
+    it('theme import from file', function (done) {
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-colortheme',
+                themeImportType: 'import-keep',
+                themeURL: path.join(__dirname, 'fixtures/themes/new theme.tmTheme'),
+                name: 'testTheme',
+                displayName: 'Test Theme',
+                description: 'My TestTheme',
+                publisher: 'Microsoft',
+                themeName: 'Green',
+                themeBase: 'vs-dark',
+            }) // Mock the prompt answers
+            .toPromise().then(function () {
+                var expectedPackageJSON = {
+                    "name": "testTheme",
+                    "displayName": "Test Theme",
+                    "description": "My TestTheme",
+                    "version": "0.0.1",
+                    "publisher": 'Microsoft',
+                    "engines": {
+                        "vscode": env.vsCodeEngine
+                    },
+                    "categories": [
+                        "Themes"
+                    ],
+                    "contributes": {
+                        "themes": [
+                            {
+                                "label": "Green",
+                                "uiTheme": "vs-dark",
+                                "path": "./themes/Green-color-theme.json"
+                            }
+                        ]
+                    }
+                };
+                var expectedColorTheme = {
+                    "name": "Green",
+                    "colors": {
+                        "editor.background": "#002B36",
+                        "editor.foreground": "#839496",
+                        "editor.lineHighlightBackground": "#073642",
+                        "editor.selectionBackground": "#073642",
+                        "editorCursor.foreground": "#819090",
+                        "editorWhitespace.foreground": "#073642"
+                    },
+                    "tokenColors": "./new theme.tmTheme"
+                };
+                try {
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Green-color-theme.json', 'themes/new theme.tmTheme', 'vsc-extension-quickstart.md']);
+
+                    var body = fs.readFileSync('package.json', 'utf8');
+
+                    var actual = JSON.parse(body);
+                    assert.deepEqual(actual, expectedPackageJSON);
+
+                    body = fs.readFileSync('themes/Green-color-theme.json', 'utf8');
+
+                    actual = JSON.parse(body);
+                    assert.deepEqual(actual, expectedColorTheme);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+
+            }, done);
+    });
+
     it('theme new', function (done) {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
