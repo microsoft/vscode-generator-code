@@ -19,7 +19,7 @@ We pass the function containing the implementation of the command as the second 
 
 ## Make changes
 * you can relaunch the extension from the debug toolbar after changing code in `extension.js`
-* you can also reload (`Ctrl+R` or `Cmd+R` on Mac) the VS Code window with your extension to load your changes
+* you can also reload (`Ctrl+Shift+F5` or `Cmd+Shift+F5` on Mac) the VS Code window with your extension to load your changes
 
 ## Explore the API
 * you can open the full set of our API when you open the file `node_modules/vscode/vscode.d.ts`
