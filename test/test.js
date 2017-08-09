@@ -9,6 +9,14 @@ var fs = require('fs');
 describe('test code generator', function () {
     this.timeout(10000);
 
+    let engineVersion;
+    before(function () {
+        return env.getLatestVSCodeVersion().then(function(version) {
+            console.info('    expecting engine version ' + version);
+            engineVersion = version;
+        });
+    });
+
     it('theme import', function (done) {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
@@ -30,7 +38,7 @@ describe('test code generator', function () {
                     "version": "0.0.1",
                     "publisher": 'Microsoft',
                     "engines": {
-                        "vscode": env.vsCodeEngine
+                        "vscode": engineVersion
                     },
                     "categories": [
                         "Themes"
@@ -99,7 +107,7 @@ describe('test code generator', function () {
                     "version": "0.0.1",
                     "publisher": 'Microsoft',
                     "engines": {
-                        "vscode": env.vsCodeEngine
+                        "vscode": engineVersion
                     },
                     "categories": [
                         "Themes"
@@ -167,7 +175,7 @@ describe('test code generator', function () {
                     "version": "0.0.1",
                     "publisher": 'Microsoft',
                     "engines": {
-                        "vscode": env.vsCodeEngine
+                        "vscode": engineVersion
                     },
                     "categories": [
                         "Themes"
@@ -228,7 +236,7 @@ describe('test code generator', function () {
                     "version": "0.0.1",
                     "publisher": 'Microsoft',
                     "engines": {
-                        "vscode": env.vsCodeEngine
+                        "vscode": engineVersion
                     },
                     "categories": [
                         "Languages"
@@ -285,7 +293,7 @@ describe('test code generator', function () {
                     "version": "0.0.1",
                     "publisher": 'Microsoft',
                     "engines": {
-                        "vscode": env.vsCodeEngine
+                        "vscode": engineVersion
                     },
                     "categories": [
                         "Languages"
@@ -346,7 +354,7 @@ describe('test code generator', function () {
                     "version": "0.0.1",
                     "publisher": 'Microsoft',
                     "engines": {
-                        "vscode": env.vsCodeEngine
+                        "vscode": engineVersion
                     },
                     "categories": [
                         "Snippets"
@@ -395,7 +403,7 @@ describe('test code generator', function () {
                     "version": "0.0.1",
                     "publisher": 'Microsoft',
                     "engines": {
-                        "vscode": env.vsCodeEngine
+                        "vscode": engineVersion
                     },
                     "categories": [
                         "Snippets"
@@ -473,7 +481,7 @@ describe('test code generator', function () {
                     "version": "0.0.1",
                     "publisher": 'Microsoft',
                     "engines": {
-                        "vscode": env.vsCodeEngine
+                        "vscode": engineVersion
                     },
                     "activationEvents": [
                         "onCommand:extension.sayHello"
@@ -537,7 +545,7 @@ describe('test code generator', function () {
                     "version": "0.0.1",
                     "publisher": 'Microsoft',
                     "engines": {
-                        "vscode": env.vsCodeEngine
+                        "vscode": engineVersion
                     },
                     "categories": [
                         "Extension Packs"

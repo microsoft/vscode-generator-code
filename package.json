@@ -30,7 +30,8 @@
     "test": "mocha",
     "prepublish": "npm test",
     "preversion": "npm test",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "postinstall": "node ./scripts/update-env.js"
   },
   "dependencies": {
     "chalk": "^1.1.3",

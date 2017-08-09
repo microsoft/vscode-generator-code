@@ -27,7 +27,6 @@ module.exports = yeoman.Base.extend({
 
         this.extensionConfig = Object.create(null);
         this.extensionConfig.installDependencies = false;
-        this.extensionConfig.vsCodeEngine = env.vsCodeEngine;
     },
 
     initializing: {
@@ -35,6 +34,11 @@ module.exports = yeoman.Base.extend({
         // Welcome
         welcome: function () {
             this.log(yosay('Welcome to the Visual Studio Code Extension generator!'));
+        },
+
+        updateEngineVersion: function() {
+            var extensionConfig = this.extensionConfig;
+            return env.getLatestVSCodeVersion().then(function(version) { extensionConfig.vsCodeEngine = version; });
         }
     },
 
