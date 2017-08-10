@@ -3,10 +3,10 @@
  *--------------------------------------------------------*/
 'use strict';
 var request = require('request');
-var fallbackVersion = require('./env-fallback').vsCodeEngine;
 
-var promise = new Promise(function (resolve, reject) {
-    request.get('https://vscode-update.azurewebsites.net/api/releases/stable', { headers: { "X-API-Version": "2" } }, function (error, response, body) {
+var fallbackVersion = '^1.15.0';
+var promise = new Promise(function(resolve, reject) {
+    request.get('https://vscode-update.azurewebsites.net/api/releases/stable', { headers: { "X-API-Version": "2" } }, function(error, response, body) {
         if (!error && response.statusCode === 200) {
             try {
                 var tagsAndCommits = JSON.parse(body);
@@ -18,13 +18,13 @@ var promise = new Promise(function (resolve, reject) {
                     }
                 }
             } catch (e) {
-                console.log('Problem parsing version: ', e);
+                console.log('Problem parsing version: ' + body, e);
             }
         } else {
-            console.log('Unable to fetch latest vscode version: ' + (error || ('Status code: ' + response.statusCode)));
+            console.log('Unable to fetch latest vscode version: ' + (error || ('Status code: ' + response.statusCode + ', ' + body)));
         }
         resolve(fallbackVersion);
     });
 });
 
-module.exports.getLatestVSCodeVersion = function () { return promise; };
+module.exports.getLatestVSCodeVersion = function() { return promise; };

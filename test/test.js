@@ -6,18 +6,18 @@ var env = require('../generators/app/env');
 
 var fs = require('fs');
 
-describe('test code generator', function () {
+describe('test code generator', function() {
     this.timeout(10000);
 
-    let engineVersion;
-    before(function () {
+    var engineVersion;
+    before(function() {
         return env.getLatestVSCodeVersion().then(function(version) {
             console.info('    expecting engine version ' + version);
             engineVersion = version;
         });
     });
 
-    it('theme import', function (done) {
+    it('theme import', function(done) {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
                 type: 'ext-colortheme',
@@ -30,7 +30,7 @@ describe('test code generator', function () {
                 themeName: 'Green',
                 themeBase: 'vs-dark',
             }) // Mock the prompt answers
-            .toPromise().then(function () {
+            .toPromise().then(function() {
                 var expectedPackageJSON = {
                     "name": "testTheme",
                     "displayName": "Test Theme",
@@ -44,13 +44,11 @@ describe('test code generator', function () {
                         "Themes"
                     ],
                     "contributes": {
-                        "themes": [
-                            {
-                                "label": "Green",
-                                "uiTheme": "vs-dark",
-                                "path": "./themes/Green-color-theme.json"
-                            }
-                        ]
+                        "themes": [{
+                            "label": "Green",
+                            "uiTheme": "vs-dark",
+                            "path": "./themes/Green-color-theme.json"
+                        }]
                     }
                 };
                 var expectedColorTheme = {
@@ -86,7 +84,7 @@ describe('test code generator', function () {
             }, done);
     });
 
-    it('theme import from file', function (done) {
+    it('theme import from file', function(done) {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
                 type: 'ext-colortheme',
@@ -99,7 +97,7 @@ describe('test code generator', function () {
                 themeName: 'Green',
                 themeBase: 'vs-dark',
             }) // Mock the prompt answers
-            .toPromise().then(function () {
+            .toPromise().then(function() {
                 var expectedPackageJSON = {
                     "name": "testTheme",
                     "displayName": "Test Theme",
@@ -113,13 +111,11 @@ describe('test code generator', function () {
                         "Themes"
                     ],
                     "contributes": {
-                        "themes": [
-                            {
-                                "label": "Green",
-                                "uiTheme": "vs-dark",
-                                "path": "./themes/Green-color-theme.json"
-                            }
-                        ]
+                        "themes": [{
+                            "label": "Green",
+                            "uiTheme": "vs-dark",
+                            "path": "./themes/Green-color-theme.json"
+                        }]
                     }
                 };
                 var expectedColorTheme = {
@@ -155,7 +151,7 @@ describe('test code generator', function () {
             }, done);
     });
 
-    it('theme new', function (done) {
+    it('theme new', function(done) {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
                 type: 'ext-colortheme',
@@ -167,7 +163,7 @@ describe('test code generator', function () {
                 themeName: 'Funky',
                 themeBase: 'vs',
             }) // Mock the prompt answers
-            .toPromise().then(function () {
+            .toPromise().then(function() {
                 var expectedPackageJSON = {
                     "name": "testTheme",
                     "displayName": "Test Theme",
@@ -181,13 +177,11 @@ describe('test code generator', function () {
                         "Themes"
                     ],
                     "contributes": {
-                        "themes": [
-                            {
-                                "label": "Funky",
-                                "uiTheme": "vs",
-                                "path": "./themes/Funky-color-theme.json"
-                            }
-                        ]
+                        "themes": [{
+                            "label": "Funky",
+                            "uiTheme": "vs",
+                            "path": "./themes/Funky-color-theme.json"
+                        }]
                     }
                 };
                 try {
@@ -212,7 +206,7 @@ describe('test code generator', function () {
             }, done);
     });
 
-    it('language import', function (done) {
+    it('language import', function(done) {
         this.timeout(10000);
 
         helpers.run(path.join(__dirname, '../generators/app'))
@@ -228,7 +222,7 @@ describe('test code generator', function () {
                 languageScopeName: 'text.xml.ant',
                 languageExtensions: '.ant'
             }) // Mock the prompt answers
-            .toPromise().then(function () {
+            .toPromise().then(function() {
                 var expected = {
                     "name": "testLan",
                     "displayName": "Test Lan",
@@ -269,7 +263,7 @@ describe('test code generator', function () {
             }, done);
     });
 
-    it('language new', function (done) {
+    it('language new', function(done) {
         this.timeout(10000);
 
         helpers.run(path.join(__dirname, '../generators/app'))
@@ -285,7 +279,7 @@ describe('test code generator', function () {
                 languageScopeName: 'source.crusty',
                 languageExtensions: '.crusty'
             }) // Mock the prompt answers
-            .toPromise().then(function () {
+            .toPromise().then(function() {
                 var expected = {
                     "name": "crusty",
                     "displayName": "Crusty",
@@ -333,7 +327,7 @@ describe('test code generator', function () {
             }, done);
     });
 
-    it('snippet new', function (done) {
+    it('snippet new', function(done) {
         this.timeout(10000);
 
         helpers.run(path.join(__dirname, '../generators/app'))
@@ -346,7 +340,7 @@ describe('test code generator', function () {
                 publisher: 'Microsoft',
                 languageId: 'python'
             }) // Mock the prompt answers
-            .toPromise().then(function () {
+            .toPromise().then(function() {
                 var expected = {
                     "name": "testSnip",
                     "displayName": 'Test Snip',
@@ -382,7 +376,7 @@ describe('test code generator', function () {
             });
     });
 
-    it('snippet import', function (done) {
+    it('snippet import', function(done) {
         this.timeout(10000);
 
         helpers.run(path.join(__dirname, '../generators/app'))
@@ -395,7 +389,7 @@ describe('test code generator', function () {
                 publisher: 'Microsoft',
                 languageId: 'python'
             }) // Mock the prompt answers
-            .toPromise().then(function () {
+            .toPromise().then(function() {
                 var expected = {
                     "name": "testSnip",
                     "displayName": 'Test Snip',
@@ -461,7 +455,7 @@ describe('test code generator', function () {
             });
     });
 
-    it('command-ts', function (done) {
+    it('command-ts', function(done) {
         this.timeout(10000);
 
         helpers.run(path.join(__dirname, '../generators/app'))
@@ -473,7 +467,7 @@ describe('test code generator', function () {
                 publisher: 'Microsoft',
                 gitInit: false
             }) // Mock the prompt answers
-            .toPromise().then(function () {
+            .toPromise().then(function() {
                 var expected = {
                     "name": "testCom",
                     "displayName": 'Test Com',
@@ -527,7 +521,7 @@ describe('test code generator', function () {
             });
     });
 
-    it('extension-pack', function (done) {
+    it('extension-pack', function(done) {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
                 addExtensions: false,
@@ -537,7 +531,7 @@ describe('test code generator', function () {
                 description: 'My Test Extension Pack',
                 publisher: 'Microsoft'
             }) // Mock the prompt answers
-            .toPromise().then(function () {
+            .toPromise().then(function() {
                 var expected = {
                     "name": "testExtensionPack",
                     "displayName": "Test Extension Pack",
