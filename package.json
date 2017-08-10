@@ -1,51 +1,51 @@
 {
-    "name": "generator-code",
-    "version": "1.1.15",
-    "description": "Yeoman generator for Visual Studio Code Extensions",
-    "keywords": [
-        "yeoman-generator",
-        "vscode",
-        "visual studio",
-        "visual studio code",
-        "vs code",
-        "extensions"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Microsoft/vscode-generator-code.git"
-    },
-    "bugs": {
-        "url": "https://github.com/Microsoft/vscode-generator-code/issues"
-    },
-    "homepage": "http://code.visualstudio.com",
-    "license": "MIT",
-    "author": {
-        "name": "VS Code Team",
-        "url": "https://github.com/Microsoft"
-    },
-    "engines": {
-        "node": ">=0.10.0"
-    },
-    "scripts": {
-        "test": "mocha",
-        "prepublish": "npm test",
-        "preversion": "npm test",
-        "postversion": "git push && git push --tags"
-    },
-    "dependencies": {
-        "chalk": "^1.1.3",
-        "request": "^2.81.0",
-        "sanitize-filename": "^1.6.1",
-        "sax": "^1.2.2",
-        "yeoman-generator": "^0.24.1",
-        "yosay": "^1.2.1"
-    },
-    "devDependencies": {
-        "mocha": "^3.1.2",
-        "@types/node": "^6.0.41",
-        "@types/mocha": "^2.2.0",
-        "yeoman-assert": "^2.2.1",
-        "yeoman-test": "^1.5.1",
-        "yo": "^1.8.5"
-    }
+  "name": "generator-code",
+  "version": "1.1.16",
+  "description": "Yeoman generator for Visual Studio Code Extensions",
+  "keywords": [
+    "yeoman-generator",
+    "vscode",
+    "visual studio",
+    "visual studio code",
+    "vs code",
+    "extensions"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Microsoft/vscode-generator-code.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/vscode-generator-code/issues"
+  },
+  "homepage": "http://code.visualstudio.com",
+  "license": "MIT",
+  "author": {
+    "name": "VS Code Team",
+    "url": "https://github.com/Microsoft"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha",
+    "prepublish": "npm test",
+    "preversion": "npm test",
+    "postversion": "git push && git push --tags"
+  },
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "request": "^2.81.0",
+    "sanitize-filename": "^1.6.1",
+    "sax": "^1.2.2",
+    "yeoman-generator": "^0.24.1",
+    "yosay": "^1.2.1"
+  },
+  "devDependencies": {
+    "mocha": "^3.1.2",
+    "@types/node": "^6.0.41",
+    "@types/mocha": "^2.2.0",
+    "yeoman-assert": "^2.2.1",
+    "yeoman-test": "^1.5.1",
+    "yo": "^1.8.5"
+  }
 }
