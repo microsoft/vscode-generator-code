@@ -481,18 +481,19 @@ describe('test code generator', function() {
                         "onCommand:extension.sayHello"
                     ],
                     "devDependencies": {
-                        "typescript": "^2.0.3",
-                        "vscode": "^1.0.0",
-                        "mocha": "^2.3.3",
-                        "@types/node": "^6.0.40",
-                        "@types/mocha": "^2.2.32"
+                        "typescript": "^2.5.2",
+                        "vscode": "^1.1.5",
+                        "mocha": "^3.5.0",
+                        "@types/node": "^8.0.26",
+                        "@types/mocha": "^2.2.42"
                     },
                     "main": "./out/src/extension",
                     "scripts": {
-                        "vscode:prepublish": "tsc -p ./",
-                        "compile": "tsc -watch -p ./",
+                        "vscode:prepublish": "npm run compile",
+                        "compile": "tsc -p ./",
+                        "watch": "tsc -watch -p ./",
                         "postinstall": "node ./node_modules/vscode/bin/install",
-                        "test": "node ./node_modules/vscode/bin/test"
+                        "test": "npm run compile && node ./node_modules/vscode/bin/test"
                     },
                     "categories": [
                         "Other"
