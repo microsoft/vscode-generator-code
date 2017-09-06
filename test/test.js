@@ -484,7 +484,7 @@ describe('test code generator', function() {
                         "typescript": "^2.5.2",
                         "vscode": "^1.1.5",
                         "mocha": "^3.5.0",
-                        "@types/node": "^8.0.26",
+                        "@types/node": "^7.0.43",
                         "@types/mocha": "^2.2.42"
                     },
                     "main": "./out/src/extension",
