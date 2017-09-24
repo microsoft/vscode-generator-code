@@ -18,7 +18,7 @@ and specifies the base theme of the theme
 
 ## Adopt your theme to Visual Studio Code
 * The token colorization is done based on standard TextMate themes. Colors are matched against one or more scopes.
-To learn more about what scopes and scope se, check out the [theme](https://code.visualstudio.com/docs/extensions/themes-snippets-colorizers#_adding-a-new-color-theme) documentation.
+To learn more about scopes and how they're used, check out the [theme](https://code.visualstudio.com/docs/extensions/themes-snippets-colorizers#_adding-a-new-color-theme) documentation.
 
 ## Install your extension
 * To start using your extension with Visual Studio Code copy it into the `<user home>/.vscode/extensions` folder and restart Code.

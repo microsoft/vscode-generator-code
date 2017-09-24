@@ -140,7 +140,7 @@ module.exports = yeoman.Base.extend({
             }
 
             generator.extensionConfig.isCustomization = true;
-            generator.log("Enter the URL (http, https) or the file path of the tmLanguage grammar or press ENTER to start with an new grammar.");
+            generator.log("Enter the URL (http, https) or the file path of the tmLanguage grammar or press ENTER to start with a new grammar.");
             return generator.prompt({
                 type: 'input',
                 name: 'tmLanguageURL',
@@ -165,7 +165,7 @@ module.exports = yeoman.Base.extend({
                 }
                 return Promise.resolve();
             }
-            generator.log("Folder location that contains Text Mate (.tmSnippet) and Sublime snippets (.sublime-snippet) or press ENTER to start with an new snippet file.");
+            generator.log("Folder location that contains Text Mate (.tmSnippet) and Sublime snippets (.sublime-snippet) or press ENTER to start with a new snippet file.");
 
             var snippetPrompt = function() {
                 return generator.prompt({
@@ -373,7 +373,7 @@ module.exports = yeoman.Base.extend({
                 return Promise.resolve();
             }
 
-            generator.log('Enter the name of the language. The name will be shown in the VS code editor mode selector.');
+            generator.log('Enter the name of the language. The name will be shown in the VS Code editor mode selector.');
             return generator.prompt({
                 type: 'input',
                 name: 'languageName',
