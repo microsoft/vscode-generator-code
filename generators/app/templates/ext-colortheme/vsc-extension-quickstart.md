@@ -1,19 +1,19 @@
 # Welcome to your VS Code Extension
 
 ## What's in the folder
-* This folder contains all of the files necessary for your color theme extension
-* `package.json` - this is the manifest file that defines the location of the theme file
-and specifies the base theme of the theme
-* `themes/<%= themeFileName %>` - the color theme definition file
+* This folder contains all of the files necessary for your color theme extension.
+* `package.json` - this is the manifest file that defines the location of the theme file.
+and specifies the base theme of the theme.
+* `themes/<%= themeFileName %>` - the color theme definition file.
 
 ## Get up and running straight away
-* press `F5` to open a new window with your extension loaded
-* open `File > Preferences > Color Themes` and pick your color theme
+* Press `F5` to open a new window with your extension loaded.
+* Open `File > Preferences > Color Themes` and pick your color theme.
 * Open a file that has a language associated. The languages' configured grammar will tokenize the text and assign 'scopes' to the tokens. To examine these scopes, invoke the `Inspect TM Scopes` command from the Commmand Palette (`Ctrl+Shift+P` or `Cmd+Shift+P` on Mac) .
 
 ## Make changes
-* you can relaunch the extension from the debug toolbar after making changes to the files listed above
-* you can also reload (`Ctrl+R` or `Cmd+R` on Mac) the VS Code window with your extension to load your changes
+* You can relaunch the extension from the debug toolbar after making changes to the files listed above.
+* You can also reload (`Ctrl+R` or `Cmd+R` on Mac) the VS Code window with your extension to load your changes.
 * When editing workbench colors, it's easiest to test the colors in the settings under `workbench.colorCustomizations` and `workbench.tokenColorCustomizations`. When done, run the `Generate Color Theme From Current Settings` command to generate an updated content for the color theme definition file.
 
 ## Adopt your theme to Visual Studio Code
