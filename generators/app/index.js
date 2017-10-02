@@ -18,7 +18,7 @@ var sanitize = require("sanitize-filename");
 
 module.exports = yeoman.Base.extend({
 
-    constructor: function() {
+    constructor: function () {
         yeoman.Base.apply(this, arguments);
         this.option('extensionType', { type: String, required: false });
         this.option('extensionName', { type: String, required: false });
@@ -32,20 +32,20 @@ module.exports = yeoman.Base.extend({
     initializing: {
 
         // Welcome
-        welcome: function() {
+        welcome: function () {
             this.log(yosay('Welcome to the Visual Studio Code Extension generator!'));
         },
 
-        evaluateEngineVersion: function() {
+        evaluateEngineVersion: function () {
             var extensionConfig = this.extensionConfig;
-            return env.getLatestVSCodeVersion().then(function(version) { extensionConfig.vsCodeEngine = version; });
+            return env.getLatestVSCodeVersion().then(function (version) { extensionConfig.vsCodeEngine = version; });
         }
     },
 
     prompting: {
 
         // Ask for extension type
-        askForType: function() {
+        askForType: function () {
             var generator = this;
             if (generator.extensionType) {
                 var extensionTypes = ['colortheme', 'language', 'snippets', 'command-ts', 'command-js', 'extensionpack'];
@@ -62,36 +62,36 @@ module.exports = yeoman.Base.extend({
                 name: 'type',
                 message: 'What type of extension do you want to create?',
                 choices: [{
-                        name: 'New Extension (TypeScript)',
-                        value: 'ext-command-ts'
-                    },
-                    {
-                        name: 'New Extension (JavaScript)',
-                        value: 'ext-command-js'
-                    },
-                    {
-                        name: 'New Color Theme',
-                        value: 'ext-colortheme'
-                    },
-                    {
-                        name: 'New Language Support',
-                        value: 'ext-language'
-                    },
-                    {
-                        name: 'New Code Snippets',
-                        value: 'ext-snippets'
-                    },
-                    {
-                        name: 'New Extension Pack',
-                        value: 'ext-extensionpack'
-                    }
+                    name: 'New Extension (TypeScript)',
+                    value: 'ext-command-ts'
+                },
+                {
+                    name: 'New Extension (JavaScript)',
+                    value: 'ext-command-js'
+                },
+                {
+                    name: 'New Color Theme',
+                    value: 'ext-colortheme'
+                },
+                {
+                    name: 'New Language Support',
+                    value: 'ext-language'
+                },
+                {
+                    name: 'New Code Snippets',
+                    value: 'ext-snippets'
+                },
+                {
+                    name: 'New Extension Pack',
+                    value: 'ext-extensionpack'
+                }
                 ]
-            }).then(function(typeAnswer) {
+            }).then(function (typeAnswer) {
                 generator.extensionConfig.type = typeAnswer.type;
             });
         },
 
-        askForThemeInfo: function() {
+        askForThemeInfo: function () {
             let generator = this;
             if (generator.extensionConfig.type !== 'ext-colortheme') {
                 return Promise.resolve();
@@ -102,19 +102,19 @@ module.exports = yeoman.Base.extend({
                 name: 'themeImportType',
                 message: 'Do you want to import or convert an existing TextMate color theme?',
                 choices: [{
-                        name: 'Import an existing theme but keep it as tmTheme file.',
-                        value: 'import-keep'
-                    },
-                    {
-                        name: 'Import an existing theme and inline it in the Visual Studio Code color theme file.',
-                        value: 'import-inline'
-                    },
-                    {
-                        name: 'Start fresh',
-                        value: 'new'
-                    }
+                    name: 'Import an existing theme but keep it as tmTheme file.',
+                    value: 'import-keep'
+                },
+                {
+                    name: 'Import an existing theme and inline it in the Visual Studio Code color theme file.',
+                    value: 'import-inline'
+                },
+                {
+                    name: 'Start fresh',
+                    value: 'new'
+                }
                 ]
-            }).then(function(answer) {
+            }).then(function (answer) {
                 let inline = true;
                 let type = answer.themeImportType;
                 if (type === 'import-keep' || type === 'import-inline') {
@@ -123,16 +123,16 @@ module.exports = yeoman.Base.extend({
                         type: 'input',
                         name: 'themeURL',
                         message: 'URL or file name to import:'
-                    }).then(function(urlAnswer) {
-                        return themeConverter.convertTheme(urlAnswer.themeURL, generator.extensionConfig, type === 'import-inline');
+                    }).then(function (urlAnswer) {
+                        return themeConverter.convertTheme(urlAnswer.themeURL, generator.extensionConfig, type === 'import-inline', generator);
                     });
                 } else {
-                    return themeConverter.convertTheme(null, generator.extensionConfig, false);
+                    return themeConverter.convertTheme(null, generator.extensionConfig, false, generator);
                 }
             });
         },
 
-        askForLanguageInfo: function() {
+        askForLanguageInfo: function () {
             var generator = this;
 
             if (generator.extensionConfig.type !== 'ext-language') {
@@ -145,12 +145,12 @@ module.exports = yeoman.Base.extend({
                 type: 'input',
                 name: 'tmLanguageURL',
                 message: 'URL or file to import, or none for new:',
-            }).then(function(urlAnswer) {
+            }).then(function (urlAnswer) {
                 return grammarConverter.convertGrammar(urlAnswer.tmLanguageURL, generator.extensionConfig);
             });
         },
 
-        askForSnippetsInfo: function() {
+        askForSnippetsInfo: function () {
             var generator = this;
             if (generator.extensionConfig.type !== 'ext-snippets') {
                 return Promise.resolve();
@@ -167,12 +167,12 @@ module.exports = yeoman.Base.extend({
             }
             generator.log("Folder location that contains Text Mate (.tmSnippet) and Sublime snippets (.sublime-snippet) or press ENTER to start with a new snippet file.");
 
-            var snippetPrompt = function() {
+            var snippetPrompt = function () {
                 return generator.prompt({
                     type: 'input',
                     name: 'snippetPath',
                     message: 'Folder name for import or none for new:'
-                }).then(function(snippetAnswer) {
+                }).then(function (snippetAnswer) {
                     var count = 0;
                     var snippetPath = snippetAnswer.snippetPath;
 
@@ -191,7 +191,7 @@ module.exports = yeoman.Base.extend({
             return snippetPrompt();
         },
 
-        askForExtensionPackInfo: function() {
+        askForExtensionPackInfo: function () {
             var generator = this;
             if (generator.extensionConfig.type !== 'ext-extensionpack') {
                 return Promise.resolve();
@@ -204,13 +204,13 @@ module.exports = yeoman.Base.extend({
                 name: 'addExtensions',
                 message: 'Add the currently installed extensions to the extension pack?',
                 default: true
-            }).then(function(addExtensionsAnswer) {
+            }).then(function (addExtensionsAnswer) {
 
                 generator.extensionConfig.extensionList = ["publisher.extensionName"];
 
                 if (addExtensionsAnswer.addExtensions) {
-                    return new Promise(function(resolve, reject) {
-                        childProcess.exec('code --list-extensions', function(error, stdout, stderr) {
+                    return new Promise(function (resolve, reject) {
+                        childProcess.exec('code --list-extensions', function (error, stdout, stderr) {
                             if (error) {
                                 generator.env.error("Problems starting Code: " + error);
                             } else {
@@ -227,7 +227,7 @@ module.exports = yeoman.Base.extend({
         },
 
         // Ask for extension display name ("displayName" in package.json)
-        askForExtensionDisplayName: function() {
+        askForExtensionDisplayName: function () {
             var generator = this;
             if (generator.extensionDisplayName) {
                 generator.extensionConfig.displayName = generator.extensionDisplayName;
@@ -239,13 +239,13 @@ module.exports = yeoman.Base.extend({
                 name: 'displayName',
                 message: 'What\'s the name of your extension?',
                 default: generator.extensionConfig.displayName
-            }).then(function(displayNameAnswer) {
+            }).then(function (displayNameAnswer) {
                 generator.extensionConfig.displayName = displayNameAnswer.displayName;
             });
         },
 
         // Ask for extension id ("name" in package.json)
-        askForExtensionId: function() {
+        askForExtensionId: function () {
             var generator = this;
             if (generator.extensionName) {
                 generator.extensionConfig.name = generator.extensionName;
@@ -258,25 +258,25 @@ module.exports = yeoman.Base.extend({
                 message: 'What\'s the identifier of your extension?',
                 default: generator.extensionConfig.name || generator.extensionConfig.displayName.toLowerCase().replace(/[^a-z0-9]/g, '-'),
                 validate: validator.validateExtensionId
-            }).then(function(nameAnswer) {
+            }).then(function (nameAnswer) {
                 generator.extensionConfig.name = nameAnswer.name;
             });
         },
 
         // Ask for extension description
-        askForExtensionDescription: function() {
+        askForExtensionDescription: function () {
             var generator = this;
             return generator.prompt({
                 type: 'input',
                 name: 'description',
                 message: 'What\'s the description of your extension?'
-            }).then(function(descriptionAnswer) {
+            }).then(function (descriptionAnswer) {
                 generator.extensionConfig.description = descriptionAnswer.description;
             });
         },
 
         // Ask for publisher name
-        askForPublisherName: function() {
+        askForPublisherName: function () {
             var generator = this;
             return generator.prompt({
                 type: 'input',
@@ -284,12 +284,12 @@ module.exports = yeoman.Base.extend({
                 message: 'What\'s your publisher name (more info: https://code.visualstudio.com/docs/tools/vscecli#_publishing-extensions)?',
                 store: true,
                 validate: validator.validatePublisher
-            }).then(function(publisherAnswer) {
+            }).then(function (publisherAnswer) {
                 generator.extensionConfig.publisher = publisherAnswer.publisher;
             });
         },
 
-        askForGit: function() {
+        askForGit: function () {
             var generator = this;
             if (['ext-command-ts', 'ext-command-js'].indexOf(generator.extensionConfig.type) === -1) {
                 return Promise.resolve();
@@ -300,12 +300,12 @@ module.exports = yeoman.Base.extend({
                 name: 'gitInit',
                 message: 'Initialize a git repository?',
                 default: true
-            }).then(function(gitAnswer) {
+            }).then(function (gitAnswer) {
                 generator.extensionConfig.gitInit = gitAnswer.gitInit;
             });
         },
 
-        askForThemeName: function() {
+        askForThemeName: function () {
             var generator = this;
             if (generator.extensionConfig.type !== 'ext-colortheme') {
                 return Promise.resolve();
@@ -317,12 +317,12 @@ module.exports = yeoman.Base.extend({
                 message: 'What\'s the name of your theme shown to the user?',
                 default: generator.extensionConfig.themeName,
                 validate: validator.validateNonEmpty
-            }).then(function(nameAnswer) {
+            }).then(function (nameAnswer) {
                 generator.extensionConfig.themeName = nameAnswer.themeName;
             });
         },
 
-        askForBaseTheme: function() {
+        askForBaseTheme: function () {
             var generator = this;
             if (generator.extensionConfig.type !== 'ext-colortheme') {
                 return Promise.resolve();
@@ -333,24 +333,24 @@ module.exports = yeoman.Base.extend({
                 name: 'themeBase',
                 message: 'Select a base theme:',
                 choices: [{
-                        name: "Dark",
-                        value: "vs-dark"
-                    },
-                    {
-                        name: "Light",
-                        value: "vs"
-                    },
-                    {
-                        name: "High Contrast",
-                        value: "hc-black"
-                    }
+                    name: "Dark",
+                    value: "vs-dark"
+                },
+                {
+                    name: "Light",
+                    value: "vs"
+                },
+                {
+                    name: "High Contrast",
+                    value: "hc-black"
+                }
                 ]
-            }).then(function(themeBase) {
+            }).then(function (themeBase) {
                 generator.extensionConfig.themeBase = themeBase.themeBase;
             });
         },
 
-        askForLanguageId: function() {
+        askForLanguageId: function () {
             var generator = this;
             if (generator.extensionConfig.type !== 'ext-language') {
                 return Promise.resolve();
@@ -362,12 +362,12 @@ module.exports = yeoman.Base.extend({
                 name: 'languageId',
                 message: 'Language id:',
                 default: generator.extensionConfig.languageId,
-            }).then(function(idAnswer) {
+            }).then(function (idAnswer) {
                 generator.extensionConfig.languageId = idAnswer.languageId;
             });
         },
 
-        askForLanguageName: function() {
+        askForLanguageName: function () {
             var generator = this;
             if (generator.extensionConfig.type !== 'ext-language') {
                 return Promise.resolve();
@@ -379,12 +379,12 @@ module.exports = yeoman.Base.extend({
                 name: 'languageName',
                 message: 'Language name:',
                 default: generator.extensionConfig.languageName,
-            }).then(function(nameAnswer) {
+            }).then(function (nameAnswer) {
                 generator.extensionConfig.languageName = nameAnswer.languageName;
             });
         },
 
-        askForLanguageExtensions: function() {
+        askForLanguageExtensions: function () {
             var generator = this;
             if (generator.extensionConfig.type !== 'ext-language') {
                 return Promise.resolve();
@@ -396,12 +396,12 @@ module.exports = yeoman.Base.extend({
                 name: 'languageExtensions',
                 message: 'File extensions:',
                 default: generator.extensionConfig.languageExtensions.join(', '),
-            }).then(function(extAnswer) {
-                generator.extensionConfig.languageExtensions = extAnswer.languageExtensions.split(',').map(function(e) { return e.trim(); });
+            }).then(function (extAnswer) {
+                generator.extensionConfig.languageExtensions = extAnswer.languageExtensions.split(',').map(function (e) { return e.trim(); });
             });
         },
 
-        askForLanguageScopeName: function() {
+        askForLanguageScopeName: function () {
             var generator = this;
             if (generator.extensionConfig.type !== 'ext-language') {
                 return Promise.resolve();
@@ -412,12 +412,12 @@ module.exports = yeoman.Base.extend({
                 name: 'languageScopeName',
                 message: 'Scope names:',
                 default: generator.extensionConfig.languageScopeName,
-            }).then(function(extAnswer) {
+            }).then(function (extAnswer) {
                 generator.extensionConfig.languageScopeName = extAnswer.languageScopeName;
             });
         },
 
-        askForSnippetLanguage: function() {
+        askForSnippetLanguage: function () {
             var generator = this;
             if (generator.extensionConfig.type !== 'ext-snippets') {
                 return Promise.resolve();
@@ -434,14 +434,14 @@ module.exports = yeoman.Base.extend({
                 name: 'languageId',
                 message: 'Language id:',
                 default: generator.extensionConfig.languageId
-            }).then(function(idAnswer) {
+            }).then(function (idAnswer) {
                 generator.extensionConfig.languageId = idAnswer.languageId;
             });
         },
     },
 
     // Write files
-    writing: function() {
+    writing: function () {
         this.sourceRoot(path.join(__dirname, './templates/' + this.extensionConfig.type));
 
         switch (this.extensionConfig.type) {
@@ -470,7 +470,7 @@ module.exports = yeoman.Base.extend({
     },
 
     // Write Color Theme Extension
-    _writingExtensionPack: function() {
+    _writingExtensionPack: function () {
 
         var context = this.extensionConfig;
 
@@ -484,7 +484,7 @@ module.exports = yeoman.Base.extend({
     },
 
     // Write Color Theme Extension
-    _writingColorTheme: function() {
+    _writingColorTheme: function () {
 
         var context = this.extensionConfig;
         if (context.tmThemeFileName) {
@@ -514,7 +514,7 @@ module.exports = yeoman.Base.extend({
     },
 
     // Write Language Extension
-    _writingLanguage: function() {
+    _writingLanguage: function () {
         var context = this.extensionConfig;
         if (!context.languageContent) {
             context.languageFileName = sanitize(context.languageId + '.tmLanguage.json');
@@ -535,7 +535,7 @@ module.exports = yeoman.Base.extend({
     },
 
     // Write Snippets Extension
-    _writingSnippets: function() {
+    _writingSnippets: function () {
         var context = this.extensionConfig;
 
         this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
@@ -549,7 +549,7 @@ module.exports = yeoman.Base.extend({
     },
 
     // Write Command Extension (TypeScript)
-    _writingCommandTs: function() {
+    _writingCommandTs: function () {
         var context = this.extensionConfig;
 
         this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
@@ -569,7 +569,7 @@ module.exports = yeoman.Base.extend({
     },
 
     // Write Command Extension (JavaScript)
-    _writingCommandJs: function() {
+    _writingCommandJs: function () {
         var context = this.extensionConfig;
 
         this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
@@ -590,7 +590,7 @@ module.exports = yeoman.Base.extend({
     },
 
     // Installation
-    install: function() {
+    install: function () {
         process.chdir(this.extensionConfig.name);
 
         if (this.extensionConfig.installDependencies) {
@@ -602,7 +602,7 @@ module.exports = yeoman.Base.extend({
     },
 
     // End
-    end: function() {
+    end: function () {
 
         // Git init
         if (this.extensionConfig.gitInit) {

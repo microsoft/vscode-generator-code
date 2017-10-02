@@ -8,7 +8,7 @@ var fs = require('fs');
 var plistParser = require('./plistParser');
 var request = require('request');
 
-function convertTheme(location, extensionConfig, inline) {
+function convertTheme(location, extensionConfig, inline, generator) {
     if (!location) {
         extensionConfig.tmThemeFileName = '';
         extensionConfig.tmThemeContent = '';
@@ -35,7 +35,7 @@ function convertTheme(location, extensionConfig, inline) {
                             }
                         }
                     }
-                    processContent(extensionConfig, tmThemeFileName, body);
+                    processContent(extensionConfig, tmThemeFileName, body, generator);
                     resolve();
                 } else {
                     if (error) {
@@ -59,7 +59,7 @@ function convertTheme(location, extensionConfig, inline) {
             if (!inline) {
                 fileName = path.basename(location);
             }
-            processContent(extensionConfig, fileName, body.toString());
+            processContent(extensionConfig, fileName, body.toString(), generator);
         } else {
             return Promise.reject("Problems loading theme: Not found");
         }
@@ -67,11 +67,11 @@ function convertTheme(location, extensionConfig, inline) {
     return Promise.resolve();
 }
 
-function processContent(extensionConfig, tmThemeFileName, body) {
+function processContent(extensionConfig, tmThemeFileName, body, generator) {
     var themeNameMatch = body.match(/<key>name<\/key>\s*<string>([^<]*)/);
     var themeName = themeNameMatch ? themeNameMatch[1] : '';
 
-    extensionConfig.themeContent = migrate(body, tmThemeFileName);
+    extensionConfig.themeContent = migrate(body, tmThemeFileName, generator);
     if (tmThemeFileName) {
         if (tmThemeFileName.indexOf('.tmTheme') === -1) {
             tmThemeFileName = tmThemeFileName + '.tmTheme';
@@ -85,32 +85,32 @@ function processContent(extensionConfig, tmThemeFileName, body) {
 
 // mapping from old tmTheme setting to new workbench color ids
 var mappings = {
-	"background": ["editor.background"],
-	"foreground": ["editor.foreground"],
-	"hoverHighlight": ["editor.hoverHighlightBackground"],
-	"linkForeground": ["editorLink.foreground"],
-	"selection": ["editor.selectionBackground"],
-	"inactiveSelection": ["editor.inactiveSelectionBackground"],
-	"selectionHighlightColor": ["editor.selectionHighlightBackground"],
-	"wordHighlight": ["editor.wordHighlightBackground"],
-	"wordHighlightStrong": ["editor.wordHighlightStrongBackground"],
-	"findMatchHighlight": ["editor.findMatchHighlightBackground", "peekViewResult.matchHighlightBackground"],
-	"currentFindMatchHighlight": ["editor.findMatchBackground"],
-	"findRangeHighlight": ["editor.findRangeHighlightBackground"],
-	"referenceHighlight": ["peekViewEditor.matchHighlightBackground"],
-	"lineHighlight": ["editor.lineHighlightBackground"],
-	"rangeHighlight": ["editor.rangeHighlightBackground"],
-	"caret": ["editorCursor.foreground"],
-	"invisibles": ["editorWhitespace.foreground"],
-	"guide": ["editorIndentGuide.background"],
-	"ansiBlack": ["terminal.ansiBlack"], "ansiRed": ["terminal.ansiRed"], "ansiGreen": ["terminal.ansiGreen"], "ansiYellow": ["terminal.ansiYellow"],
-	"ansiBlue": ["terminal.ansiBlue"], "ansiMagenta": ["terminal.ansiMagenta"], "ansiCyan": ["terminal.ansiCyan"], "ansiWhite": ["terminal.ansiWhite"],
-	"ansiBrightBlack": ["terminal.ansiBrightBlack"], "ansiBrightRed": ["terminal.ansiBrightRed"], "ansiBrightGreen": ["terminal.ansiBrightGreen"],
-	"ansiBrightYellow": ["terminal.ansiBrightYellow"], "ansiBrightBlue": ["terminal.ansiBrightBlue"], "ansiBrightMagenta": ["terminal.ansiBrightMagenta"],
-	"ansiBrightCyan": ["terminal.ansiBrightCyan"], "ansiBrightWhite": ["terminal.ansiBrightWhite"]
+    "background": ["editor.background"],
+    "foreground": ["editor.foreground"],
+    "hoverHighlight": ["editor.hoverHighlightBackground"],
+    "linkForeground": ["editorLink.foreground"],
+    "selection": ["editor.selectionBackground"],
+    "inactiveSelection": ["editor.inactiveSelectionBackground"],
+    "selectionHighlightColor": ["editor.selectionHighlightBackground"],
+    "wordHighlight": ["editor.wordHighlightBackground"],
+    "wordHighlightStrong": ["editor.wordHighlightStrongBackground"],
+    "findMatchHighlight": ["editor.findMatchHighlightBackground", "peekViewResult.matchHighlightBackground"],
+    "currentFindMatchHighlight": ["editor.findMatchBackground"],
+    "findRangeHighlight": ["editor.findRangeHighlightBackground"],
+    "referenceHighlight": ["peekViewEditor.matchHighlightBackground"],
+    "lineHighlight": ["editor.lineHighlightBackground"],
+    "rangeHighlight": ["editor.rangeHighlightBackground"],
+    "caret": ["editorCursor.foreground"],
+    "invisibles": ["editorWhitespace.foreground"],
+    "guide": ["editorIndentGuide.background"],
+    "ansiBlack": ["terminal.ansiBlack"], "ansiRed": ["terminal.ansiRed"], "ansiGreen": ["terminal.ansiGreen"], "ansiYellow": ["terminal.ansiYellow"],
+    "ansiBlue": ["terminal.ansiBlue"], "ansiMagenta": ["terminal.ansiMagenta"], "ansiCyan": ["terminal.ansiCyan"], "ansiWhite": ["terminal.ansiWhite"],
+    "ansiBrightBlack": ["terminal.ansiBrightBlack"], "ansiBrightRed": ["terminal.ansiBrightRed"], "ansiBrightGreen": ["terminal.ansiBrightGreen"],
+    "ansiBrightYellow": ["terminal.ansiBrightYellow"], "ansiBrightBlue": ["terminal.ansiBrightBlue"], "ansiBrightMagenta": ["terminal.ansiBrightMagenta"],
+    "ansiBrightCyan": ["terminal.ansiBrightCyan"], "ansiBrightWhite": ["terminal.ansiBrightWhite"]
 };
 
-function migrate(content, tmThemeFileName) {
+function migrate(content, tmThemeFileName, generator) {
     try {
         let result = {};
         let theme = plistParser.parse(content).value;
@@ -126,6 +126,7 @@ function migrate(content, tmThemeFileName) {
                     }
                 } else {
                     var entrySettings = entry.settings;
+                    let notSupported = [];
                     for (let entry in entrySettings) {
                         let mapping = mappings[entry];
                         if (mapping) {
@@ -135,9 +136,13 @@ function migrate(content, tmThemeFileName) {
                             if (entry !== 'foreground' && entry !== 'background') {
                                 delete entrySettings[entry];
                             }
+                        } else {
+                            notSupported.push(entry);
                         }
                     }
-
+                    if (notSupported.length > 0) {
+                        generator.log('Note: the following theming properties are not supported by VSCode and will be ignored: ' + notSupported.join(', '))
+                    }
                 }
             }
             if (!tmThemeFileName) {
