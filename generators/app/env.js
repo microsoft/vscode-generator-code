@@ -4,7 +4,7 @@
 'use strict';
 var request = require('request');
 
-var fallbackVersion = '^1.15.0';
+var fallbackVersion = '^1.17.0';
 var promise = new Promise(function(resolve, reject) {
     request.get('https://vscode-update.azurewebsites.net/api/releases/stable', { headers: { "X-API-Version": "2" } }, function(error, response, body) {
         if (!error && response.statusCode === 200) {
