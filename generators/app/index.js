@@ -545,7 +545,7 @@ module.exports = yeoman.Base.extend({
         var context = this.extensionConfig;
 
         this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
-        this.directory(this.sourceRoot() + '/test', context.name + '/test');
+        this.directory(this.sourceRoot() + '/src/test', context.name + '/src/test');
 
         this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
         this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');

@@ -481,13 +481,12 @@ describe('test code generator', function() {
                         "onCommand:extension.sayHello"
                     ],
                     "devDependencies": {
-                        "typescript": "^2.5.2",
+                        "typescript": "^2.5.3",
                         "vscode": "^1.1.5",
-                        "mocha": "^3.5.0",
                         "@types/node": "^7.0.43",
                         "@types/mocha": "^2.2.42"
                     },
-                    "main": "./out/src/extension",
+                    "main": "./out/extension",
                     "scripts": {
                         "vscode:prepublish": "npm run compile",
                         "compile": "tsc -p ./",
@@ -508,7 +507,7 @@ describe('test code generator', function() {
                 try {
 
 
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'test/extension.test.ts', 'test/index.ts', '.gitignore', 'tsconfig.json']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/extension.test.ts', 'src/test/index.ts', '.gitignore', 'tsconfig.json']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
