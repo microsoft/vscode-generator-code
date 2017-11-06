@@ -567,8 +567,8 @@ describe('test code generator', function () {
                         "onCommand:extension.sayHello"
                     ],
                     "devDependencies": {
-                        "typescript": "^2.5.3",
-                        "vscode": "^1.1.5",
+                        "typescript": "^2.6.1",
+                        "vscode": "^1.1.6",
                         "@types/node": "^7.0.43",
                         "@types/mocha": "^2.2.42"
                     },

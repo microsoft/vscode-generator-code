@@ -25,8 +25,8 @@
         "test": "node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
-        "typescript": "^2.5.2",
-        "vscode": "^1.1.5",
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.6",
         "mocha": "^3.5.0",
         "eslint": "^4.6.1",
         "@types/node": "^7.0.0",
