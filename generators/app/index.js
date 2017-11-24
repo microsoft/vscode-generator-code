@@ -289,6 +289,39 @@ module.exports = yeoman.Base.extend({
             });
         },
 
+        askForTypeScriptInfo: function () {
+            let generator = this;
+            if (generator.extensionConfig.type !== 'ext-command-ts') {
+                return Promise.resolve();
+            }
+            generator.extensionConfig.strictTypeScript = false;
+            return generator.prompt({
+                type: 'confirm',
+                name: 'strictTypeScript',
+                message: 'Enable stricter TypeScript checking in \'tsconfig.json\'?',
+                default: true
+            }).then(function (strictTypeScriptAnswer) {
+                generator.extensionConfig.strictTypeScript = strictTypeScriptAnswer.strictTypeScript;
+            });
+        },
+
+        askForTsLint: function () {
+            let generator = this;
+            if (generator.extensionConfig.type !== 'ext-command-ts') {
+                return Promise.resolve();
+            }
+            generator.extensionConfig.tslint = false;
+            return generator.prompt({
+                type: 'confirm',
+                name: 'tslint',
+                message: 'Setup linting using \'tslint\'?',
+                default: true
+            }).then(function (tslintAnswer) {
+                generator.extensionConfig.tslint = tslintAnswer.tslint;
+            });
+        },
+
+
         askForGit: function () {
             var generator = this;
             if (['ext-command-ts', 'ext-command-js'].indexOf(generator.extensionConfig.type) === -1) {
@@ -560,11 +593,15 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
-        this.copy(this.sourceRoot() + '/tsconfig.json', context.name + '/tsconfig.json');
+        this.template(this.sourceRoot() + '/tsconfig.json', context.name + '/tsconfig.json', context);
 
         this.template(this.sourceRoot() + '/src/extension.ts', context.name + '/src/extension.ts', context);
         this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
 
+        if (this.extensionConfig.tslint) {
+            this.copy(this.sourceRoot() + '/tslint.json', context.name + '/tslint.json');
+            this.copy(this.sourceRoot() + '/optional/extensions.json', context.name + '/.vscode/extension.json');
+        }
         this.extensionConfig.installDependencies = true;
     },
 
