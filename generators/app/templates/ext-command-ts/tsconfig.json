@@ -8,15 +8,12 @@
         ],
         "sourceMap": true,
         "rootDir": "src",
-        "noImplicitAny": <%- JSON.stringify(strictTypeScript) %>,
-        "alwaysStrict": <%- JSON.stringify(strictTypeScript) %>,
+        "strict": <%- JSON.stringify(strictTypeScript) %>,
         "noImplicitReturns": <%- JSON.stringify(strictTypeScript) %>,
-        "noUnusedLocals": <%- JSON.stringify(strictTypeScript) %>,
-        "strictNullChecks": <%- JSON.stringify(strictTypeScript) %>,
         "noFallthroughCasesInSwitch": <%- JSON.stringify(strictTypeScript) %>,
         "allowUnreachableCode": <%- JSON.stringify(!strictTypeScript) %>,
-        "noUnusedParameters": false,
-        "noImplicitThis": false
+        "noUnusedLocals": <%- JSON.stringify(strictTypeScript) %>,
+        "noUnusedParameters": false
     },
     "exclude": [
         "node_modules",
