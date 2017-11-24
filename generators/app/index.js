@@ -16,9 +16,11 @@ var childProcess = require('child_process');
 var chalk = require('chalk');
 var sanitize = require("sanitize-filename");
 
+//@ts-ignore
 module.exports = yeoman.Base.extend({
 
     constructor: function () {
+        //@ts-ignore
         yeoman.Base.apply(this, arguments);
         this.option('extensionType', { type: String, required: false });
         this.option('extensionName', { type: String, required: false });
@@ -659,7 +661,7 @@ module.exports = yeoman.Base.extend({
         this.log('');
 
         if (this.extensionConfig.type === 'ext-extensionpack') {
-            this.log(chalk.yellow('Please review the "extensionDependencies" in the "package.json" before publishing the extension pack.'));
+            this.log(chalk.default.yellow('Please review the "extensionDependencies" in the "package.json" before publishing the extension pack.'));
             this.log('');
         }
 
