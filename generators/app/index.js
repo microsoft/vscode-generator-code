@@ -323,6 +323,21 @@ module.exports = yeoman.Base.extend({
             });
         },
 
+        askForJavaScriptInfo: function () {
+            let generator = this;
+            if (generator.extensionConfig.type !== 'ext-command-js') {
+                return Promise.resolve();
+            }
+            generator.extensionConfig.checkJavaScript = false;
+            return generator.prompt({
+                type: 'confirm',
+                name: 'checkJavaScript',
+                message: 'Enable JavaScript type checking in \'jsconfig.json\'?',
+                default: true
+            }).then(function (strictJavaScriptAnswer) {
+                generator.extensionConfig.checkJavaScript = strictJavaScriptAnswer.checkJavaScript;
+            });
+        },
 
         askForGit: function () {
             var generator = this;
@@ -619,11 +634,13 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
-        this.copy(this.sourceRoot() + '/jsconfig.json', context.name + '/jsconfig.json');
+        this.template(this.sourceRoot() + '/jsconfig.json', context.name + '/jsconfig.json', context);
 
         this.template(this.sourceRoot() + '/extension.js', context.name + '/extension.js', context);
         this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
         this.template(this.sourceRoot() + '/.eslintrc.json', context.name + '/.eslintrc.json', context);
+
+        this.copy(this.sourceRoot() + '/optional/extensions.json', context.name + '/.vscode/extensions.json');
 
         this.extensionConfig.installDependencies = true;
     },
