@@ -602,7 +602,7 @@ module.exports = yeoman.Base.extend({
 
         if (this.extensionConfig.tslint) {
             this.copy(this.sourceRoot() + '/tslint.json', context.name + '/tslint.json');
-            this.copy(this.sourceRoot() + '/optional/extensions.json', context.name + '/.vscode/extension.json');
+            this.copy(this.sourceRoot() + '/optional/extensions.json', context.name + '/.vscode/extensions.json');
         }
         this.extensionConfig.installDependencies = true;
     },

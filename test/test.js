@@ -664,7 +664,7 @@ describe('test code generator', function () {
                 try {
 
 
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/extension.test.ts', 'src/test/index.ts', '.gitignore', 'tsconfig.json', 'tslint.json', '.vscode/extension.json']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/extension.test.ts', 'src/test/index.ts', '.gitignore', 'tsconfig.json', 'tslint.json', '.vscode/extensions.json']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
