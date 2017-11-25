@@ -1,6 +1,6 @@
 {
   "name": "generator-code",
-  "version": "1.1.22",
+  "version": "1.1.23",
   "description": "Yeoman generator for Visual Studio Code Extensions",
   "keywords": [
     "yeoman-generator",
@@ -33,7 +33,7 @@
     "postversion": "git push && git push --tags"
   },
   "dependencies": {
-    "chalk": "^1.1.3",
+    "chalk": "^2.3.0",
     "request": "^2.81.0",
     "sanitize-filename": "^1.6.1",
     "sax": "^1.2.2",

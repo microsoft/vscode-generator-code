@@ -551,6 +551,8 @@ describe('test code generator', function () {
                 displayName: 'Test Com',
                 description: 'My TestCom',
                 publisher: 'Microsoft',
+                strictTypeScript: false,
+                tslint: false,
                 gitInit: false
             }) // Mock the prompt answers
             .toPromise().then(function () {
@@ -606,6 +608,230 @@ describe('test code generator', function () {
                 }
             });
     });
+
+    it('command-ts with tslint', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-command-ts',
+                name: 'testCom',
+                displayName: 'Test Com',
+                description: 'My TestCom',
+                publisher: 'Microsoft',
+                strictTypeScript: false,
+                tslint: true,
+                gitInit: false
+            }) // Mock the prompt answers
+            .toPromise().then(function () {
+                var expected = {
+                    "name": "testCom",
+                    "displayName": 'Test Com',
+                    "description": "My TestCom",
+                    "version": "0.0.1",
+                    "publisher": 'Microsoft',
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "activationEvents": [
+                        "onCommand:extension.sayHello"
+                    ],
+                    "devDependencies": {
+                        "typescript": "^2.6.1",
+                        "vscode": "^1.1.6",
+                        "tslint": "^5.8.0",
+                        "@types/node": "^7.0.43",
+                        "@types/mocha": "^2.2.42"
+                    },
+                    "main": "./out/extension",
+                    "scripts": {
+                        "vscode:prepublish": "npm run compile",
+                        "compile": "tsc -p ./",
+                        "watch": "tsc -watch -p ./",
+                        "postinstall": "node ./node_modules/vscode/bin/install",
+                        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+                    },
+                    "categories": [
+                        "Other"
+                    ],
+                    "contributes": {
+                        "commands": [{
+                            "command": "extension.sayHello",
+                            "title": "Hello World"
+                        }]
+                    }
+                };
+                try {
+
+
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/extension.test.ts', 'src/test/index.ts', '.gitignore', 'tsconfig.json', 'tslint.json', '.vscode/extensions.json']);
+
+                    var body = fs.readFileSync('package.json', 'utf8');
+
+                    var actual = JSON.parse(body);
+                    assert.deepEqual(expected, actual);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            });
+    });
+    it('command-ts with strict TS', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-command-ts',
+                name: 'testCom',
+                displayName: 'Test Com',
+                description: 'My TestCom',
+                publisher: 'Microsoft',
+                strictTypeScript: true,
+                tslint: false,
+                gitInit: false
+            }) // Mock the prompt answers
+            .toPromise().then(function () {
+                var expected = {
+                    "compilerOptions": {
+                        "module": "commonjs",
+                        "target": "es6",
+                        "outDir": "out",
+                        "lib": [
+                            "es6"
+                        ],
+                        "sourceMap": true,
+                        "rootDir": "src",
+                        "strict": true,
+                        "noImplicitReturns": true,
+                        "noUnusedLocals": true,
+                        "noFallthroughCasesInSwitch": true,
+                        "allowUnreachableCode": false,
+                        "noUnusedParameters": false
+                    },
+                    "exclude": [
+                        "node_modules",
+                        ".vscode-test"
+                    ]
+                };
+                try {
+                    var body = fs.readFileSync('tsconfig.json', 'utf8');
+
+                    var actual = JSON.parse(body);
+                    assert.deepEqual(expected, actual);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            });
+    });
+
+    it('command-js', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-command-js',
+                name: 'testCom',
+                displayName: 'Test Com',
+                description: 'My TestCom',
+                publisher: 'Microsoft',
+                checkJavaScript: false,
+                gitInit: false
+            }) // Mock the prompt answers
+            .toPromise().then(function () {
+                var expected = {
+                    "name": "testCom",
+                    "displayName": 'Test Com',
+                    "description": "My TestCom",
+                    "version": "0.0.1",
+                    "publisher": 'Microsoft',
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "activationEvents": [
+                        "onCommand:extension.sayHello"
+                    ],
+                    "devDependencies": {
+                        "typescript": "^2.6.1",
+                        "vscode": "^1.1.6",
+                        "eslint": "^4.11.0",
+                        "@types/node": "^7.0.43",
+                        "@types/mocha": "^2.2.42"
+                    },
+                    "main": "./extension",
+                    "scripts": {
+                        "postinstall": "node ./node_modules/vscode/bin/install",
+                        "test": "node ./node_modules/vscode/bin/test"
+                    },
+                    "categories": [
+                        "Other"
+                    ],
+                    "contributes": {
+                        "commands": [{
+                            "command": "extension.sayHello",
+                            "title": "Hello World"
+                        }]
+                    }
+                };
+                try {
+
+
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'extension.js', 'test/extension.test.js', 'test/index.js', '.gitignore', 'jsconfig.json']);
+
+                    var body = fs.readFileSync('package.json', 'utf8');
+
+                    var actual = JSON.parse(body);
+                    assert.deepEqual(expected, actual);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            });
+    });
+
+    it('command-js with check JS', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-command-js',
+                name: 'testCom',
+                displayName: 'Test Com',
+                description: 'My TestCom',
+                publisher: 'Microsoft',
+                checkJavaScript: true,
+                gitInit: false
+            }) // Mock the prompt answers
+            .toPromise().then(function () {
+                var expected = {
+                    "compilerOptions": {
+                        "module": "commonjs",
+                        "target": "es6",
+                        "checkJs": true,
+                        "lib": [
+                            "es6"
+                        ]
+                    },
+                    "exclude": [
+                        "node_modules"
+                    ]
+                };
+                try {
+                    var body = fs.readFileSync('jsconfig.json', 'utf8');
+
+                    var actual = JSON.parse(body);
+                    assert.deepEqual(expected, actual);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            });
+    });
+
 
     it('extension-pack', function (done) {
         helpers.run(path.join(__dirname, '../generators/app'))

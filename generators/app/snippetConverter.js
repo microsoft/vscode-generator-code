@@ -13,7 +13,7 @@ function processSnippetFolder(folderPath, generator) {
     var snippetCount = 0;
     var languageId = null;
 
-    var count = convert(folderPath, snippets, errors);
+    var count = convert(folderPath);
     if (count <= 0) {
         generator.log("No valid snippets found in " + folderPath + (errors.length > 0 ? '.\n' + errors.join('\n'): ''));
         return count;

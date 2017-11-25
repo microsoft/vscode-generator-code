@@ -7,7 +7,13 @@
             "es6"
         ],
         "sourceMap": true,
-        "rootDir": "src"
+        "rootDir": "src",
+        "strict": <%- JSON.stringify(strictTypeScript) %>,
+        "noImplicitReturns": <%- JSON.stringify(strictTypeScript) %>,
+        "noFallthroughCasesInSwitch": <%- JSON.stringify(strictTypeScript) %>,
+        "allowUnreachableCode": <%- JSON.stringify(!strictTypeScript) %>,
+        "noUnusedLocals": <%- JSON.stringify(strictTypeScript) %>,
+        "noUnusedParameters": false
     },
     "exclude": [
         "node_modules",

@@ -16,9 +16,11 @@ var childProcess = require('child_process');
 var chalk = require('chalk');
 var sanitize = require("sanitize-filename");
 
+//@ts-ignore
 module.exports = yeoman.Base.extend({
 
     constructor: function () {
+        //@ts-ignore
         yeoman.Base.apply(this, arguments);
         this.option('extensionType', { type: String, required: false });
         this.option('extensionName', { type: String, required: false });
@@ -286,6 +288,54 @@ module.exports = yeoman.Base.extend({
                 validate: validator.validatePublisher
             }).then(function (publisherAnswer) {
                 generator.extensionConfig.publisher = publisherAnswer.publisher;
+            });
+        },
+
+        askForTypeScriptInfo: function () {
+            let generator = this;
+            if (generator.extensionConfig.type !== 'ext-command-ts') {
+                return Promise.resolve();
+            }
+            generator.extensionConfig.strictTypeScript = false;
+            return generator.prompt({
+                type: 'confirm',
+                name: 'strictTypeScript',
+                message: 'Enable stricter TypeScript checking in \'tsconfig.json\'?',
+                default: true
+            }).then(function (strictTypeScriptAnswer) {
+                generator.extensionConfig.strictTypeScript = strictTypeScriptAnswer.strictTypeScript;
+            });
+        },
+
+        askForTsLint: function () {
+            let generator = this;
+            if (generator.extensionConfig.type !== 'ext-command-ts') {
+                return Promise.resolve();
+            }
+            generator.extensionConfig.tslint = false;
+            return generator.prompt({
+                type: 'confirm',
+                name: 'tslint',
+                message: 'Setup linting using \'tslint\'?',
+                default: true
+            }).then(function (tslintAnswer) {
+                generator.extensionConfig.tslint = tslintAnswer.tslint;
+            });
+        },
+
+        askForJavaScriptInfo: function () {
+            let generator = this;
+            if (generator.extensionConfig.type !== 'ext-command-js') {
+                return Promise.resolve();
+            }
+            generator.extensionConfig.checkJavaScript = false;
+            return generator.prompt({
+                type: 'confirm',
+                name: 'checkJavaScript',
+                message: 'Enable JavaScript type checking in \'jsconfig.json\'?',
+                default: true
+            }).then(function (strictJavaScriptAnswer) {
+                generator.extensionConfig.checkJavaScript = strictJavaScriptAnswer.checkJavaScript;
             });
         },
 
@@ -560,11 +610,15 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
-        this.copy(this.sourceRoot() + '/tsconfig.json', context.name + '/tsconfig.json');
+        this.template(this.sourceRoot() + '/tsconfig.json', context.name + '/tsconfig.json', context);
 
         this.template(this.sourceRoot() + '/src/extension.ts', context.name + '/src/extension.ts', context);
         this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
 
+        if (this.extensionConfig.tslint) {
+            this.copy(this.sourceRoot() + '/tslint.json', context.name + '/tslint.json');
+            this.copy(this.sourceRoot() + '/optional/extensions.json', context.name + '/.vscode/extensions.json');
+        }
         this.extensionConfig.installDependencies = true;
     },
 
@@ -580,11 +634,13 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
-        this.copy(this.sourceRoot() + '/jsconfig.json', context.name + '/jsconfig.json');
+        this.template(this.sourceRoot() + '/jsconfig.json', context.name + '/jsconfig.json', context);
 
         this.template(this.sourceRoot() + '/extension.js', context.name + '/extension.js', context);
         this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
         this.template(this.sourceRoot() + '/.eslintrc.json', context.name + '/.eslintrc.json', context);
+
+        this.copy(this.sourceRoot() + '/optional/extensions.json', context.name + '/.vscode/extensions.json');
 
         this.extensionConfig.installDependencies = true;
     },
@@ -622,7 +678,7 @@ module.exports = yeoman.Base.extend({
         this.log('');
 
         if (this.extensionConfig.type === 'ext-extensionpack') {
-            this.log(chalk.yellow('Please review the "extensionDependencies" in the "package.json" before publishing the extension pack.'));
+            this.log(chalk.default.yellow('Please review the "extensionDependencies" in the "package.json" before publishing the extension pack.'));
             this.log('');
         }
 
