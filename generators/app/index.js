@@ -16,11 +16,9 @@ var childProcess = require('child_process');
 var chalk = require('chalk');
 var sanitize = require("sanitize-filename");
 
-//@ts-ignore
 module.exports = yeoman.Base.extend({
 
     constructor: function () {
-        //@ts-ignore
         yeoman.Base.apply(this, arguments);
         this.option('extensionType', { type: String, required: false });
         this.option('extensionName', { type: String, required: false });
