@@ -6,6 +6,36 @@ var env = require('../generators/app/env');
 
 var fs = require('fs');
 
+function stripComments(content) {
+    /**
+    * First capturing group matches double quoted string
+    * Second matches single quotes string
+    * Third matches block comments
+    * Fourth matches line comments
+    */
+    var regexp = /("(?:[^\\\"]*(?:\\.)?)*")|('(?:[^\\\']*(?:\\.)?)*')|(\/\*(?:\r?\n|.)*?\*\/)|(\/{2,}.*?(?:(?:\r?\n)|$))/g;
+    let result = content.replace(regexp, (match, m1, m2, m3, m4) => {
+        // Only one of m1, m2, m3, m4 matches
+        if (m3) {
+            // A block comment. Replace with nothing
+            return '';
+        } else if (m4) {
+            // A line comment. If it ends in \r?\n then keep it.
+            let length = m4.length;
+            if (length > 2 && m4[length - 1] === '\n') {
+                return m4[length - 2] === '\r' ? '\r\n' : '\n';
+            } else {
+                return '';
+            }
+        } else {
+            // We match a string
+            return match;
+        }
+    });
+    return result;
+}
+
+
 describe('test code generator', function () {
     this.timeout(10000);
 
@@ -703,11 +733,7 @@ describe('test code generator', function () {
                         "sourceMap": true,
                         "rootDir": "src",
                         "strict": true,
-                        "noImplicitReturns": true,
                         "noUnusedLocals": true,
-                        "noFallthroughCasesInSwitch": true,
-                        "allowUnreachableCode": false,
-                        "noUnusedParameters": false
                     },
                     "exclude": [
                         "node_modules",
@@ -717,7 +743,7 @@ describe('test code generator', function () {
                 try {
                     var body = fs.readFileSync('tsconfig.json', 'utf8');
 
-                    var actual = JSON.parse(body);
+                    var actual = JSON.parse(stripComments(body));
                     assert.deepEqual(expected, actual);
 
                     done();
@@ -822,7 +848,7 @@ describe('test code generator', function () {
                 try {
                     var body = fs.readFileSync('jsconfig.json', 'utf8');
 
-                    var actual = JSON.parse(body);
+                    var actual = JSON.parse(stripComments(body));
                     assert.deepEqual(expected, actual);
 
                     done();
