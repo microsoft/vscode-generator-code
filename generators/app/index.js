@@ -331,7 +331,7 @@ module.exports = yeoman.Base.extend({
                 type: 'confirm',
                 name: 'checkJavaScript',
                 message: 'Enable JavaScript type checking in \'jsconfig.json\'?',
-                default: true
+                default: false
             }).then(function (strictJavaScriptAnswer) {
                 generator.extensionConfig.checkJavaScript = strictJavaScriptAnswer.checkJavaScript;
             });
