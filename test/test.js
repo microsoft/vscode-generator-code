@@ -14,14 +14,14 @@ function stripComments(content) {
     * Fourth matches line comments
     */
     var regexp = /("(?:[^\\\"]*(?:\\.)?)*")|('(?:[^\\\']*(?:\\.)?)*')|(\/\*(?:\r?\n|.)*?\*\/)|(\/{2,}.*?(?:(?:\r?\n)|$))/g;
-    let result = content.replace(regexp, (match, m1, m2, m3, m4) => {
+    var result = content.replace(regexp, (match, m1, m2, m3, m4) => {
         // Only one of m1, m2, m3, m4 matches
         if (m3) {
             // A block comment. Replace with nothing
             return '';
         } else if (m4) {
             // A line comment. If it ends in \r?\n then keep it.
-            let length = m4.length;
+            var length = m4.length;
             if (length > 2 && m4[length - 1] === '\n') {
                 return m4[length - 2] === '\r' ? '\r\n' : '\n';
             } else {
