@@ -11,7 +11,10 @@
 ```
 * `translations` - the folder containing the translation strings
 
+
+
 To populate or update the `translations` folder with the latest strings from transifex:
-- Get an API token from https://www.transifex.com/user/settings/api
-- Set the API token to the environment variable `TRANSIFEX_API_TOKEN`
-- Run `npm run update`
+- the language pack must be placed next to the vscode repository.
+- Get an API token from https://www.transifex.com/user/settings/api.
+- Set the API token to the environment variable `TRANSIFEX_API_TOKEN`.
+- Run `npm run update`.
