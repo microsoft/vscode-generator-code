@@ -900,4 +900,52 @@ describe('test code generator', function () {
                 }
             }, done);
     });
+
+    it('language-pack', function (done) {
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-languagepack',
+                lpLanguageId: 'ru',
+                lpLanguageName: 'Russian',
+                publisher: 'Microsoft'
+            }).toPromise().then(function () {
+                var expected = {
+                    "name": "vscode-language-pack-ru",
+                    "displayName": "Russian Language Pack",
+                    "description": "Language Pack for Russian",
+                    "version": "0.0.1",
+                    "publisher": 'Microsoft',
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "categories": [
+                        "Language Packs"
+                    ],
+                    "contributes": {
+                        "languagePack": {
+                            "languageId": "ru"
+                        }
+                    },
+                    "devDependencies": {
+                        "rimraf": "^2.6.2",
+                        "vinyl-fs": "^2.4.3"
+                    },
+                    "scripts": {
+                        "update": "node ./build/update.js"
+                    }
+                };
+                try {
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.gitignore', '.vscodeignore', 'build/update.js']);
+
+                    var body = fs.readFileSync('package.json', 'utf8');
+
+                    var actual = JSON.parse(body);
+                    assert.deepEqual(expected, actual);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }, done);
+    });
 });

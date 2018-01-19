@@ -15,6 +15,7 @@ var env = require('./env');
 var childProcess = require('child_process');
 var chalk = require('chalk');
 var sanitize = require("sanitize-filename");
+var languagePacks = require('./languagePacks');
 
 module.exports = yeoman.Base.extend({
 
@@ -22,6 +23,9 @@ module.exports = yeoman.Base.extend({
         yeoman.Base.apply(this, arguments);
         this.option('extensionType', { type: String, required: false });
         this.option('extensionName', { type: String, required: false });
+        this.option('extensionDescription', { type: String, required: false });
+        this.option('extensionDisplayName', { type: String, required: false });
+
         this.option('extensionParam', { type: String, required: false });
         this.option('extensionParam2', { type: String, required: false });
 
@@ -84,6 +88,10 @@ module.exports = yeoman.Base.extend({
                 {
                     name: 'New Extension Pack',
                     value: 'ext-extensionpack'
+                },
+                {
+                    name: 'New Language Pack',
+                    value: 'ext-languagepack'
                 }
                 ]
             }).then(function (typeAnswer) {
@@ -191,6 +199,14 @@ module.exports = yeoman.Base.extend({
             return snippetPrompt();
         },
 
+        askForLanguagePackLanguage: function () {
+            languagePacks.askForLanguagePackLanguage(this);
+        },
+
+        askForLanguagePackLanguageName: function () {
+            languagePacks.askForLanguagePackLanguageName(this);
+        },
+
         askForExtensionPackInfo: function () {
             var generator = this;
             if (generator.extensionConfig.type !== 'ext-extensionpack') {
@@ -231,7 +247,7 @@ module.exports = yeoman.Base.extend({
             var generator = this;
             if (generator.extensionDisplayName) {
                 generator.extensionConfig.displayName = generator.extensionDisplayName;
-                return;
+                return Promise.resolve();
             }
 
             return generator.prompt({
@@ -249,7 +265,7 @@ module.exports = yeoman.Base.extend({
             var generator = this;
             if (generator.extensionName) {
                 generator.extensionConfig.name = generator.extensionName;
-                return;
+                return Promise.resolve();
             }
 
             return generator.prompt({
@@ -266,6 +282,11 @@ module.exports = yeoman.Base.extend({
         // Ask for extension description
         askForExtensionDescription: function () {
             var generator = this;
+            if (generator.extensionDescription) {
+                generator.extensionConfig.description = generator.extensionDescription;
+                return Promise.resolve();
+            }
+
             return generator.prompt({
                 type: 'input',
                 name: 'description',
@@ -510,6 +531,9 @@ module.exports = yeoman.Base.extend({
                 break;
             case 'ext-extensionpack':
                 this._writingExtensionPack();
+                break;
+            case 'ext-languagepack':
+                languagePacks.writingLanguagePack(this);
                 break;
             default:
                 //unknown project type

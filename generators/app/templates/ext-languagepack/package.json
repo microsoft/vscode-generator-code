@@ -1,0 +1,25 @@
+{
+    "name": <%- JSON.stringify(name) %>,
+    "displayName": <%- JSON.stringify(displayName) %>,
+    "description": <%- JSON.stringify(description) %>,
+    "version": "0.0.1",
+    "publisher": <%- JSON.stringify(publisher) %>,
+    "engines": {
+        "vscode": <%- JSON.stringify(vsCodeEngine) %>
+    },
+    "categories": [
+        "Language Packs"
+    ],
+    "devDependencies": {
+        "rimraf": "^2.6.2",
+        "vinyl-fs": "^2.4.3"
+    },
+    "contributes": {
+        "languagePack": {
+            "languageId": <%- JSON.stringify(lpLanguageId) %>
+        }
+    },
+    "scripts": {
+        "update": "node ./build/update.js"
+    }
+}
