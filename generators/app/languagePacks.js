@@ -9,7 +9,7 @@ exports.askForLanguagePackLanguage = function (generator) {
         return Promise.resolve();
     }
     generator.extensionConfig.isCustomization = true;
-    generator.log("Enter the language identifier as used on transifex (e.g. bg, zh-Hant.");
+    generator.log("Enter the language identifier as used on transifex (e.g. bg, zh-Hant).");
     return generator.prompt({
         type: 'input',
         name: 'lpLanguageId',
@@ -28,7 +28,7 @@ exports.askForLanguagePackLanguageName = function (generator) {
         return Promise.resolve();
     }
     generator.extensionConfig.isCustomization = true;
-    generator.log("Enter the language name in English (e.g. Bulgarian, Tranditional Chinease.");
+    generator.log("Enter the language name in English (e.g. Bulgarian, Tranditional Chinease).");
     return generator.prompt({
         type: 'input',
         name: 'lpLanguageName',

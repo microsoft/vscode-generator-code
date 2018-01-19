@@ -200,11 +200,11 @@ module.exports = yeoman.Base.extend({
         },
 
         askForLanguagePackLanguage: function () {
-            languagePacks.askForLanguagePackLanguage(this);
+            return languagePacks.askForLanguagePackLanguage(this);
         },
 
         askForLanguagePackLanguageName: function () {
-            languagePacks.askForLanguagePackLanguageName(this);
+            return languagePacks.askForLanguagePackLanguageName(this);
         },
 
         askForExtensionPackInfo: function () {

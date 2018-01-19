@@ -1,9 +1,7 @@
-# Welcome to your VS Code Language Pack
+# Welcome to the <%= lpLanguageName %> Language Pack
 
 ## What's in the folder
-* This folder contains all of the files necessary for a language pack.
-* `package.json` - this is the manifest file. It defines the name and description of the extension.
-The `languagePack` contribution point defines the language id
+* `package.json` - dthe manifest file, defining the name and description of the language pack extension. It also contains the `languagePack` contribution point that defines the language id:
 ```json
         "contributes": {
             "languagePack": {
@@ -11,9 +9,9 @@ The `languagePack` contribution point defines the language id
             }
         }
 ```
-* `translations`: The folder containing the translation strings
+* `translations` - the folder containing the translation strings
 
 To populate or update the `translations` folder with the latest strings from transifex:
 - Get an API token from https://www.transifex.com/user/settings/api
 - Set the API token to the environment variable `TRANSIFEX_API_TOKEN`
-- run `npm run update`
+- Run `npm run update`
