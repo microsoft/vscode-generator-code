@@ -28,7 +28,7 @@ exports.askForLocalizationLanguageName = function (generator) {
         return Promise.resolve();
     }
     generator.extensionConfig.isCustomization = true;
-    generator.log("Enter the language name in English (e.g. Bulgarian, Tranditional Chinease).");
+    generator.log("Enter the language name in English (e.g. Bulgarian, Traditional Chinese).");
     return generator.prompt({
         type: 'input',
         name: 'lpLanguageName',
