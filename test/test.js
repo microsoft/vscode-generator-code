@@ -902,30 +902,32 @@ describe('test code generator', function () {
             }, done);
     });
 
-    it('language-pack', function (done) {
+    it('localization', function (done) {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
-                type: 'ext-languagepack',
+                type: 'ext-localization',
                 lpLanguageId: 'ru',
                 lpLanguageName: 'Russian',
                 publisher: 'Microsoft'
             }).toPromise().then(function () {
                 var expected = {
-                    "name": "vscode-language-pack-ru",
-                    "displayName": "Russian Language Pack",
-                    "description": "Language Pack for Russian",
+                    "name": "vscode-localization-ru",
+                    "displayName": "Russian Localization",
+                    "description": "Localization extension for Russian",
                     "version": "0.0.1",
                     "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
                     "categories": [
-                        "Language Packs"
+                        "Localization"
                     ],
                     "contributes": {
-                        "languagePack": {
-                            "languageId": "ru"
-                        }
+                        "localizations": [{
+                            "languageId": "ru",
+                            "languageName": "Russian",
+                            "translations": './translations'
+                        }]
                     },
                     "devDependencies": {
                         "rimraf": "^2.6.2",

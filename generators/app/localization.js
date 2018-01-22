@@ -4,8 +4,8 @@
 'use strict';
 
 
-exports.askForLanguagePackLanguage = function (generator) {
-    if (generator.extensionConfig.type !== 'ext-languagepack') {
+exports.askForLocalizationLanguageId = function (generator) {
+    if (generator.extensionConfig.type !== 'ext-localization') {
         return Promise.resolve();
     }
     generator.extensionConfig.isCustomization = true;
@@ -17,14 +17,14 @@ exports.askForLanguagePackLanguage = function (generator) {
     }).then(function (answer) {
         generator.extensionConfig.lpLanguageId = answer.lpLanguageId;
         if (!generator.extensionName) {
-            generator.extensionName = "vscode-language-pack-" + answer.lpLanguageId;
+            generator.extensionName = "vscode-localization-" + answer.lpLanguageId;
         }
         return Promise.resolve();
     });
 }
 
-exports.askForLanguagePackLanguageName = function (generator) {
-    if (generator.extensionConfig.type !== 'ext-languagepack') {
+exports.askForLocalizationLanguageName = function (generator) {
+    if (generator.extensionConfig.type !== 'ext-localization') {
         return Promise.resolve();
     }
     generator.extensionConfig.isCustomization = true;
@@ -36,20 +36,19 @@ exports.askForLanguagePackLanguageName = function (generator) {
     }).then(function (answer) {
         generator.extensionConfig.lpLanguageName = answer.lpLanguageName;
         if (!generator.extensionDisplayName) {
-            generator.extensionDisplayName = answer.lpLanguageName + " Language Pack";
+            generator.extensionDisplayName = answer.lpLanguageName + " Localization";
         }
         if (!generator.extensionDescription) {
-            generator.extensionDescription = "Language Pack for " + answer.lpLanguageName;
+            generator.extensionDescription = "Localization extension for " + answer.lpLanguageName;
         }
         return Promise.resolve();
     });
 }
 
-exports.writingLanguagePack = function (generator) {
+exports.writingLocalizationExtension = function (generator) {
 
     var context = generator.extensionConfig;
 
-    generator.directory(generator.sourceRoot() + '/vscode', context.name + '/.vscode');
     generator.directory(generator.sourceRoot() + '/build', context.name + '/build');
     generator.template(generator.sourceRoot() + '/package.json', context.name + '/package.json', context);
     generator.template(generator.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
@@ -57,4 +56,6 @@ exports.writingLanguagePack = function (generator) {
     generator.template(generator.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
     generator.copy(generator.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
     generator.copy(generator.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+
+    context.installDependencies = true;
 }

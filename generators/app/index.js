@@ -15,7 +15,7 @@ var env = require('./env');
 var childProcess = require('child_process');
 var chalk = require('chalk');
 var sanitize = require("sanitize-filename");
-var languagePacks = require('./languagePacks');
+var localization = require('./localization');
 
 module.exports = yeoman.Base.extend({
 
@@ -90,8 +90,8 @@ module.exports = yeoman.Base.extend({
                     value: 'ext-extensionpack'
                 },
                 {
-                    name: 'New Language Pack',
-                    value: 'ext-languagepack'
+                    name: 'New Localization',
+                    value: 'ext-localization'
                 }
                 ]
             }).then(function (typeAnswer) {
@@ -199,12 +199,12 @@ module.exports = yeoman.Base.extend({
             return snippetPrompt();
         },
 
-        askForLanguagePackLanguage: function () {
-            return languagePacks.askForLanguagePackLanguage(this);
+        askForLocalizationLanguageId: function () {
+            return localization.askForLocalizationLanguageId(this);
         },
 
-        askForLanguagePackLanguageName: function () {
-            return languagePacks.askForLanguagePackLanguageName(this);
+        askForLocalizationLanguageName: function () {
+            return localization.askForLocalizationLanguageName(this);
         },
 
         askForExtensionPackInfo: function () {
@@ -532,8 +532,8 @@ module.exports = yeoman.Base.extend({
             case 'ext-extensionpack':
                 this._writingExtensionPack();
                 break;
-            case 'ext-languagepack':
-                languagePacks.writingLanguagePack(this);
+            case 'ext-localization':
+                localization.writingLocalizationExtension(this);
                 break;
             default:
                 //unknown project type

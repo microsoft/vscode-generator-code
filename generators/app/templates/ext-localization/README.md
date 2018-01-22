@@ -1,7 +1,7 @@
 # README
-## This is the README for <%= lpLanguageName %> language pack"
+## This is the README for the <%= lpLanguageName %> localization extension for VS Code."
 
-Language pack for <%= lpLanguageName %>.
+Localization extension for <%= lpLanguageName %>.
 
 The translated strings for VSCode can be found here:
 * [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)

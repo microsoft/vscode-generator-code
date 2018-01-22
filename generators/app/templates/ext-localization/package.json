@@ -8,16 +8,18 @@
         "vscode": <%- JSON.stringify(vsCodeEngine) %>
     },
     "categories": [
-        "Language Packs"
+        "Localization"
     ],
     "devDependencies": {
         "rimraf": "^2.6.2",
         "vinyl-fs": "^2.4.3"
     },
     "contributes": {
-        "languagePack": {
-            "languageId": <%- JSON.stringify(lpLanguageId) %>
-        }
+        "localizations": [{
+            "languageId": <%- JSON.stringify(lpLanguageId) %>,
+            "languageName": <%- JSON.stringify(lpLanguageName) %>,
+            "translations": "./translations"
+        }]
     },
     "scripts": {
         "update": "node ./build/update.js"
