@@ -42,8 +42,7 @@ function update() {
         }
 
         console.log('Downloading translations to \'' + translationDataFolder + '\'...');
-        i18n.pullBuildXlfFiles(server, userName, apiToken, { id: languageId })
-            .pipe(i18n.prepareI18nPackFiles())
+        i18n.pullI18nPackFiles(server, userName, apiToken, { id: languageId })
             .pipe(vfs.dest(translationDataFolder));
     });
 
