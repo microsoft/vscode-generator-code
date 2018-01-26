@@ -902,7 +902,7 @@ describe('test code generator', function () {
             }, done);
     });
 
-    it('localization', function (done) {
+    it('language pack', function (done) {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
                 type: 'ext-localization',
@@ -911,16 +911,16 @@ describe('test code generator', function () {
                 publisher: 'Microsoft'
             }).toPromise().then(function () {
                 var expected = {
-                    "name": "vscode-localization-ru",
-                    "displayName": "Russian Localization",
-                    "description": "Localization extension for Russian",
+                    "name": "vscode-language-pack-ru",
+                    "displayName": "Russian Language Pack",
+                    "description": "Language pack extension for Russian",
                     "version": "0.0.1",
                     "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
                     "categories": [
-                        "Localization"
+                        "Language Pack"
                     ],
                     "contributes": {
                         "localizations": [{
@@ -929,16 +929,12 @@ describe('test code generator', function () {
                             "translations": './translations'
                         }]
                     },
-                    "devDependencies": {
-                        "rimraf": "^2.6.2",
-                        "vinyl-fs": "^2.4.3"
-                    },
                     "scripts": {
-                        "update": "node ./build/update.js"
+                        "update": "cd ../vscode && npm run update-localization-extension ru"
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.gitignore', '.vscodeignore', 'build/update.js']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.gitignore', '.vscodeignore']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 

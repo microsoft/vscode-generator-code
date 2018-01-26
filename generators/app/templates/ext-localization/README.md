@@ -1,11 +1,10 @@
-# README
-## This is the README for the <%= lpLanguageName %> localization extension for VS Code."
+#  <%= lpLanguageName %> Language Pack for VS Code
 
-Localization extension for <%= lpLanguageName %>.
+Adds localization for <%= lpLanguageName %> to VS Code.
 
-The translated strings for VSCode can be found here:
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
+The translated strings are maintained here:
+* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/language/<%= lpLanguageId %>/)
+* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/language/<%= lpLanguageId %>/)
+* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/language/<%= lpLanguageId %>/)
 
-See https://github.com/Microsoft/Localization/wiki/Visual-Studio-Code-Community-Localization-Project for more information on how to participate.
+If you'd like to participate in the translation, see https://github.com/Microsoft/Localization/wiki/Visual-Studio-Code-Community-Localization-Project for more information.

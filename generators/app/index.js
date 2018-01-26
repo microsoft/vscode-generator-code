@@ -90,7 +90,7 @@ module.exports = yeoman.Base.extend({
                     value: 'ext-extensionpack'
                 },
                 {
-                    name: 'New Localization',
+                    name: 'New Language Pack (localization)',
                     value: 'ext-localization'
                 }
                 ]

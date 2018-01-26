@@ -17,7 +17,7 @@ exports.askForLocalizationLanguageId = function (generator) {
     }).then(function (answer) {
         generator.extensionConfig.lpLanguageId = answer.lpLanguageId;
         if (!generator.extensionName) {
-            generator.extensionName = "vscode-localization-" + answer.lpLanguageId;
+            generator.extensionName = "vscode-language-pack-" + answer.lpLanguageId;
         }
         return Promise.resolve();
     });
@@ -36,10 +36,10 @@ exports.askForLocalizationLanguageName = function (generator) {
     }).then(function (answer) {
         generator.extensionConfig.lpLanguageName = answer.lpLanguageName;
         if (!generator.extensionDisplayName) {
-            generator.extensionDisplayName = answer.lpLanguageName + " Localization";
+            generator.extensionDisplayName = answer.lpLanguageName + " Language Pack";
         }
         if (!generator.extensionDescription) {
-            generator.extensionDescription = "Localization extension for " + answer.lpLanguageName;
+            generator.extensionDescription = "Language pack extension for " + answer.lpLanguageName;
         }
         return Promise.resolve();
     });
@@ -49,7 +49,6 @@ exports.writingLocalizationExtension = function (generator) {
 
     var context = generator.extensionConfig;
 
-    generator.directory(generator.sourceRoot() + '/build', context.name + '/build');
     generator.template(generator.sourceRoot() + '/package.json', context.name + '/package.json', context);
     generator.template(generator.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
     generator.template(generator.sourceRoot() + '/README.md', context.name + '/README.md', context);

@@ -8,12 +8,8 @@
         "vscode": <%- JSON.stringify(vsCodeEngine) %>
     },
     "categories": [
-        "Localization"
+        "Language Pack"
     ],
-    "devDependencies": {
-        "rimraf": "^2.6.2",
-        "vinyl-fs": "^2.4.3"
-    },
     "contributes": {
         "localizations": [{
             "languageId": <%- JSON.stringify(lpLanguageId) %>,
@@ -22,6 +18,6 @@
         }]
     },
     "scripts": {
-        "update": "node ./build/update.js"
+        "update": "cd ../vscode && npm run update-localization-extension <%- lpLanguageId %>"
     }
 }
