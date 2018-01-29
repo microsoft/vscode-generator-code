@@ -14,7 +14,7 @@
         "localizations": [{
             "languageId": <%- JSON.stringify(lpLanguageId) %>,
             "languageName": <%- JSON.stringify(lpLanguageName) %>,
-            "translations": "./translations"
+            "localizedLanguageName": <%- JSON.stringify(lpLocalizedLanguageName) %>
         }]
     },
     "scripts": {

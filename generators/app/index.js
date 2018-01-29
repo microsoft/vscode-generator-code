@@ -200,11 +200,15 @@ module.exports = yeoman.Base.extend({
         },
 
         askForLocalizationLanguageId: function () {
-            return localization.askForLocalizationLanguageId(this);
+            return localization.askForLanguageId(this);
         },
 
         askForLocalizationLanguageName: function () {
-            return localization.askForLocalizationLanguageName(this);
+            return localization.askForLanguageName(this);
+        },
+
+        askForLocalizedLocalizationLanguageName: function () {
+            return localization.askForLocalizedLanguageName(this);
         },
 
         askForExtensionPackInfo: function () {

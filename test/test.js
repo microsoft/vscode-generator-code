@@ -908,6 +908,7 @@ describe('test code generator', function () {
                 type: 'ext-localization',
                 lpLanguageId: 'ru',
                 lpLanguageName: 'Russian',
+                lpLocalizedLanguageName: 'русский',
                 publisher: 'Microsoft'
             }).toPromise().then(function () {
                 var expected = {
@@ -926,7 +927,7 @@ describe('test code generator', function () {
                         "localizations": [{
                             "languageId": "ru",
                             "languageName": "Russian",
-                            "translations": './translations'
+                            "localizedLanguageName": "русский"
                         }]
                     },
                     "scripts": {

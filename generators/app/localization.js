@@ -4,7 +4,7 @@
 'use strict';
 
 
-exports.askForLocalizationLanguageId = function (generator) {
+exports.askForLanguageId = function (generator) {
     if (generator.extensionConfig.type !== 'ext-localization') {
         return Promise.resolve();
     }
@@ -23,12 +23,12 @@ exports.askForLocalizationLanguageId = function (generator) {
     });
 }
 
-exports.askForLocalizationLanguageName = function (generator) {
+exports.askForLanguageName = function (generator) {
     if (generator.extensionConfig.type !== 'ext-localization') {
         return Promise.resolve();
     }
     generator.extensionConfig.isCustomization = true;
-    generator.log("Enter the language name in English (e.g. Bulgarian, Traditional Chinese).");
+    generator.log("Enter the language name in English (e.g. 'Bulgarian', 'Dutch').");
     return generator.prompt({
         type: 'input',
         name: 'lpLanguageName',
@@ -41,6 +41,22 @@ exports.askForLocalizationLanguageName = function (generator) {
         if (!generator.extensionDescription) {
             generator.extensionDescription = "Language pack extension for " + answer.lpLanguageName;
         }
+        return Promise.resolve();
+    });
+}
+
+exports.askForLocalizedLanguageName = function (generator) {
+    if (generator.extensionConfig.type !== 'ext-localization') {
+        return Promise.resolve();
+    }
+    generator.extensionConfig.isCustomization = true;
+    generator.log("Enter the language name in " + generator.extensionConfig.lpLanguageName);
+    return generator.prompt({
+        type: 'input',
+        name: 'lpLocalizedLanguageName',
+        message: 'Localized language name:',
+    }).then(function (answer) {
+        generator.extensionConfig.lpLocalizedLanguageName = answer.lpLocalizedLanguageName;
         return Promise.resolve();
     });
 }
