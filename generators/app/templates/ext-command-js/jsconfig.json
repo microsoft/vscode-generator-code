@@ -3,7 +3,7 @@
         "module": "commonjs",
         "target": "es6",
         "checkJs": <%- JSON.stringify(checkJavaScript) %>,  /* Typecheck .js files. */
-        "lib": [ 
+        "lib": [
             "es6"
         ]
     },
