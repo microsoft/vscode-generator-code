@@ -88,11 +88,11 @@ module.exports = yeoman.Base.extend({
                 {
                     name: 'New Extension Pack',
                     value: 'ext-extensionpack'
-                }/* Commented out for now
+                },
                 {
                     name: 'New Language Pack (Localization)',
                     value: 'ext-localization'
-                }*/
+                }
                 ]
             }).then(function (typeAnswer) {
                 generator.extensionConfig.type = typeAnswer.type;
