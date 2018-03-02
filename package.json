@@ -33,6 +33,7 @@
     "postversion": "git push && git push --tags"
   },
   "dependencies": {
+    "assert-plus": "^1.0.0",
     "chalk": "^2.3.0",
     "request": "^2.81.0",
     "sanitize-filename": "^1.6.1",
