@@ -86,6 +86,10 @@ module.exports = yeoman.Base.extend({
                     value: 'ext-snippets'
                 },
                 {
+                    name: 'New Keymap',
+                    value: 'ext-keymap'
+                },
+                {
                     name: 'New Extension Pack',
                     value: 'ext-extensionpack'
                 },
@@ -528,6 +532,9 @@ module.exports = yeoman.Base.extend({
             case 'ext-snippets':
                 this._writingSnippets();
                 break;
+            case 'ext-keymap':
+                this._writingKeymaps();
+                break;
             case 'ext-command-ts':
                 this._writingCommandTs();
                 break;
@@ -621,6 +628,19 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/snippets/snippets.json', context.name + '/snippets/snippets.json', context);
+        this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
+        this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+    },
+
+    // Write Snippets Extension
+    _writingKeymaps: function () {
+        var context = this.extensionConfig;
+
+        this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
+        this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
+        this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
+        this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
+        this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
         this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
     },
