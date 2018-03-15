@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>name</key>
+	<string>Issue 74</string>
+	<key>settings</key>
+	<array>
+		<dict>
+			<key>settings</key>
+			<dict>
+				<key>background</key>
+				<string>#002B36</string><!-- base03 -->
+				<key>caret</key>
+				<string>#819090</string><!-- (nonstandard) ~base0 -->
+				<key>foreground</key>
+				<string>#839496</string><!-- base0 -->
+				<key>invisibles</key>
+				<string>#073642</string><!-- base02 -->
+				<key>lineHighlight</key>
+				<string>#073642</string><!-- base02 -->
+				<key>selection</key>
+				<string>#073642</string><!-- base02 -->
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Classes</string>
+			<key>scope</key>
+			<string>
+				support.class,
+				entity.name.class,
+				entity.name.type.class,
+				meta.class
+			</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#C7AF3F</string>
+			</dict>
+		</dict>
+	</array>
+	<key>uuid</key>
+	<string>A4299D9B-1DE5-4BC4-87F6-A757E71B1597</string>
+	<key>colorSpaceName</key>
+	<string>sRGB</string>
+</dict>
+</plist>

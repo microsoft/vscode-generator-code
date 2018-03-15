@@ -26,3 +26,7 @@ module.exports.validateExtensionId = function(id) {
 
     return true;
 }
+
+module.exports.validateNonEmpty = function(name) {
+    return name && name.length > 0;
+}

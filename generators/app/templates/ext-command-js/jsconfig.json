@@ -2,7 +2,8 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "es6",
-        "lib": [
+        "checkJs": <%- JSON.stringify(checkJavaScript) %>,  /* Typecheck .js files. */
+        "lib": [ 
             "es6"
         ]
     },
