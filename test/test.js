@@ -572,6 +572,53 @@ describe('test code generator', function () {
             });
     });
 
+    it('keymap new', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-keymap',
+                name: 'testKeym',
+                displayName: 'Test Keym',
+                description: 'My TestKeym',
+                publisher: 'Microsoft'
+            }) // Mock the prompt answers
+            .toPromise().then(function () {
+                var expected = {
+                    "name": "testKeym",
+                    "displayName": 'Test Keym',
+                    "description": "My TestKeym",
+                    "version": "0.0.1",
+                    "publisher": 'Microsoft',
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "categories": [
+                        "Keymaps"
+                    ],
+                    "contributes": {
+                        "keybindings": [{
+                            "key": "ctrl+.",
+                            "command": "workbench.action.showCommands"
+                        }]
+                    }
+                };
+                try {
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.gitignore', '.vscodeignore']);
+
+                    var body = fs.readFileSync('package.json', 'utf8');
+
+                    var actual = JSON.parse(body);
+                    assert.deepEqual(expected, actual);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+
+            });
+    });
+
     it('command-ts', function (done) {
         this.timeout(10000);
 
