@@ -8,7 +8,7 @@
         "vscode": <%- JSON.stringify(vsCodeEngine) %>
     },
     "categories": [
-        "Language Pack"
+        "Language Packs"
     ],
     "contributes": {
         "localizations": [{
