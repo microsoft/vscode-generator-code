@@ -968,7 +968,7 @@ describe('test code generator', function () {
                         "vscode": engineVersion
                     },
                     "categories": [
-                        "Language Pack"
+                        "Language Packs"
                     ],
                     "contributes": {
                         "localizations": [{
