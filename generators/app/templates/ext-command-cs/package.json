@@ -1,0 +1,42 @@
+{
+    "name": "test",
+    "publisher": "jhessin",
+    "version": "1.0.0",
+    "engines": {
+        "vscode": "^0.10.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:extension.sayHello"
+    ],
+    "main": "./out/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.sayHello",
+                "title": "Hello World"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "gulp coffee",
+        "watch": "gulp watch",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "coffeescript": "^2.2.4",
+        "gulp-coffeelint": "^0.6.0",
+        "vscode": "^1.1.6"
+    },
+    "dependencies": {
+        "babel-core": "^6.26.0",
+        "babel-preset-env": "^1.6.1",
+        "gulp": "^3.9.1",
+        "gulp-coffee": "^3.0.2",
+        "gulp-sourcemaps": "^2.6.4"
+    }
+}
