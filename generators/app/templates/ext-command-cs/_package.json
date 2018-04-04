@@ -39,6 +39,8 @@
         "babel-preset-env": "^1.6.1",
         "gulp": "^3.9.1",
         "gulp-coffee": "^3.0.2",
-        "gulp-sourcemaps": "^2.6.4"
+        "gulp-sourcemaps": "^2.6.4",
+        "@types/node": "^7.0.43",
+        "@types/mocha": "^2.2.42"
     }
 }
