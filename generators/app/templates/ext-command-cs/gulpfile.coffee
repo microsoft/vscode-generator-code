@@ -21,7 +21,7 @@ gulp.task 'coffee', compileCoffee
 
 gulp.task 'watch', ->
   compileCoffee()
-  gulp.watch './src/**/*.coffee', [ 'coffee' ]
+  gulp.watch './src/**/*.coffee', [ 'lint', 'coffee' ]
 
 gulp.task 'lint', ->
   gulp.src('./src/*.coffee')

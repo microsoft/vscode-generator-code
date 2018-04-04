@@ -20,9 +20,6 @@ export activate = (context) ->
 
       # Display a message box to the user
       vscode.window.showInformationMessage 'Hello World!'
-      # require('bob')
-      # require 'bill'
-      # ...
     )
 
   context.subscriptions.push(disposable)

@@ -24,17 +24,21 @@
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
+        "compile": "gulp coffee",
+        "watch": "gulp watch",
         "postinstall": "node ./node_modules/vscode/bin/install",
         "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.6",
         "coffeescript": "^2.2.4",
-        "webpack": "^4.4.1",
-        "@types/node": "^7.0.43",
-        "@types/mocha": "^2.2.42"
+        "gulp-coffeelint": "^0.6.0",
+        "vscode": "^1.1.6"
+    },
+    "dependencies": {
+        "babel-core": "^6.26.0",
+        "babel-preset-env": "^1.6.1",
+        "gulp": "^3.9.1",
+        "gulp-coffee": "^3.0.2",
+        "gulp-sourcemaps": "^2.6.4"
     }
 }

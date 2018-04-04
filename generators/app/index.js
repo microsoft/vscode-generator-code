@@ -656,17 +656,19 @@ module.exports = yeoman.Base.extend({
     _writingCommandCs: function () {
         var context = this.extensionConfig;
 
-        this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
+        this.template(this.sourceRoot() + '/src/extension.coffee', context.name + '/src/extension.coffee', context);
         this.directory(this.sourceRoot() + '/src/test', context.name + '/src/test');
 
+        this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
+        this.template(this.sourceRoot() + '/_package.json', context.name + '/package.json', context);
+        this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
+
+        this.copy(this.sourceRoot() + '/coffeelint.json', context.name + '/coffeelint.json');
         this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
         this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
-        this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
 
-        this.template(this.sourceRoot() + '/src/extension.ts', context.name + '/src/extension.ts', context);
-        this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
 
         this.extensionConfig.installDependencies = true;
     },
