@@ -350,7 +350,7 @@ describe('test code generator', function () {
                         "vscode": engineVersion
                     },
                     "categories": [
-                        "Languages"
+                        "Programming Languages"
                     ],
                     "contributes": {
                         "languages": [{
@@ -407,7 +407,7 @@ describe('test code generator', function () {
                         "vscode": engineVersion
                     },
                     "categories": [
-                        "Languages"
+                        "Programming Languages"
                     ],
                     "contributes": {
                         "languages": [{
