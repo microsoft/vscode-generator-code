@@ -34,19 +34,19 @@
   },
   "dependencies": {
     "assert-plus": "^1.0.0",
-    "chalk": "^2.3.1",
-    "request": "^2.81.0",
+    "chalk": "^2.4.1",
+    "request": "^2.85.0",
     "sanitize-filename": "^1.6.1",
     "sax": "^1.2.2",
     "yeoman-generator": "^0.24.1",
-    "yosay": "^1.2.1"
+    "yosay": "^2.0.2"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.48",
     "@types/node": "^6.0.101",
     "mocha": "^3.1.2",
-    "yeoman-assert": "^2.2.1",
-    "yeoman-test": "^1.5.1",
-    "yo": "^1.8.5"
+    "yeoman-assert": "^3.1.1",
+    "yeoman-test": "^1.7.0",
+    "yo": "^2.0.2"
   }
 }
