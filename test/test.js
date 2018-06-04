@@ -852,7 +852,7 @@ describe('test code generator', function () {
                 try {
 
 
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'extension.js', 'test/extension.test.js', 'test/index.js', '.gitignore', 'jsconfig.json']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'extension.js', 'test/extension.test.js', 'test/index.js', '.gitignore', '.gitattributes', 'jsconfig.json']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
