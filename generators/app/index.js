@@ -74,6 +74,10 @@ module.exports = yeoman.Base.extend({
                     value: 'ext-command-js'
                 },
                 {
+                    name: 'New Extension (CoffeeScript)',
+                    value: 'ext-command-cs'
+                },
+                {
                     name: 'New Color Theme',
                     value: 'ext-colortheme'
                 },
@@ -114,18 +118,18 @@ module.exports = yeoman.Base.extend({
                 name: 'themeImportType',
                 message: 'Do you want to import or convert an existing TextMate color theme?',
                 choices: [
-                {
-                    name: 'No, start fresh',
-                    value: 'new'
-                },
-                {
-                    name: 'Yes, import an existing theme but keep it as tmTheme file.',
-                    value: 'import-keep'
-                },
-                {
-                    name: 'Yes, import an existing theme and inline it in the Visual Studio Code color theme file.',
-                    value: 'import-inline'
-                }
+                    {
+                        name: 'No, start fresh',
+                        value: 'new'
+                    },
+                    {
+                        name: 'Yes, import an existing theme but keep it as tmTheme file.',
+                        value: 'import-keep'
+                    },
+                    {
+                        name: 'Yes, import an existing theme and inline it in the Visual Studio Code color theme file.',
+                        value: 'import-inline'
+                    }
                 ]
             }).then(function (answer) {
                 let inline = true;
@@ -369,7 +373,7 @@ module.exports = yeoman.Base.extend({
 
         askForGit: function () {
             var generator = this;
-            if (['ext-command-ts', 'ext-command-js'].indexOf(generator.extensionConfig.type) === -1) {
+            if (['ext-command-ts', 'ext-command-js', 'ext-command-cs'].indexOf(generator.extensionConfig.type) === -1) {
                 return Promise.resolve();
             }
 
@@ -538,6 +542,9 @@ module.exports = yeoman.Base.extend({
             case 'ext-command-ts':
                 this._writingCommandTs();
                 break;
+            case 'ext-command-cs':
+                this._writingCommandCs();
+                break;
             case 'ext-command-js':
                 this._writingCommandJs();
                 break;
@@ -645,6 +652,27 @@ module.exports = yeoman.Base.extend({
         this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
     },
 
+    // Write Command Extension (CoffeeScript)
+    _writingCommandCs: function () {
+        var context = this.extensionConfig;
+
+        this.template(this.sourceRoot() + '/src/extension.coffee', context.name + '/src/extension.coffee', context);
+        this.directory(this.sourceRoot() + '/src/test', context.name + '/src/test');
+
+        this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
+        this.template(this.sourceRoot() + '/_package.json', context.name + '/package.json', context);
+        this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
+
+        this.copy(this.sourceRoot() + '/coffeelint.json', context.name + '/coffeelint.json');
+        this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+        this.copy(this.sourceRoot() + '/gulpfile.coffee', context.name + '/gulpfile.coffee');
+        this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
+        this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
+        this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
+
+
+        this.extensionConfig.installDependencies = true;
+    },
     // Write Command Extension (TypeScript)
     _writingCommandTs: function () {
         var context = this.extensionConfig;
