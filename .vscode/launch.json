@@ -13,9 +13,9 @@
             "type": "node",
             "request": "launch",
             "name": "yeoman code",
-            "program": "${workspaceRoot}/node_modules/yo/lib/cli.js",
+            "program": "${workspaceFolder}/node_modules/yo/lib/cli.js",
             "args": [ "code" ],
-            "cwd": "${workspaceRoot}",
+            "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
         },
@@ -23,14 +23,14 @@
             "type": "node",
             "request": "launch",
             "name": "Mocha Tests",
-            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
             "args": [
                 "-u",
                 "tdd",
                 "--timeout",
                 "999999",
                 "--colors",
-                "${workspaceRoot}/test"
+                "${workspaceFolder}/test"
             ],
             "internalConsoleOptions": "openOnSessionStart"
         }

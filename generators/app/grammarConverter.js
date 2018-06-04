@@ -43,6 +43,8 @@ function convertGrammar(location, extensionConfig) {
     } else {
         // load from disk
         var body = null;
+        // trim the spaces of the location path
+        location = location.trim()
         try {
             body = fs.readFileSync(location);
         } catch (error) {

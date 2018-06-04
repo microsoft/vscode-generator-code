@@ -8,7 +8,7 @@
         "vscode": <%- JSON.stringify(vsCodeEngine) %>
     },
     "categories": [
-        "Languages"
+        "Programming Languages"
     ],
     "contributes": {
         "languages": [{

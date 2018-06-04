@@ -15,6 +15,7 @@ var env = require('./env');
 var childProcess = require('child_process');
 var chalk = require('chalk');
 var sanitize = require("sanitize-filename");
+var localization = require('./localization');
 
 module.exports = yeoman.Base.extend({
 
@@ -22,12 +23,14 @@ module.exports = yeoman.Base.extend({
         yeoman.Base.apply(this, arguments);
         this.option('extensionType', { type: String, required: false });
         this.option('extensionName', { type: String, required: false });
+        this.option('extensionDescription', { type: String, required: false });
+        this.option('extensionDisplayName', { type: String, required: false });
+
         this.option('extensionParam', { type: String, required: false });
         this.option('extensionParam2', { type: String, required: false });
 
         this.extensionConfig = Object.create(null);
         this.extensionConfig.installDependencies = false;
-        this.extensionConfig.vsCodeEngine = env.vsCodeEngine;
     },
 
     initializing: {
@@ -35,6 +38,11 @@ module.exports = yeoman.Base.extend({
         // Welcome
         welcome: function () {
             this.log(yosay('Welcome to the Visual Studio Code Extension generator!'));
+        },
+
+        evaluateEngineVersion: function () {
+            var extensionConfig = this.extensionConfig;
+            return env.getLatestVSCodeVersion().then(function (version) { extensionConfig.vsCodeEngine = version; });
         }
     },
 
@@ -57,31 +65,38 @@ module.exports = yeoman.Base.extend({
                 type: 'list',
                 name: 'type',
                 message: 'What type of extension do you want to create?',
-                choices: [
-                    {
-                        name: 'New Extension (TypeScript)',
-                        value: 'ext-command-ts'
-                    },
-                    {
-                        name: 'New Extension (JavaScript)',
-                        value: 'ext-command-js'
-                    },
-                    {
-                        name: 'New Color Theme',
-                        value: 'ext-colortheme'
-                    },
-                    {
-                        name: 'New Language Support',
-                        value: 'ext-language'
-                    },
-                    {
-                        name: 'New Code Snippets',
-                        value: 'ext-snippets'
-                    },
-                    {
-                        name: 'New Extension Pack',
-                        value: 'ext-extensionpack'
-                    }
+                choices: [{
+                    name: 'New Extension (TypeScript)',
+                    value: 'ext-command-ts'
+                },
+                {
+                    name: 'New Extension (JavaScript)',
+                    value: 'ext-command-js'
+                },
+                {
+                    name: 'New Color Theme',
+                    value: 'ext-colortheme'
+                },
+                {
+                    name: 'New Language Support',
+                    value: 'ext-language'
+                },
+                {
+                    name: 'New Code Snippets',
+                    value: 'ext-snippets'
+                },
+                {
+                    name: 'New Keymap',
+                    value: 'ext-keymap'
+                },
+                {
+                    name: 'New Extension Pack',
+                    value: 'ext-extensionpack'
+                },
+                {
+                    name: 'New Language Pack (Localization)',
+                    value: 'ext-localization'
+                }
                 ]
             }).then(function (typeAnswer) {
                 generator.extensionConfig.type = typeAnswer.type;
@@ -99,18 +114,18 @@ module.exports = yeoman.Base.extend({
                 name: 'themeImportType',
                 message: 'Do you want to import or convert an existing TextMate color theme?',
                 choices: [
-                    {
-                        name: 'Import an existing theme but keep it as tmTheme file.',
-                        value: 'import-keep'
-                    },
-                    {
-                        name: 'Import an existing theme and inline it in the Visual Studio Code color theme file.',
-                        value: 'import-inline'
-                    },
-                    {
-                        name: 'Start fresh',
-                        value: 'new'
-                    }
+                {
+                    name: 'No, start fresh',
+                    value: 'new'
+                },
+                {
+                    name: 'Yes, import an existing theme but keep it as tmTheme file.',
+                    value: 'import-keep'
+                },
+                {
+                    name: 'Yes, import an existing theme and inline it in the Visual Studio Code color theme file.',
+                    value: 'import-inline'
+                }
                 ]
             }).then(function (answer) {
                 let inline = true;
@@ -122,10 +137,10 @@ module.exports = yeoman.Base.extend({
                         name: 'themeURL',
                         message: 'URL or file name to import:'
                     }).then(function (urlAnswer) {
-                        return themeConverter.convertTheme(urlAnswer.themeURL, generator.extensionConfig, type === 'import-inline');
+                        return themeConverter.convertTheme(urlAnswer.themeURL, generator.extensionConfig, type === 'import-inline', generator);
                     });
                 } else {
-                    return themeConverter.convertTheme(null, generator.extensionConfig, false);
+                    return themeConverter.convertTheme(null, generator.extensionConfig, false, generator);
                 }
             });
         },
@@ -138,7 +153,7 @@ module.exports = yeoman.Base.extend({
             }
 
             generator.extensionConfig.isCustomization = true;
-            generator.log("Enter the URL (http, https) or the file path of the tmLanguage grammar or press ENTER to start with an new grammar.");
+            generator.log("Enter the URL (http, https) or the file path of the tmLanguage grammar or press ENTER to start with a new grammar.");
             return generator.prompt({
                 type: 'input',
                 name: 'tmLanguageURL',
@@ -163,7 +178,7 @@ module.exports = yeoman.Base.extend({
                 }
                 return Promise.resolve();
             }
-            generator.log("Folder location that contains Text Mate (.tmSnippet) and Sublime snippets (.sublime-snippet) or press ENTER to start with an new snippet file.");
+            generator.log("Folder location that contains Text Mate (.tmSnippet) and Sublime snippets (.sublime-snippet) or press ENTER to start with a new snippet file.");
 
             var snippetPrompt = function () {
                 return generator.prompt({
@@ -187,6 +202,18 @@ module.exports = yeoman.Base.extend({
                 });
             };
             return snippetPrompt();
+        },
+
+        askForLocalizationLanguageId: function () {
+            return localization.askForLanguageId(this);
+        },
+
+        askForLocalizationLanguageName: function () {
+            return localization.askForLanguageName(this);
+        },
+
+        askForLocalizedLocalizationLanguageName: function () {
+            return localization.askForLocalizedLanguageName(this);
         },
 
         askForExtensionPackInfo: function () {
@@ -229,7 +256,7 @@ module.exports = yeoman.Base.extend({
             var generator = this;
             if (generator.extensionDisplayName) {
                 generator.extensionConfig.displayName = generator.extensionDisplayName;
-                return;
+                return Promise.resolve();
             }
 
             return generator.prompt({
@@ -247,7 +274,7 @@ module.exports = yeoman.Base.extend({
             var generator = this;
             if (generator.extensionName) {
                 generator.extensionConfig.name = generator.extensionName;
-                return;
+                return Promise.resolve();
             }
 
             return generator.prompt({
@@ -264,6 +291,11 @@ module.exports = yeoman.Base.extend({
         // Ask for extension description
         askForExtensionDescription: function () {
             var generator = this;
+            if (generator.extensionDescription) {
+                generator.extensionConfig.description = generator.extensionDescription;
+                return Promise.resolve();
+            }
+
             return generator.prompt({
                 type: 'input',
                 name: 'description',
@@ -284,6 +316,54 @@ module.exports = yeoman.Base.extend({
                 validate: validator.validatePublisher
             }).then(function (publisherAnswer) {
                 generator.extensionConfig.publisher = publisherAnswer.publisher;
+            });
+        },
+
+        askForTypeScriptInfo: function () {
+            let generator = this;
+            if (generator.extensionConfig.type !== 'ext-command-ts') {
+                return Promise.resolve();
+            }
+            generator.extensionConfig.strictTypeScript = false;
+            return generator.prompt({
+                type: 'confirm',
+                name: 'strictTypeScript',
+                message: 'Enable stricter TypeScript checking in \'tsconfig.json\'?',
+                default: true
+            }).then(function (strictTypeScriptAnswer) {
+                generator.extensionConfig.strictTypeScript = strictTypeScriptAnswer.strictTypeScript;
+            });
+        },
+
+        askForTsLint: function () {
+            let generator = this;
+            if (generator.extensionConfig.type !== 'ext-command-ts') {
+                return Promise.resolve();
+            }
+            generator.extensionConfig.tslint = false;
+            return generator.prompt({
+                type: 'confirm',
+                name: 'tslint',
+                message: 'Setup linting using \'tslint\'?',
+                default: true
+            }).then(function (tslintAnswer) {
+                generator.extensionConfig.tslint = tslintAnswer.tslint;
+            });
+        },
+
+        askForJavaScriptInfo: function () {
+            let generator = this;
+            if (generator.extensionConfig.type !== 'ext-command-js') {
+                return Promise.resolve();
+            }
+            generator.extensionConfig.checkJavaScript = false;
+            return generator.prompt({
+                type: 'confirm',
+                name: 'checkJavaScript',
+                message: 'Enable JavaScript type checking in \'jsconfig.json\'?',
+                default: false
+            }).then(function (strictJavaScriptAnswer) {
+                generator.extensionConfig.checkJavaScript = strictJavaScriptAnswer.checkJavaScript;
             });
         },
 
@@ -330,19 +410,18 @@ module.exports = yeoman.Base.extend({
                 type: 'list',
                 name: 'themeBase',
                 message: 'Select a base theme:',
-                choices: [
-                    {
-                        name: "Dark",
-                        value: "vs-dark"
-                    },
-                    {
-                        name: "Light",
-                        value: "vs"
-                    },
-                    {
-                        name: "High Contrast",
-                        value: "hc-black"
-                    }
+                choices: [{
+                    name: "Dark",
+                    value: "vs-dark"
+                },
+                {
+                    name: "Light",
+                    value: "vs"
+                },
+                {
+                    name: "High Contrast",
+                    value: "hc-black"
+                }
                 ]
             }).then(function (themeBase) {
                 generator.extensionConfig.themeBase = themeBase.themeBase;
@@ -372,7 +451,7 @@ module.exports = yeoman.Base.extend({
                 return Promise.resolve();
             }
 
-            generator.log('Enter the name of the language. The name will be shown in the VS code editor mode selector.');
+            generator.log('Enter the name of the language. The name will be shown in the VS Code editor mode selector.');
             return generator.prompt({
                 type: 'input',
                 name: 'languageName',
@@ -453,6 +532,9 @@ module.exports = yeoman.Base.extend({
             case 'ext-snippets':
                 this._writingSnippets();
                 break;
+            case 'ext-keymap':
+                this._writingKeymaps();
+                break;
             case 'ext-command-ts':
                 this._writingCommandTs();
                 break;
@@ -461,6 +543,9 @@ module.exports = yeoman.Base.extend({
                 break;
             case 'ext-extensionpack':
                 this._writingExtensionPack();
+                break;
+            case 'ext-localization':
+                localization.writingLocalizationExtension(this);
                 break;
             default:
                 //unknown project type
@@ -478,6 +563,8 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
+        this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
+        this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
     },
 
     // Write Color Theme Extension
@@ -506,6 +593,8 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
+        this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
+        this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
     },
 
     // Write Language Extension
@@ -525,6 +614,8 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
         this.template(this.sourceRoot() + '/language-configuration.json', context.name + '/language-configuration.json', context);
+        this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
+        this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
     },
 
     // Write Snippets Extension
@@ -537,6 +628,21 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/snippets/snippets.json', context.name + '/snippets/snippets.json', context);
+        this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
+        this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+    },
+
+    // Write Snippets Extension
+    _writingKeymaps: function () {
+        var context = this.extensionConfig;
+
+        this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
+        this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
+        this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
+        this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
+        this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
+        this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
+        this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
     },
 
     // Write Command Extension (TypeScript)
@@ -544,7 +650,7 @@ module.exports = yeoman.Base.extend({
         var context = this.extensionConfig;
 
         this.directory(this.sourceRoot() + '/vscode', context.name + '/.vscode');
-        this.directory(this.sourceRoot() + '/test', context.name + '/test');
+        this.directory(this.sourceRoot() + '/src/test', context.name + '/src/test');
 
         this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
         this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
@@ -552,11 +658,15 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
-        this.copy(this.sourceRoot() + '/tsconfig.json', context.name + '/tsconfig.json');
+        this.template(this.sourceRoot() + '/tsconfig.json', context.name + '/tsconfig.json', context);
 
         this.template(this.sourceRoot() + '/src/extension.ts', context.name + '/src/extension.ts', context);
         this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
 
+        if (this.extensionConfig.tslint) {
+            this.copy(this.sourceRoot() + '/tslint.json', context.name + '/tslint.json');
+            this.copy(this.sourceRoot() + '/optional/extensions.json', context.name + '/.vscode/extensions.json');
+        }
         this.extensionConfig.installDependencies = true;
     },
 
@@ -573,11 +683,13 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
-        this.copy(this.sourceRoot() + '/jsconfig.json', context.name + '/jsconfig.json');
+        this.template(this.sourceRoot() + '/jsconfig.json', context.name + '/jsconfig.json', context);
 
         this.template(this.sourceRoot() + '/extension.js', context.name + '/extension.js', context);
         this.template(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
         this.template(this.sourceRoot() + '/.eslintrc.json', context.name + '/.eslintrc.json', context);
+
+        this.copy(this.sourceRoot() + '/optional/extensions.json', context.name + '/.vscode/extensions.json');
 
         this.extensionConfig.installDependencies = true;
     },
@@ -615,7 +727,7 @@ module.exports = yeoman.Base.extend({
         this.log('');
 
         if (this.extensionConfig.type === 'ext-extensionpack') {
-            this.log(chalk.yellow('Please review the "extensionDependencies" in the "package.json" before publishing the extension pack.'));
+            this.log(chalk.default.yellow('Please review the "extensionDependencies" in the "package.json" before publishing the extension pack.'));
             this.log('');
         }
 

@@ -7,7 +7,14 @@
             "es6"
         ],
         "sourceMap": true,
-        "rootDir": "."
+        "rootDir": "src",
+        /* Strict Type-Checking Option */
+        "strict": <%- JSON.stringify(strictTypeScript) %>,   /* enable all strict type-checking options */
+        /* Additional Checks */
+        "noUnusedLocals": <%- JSON.stringify(strictTypeScript) %> /* Report errors on unused locals. */
+        // "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
+        // "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
+        // "noUnusedParameters": true,  /* Report errors on unused parameters. */
     },
     "exclude": [
         "node_modules",
