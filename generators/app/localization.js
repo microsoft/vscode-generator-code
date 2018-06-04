@@ -71,6 +71,7 @@ exports.writingLocalizationExtension = function (generator) {
     generator.template(generator.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
     generator.copy(generator.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
     generator.copy(generator.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+    generator.copy(generator.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
 
     context.installDependencies = true;
 }

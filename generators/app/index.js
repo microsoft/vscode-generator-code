@@ -565,6 +565,7 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
         this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+        this.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
     },
 
     // Write Color Theme Extension
@@ -595,6 +596,7 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
         this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+        this.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
     },
 
     // Write Language Extension
@@ -616,6 +618,7 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/language-configuration.json', context.name + '/language-configuration.json', context);
         this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
         this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+        this.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
     },
 
     // Write Snippets Extension
@@ -630,6 +633,7 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/snippets/snippets.json', context.name + '/snippets/snippets.json', context);
         this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
         this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+        this.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
     },
 
     // Write Snippets Extension
@@ -643,6 +647,7 @@ module.exports = yeoman.Base.extend({
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
         this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+        this.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
     },
 
     // Write Command Extension (TypeScript)
@@ -678,8 +683,10 @@ module.exports = yeoman.Base.extend({
         this.directory(this.sourceRoot() + '/test', context.name + '/test');
 
         this.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
+
         this.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
         this.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+
         this.template(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.template(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.template(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
