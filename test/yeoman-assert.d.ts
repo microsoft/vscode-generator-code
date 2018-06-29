@@ -1,6 +1,6 @@
 
 export * from "assert";
 
-declare module "assert" {
+declare module "yeoman-assert" {
     export function file(args: string | string[]): void;
 }
