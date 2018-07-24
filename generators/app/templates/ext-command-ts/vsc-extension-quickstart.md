@@ -22,7 +22,7 @@ We pass the function containing the implementation of the command as the second 
 * You can also reload (`Ctrl+R` or `Cmd+R` on Mac) the VS Code window with your extension to load your changes.
 
 ## Explore the API
-* You can open the full set of our API when you open the file `node_modules/vscode/vscode.d.ts`.
+* You can open the full set of our API when you open the file `node_modules/doppler/doppler.d.ts`.
 
 ## Run tests
 * Open the debug viewlet (`Ctrl+Shift+D` or `Cmd+Shift+D` on Mac) and from the launch configuration dropdown pick `Launch Tests`.

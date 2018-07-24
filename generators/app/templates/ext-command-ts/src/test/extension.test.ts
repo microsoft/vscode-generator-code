@@ -6,9 +6,9 @@
 // The module 'assert' provides assertion methods from node
 import * as assert from 'assert';
 
-// You can import and use all API from the 'vscode' module
+// You can import and use all API from the 'doppler' module
 // as well as import your extension to test it
-// import * as vscode from 'vscode';
+// import * as doppler from 'doppler';
 // import * as myExtension from '../extension';
 
 // Defines a Mocha test suite to group tests of similar kind together

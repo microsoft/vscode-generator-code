@@ -5,7 +5,7 @@
     "version": "0.0.1",
     "publisher": <%- JSON.stringify(publisher) %>,
     "engines": {
-        "vscode": <%- JSON.stringify(vsCodeEngine) %>
+        "doppler": <%- JSON.stringify(vsCodeEngine) %>
     },
     "categories": [
         "Other"
@@ -21,15 +21,15 @@
         }]
     },
     "scripts": {
-        "vscode:prepublish": "npm run compile",
+        "doppler:prepublish": "npm run compile",
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+        "postinstall": "node ./node_modules/doppler/bin/install",
+        "test": "npm run compile && node ./node_modules/doppler/bin/test"
     },
     "devDependencies": {
         "typescript": "^2.6.1",
-        "vscode": "^1.1.6",
+        "doppler": "^1.1.6",
 <%if (tslint) {-%>
         "tslint": "^5.8.0",
 <% } -%>

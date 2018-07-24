@@ -42,7 +42,7 @@ describe('test code generator', function () {
 
     var engineVersion;
     before(function () {
-        return env.getLatestVSCodeVersion().then(function (version) {
+        return env.getLatestDopplerVersion().then(function (version) {
             console.info('    expecting engine version ' + version);
             engineVersion = version;
         });

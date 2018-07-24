@@ -6,8 +6,8 @@
     "configurations": [
         {
             // make sure to have this generator npm-linked:
-            // $ git clone https://github.com/Microsoft/vscode-generator-code
-            // $ cd vscode-generator-code
+            // $ git clone https://github.com/zeropointdynamics/generator-doppler.git
+            // $ cd generator-doppler
             // $ npm link
             //
             "type": "node",
