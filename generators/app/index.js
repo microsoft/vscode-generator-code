@@ -42,7 +42,7 @@ module.exports = yeoman.Base.extend({
 
         evaluateEngineVersion: function () {
             var extensionConfig = this.extensionConfig;
-            return env.getLatestVSCodeVersion().then(function (version) { extensionConfig.vsCodeEngine = version; });
+            return env.getLatestDopplerVersion().then(function (version) { extensionConfig.vsCodeEngine = version; });
         }
     },
 

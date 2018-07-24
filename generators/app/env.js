@@ -21,10 +21,10 @@ var promise = new Promise(function(resolve, reject) {
                 console.log('Problem parsing version: ' + body, e);
             }
         } else {
-            console.log('Unable to fetch latest vscode version: ' + (error || ('Status code: ' + response.statusCode + ', ' + body)));
+            console.log('Unable to fetch latest doppler version: ' + (error || ('Status code: ' + response.statusCode + ', ' + body)));
         }
         resolve(fallbackVersion);
     });
 });
 
-module.exports.getLatestVSCodeVersion = function() { return promise; };
+module.exports.getLatestDopplerVersion = function() { return promise; };

@@ -5,7 +5,7 @@
     "version": "0.0.1",
     "publisher": <%- JSON.stringify(publisher) %>,
     "engines": {
-        "vscode": <%- JSON.stringify(vsCodeEngine) %>
+        "doppler": <%- JSON.stringify(vsCodeEngine) %>
     },
     "categories": [
         "Programming Languages"

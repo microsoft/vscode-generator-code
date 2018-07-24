@@ -141,7 +141,7 @@ function migrate(content, tmThemeFileName, generator) {
                         }
                     }
                     if (notSupported.length > 0) {
-                        generator.log('Note: the following theming properties are not supported by VSCode and will be ignored: ' + notSupported.join(', '))
+                        generator.log('Note: the following theming properties are not supported by Doppler and will be ignored: ' + notSupported.join(', '))
                     }
                 }
             }
