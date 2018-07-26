@@ -114,18 +114,18 @@ module.exports = yeoman.Base.extend({
                 name: 'themeImportType',
                 message: 'Do you want to import or convert an existing TextMate color theme?',
                 choices: [
-                {
-                    name: 'No, start fresh',
-                    value: 'new'
-                },
-                {
-                    name: 'Yes, import an existing theme but keep it as tmTheme file.',
-                    value: 'import-keep'
-                },
-                {
-                    name: 'Yes, import an existing theme and inline it in the Visual Studio Code color theme file.',
-                    value: 'import-inline'
-                }
+                    {
+                        name: 'No, start fresh',
+                        value: 'new'
+                    },
+                    {
+                        name: 'Yes, import an existing theme but keep it as tmTheme file.',
+                        value: 'import-keep'
+                    },
+                    {
+                        name: 'Yes, import an existing theme and inline it in the Visual Studio Code color theme file.',
+                        value: 'import-inline'
+                    }
                 ]
             }).then(function (answer) {
                 let inline = true;
@@ -734,7 +734,7 @@ module.exports = yeoman.Base.extend({
         this.log('');
 
         if (this.extensionConfig.type === 'ext-extensionpack') {
-            this.log(chalk.default.yellow('Please review the "extensionDependencies" in the "package.json" before publishing the extension pack.'));
+            this.log(chalk.default.yellow('Please review the "extensionPack" in the "package.json" before publishing the extension pack.'));
             this.log('');
         }
 
