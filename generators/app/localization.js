@@ -4,7 +4,7 @@
 'use strict';
 
 
-exports.askForLanguageId = function (generator) {
+exports.askForLanguageId = (generator) => {
     if (generator.extensionConfig.type !== 'ext-localization') {
         return Promise.resolve();
     }
@@ -14,16 +14,16 @@ exports.askForLanguageId = function (generator) {
         type: 'input',
         name: 'lpLanguageId',
         message: 'Language id:',
-    }).then(function (answer) {
+    }).then(answer => {
         generator.extensionConfig.lpLanguageId = answer.lpLanguageId;
-        if (!generator.extensionName) {
-            generator.extensionName = "vscode-language-pack-" + answer.lpLanguageId;
+        if (!generator.options['extensionName']) {
+            generator.options['extensionName'] = "vscode-language-pack-" + answer.lpLanguageId;
         }
         return Promise.resolve();
     });
 }
 
-exports.askForLanguageName = function (generator) {
+exports.askForLanguageName = (generator) => {
     if (generator.extensionConfig.type !== 'ext-localization') {
         return Promise.resolve();
     }
@@ -33,19 +33,19 @@ exports.askForLanguageName = function (generator) {
         type: 'input',
         name: 'lpLanguageName',
         message: 'Language name:',
-    }).then(function (answer) {
+    }).then(answer => {
         generator.extensionConfig.lpLanguageName = answer.lpLanguageName;
-        if (!generator.extensionDisplayName) {
-            generator.extensionDisplayName = answer.lpLanguageName + " Language Pack";
+        if (!generator.options['extensionDisplayName']) {
+            generator.options['extensionDisplayName'] = answer.lpLanguageName + " Language Pack";
         }
-        if (!generator.extensionDescription) {
-            generator.extensionDescription = "Language pack extension for " + answer.lpLanguageName;
+        if (!generator.options['extensionDescription']) {
+            generator.options['extensionDescription'] = "Language pack extension for " + answer.lpLanguageName;
         }
         return Promise.resolve();
     });
 }
 
-exports.askForLocalizedLanguageName = function (generator) {
+exports.askForLocalizedLanguageName = (generator) => {
     if (generator.extensionConfig.type !== 'ext-localization') {
         return Promise.resolve();
     }
@@ -55,23 +55,23 @@ exports.askForLocalizedLanguageName = function (generator) {
         type: 'input',
         name: 'lpLocalizedLanguageName',
         message: 'Localized language name:',
-    }).then(function (answer) {
+    }).then(answer => {
         generator.extensionConfig.lpLocalizedLanguageName = answer.lpLocalizedLanguageName;
         return Promise.resolve();
     });
 }
 
-exports.writingLocalizationExtension = function (generator) {
+exports.writingLocalizationExtension = (generator) => {
 
     var context = generator.extensionConfig;
 
-    generator.template(generator.sourceRoot() + '/package.json', context.name + '/package.json', context);
-    generator.template(generator.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
-    generator.template(generator.sourceRoot() + '/README.md', context.name + '/README.md', context);
-    generator.template(generator.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
-    generator.copy(generator.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
-    generator.copy(generator.sourceRoot() + '/gitignore', context.name + '/.gitignore');
-    generator.copy(generator.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+    generator.fs.copyTpl(generator.sourceRoot() + '/package.json', context.name + '/package.json', context);
+    generator.fs.copyTpl(generator.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
+    generator.fs.copyTpl(generator.sourceRoot() + '/README.md', context.name + '/README.md', context);
+    generator.fs.copyTpl(generator.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
+    generator.fs.copy(generator.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
+    generator.fs.copy(generator.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+    generator.fs.copy(generator.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
 
     context.installDependencies = true;
 }
