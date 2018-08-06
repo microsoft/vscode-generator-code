@@ -930,7 +930,7 @@ describe('test code generator', function () {
                     "categories": [
                         "Extension Packs"
                     ],
-                    "extensionDependencies": [
+                    "extensionPack": [
                         "publisher.extensionName"
                     ]
                 };

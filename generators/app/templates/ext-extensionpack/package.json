@@ -10,7 +10,7 @@
     "categories": [
         "Extension Packs"
     ],
-    "extensionDependencies": [ <% for (i=0; i<extensionList.length-1; i++) { %>
+    "extensionPack": [ <% for (i=0; i<extensionList.length-1; i++) { %>
         "<%- extensionList[i] %>", <%}%>
         "<%- extensionList[extensionList.length-1]%>"
     ]
