@@ -648,8 +648,8 @@ describe('test code generator', function () {
                     ],
                     "devDependencies": {
                         "typescript": "^2.6.1",
-                        "vscode": "^1.1.6",
-                        "@types/node": "^7.0.43",
+                        "vscode": "^1.1.21",
+                        "@types/node": "^8.10.25",
                         "@types/mocha": "^2.2.42"
                     },
                     "main": "./out/extension",
@@ -716,9 +716,9 @@ describe('test code generator', function () {
                     ],
                     "devDependencies": {
                         "typescript": "^2.6.1",
-                        "vscode": "^1.1.6",
+                        "vscode": "^1.1.21",
                         "tslint": "^5.8.0",
-                        "@types/node": "^7.0.43",
+                        "@types/node": "^8.10.25",
                         "@types/mocha": "^2.2.42"
                     },
                     "main": "./out/extension",
@@ -829,9 +829,9 @@ describe('test code generator', function () {
                     ],
                     "devDependencies": {
                         "typescript": "^2.6.1",
-                        "vscode": "^1.1.6",
+                        "vscode": "^1.1.21",
                         "eslint": "^4.11.0",
-                        "@types/node": "^7.0.43",
+                        "@types/node": "^8.10.25",
                         "@types/mocha": "^2.2.42"
                     },
                     "main": "./extension",
