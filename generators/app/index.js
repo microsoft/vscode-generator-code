@@ -26,6 +26,7 @@ module.exports = class extends Generator {
         this.option('extensionName', { type: String });
         this.option('extensionDescription', { type: String });
         this.option('extensionDisplayName', { type: String });
+        this.option('extensionPublisher', { type: String });
 
         this.option('extensionParam', { type: String });
         this.option('extensionParam2', { type: String });
@@ -310,6 +311,12 @@ module.exports = class extends Generator {
 
             // Ask for publisher name
             askForPublisherName: () => {
+                let extensionPublisher = generator.options['extensionPublisher'];
+                if (extensionPublisher) {
+                    generator.extensionConfig.publisher = extensionPublisher;
+                    return Promise.resolve();
+                }
+
                 return generator.prompt({
                     type: 'input',
                     name: 'publisher',
