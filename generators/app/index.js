@@ -45,7 +45,7 @@ module.exports = class extends Generator {
         return env.getLatestVSCodeVersion().then(version => { extensionConfig.vsCodeEngine = version; });
     }
 
-    async prompting() {
+    prompting() {
         let generator = this;
         let prompts = {
             // Ask for extension type
