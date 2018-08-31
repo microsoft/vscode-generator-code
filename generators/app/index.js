@@ -45,7 +45,7 @@ module.exports = class extends Generator {
         return env.getLatestVSCodeVersion().then(version => { extensionConfig.vsCodeEngine = version; });
     }
 
-    prompting() {
+    async prompting() {
         let generator = this;
         let prompts = {
             // Ask for extension type
@@ -516,12 +516,18 @@ module.exports = class extends Generator {
                 });
             }
         };
+
         // run all prompts in sequence. Results can be ignored.
-        let promise = Promise.resolve(null);
+        let result = Promise.resolve();
         for (let taskName in prompts) {
-            promise = promise.then(_ => prompts[taskName]());
+            let prompt = prompts[taskName];
+            result = result.then(_ => {
+                return new Promise((s, r) => {
+                    setTimeout(_ => prompt().then(s, r), 0); // set timeout is required, otherwise node hangs
+                });
+            })
         }
-        return promise;
+        return result;
     }
     // Write files
     writing() {
