@@ -44,7 +44,7 @@ module.exports = class extends Generator {
         return env.getLatestVSCodeVersion().then(version => { extensionConfig.vsCodeEngine = version; });
     }
 
-    async prompting() {
+    prompting() {
         let generator = this;
         let prompts = {
             // Ask for extension type
@@ -509,12 +509,13 @@ module.exports = class extends Generator {
                 });
             }
         };
-        for (let name in prompts) {
-            await prompts[name]();
+        // run all prompts in sequence. Results can be ignored.
+        let promise = Promise.resolve(null);
+        for (let taskName in prompts) {
+            promise = promise.then(_ => prompts[taskName]());
         }
+        return promise;
     }
-
-
     // Write files
     writing() {
         this.sourceRoot(path.join(__dirname, './templates/' + this.extensionConfig.type));
