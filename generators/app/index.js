@@ -514,7 +514,31 @@ module.exports = class extends Generator {
                 }).then(idAnswer => {
                     generator.extensionConfig.languageId = idAnswer.languageId;
                 });
-            }
+            },
+
+            askForPackageManager: () => {
+                if (['ext-command-ts', 'ext-command-js', 'ext-localization'].indexOf(generator.extensionConfig.type) === -1) {
+                    return Promise.resolve();
+                }
+                generator.extensionConfig.pkgManager = 'npm';
+                return generator.prompt({
+                    type: 'list',
+                    name: 'pkgManager',
+                    message: 'Which package manager to use?',
+                    choices: [
+                        {
+                            name: 'npm',
+                            value: 'npm'
+                        },
+                        {
+                            name: 'yarn',
+                            value: 'yarn'
+                        }
+                    ]
+                }).then(pckgManagerAnswer => {
+                    generator.extensionConfig.pkgManager = pckgManagerAnswer.pkgManager;
+                });
+            },
         };
 
         // run all prompts in sequence. Results can be ignored.
@@ -717,7 +741,8 @@ module.exports = class extends Generator {
 
         if (this.extensionConfig.installDependencies) {
             this.installDependencies({
-                npm: true,
+		        yarn: this.extensionConfig.pkgManager === 'yarn',
+                npm: this.extensionConfig.pkgManager === 'npm',
                 bower: false
             });
         }
