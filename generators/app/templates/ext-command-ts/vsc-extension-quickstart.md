@@ -25,7 +25,7 @@ We pass the function containing the implementation of the command as the second 
 * You can open the full set of our API when you open the file `node_modules/vscode/vscode.d.ts`.
 
 ## Run tests
-* Open the debug viewlet (`Ctrl+Shift+D` or `Cmd+Shift+D` on Mac) and from the launch configuration dropdown pick `Launch Tests`.
+* Open the debug viewlet (`Ctrl+Shift+D` or `Cmd+Shift+D` on Mac) and from the launch configuration dropdown pick `Extension Tests`.
 * Press `F5` to run the tests in a new window with your extension loaded.
 * See the output of the test result in the debug console.
 * Make changes to `test/extension.test.ts` or create new test files inside the `test` folder.
