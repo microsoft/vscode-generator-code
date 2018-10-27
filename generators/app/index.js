@@ -4,7 +4,6 @@
 'use strict';
 
 let Generator = require('yeoman-generator');
-let _ = require('lodash');
 let yosay = require('yosay');
 
 let path = require('path');
