@@ -25,7 +25,6 @@ module.exports = class extends Generator {
         this.option('extensionName', { type: String });
         this.option('extensionDescription', { type: String });
         this.option('extensionDisplayName', { type: String });
-        this.option('extensionPublisher', { type: String });
 
         this.option('extensionParam', { type: String });
         this.option('extensionParam2', { type: String });
@@ -305,25 +304,6 @@ module.exports = class extends Generator {
                     message: 'What\'s the description of your extension?'
                 }).then(descriptionAnswer => {
                     generator.extensionConfig.description = descriptionAnswer.description;
-                });
-            },
-
-            // Ask for publisher name
-            askForPublisherName: () => {
-                let extensionPublisher = generator.options['extensionPublisher'];
-                if (extensionPublisher) {
-                    generator.extensionConfig.publisher = extensionPublisher;
-                    return Promise.resolve();
-                }
-
-                return generator.prompt({
-                    type: 'input',
-                    name: 'publisher',
-                    message: 'What\'s your publisher name (more info: https://code.visualstudio.com/docs/tools/vscecli#_publishing-extensions)?',
-                    store: true,
-                    validate: validator.validatePublisher
-                }).then(publisherAnswer => {
-                    generator.extensionConfig.publisher = publisherAnswer.publisher;
                 });
             },
 
