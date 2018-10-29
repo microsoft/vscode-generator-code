@@ -57,7 +57,6 @@ describe('test code generator', function () {
                 name: 'testTheme',
                 displayName: 'Test Theme',
                 description: 'My TestTheme',
-                publisher: 'Microsoft',
                 themeName: 'Green',
                 themeBase: 'vs-dark',
             }) // Mock the prompt answers
@@ -67,7 +66,6 @@ describe('test code generator', function () {
                     "displayName": "Test Theme",
                     "description": "My TestTheme",
                     "version": "0.0.1",
-                    "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -124,7 +122,6 @@ describe('test code generator', function () {
                 name: 'testTheme',
                 displayName: 'Test Theme',
                 description: 'My TestTheme',
-                publisher: 'Microsoft',
                 themeName: 'Green',
                 themeBase: 'vs-dark',
             }) // Mock the prompt answers
@@ -134,7 +131,6 @@ describe('test code generator', function () {
                     "displayName": "Test Theme",
                     "description": "My TestTheme",
                     "version": "0.0.1",
-                    "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -191,7 +187,6 @@ describe('test code generator', function () {
                 name: 'theme74',
                 displayName: 'Theme 74',
                 description: 'Theme SeventyFour',
-                publisher: 'Microsoft',
                 themeName: 'Theme 74',
                 themeBase: 'vs-dark',
             }) // Mock the prompt answers
@@ -201,7 +196,6 @@ describe('test code generator', function () {
                     "displayName": "Theme 74",
                     "description": "Theme SeventyFour",
                     "version": "0.0.1",
-                    "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -276,7 +270,6 @@ describe('test code generator', function () {
                 name: 'testTheme',
                 displayName: 'Test Theme',
                 description: 'My TestTheme',
-                publisher: 'Microsoft',
                 themeName: 'Funky',
                 themeBase: 'vs',
             }) // Mock the prompt answers
@@ -286,7 +279,6 @@ describe('test code generator', function () {
                     "displayName": "Test Theme",
                     "description": "My TestTheme",
                     "version": "0.0.1",
-                    "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -333,7 +325,6 @@ describe('test code generator', function () {
                 name: 'testLan',
                 displayName: 'Test Lan',
                 description: 'My TestLan',
-                publisher: 'Microsoft',
                 languageId: 'ant',
                 languageName: 'ANT',
                 languageScopeName: 'text.xml.ant',
@@ -345,7 +336,6 @@ describe('test code generator', function () {
                     "displayName": "Test Lan",
                     "description": "My TestLan",
                     "version": "0.0.1",
-                    "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -390,7 +380,6 @@ describe('test code generator', function () {
                 name: 'crusty',
                 displayName: 'Crusty',
                 description: 'Crusty, the language',
-                publisher: 'Microsoft',
                 languageId: 'crusty',
                 languageName: 'Crusty',
                 languageScopeName: 'source.crusty',
@@ -402,7 +391,6 @@ describe('test code generator', function () {
                     "displayName": "Crusty",
                     "description": "Crusty, the language",
                     "version": "0.0.1",
-                    "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -454,7 +442,6 @@ describe('test code generator', function () {
                 name: 'testSnip',
                 displayName: 'Test Snip',
                 description: 'My TestSnip',
-                publisher: 'Microsoft',
                 languageId: 'python'
             }) // Mock the prompt answers
             .toPromise().then(function () {
@@ -463,7 +450,6 @@ describe('test code generator', function () {
                     "displayName": 'Test Snip',
                     "description": "My TestSnip",
                     "version": "0.0.1",
-                    "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -503,7 +489,6 @@ describe('test code generator', function () {
                 name: 'testSnip',
                 displayName: 'Test Snip',
                 description: 'My TestSnip',
-                publisher: 'Microsoft',
                 languageId: 'python'
             }) // Mock the prompt answers
             .toPromise().then(function () {
@@ -512,7 +497,6 @@ describe('test code generator', function () {
                     "displayName": 'Test Snip',
                     "description": "My TestSnip",
                     "version": "0.0.1",
-                    "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -581,7 +565,6 @@ describe('test code generator', function () {
                 name: 'testKeym',
                 displayName: 'Test Keym',
                 description: 'My TestKeym',
-                publisher: 'Microsoft'
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
@@ -589,7 +572,6 @@ describe('test code generator', function () {
                     "displayName": 'Test Keym',
                     "description": "My TestKeym",
                     "version": "0.0.1",
-                    "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -628,7 +610,6 @@ describe('test code generator', function () {
                 name: 'testCom',
                 displayName: 'Test Com',
                 description: 'My TestCom',
-                publisher: 'Microsoft',
                 strictTypeScript: false,
                 tslint: false,
                 gitInit: true,
@@ -640,7 +621,6 @@ describe('test code generator', function () {
                     "displayName": 'Test Com',
                     "description": "My TestCom",
                     "version": "0.0.1",
-                    "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -697,7 +677,6 @@ describe('test code generator', function () {
                 name: 'testCom',
                 displayName: 'Test Com',
                 description: 'My TestCom',
-                publisher: 'Microsoft',
                 strictTypeScript: false,
                 tslint: true,
                 gitInit: false,
@@ -709,7 +688,6 @@ describe('test code generator', function () {
                     "displayName": 'Test Com',
                     "description": "My TestCom",
                     "version": "0.0.1",
-                    "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -766,7 +744,6 @@ describe('test code generator', function () {
                 name: 'testCom',
                 displayName: 'Test Com',
                 description: 'My TestCom',
-                publisher: 'Microsoft',
                 strictTypeScript: true,
                 tslint: false,
                 gitInit: false,
@@ -813,7 +790,6 @@ describe('test code generator', function () {
                 name: 'testCom',
                 displayName: 'Test Com',
                 description: 'My TestCom',
-                publisher: 'Microsoft',
                 checkJavaScript: false,
                 gitInit: false,
                 pkgManager: 'npm'
@@ -824,7 +800,6 @@ describe('test code generator', function () {
                     "displayName": 'Test Com',
                     "description": "My TestCom",
                     "version": "0.0.1",
-                    "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -879,7 +854,6 @@ describe('test code generator', function () {
                 name: 'testCom',
                 displayName: 'Test Com',
                 description: 'My TestCom',
-                publisher: 'Microsoft',
                 checkJavaScript: true,
                 gitInit: false,
                 pkgManager: 'yarn'
@@ -919,8 +893,7 @@ describe('test code generator', function () {
                 type: 'ext-extensionpack',
                 name: 'testExtensionPack',
                 displayName: 'Test Extension Pack',
-                description: 'My Test Extension Pack',
-                publisher: 'Microsoft'
+                description: 'My Test Extension Pack'
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
@@ -928,7 +901,6 @@ describe('test code generator', function () {
                     "displayName": "Test Extension Pack",
                     "description": "My Test Extension Pack",
                     "version": "0.0.1",
-                    "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -961,7 +933,6 @@ describe('test code generator', function () {
                 lpLanguageId: 'ru',
                 lpLanguageName: 'Russian',
                 lpLocalizedLanguageName: 'русский',
-                publisher: 'Microsoft',
                 pkgManager: 'npm'
             }).toPromise().then(function () {
                 var expected = {
@@ -969,7 +940,6 @@ describe('test code generator', function () {
                     "displayName": "Russian Language Pack",
                     "description": "Language pack extension for Russian",
                     "version": "0.0.1",
-                    "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -1009,7 +979,6 @@ describe('test code generator', function () {
                 lpLanguageId: 'ru',
                 lpLanguageName: 'Russian',
                 lpLocalizedLanguageName: 'русский',
-                publisher: 'Microsoft',
                 pkgManager: 'yarn'
             }).toPromise().then(function () {
                 var expected = {
@@ -1017,7 +986,6 @@ describe('test code generator', function () {
                     "displayName": "Russian Language Pack",
                     "description": "Language pack extension for Russian",
                     "version": "0.0.1",
-                    "publisher": 'Microsoft',
                     "engines": {
                         "vscode": engineVersion
                     },
