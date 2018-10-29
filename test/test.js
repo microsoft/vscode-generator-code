@@ -631,7 +631,8 @@ describe('test code generator', function () {
                 publisher: 'Microsoft',
                 strictTypeScript: false,
                 tslint: false,
-                gitInit: true
+                gitInit: true,
+                pkgManager: 'npm'
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
@@ -687,7 +688,7 @@ describe('test code generator', function () {
             });
     });
 
-    it('command-ts with tslint', function (done) {
+    it('command-ts with tslint and yarn', function (done) {
         this.timeout(10000);
 
         helpers.run(path.join(__dirname, '../generators/app'))
@@ -699,7 +700,8 @@ describe('test code generator', function () {
                 publisher: 'Microsoft',
                 strictTypeScript: false,
                 tslint: true,
-                gitInit: false
+                gitInit: false,
+                pkgManager: 'yarn'
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
@@ -723,11 +725,11 @@ describe('test code generator', function () {
                     },
                     "main": "./out/extension",
                     "scripts": {
-                        "vscode:prepublish": "npm run compile",
+                        "vscode:prepublish": "yarn run compile",
                         "compile": "tsc -p ./",
                         "watch": "tsc -watch -p ./",
                         "postinstall": "node ./node_modules/vscode/bin/install",
-                        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+                        "test": "yarn run compile && node ./node_modules/vscode/bin/test"
                     },
                     "categories": [
                         "Other"
@@ -767,7 +769,8 @@ describe('test code generator', function () {
                 publisher: 'Microsoft',
                 strictTypeScript: true,
                 tslint: false,
-                gitInit: false
+                gitInit: false,
+                pkgManager: 'npm'
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
@@ -812,7 +815,8 @@ describe('test code generator', function () {
                 description: 'My TestCom',
                 publisher: 'Microsoft',
                 checkJavaScript: false,
-                gitInit: false
+                gitInit: false,
+                pkgManager: 'npm'
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
@@ -877,7 +881,8 @@ describe('test code generator', function () {
                 description: 'My TestCom',
                 publisher: 'Microsoft',
                 checkJavaScript: true,
-                gitInit: false
+                gitInit: false,
+                pkgManager: 'yarn'
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
@@ -956,7 +961,8 @@ describe('test code generator', function () {
                 lpLanguageId: 'ru',
                 lpLanguageName: 'Russian',
                 lpLocalizedLanguageName: 'русский',
-                publisher: 'Microsoft'
+                publisher: 'Microsoft',
+                pkgManager: 'npm'
             }).toPromise().then(function () {
                 var expected = {
                     "name": "vscode-language-pack-ru",
@@ -979,6 +985,54 @@ describe('test code generator', function () {
                     },
                     "scripts": {
                         "update": "cd ../vscode && npm run update-localization-extension ru"
+                    }
+                };
+                try {
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.gitignore', '.gitattributes', '.vscodeignore']);
+
+                    var body = fs.readFileSync('package.json', 'utf8');
+
+                    var actual = JSON.parse(body);
+                    assert.deepEqual(expected, actual);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }, done);
+    });
+
+    it('language pack with yarn', function (done) {
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-localization',
+                lpLanguageId: 'ru',
+                lpLanguageName: 'Russian',
+                lpLocalizedLanguageName: 'русский',
+                publisher: 'Microsoft',
+                pkgManager: 'yarn'
+            }).toPromise().then(function () {
+                var expected = {
+                    "name": "vscode-language-pack-ru",
+                    "displayName": "Russian Language Pack",
+                    "description": "Language pack extension for Russian",
+                    "version": "0.0.1",
+                    "publisher": 'Microsoft',
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "categories": [
+                        "Language Packs"
+                    ],
+                    "contributes": {
+                        "localizations": [{
+                            "languageId": "ru",
+                            "languageName": "Russian",
+                            "localizedLanguageName": "русский"
+                        }]
+                    },
+                    "scripts": {
+                        "update": "cd ../vscode && yarn run update-localization-extension ru"
                     }
                 };
                 try {
