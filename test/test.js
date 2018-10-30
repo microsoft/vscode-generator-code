@@ -95,7 +95,7 @@ describe('test code generator', function () {
                     "tokenColors": "./Monokai.tmTheme"
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Green-color-theme.json', 'themes/Monokai.tmTheme', 'vsc-extension-quickstart.md', '.gitignore', '.gitattributes', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Green-color-theme.json', 'themes/Monokai.tmTheme', 'vsc-extension-quickstart.md', '.vscodeignore']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -162,7 +162,7 @@ describe('test code generator', function () {
                     "tokenColors": "./new theme.tmTheme"
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Green-color-theme.json', 'themes/new theme.tmTheme', 'vsc-extension-quickstart.md', '.gitignore', '.gitattributes', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Green-color-theme.json', 'themes/new theme.tmTheme', 'vsc-extension-quickstart.md', '.vscodeignore']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -247,7 +247,7 @@ describe('test code generator', function () {
                         }]
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Theme 74-color-theme.json', 'vsc-extension-quickstart.md', '.gitignore', '.gitattributes', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Theme 74-color-theme.json', 'vsc-extension-quickstart.md', '.vscodeignore']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -302,7 +302,7 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Funky-color-theme.json', 'vsc-extension-quickstart.md', '.gitignore', '.gitattributes', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Funky-color-theme.json', 'vsc-extension-quickstart.md', '.vscodeignore']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -367,7 +367,7 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'syntaxes/ant.tmLanguage', 'language-configuration.json', 'vsc-extension-quickstart.md', '.gitignore', '.gitattributes', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'syntaxes/ant.tmLanguage', 'language-configuration.json', 'vsc-extension-quickstart.md', '.vscodeignore']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -424,7 +424,7 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'syntaxes/crusty.tmLanguage.json', 'language-configuration.json', 'vsc-extension-quickstart.md', '.gitignore', '.gitattributes', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'syntaxes/crusty.tmLanguage.json', 'language-configuration.json', 'vsc-extension-quickstart.md', '.vscodeignore']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -478,7 +478,7 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'snippets/snippets.json', 'vsc-extension-quickstart.md', '.gitignore', '.gitattributes', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'snippets/snippets.json', 'vsc-extension-quickstart.md', '.vscodeignore']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -553,7 +553,7 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'snippets/snippets.json', 'vsc-extension-quickstart.md', '.gitignore', '.gitattributes', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'snippets/snippets.json', 'vsc-extension-quickstart.md', '.vscodeignore']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -604,7 +604,7 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.gitignore', '.gitattributes', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.vscodeignore']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -673,7 +673,7 @@ describe('test code generator', function () {
                 try {
 
 
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/extension.test.ts', 'src/test/index.ts', '.gitignore', '.gitattributes', 'tsconfig.json']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/extension.test.ts', 'src/test/index.ts', 'tsconfig.json']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -742,7 +742,7 @@ describe('test code generator', function () {
                 try {
 
 
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/extension.test.ts', 'src/test/index.ts', 'tsconfig.json', 'tslint.json', '.gitignore', '.gitattributes', '.vscode/extensions.json']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/extension.test.ts', 'src/test/index.ts', 'tsconfig.json', 'tslint.json', '.vscode/extensions.json']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -852,7 +852,7 @@ describe('test code generator', function () {
                 try {
 
 
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'extension.js', 'test/extension.test.js', 'test/index.js', '.gitignore', '.gitattributes', 'jsconfig.json']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'extension.js', 'test/extension.test.js', 'test/index.js', 'jsconfig.json']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -935,7 +935,7 @@ describe('test code generator', function () {
                     ]
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.gitignore', '.gitattributes', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.vscodeignore']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -982,7 +982,7 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.gitignore', '.gitattributes', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.vscodeignore']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
