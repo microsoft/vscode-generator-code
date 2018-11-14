@@ -3,7 +3,6 @@
     "displayName": <%- JSON.stringify(displayName) %>,
     "description": <%- JSON.stringify(description) %>,
     "version": "0.0.1",
-    "publisher": <%- JSON.stringify(publisher) %>,
     "engines": {
         "vscode": <%- JSON.stringify(vsCodeEngine) %>
     },
@@ -21,11 +20,11 @@
         }]
     },
     "scripts": {
-        "vscode:prepublish": "npm run compile",
+        "vscode:prepublish": "<%= pkgManager %> run compile",
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+        "test": "<%= pkgManager %> run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
         "typescript": "^2.6.1",
