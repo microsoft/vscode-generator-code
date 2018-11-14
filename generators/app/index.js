@@ -4,6 +4,7 @@
 'use strict';
 
 let Generator = require('yeoman-generator');
+let _ = require('lodash');
 let yosay = require('yosay');
 
 let path = require('path');
@@ -25,6 +26,7 @@ module.exports = class extends Generator {
         this.option('extensionName', { type: String });
         this.option('extensionDescription', { type: String });
         this.option('extensionDisplayName', { type: String });
+        this.option('extensionPublisher', { type: String });
 
         this.option('extensionParam', { type: String });
         this.option('extensionParam2', { type: String });
@@ -307,6 +309,25 @@ module.exports = class extends Generator {
                 });
             },
 
+            // Ask for publisher name
+            askForPublisherName: () => {
+                let extensionPublisher = generator.options['extensionPublisher'];
+                if (extensionPublisher) {
+                    generator.extensionConfig.publisher = extensionPublisher;
+                    return Promise.resolve();
+                }
+
+                return generator.prompt({
+                    type: 'input',
+                    name: 'publisher',
+                    message: 'What\'s your publisher name (more info: https://code.visualstudio.com/docs/tools/vscecli#_publishing-extensions)?',
+                    store: true,
+                    validate: validator.validatePublisher
+                }).then(publisherAnswer => {
+                    generator.extensionConfig.publisher = publisherAnswer.publisher;
+                });
+            },
+
             askForTypeScriptInfo: () => {
                 if (generator.extensionConfig.type !== 'ext-command-ts') {
                     return Promise.resolve();
@@ -493,31 +514,7 @@ module.exports = class extends Generator {
                 }).then(idAnswer => {
                     generator.extensionConfig.languageId = idAnswer.languageId;
                 });
-            },
-
-            askForPackageManager: () => {
-                if (['ext-command-ts', 'ext-command-js', 'ext-localization'].indexOf(generator.extensionConfig.type) === -1) {
-                    return Promise.resolve();
-                }
-                generator.extensionConfig.pkgManager = 'npm';
-                return generator.prompt({
-                    type: 'list',
-                    name: 'pkgManager',
-                    message: 'Which package manager to use?',
-                    choices: [
-                        {
-                            name: 'npm',
-                            value: 'npm'
-                        },
-                        {
-                            name: 'yarn',
-                            value: 'yarn'
-                        }
-                    ]
-                }).then(pckgManagerAnswer => {
-                    generator.extensionConfig.pkgManager = pckgManagerAnswer.pkgManager;
-                });
-            },
+            }
         };
 
         // run all prompts in sequence. Results can be ignored.
@@ -720,8 +717,7 @@ module.exports = class extends Generator {
 
         if (this.extensionConfig.installDependencies) {
             this.installDependencies({
-		        yarn: this.extensionConfig.pkgManager === 'yarn',
-                npm: this.extensionConfig.pkgManager === 'npm',
+                npm: true,
                 bower: false
             });
         }

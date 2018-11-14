@@ -3,6 +3,7 @@
     "displayName": <%- JSON.stringify(displayName) %>,
     "description": <%- JSON.stringify(description) %>,
     "version": "0.0.1",
+    "publisher": <%- JSON.stringify(publisher) %>,
     "engines": {
         "vscode": <%- JSON.stringify(vsCodeEngine) %>
     },
@@ -17,6 +18,6 @@
         }]
     },
     "scripts": {
-        "update": "cd ../vscode && <%= pkgManager %> run update-localization-extension <%- lpLanguageId %>"
+        "update": "cd ../vscode && npm run update-localization-extension <%- lpLanguageId %>"
     }
 }
