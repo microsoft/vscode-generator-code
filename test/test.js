@@ -628,7 +628,7 @@ describe('test code generator', function () {
                         "onCommand:extension.sayHello"
                     ],
                     "devDependencies": {
-                        "typescript": "^2.6.1",
+                        "typescript": "^3.1.4",
                         "vscode": "^1.1.21",
                         "@types/node": "^8.10.25",
                         "@types/mocha": "^2.2.42"
@@ -695,7 +695,7 @@ describe('test code generator', function () {
                         "onCommand:extension.sayHello"
                     ],
                     "devDependencies": {
-                        "typescript": "^2.6.1",
+                        "typescript": "^3.1.4",
                         "vscode": "^1.1.21",
                         "tslint": "^5.8.0",
                         "@types/node": "^8.10.25",
@@ -807,7 +807,7 @@ describe('test code generator', function () {
                         "onCommand:extension.sayHello"
                     ],
                     "devDependencies": {
-                        "typescript": "^2.6.1",
+                        "typescript": "^3.1.4",
                         "vscode": "^1.1.21",
                         "eslint": "^4.11.0",
                         "@types/node": "^8.10.25",
