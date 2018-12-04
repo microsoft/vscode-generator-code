@@ -577,8 +577,10 @@ module.exports = class extends Generator {
         this.fs.copyTpl(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.fs.copyTpl(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.fs.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
-        this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
-        this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+        if (this.extensionConfig.gitInit) {
+            this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+            this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+        }
     }
 
     // Write Color Theme Extension
@@ -608,8 +610,10 @@ module.exports = class extends Generator {
         this.fs.copyTpl(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.fs.copyTpl(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.fs.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
-        this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
-        this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+        if (this.extensionConfig.gitInit) {
+            this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+            this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+        }
     }
 
     // Write Language Extension
@@ -630,8 +634,10 @@ module.exports = class extends Generator {
         this.fs.copyTpl(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
         this.fs.copyTpl(this.sourceRoot() + '/language-configuration.json', context.name + '/language-configuration.json', context);
         this.fs.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
-        this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
-        this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+        if (this.extensionConfig.gitInit) {
+            this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+            this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+        }
     }
 
     // Write Snippets Extension
@@ -645,8 +651,10 @@ module.exports = class extends Generator {
         this.fs.copyTpl(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.fs.copyTpl(this.sourceRoot() + '/snippets/snippets.json', context.name + '/snippets/snippets.json', context);
         this.fs.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
-        this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
-        this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+        if (this.extensionConfig.gitInit) {
+            this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+            this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+        }
     }
 
     // Write Snippets Extension
@@ -659,8 +667,10 @@ module.exports = class extends Generator {
         this.fs.copyTpl(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.fs.copyTpl(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.fs.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
-        this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
-        this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+        if (this.extensionConfig.gitInit) {
+            this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+            this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+        }
     }
 
     // Write Command Extension (TypeScript)
@@ -671,8 +681,10 @@ module.exports = class extends Generator {
         this.fs.copy(this.sourceRoot() + '/src/test', context.name + '/src/test');
 
         this.fs.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
-        this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
-        this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+        if (this.extensionConfig.gitInit) {
+            this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+            this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+        }
         this.fs.copyTpl(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.fs.copyTpl(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
         this.fs.copyTpl(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
@@ -697,8 +709,10 @@ module.exports = class extends Generator {
 
         this.fs.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
 
-        this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
-        this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+        if (this.extensionConfig.gitInit) {
+            this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+            this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+        }
 
         this.fs.copyTpl(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.fs.copyTpl(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
