@@ -629,7 +629,7 @@ describe('test code generator', function () {
                     ],
                     "devDependencies": {
                         "typescript": "^3.1.4",
-                        "vscode": "^1.1.21",
+                        "vscode": "^1.1.25",
                         "@types/node": "^8.10.25",
                         "@types/mocha": "^2.2.42"
                     },
@@ -696,7 +696,7 @@ describe('test code generator', function () {
                     ],
                     "devDependencies": {
                         "typescript": "^3.1.4",
-                        "vscode": "^1.1.21",
+                        "vscode": "^1.1.25",
                         "tslint": "^5.8.0",
                         "@types/node": "^8.10.25",
                         "@types/mocha": "^2.2.42"
@@ -808,7 +808,7 @@ describe('test code generator', function () {
                     ],
                     "devDependencies": {
                         "typescript": "^3.1.4",
-                        "vscode": "^1.1.21",
+                        "vscode": "^1.1.25",
                         "eslint": "^4.11.0",
                         "@types/node": "^8.10.25",
                         "@types/mocha": "^2.2.42"
