@@ -683,7 +683,6 @@ module.exports = class extends Generator {
         this.fs.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
         if (this.extensionConfig.gitInit) {
             this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
-            this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
         }
         this.fs.copyTpl(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.fs.copyTpl(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
@@ -711,7 +710,6 @@ module.exports = class extends Generator {
 
         if (this.extensionConfig.gitInit) {
             this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
-            this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
         }
 
         this.fs.copyTpl(this.sourceRoot() + '/README.md', context.name + '/README.md', context);

@@ -625,7 +625,7 @@ describe('test code generator', function () {
                         "vscode": engineVersion
                     },
                     "activationEvents": [
-                        "onCommand:extension.sayHello"
+                        "onCommand:extension.helloWorld"
                     ],
                     "devDependencies": {
                         "typescript": "^3.1.4",
@@ -633,7 +633,7 @@ describe('test code generator', function () {
                         "@types/node": "^8.10.25",
                         "@types/mocha": "^2.2.42"
                     },
-                    "main": "./out/extension",
+                    "main": "./out/extension.js",
                     "scripts": {
                         "vscode:prepublish": "npm run compile",
                         "compile": "tsc -p ./",
@@ -646,7 +646,7 @@ describe('test code generator', function () {
                     ],
                     "contributes": {
                         "commands": [{
-                            "command": "extension.sayHello",
+                            "command": "extension.helloWorld",
                             "title": "Hello World"
                         }]
                     }
@@ -692,7 +692,7 @@ describe('test code generator', function () {
                         "vscode": engineVersion
                     },
                     "activationEvents": [
-                        "onCommand:extension.sayHello"
+                        "onCommand:extension.helloWorld"
                     ],
                     "devDependencies": {
                         "typescript": "^3.1.4",
@@ -701,7 +701,7 @@ describe('test code generator', function () {
                         "@types/node": "^8.10.25",
                         "@types/mocha": "^2.2.42"
                     },
-                    "main": "./out/extension",
+                    "main": "./out/extension.js",
                     "scripts": {
                         "vscode:prepublish": "yarn run compile",
                         "compile": "tsc -p ./",
@@ -714,7 +714,7 @@ describe('test code generator', function () {
                     ],
                     "contributes": {
                         "commands": [{
-                            "command": "extension.sayHello",
+                            "command": "extension.helloWorld",
                             "title": "Hello World"
                         }]
                     }
@@ -804,7 +804,7 @@ describe('test code generator', function () {
                         "vscode": engineVersion
                     },
                     "activationEvents": [
-                        "onCommand:extension.sayHello"
+                        "onCommand:extension.helloWorld"
                     ],
                     "devDependencies": {
                         "typescript": "^3.1.4",
@@ -813,7 +813,7 @@ describe('test code generator', function () {
                         "@types/node": "^8.10.25",
                         "@types/mocha": "^2.2.42"
                     },
-                    "main": "./extension",
+                    "main": "./extension.js",
                     "scripts": {
                         "postinstall": "node ./node_modules/vscode/bin/install",
                         "test": "node ./node_modules/vscode/bin/test"
@@ -823,7 +823,7 @@ describe('test code generator', function () {
                     ],
                     "contributes": {
                         "commands": [{
-                            "command": "extension.sayHello",
+                            "command": "extension.helloWorld",
                             "title": "Hello World"
                         }]
                     }
