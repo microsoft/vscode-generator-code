@@ -1,8 +1,10 @@
 # Welcome to the <%= lpLanguageName %> language pack
 
 ## What's in the folder
+
 * `package.json` - the manifest file, defining the name and description of the localization extension. It also contains the `localizations` contribution point that defines the language id:
-```json
+
+  ```json
         "contributes": {
             "localization": [{
                 "languageId": <%- JSON.stringify(lpLanguageId) %>,
@@ -10,22 +12,24 @@
                 "localizedLanguageName": <%- JSON.stringify(lpLocalizedLanguageName) %>
             }]
         }
-```
+  ```
+
 * `translations` - the folder containing the translation strings
 
-
 To create/update the `translations` folder with the latest strings from transifex, follow these steps:
-- Get an API token from https://www.transifex.com/user/settings/api. The token needs to have access to the `vscode-editor`, `vscode-workbench` and `vscode-extensions` projects.
-- Set the API token to the environment variable `TRANSIFEX_API_TOKEN`.
-- Check out the `master` branch of the [VS Code repository](https://github.com/Microsoft/vscode).
-   - Preferably, place the VSCode repo next to the language pack extension (so both have the same parent folder).
-   - `cd vscode` and run `yarn` to initialize the VS Code repo. More information on how to build VS Code you can find [here](https://github.com/Microsoft/vscode/wiki/How-to-Contribute).
-   - If the language pack extension is placed next to the VS Code repository: `npm run update-localization-extension <%- lpLanguageId %>`
-   - Otherwise: `npm run update-localization-extension {path_to_lang_pack_ext}`
-- This will download translation files to the folder `translations`
-- `package.json` will be modified and add a `translations` property with paths to each extension's translations will be added.
-```json
-"contributes": {
+
+* Get an API token from https://www.transifex.com/user/settings/api. The token needs to have access to the `vscode-editor`, `vscode-workbench` and `vscode-extensions` projects.
+* Set the API token to the environment variable `TRANSIFEX_API_TOKEN`.
+* Check out the `master` branch of the [VS Code repository](https://github.com/Microsoft/vscode).
+  * Preferably, place the VSCode repo next to the language pack extension (so both have the same parent folder).
+  * `cd vscode` and run `yarn` to initialize the VS Code repo. More information on how to build VS Code you can find [here](https://github.com/Microsoft/vscode/wiki/How-to-Contribute).
+  * If the language pack extension is placed next to the VS Code repository: `npm run update-localization-extension <%- lpLanguageId %>`
+  * Otherwise: `npm run update-localization-extension {path_to_lang_pack_ext}`
+* This will download translation files to the folder `translations`
+* `package.json` will be modified and add a `translations` property with paths to each extension's translations will be added.
+
+  ```json
+  "contributes": {
     "localizations": [
         {
             "languageId": <%- JSON.stringify(lpLanguageId) %>,
@@ -115,5 +119,5 @@ To create/update the `translations` folder with the latest strings from transife
             ]
         }
     ]
-}
-```
+  }
+  ```
