@@ -760,8 +760,7 @@ describe('test code generator', function () {
                         ],
                         "sourceMap": true,
                         "rootDir": "src",
-                        "strict": true,
-                        "noUnusedLocals": true,
+                        "strict": true
                     },
                     "exclude": [
                         "node_modules",
