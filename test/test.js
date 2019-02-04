@@ -610,13 +610,11 @@ describe('test code generator', function () {
                 name: 'testCom',
                 displayName: 'Test Com',
                 description: 'My TestCom',
-                strictTypeScript: false,
-                tslint: false,
                 gitInit: true,
                 pkgManager: 'npm'
             }) // Mock the prompt answers
             .toPromise().then(function () {
-                var expected = {
+                var expectedPackageJSON = {
                     "name": "testCom",
                     "displayName": 'Test Com',
                     "description": "My TestCom",
@@ -630,6 +628,7 @@ describe('test code generator', function () {
                     "devDependencies": {
                         "typescript": "^3.1.4",
                         "vscode": "^1.1.25",
+                        "tslint": "^5.8.0",
                         "@types/node": "^8.10.25",
                         "@types/mocha": "^2.2.42"
                     },
@@ -656,10 +655,9 @@ describe('test code generator', function () {
 
                     assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/extension.test.ts', 'src/test/index.ts', 'tsconfig.json']);
 
-                    var body = fs.readFileSync('package.json', 'utf8');
-
-                    var actual = JSON.parse(body);
-                    assert.deepEqual(expected, actual);
+                    var packageJSONBody = fs.readFileSync('package.json', 'utf8')
+                    var actualPackageJSON = JSON.parse(packageJSONBody);
+                    assert.deepEqual(expectedPackageJSON, actualPackageJSON);
 
                     done();
                 } catch (e) {
@@ -668,7 +666,7 @@ describe('test code generator', function () {
             });
     });
 
-    it('command-ts with tslint and yarn', function (done) {
+    it('command-ts with yarn', function (done) {
         this.timeout(10000);
 
         helpers.run(path.join(__dirname, '../generators/app'))
@@ -677,13 +675,12 @@ describe('test code generator', function () {
                 name: 'testCom',
                 displayName: 'Test Com',
                 description: 'My TestCom',
-                strictTypeScript: false,
                 tslint: true,
                 gitInit: false,
                 pkgManager: 'yarn'
             }) // Mock the prompt answers
             .toPromise().then(function () {
-                var expected = {
+                var expectedPackageJSON = {
                     "name": "testCom",
                     "displayName": 'Test Com',
                     "description": "My TestCom",
@@ -719,38 +716,7 @@ describe('test code generator', function () {
                         }]
                     }
                 };
-                try {
-
-
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/extension.test.ts', 'src/test/index.ts', 'tsconfig.json', 'tslint.json', '.vscode/extensions.json']);
-
-                    var body = fs.readFileSync('package.json', 'utf8');
-
-                    var actual = JSON.parse(body);
-                    assert.deepEqual(expected, actual);
-
-                    done();
-                } catch (e) {
-                    done(e);
-                }
-            });
-    });
-    it('command-ts with strict TS', function (done) {
-        this.timeout(10000);
-
-        helpers.run(path.join(__dirname, '../generators/app'))
-            .withPrompts({
-                type: 'ext-command-ts',
-                name: 'testCom',
-                displayName: 'Test Com',
-                description: 'My TestCom',
-                strictTypeScript: true,
-                tslint: false,
-                gitInit: false,
-                pkgManager: 'npm'
-            }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expected = {
+                var expectedTsConfig = {
                     "compilerOptions": {
                         "module": "commonjs",
                         "target": "es6",
@@ -768,10 +734,16 @@ describe('test code generator', function () {
                     ]
                 };
                 try {
-                    var body = fs.readFileSync('tsconfig.json', 'utf8');
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/extension.test.ts', 'src/test/index.ts', 'tsconfig.json', 'tslint.json', '.vscode/extensions.json']);
 
-                    var actual = JSON.parse(stripComments(body));
-                    assert.deepEqual(expected, actual);
+                    var packageJSONBody = fs.readFileSync('package.json', 'utf8')
+                    var actualPackageJSON = JSON.parse(packageJSONBody);
+                    assert.deepEqual(expectedPackageJSON, actualPackageJSON);
+
+                    var tsconfigBody = fs.readFileSync('tsconfig.json', 'utf8');
+
+                    var actualTsConfig = JSON.parse(stripComments(tsconfigBody));
+                    assert.deepEqual(expectedTsConfig, actualTsConfig);
 
                     done();
                 } catch (e) {

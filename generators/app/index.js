@@ -307,36 +307,6 @@ module.exports = class extends Generator {
                 });
             },
 
-            askForTypeScriptInfo: () => {
-                if (generator.extensionConfig.type !== 'ext-command-ts') {
-                    return Promise.resolve();
-                }
-                generator.extensionConfig.strictTypeScript = false;
-                return generator.prompt({
-                    type: 'confirm',
-                    name: 'strictTypeScript',
-                    message: 'Enable stricter TypeScript checking in \'tsconfig.json\'?',
-                    default: true
-                }).then(strictTypeScriptAnswer => {
-                    generator.extensionConfig.strictTypeScript = strictTypeScriptAnswer.strictTypeScript;
-                });
-            },
-
-            askForTsLint: () => {
-                if (generator.extensionConfig.type !== 'ext-command-ts') {
-                    return Promise.resolve();
-                }
-                generator.extensionConfig.tslint = false;
-                return generator.prompt({
-                    type: 'confirm',
-                    name: 'tslint',
-                    message: 'Setup linting using \'tslint\'?',
-                    default: true
-                }).then(tslintAnswer => {
-                    generator.extensionConfig.tslint = tslintAnswer.tslint;
-                });
-            },
-
             askForJavaScriptInfo: () => {
                 if (generator.extensionConfig.type !== 'ext-command-js') {
                     return Promise.resolve();
@@ -692,10 +662,8 @@ module.exports = class extends Generator {
         this.fs.copyTpl(this.sourceRoot() + '/src/extension.ts', context.name + '/src/extension.ts', context);
         this.fs.copyTpl(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
 
-        if (this.extensionConfig.tslint) {
-            this.fs.copy(this.sourceRoot() + '/tslint.json', context.name + '/tslint.json');
-            this.fs.copy(this.sourceRoot() + '/optional/extensions.json', context.name + '/.vscode/extensions.json');
-        }
+        this.fs.copy(this.sourceRoot() + '/tslint.json', context.name + '/tslint.json');
+
         this.extensionConfig.installDependencies = true;
     }
 
@@ -720,8 +688,6 @@ module.exports = class extends Generator {
         this.fs.copyTpl(this.sourceRoot() + '/extension.js', context.name + '/extension.js', context);
         this.fs.copyTpl(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
         this.fs.copyTpl(this.sourceRoot() + '/.eslintrc.json', context.name + '/.eslintrc.json', context);
-
-        this.fs.copy(this.sourceRoot() + '/optional/extensions.json', context.name + '/.vscode/extensions.json');
 
         this.extensionConfig.installDependencies = true;
     }
