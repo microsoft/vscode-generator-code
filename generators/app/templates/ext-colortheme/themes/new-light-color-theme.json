@@ -2,16 +2,10 @@
 	"name": <%-JSON.stringify(themeName)%>,
 	"type": "light",
 	"colors": {
-		"editor.background": "#ffffff",
-		"editor.foreground": "#000000"
+		"editor.background": "#f5f5f5",
+		"editor.foreground": "#333333"
 	},
 	"tokenColors": [
-		{
-			"settings": {
-				"foreground": "#333333ff",
-				"background": "#f5f5f5ff"
-			}
-		},
 		{
 			"name": "Comments",
 			"scope": [
@@ -42,17 +36,9 @@
 			}
 		},
 		{
-			"name": "Invalid - Deprecated",
-			"scope": "invalid.deprecated",
-			"settings": {
-				"background": "#96000014"
-			}
-		},
-		{
 			"name": "Invalid - Illegal",
 			"scope": "invalid.illegal",
 			"settings": {
-				"background": "#96000014",
 				"foreground": "#660000"
 			}
 		},
@@ -188,16 +174,6 @@
 			}
 		},
 		{
-			"name": "Embedded Source",
-			"scope": [
-				"string source",
-				"text source"
-			],
-			"settings": {
-				"background": "#EAEBE6"
-			}
-		},
-		{
 			"name": "HTML: Doctype Declaration",
 			"scope": [
 				"meta.tag.sgml.doctype",
@@ -293,7 +269,6 @@
 			"name": "Markup: Changed",
 			"scope": "markup.changed",
 			"settings": {
-				"background": "#FFFFDD",
 				"foreground": "#000000"
 			}
 		},
@@ -301,7 +276,6 @@
 			"name": "Markup: Deletion",
 			"scope": "markup.deleted",
 			"settings": {
-				"background": "#FFDDDD",
 				"foreground": "#000000"
 			}
 		},
@@ -316,7 +290,6 @@
 			"name": "Markup: Error",
 			"scope": "markup.error",
 			"settings": {
-				"background": "#96000014",
 				"foreground": "#660000"
 			}
 		},
@@ -324,7 +297,6 @@
 			"name": "Markup: Insertion",
 			"scope": "markup.inserted",
 			"settings": {
-				"background": "#DDFFDD",
 				"foreground": "#000000"
 			}
 		},
@@ -420,7 +392,6 @@
 				"meta.separator"
 			],
 			"settings": {
-				"background": "#DDDDFF",
 				"foreground": "#434343"
 			}
 		},
@@ -428,7 +399,6 @@
 			"name": "Extra: Diff From",
 			"scope": "meta.diff.header.from-file",
 			"settings": {
-				"background": "#FFDDDD",
 				"foreground": "#434343"
 			}
 		},
@@ -436,7 +406,6 @@
 			"name": "Extra: Diff To",
 			"scope": "meta.diff.header.to-file",
 			"settings": {
-				"background": "#DDFFDD",
 				"foreground": "#434343"
 			}
 		}
