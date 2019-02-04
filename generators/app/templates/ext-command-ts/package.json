@@ -27,9 +27,9 @@
 		"test": "<%= pkgManager %> run compile && node ./node_modules/vscode/bin/test"
 	},
 	"devDependencies": {
-		"typescript": "^3.1.4",
-		"vscode": "^1.1.25",
-		"tslint": "^5.8.0",
+		"typescript": "^3.3.1",
+		"vscode": "^1.1.28",
+		"tslint": "^5.12.1",
 		"@types/node": "^8.10.25",
 		"@types/mocha": "^2.2.42"
 	}
