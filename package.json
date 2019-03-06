@@ -42,10 +42,10 @@
     "yosay": "^2.0.2"
   },
   "devDependencies": {
-    "@types/mocha": "^2.2.48",
-    "@types/node": "^6.0.101",
-    "@types/yeoman-generator": "^3.0.1",
-    "mocha": "^5.2.0",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^11.10.4",
+    "@types/yeoman-generator": "^3.1.0",
+    "mocha": "^6.0.2",
     "yeoman-assert": "^3.1.1",
     "yeoman-test": "^1.9.1",
     "yo": "^2.0.5"
