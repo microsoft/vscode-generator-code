@@ -218,32 +218,63 @@ module.exports = class extends Generator {
                 }
 
                 generator.extensionConfig.isCustomization = true;
+                const defaultExtensionList = ['publisher.extensionName'];
 
-                return generator.prompt({
-                    type: 'confirm',
-                    name: 'addExtensions',
-                    message: 'Add the currently installed extensions to the extension pack?',
-                    default: true
-                }).then(addExtensionsAnswer => {
-
-                    generator.extensionConfig.extensionList = ["publisher.extensionName"];
-
-                    if (addExtensionsAnswer.addExtensions) {
-                        return new Promise((resolve, reject) => {
-                            childProcess.exec('code --list-extensions', (error, stdout, stderr) => {
+                let getExtensionList = () =>
+                    new Promise((resolve, reject) => {
+                        childProcess.exec(
+                            'code --list-extensions',
+                            (error, stdout, stderr) => {
                                 if (error) {
                                     generator.env.error(error);
                                 } else {
                                     let out = stdout.trim();
                                     if (out.length > 0) {
-                                        generator.extensionConfig.extensionList = out.split(/\s/);
+                                        generator.extensionConfig.extensionList = out.split(
+                                            /\s/
+                                        );
                                     }
                                 }
                                 resolve();
-                            });
-                        });
-                    }
-                });
+                            }
+                        );
+                    });
+
+                let extensionParam = generator.options['extensionParam'];
+
+                if (extensionParam &&
+                    extensionParam
+                        .toString()
+                        .trim()
+                        .toLowerCase() == 'n'
+                ) {
+                    generator.extensionConfig.extensionList = defaultExtensionList;
+                    return Promise.resolve();
+                } else if (
+                    extensionParam &&
+                    extensionParam
+                        .toString()
+                        .trim()
+                        .toLowerCase() == 'y'
+                ) {
+                    return getExtensionList();
+                }
+
+                return generator
+                    .prompt({
+                        type: 'confirm',
+                        name: 'addExtensions',
+                        message:
+                            'Add the currently installed extensions to the extension pack?',
+                        default: true
+                    })
+                    .then(addExtensionsAnswer => {
+                        generator.extensionConfig.extensionList = defaultExtensionList;
+
+                        if (addExtensionsAnswer.addExtensions) {
+                            return getExtensionList();
+                        }
+                    });
             },
 
             // Ask for extension display name ("displayName" in package.json)
