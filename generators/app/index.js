@@ -220,7 +220,7 @@ module.exports = class extends Generator {
                 generator.extensionConfig.isCustomization = true;
                 const defaultExtensionList = ['publisher.extensionName'];
 
-                let getExtensionList = () =>
+                const getExtensionList = () =>
                     new Promise((resolve, reject) => {
                         childProcess.exec(
                             'code --list-extensions',
@@ -230,9 +230,7 @@ module.exports = class extends Generator {
                                 } else {
                                     let out = stdout.trim();
                                     if (out.length > 0) {
-                                        generator.extensionConfig.extensionList = out.split(
-                                            /\s/
-                                        );
+                                        generator.extensionConfig.extensionList = out.split(/\s/);
                                     }
                                 }
                                 resolve();
@@ -240,41 +238,28 @@ module.exports = class extends Generator {
                         );
                     });
 
-                let extensionParam = generator.options['extensionParam'];
-
-                if (extensionParam &&
-                    extensionParam
-                        .toString()
-                        .trim()
-                        .toLowerCase() == 'n'
-                ) {
-                    generator.extensionConfig.extensionList = defaultExtensionList;
-                    return Promise.resolve();
-                } else if (
-                    extensionParam &&
-                    extensionParam
-                        .toString()
-                        .trim()
-                        .toLowerCase() == 'y'
-                ) {
-                    return getExtensionList();
+                const extensionParam = generator.options['extensionParam'];
+                if (extensionParam) {
+                    switch (extensionParam.toString().trim().toLowerCase()) {
+                        case 'n':
+                            generator.extensionConfig.extensionList = defaultExtensionList;
+                            return Promise.resolve();
+                        case 'y':
+                            return getExtensionList();
+                    }
                 }
 
-                return generator
-                    .prompt({
-                        type: 'confirm',
-                        name: 'addExtensions',
-                        message:
-                            'Add the currently installed extensions to the extension pack?',
-                        default: true
-                    })
-                    .then(addExtensionsAnswer => {
-                        generator.extensionConfig.extensionList = defaultExtensionList;
-
-                        if (addExtensionsAnswer.addExtensions) {
-                            return getExtensionList();
-                        }
-                    });
+                return generator.prompt({
+                    type: 'confirm',
+                    name: 'addExtensions',
+                    message: 'Add the currently installed extensions to the extension pack?',
+                    default: true
+                }).then(addExtensionsAnswer => {
+                    generator.extensionConfig.extensionList = defaultExtensionList;
+                    if (addExtensionsAnswer.addExtensions) {
+                        return getExtensionList();
+                    }
+                });
             },
 
             // Ask for extension display name ("displayName" in package.json)
@@ -729,7 +714,7 @@ module.exports = class extends Generator {
 
         if (this.extensionConfig.installDependencies) {
             this.installDependencies({
-		        yarn: this.extensionConfig.pkgManager === 'yarn',
+                yarn: this.extensionConfig.pkgManager === 'yarn',
                 npm: this.extensionConfig.pkgManager === 'npm',
                 bower: false
             });
