@@ -33,11 +33,10 @@ function convertGrammar(location, extensionConfig) {
                             fileName = fileNameMatch[1];
                         }
                     }
-                    processContent(extensionConfig, fileName, body);
+                    processContent(extensionConfig, fileName, body).then(resolve, reject);
                 } else {
-                    return Promise.reject("Problems loading language definition file: " + error);
+                    reject("Problems loading language definition file: " + error);
                 }
-                resolve();
             });
         });
     } else {
@@ -51,8 +50,7 @@ function convertGrammar(location, extensionConfig) {
             return Promise.reject("Problems loading language definition file: " + error.message);
         }
         if (body) {
-            processContent(extensionConfig, path.basename(location), body.toString());
-            return Promise.resolve();
+            return processContent(extensionConfig, path.basename(location), body.toString());
         } else {
             return Promise.reject("Problems loading language definition file: Not found");
         }
@@ -64,49 +62,54 @@ function processContent(extensionConfig, fileName, body) {
         return Promise.reject("Language definition file does not contain 'DOCTYPE plist'. Make sure the file content is really plist-XML.");
     }
     var result = plistParser.parse(body);
-    if (result.value) {
-        var languageInfo = result.value;
+    if (!result.value) {
+        return Promise.reject("Language definition file could not be parsed. Make sure it is a valid plist file. ");
+    }
+    if (result.errors.length) {
+        return Promise.reject("Errors while parsing the language definition file: \n" + result.errors.join('\n'));
+    }
+    var languageInfo = result.value;
 
-        extensionConfig.languageName = languageInfo.name || '';
+    extensionConfig.languageName = languageInfo.name || '';
 
-        // evaluate language id
-        var languageId = '';
-        var languageScopeName;
+    // evaluate language id
+    var languageId = '';
+    var languageScopeName;
 
-        if (languageInfo.scopeName) {
-            languageScopeName = languageInfo.scopeName;
+    if (languageInfo.scopeName) {
+        languageScopeName = languageInfo.scopeName;
 
-            var lastIndexOfDot = languageInfo.scopeName.lastIndexOf('.');
-            if (lastIndexOfDot) {
-                languageId = languageInfo.scopeName.substring(lastIndexOfDot + 1);
-            }
-        }
-        if (!languageId && fileName) {
-            var lastIndexOfDot2 = fileName.lastIndexOf('.');
-            if (lastIndexOfDot2 && fileName.substring(lastIndexOfDot2 + 1) == 'tmLanguage') {
-                languageId = fileName.substring(0, lastIndexOfDot2);
-            }
-        }
-        if (!languageId && languageInfo.name) {
-            languageId = languageInfo.name.toLowerCase().replace(/[^\w-_]/, '');
-        }
-        if (!fileName) {
-            fileName = languageId + '.tmLanguage';
-        }
-
-        extensionConfig.languageFileName = fileName;
-        extensionConfig.languageId = languageId;
-        extensionConfig.name = languageId;
-        extensionConfig.languageScopeName = languageScopeName;
-
-        // evaluate file extensions
-        if (Array.isArray(languageInfo.fileTypes)) {
-            extensionConfig.languageExtensions = languageInfo.fileTypes.map(function (ft) { return '.' + ft; });
-        } else {
-            extensionConfig.languageExtensions = languageId ? ['.' + languageId] : [];
+        var lastIndexOfDot = languageInfo.scopeName.lastIndexOf('.');
+        if (lastIndexOfDot) {
+            languageId = languageInfo.scopeName.substring(lastIndexOfDot + 1);
         }
     }
+    if (!languageId && fileName) {
+        var lastIndexOfDot2 = fileName.lastIndexOf('.');
+        if (lastIndexOfDot2 && fileName.substring(lastIndexOfDot2 + 1) == 'tmLanguage') {
+            languageId = fileName.substring(0, lastIndexOfDot2);
+        }
+    }
+    if (!languageId && languageInfo.name) {
+        languageId = languageInfo.name.toLowerCase().replace(/[^\w-_]/, '');
+    }
+    if (!fileName) {
+        fileName = languageId + '.tmLanguage';
+    }
+
+    extensionConfig.languageFileName = fileName;
+    extensionConfig.languageId = languageId;
+    extensionConfig.name = languageId;
+    extensionConfig.languageScopeName = languageScopeName;
+
+    // evaluate file extensions
+    if (Array.isArray(languageInfo.fileTypes)) {
+        extensionConfig.languageExtensions = languageInfo.fileTypes.map(function (ft) { return '.' + ft; });
+    } else {
+        extensionConfig.languageExtensions = languageId ? ['.' + languageId] : [];
+    }
     extensionConfig.languageContent = body;
+    return Promise.resolve(extensionConfig);
 };
 
 exports.convertGrammar = convertGrammar;
