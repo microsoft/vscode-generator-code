@@ -6,7 +6,7 @@
 
 var path = require('path');
 var fs = require('fs');
-var plistParser = require('./plistParser');
+var plistParser = require('fast-plist');
 var request = require('request');
 
 function convertGrammar(location, extensionConfig) {
@@ -61,14 +61,15 @@ function processContent(extensionConfig, fileName, body) {
     if (body.indexOf('<!DOCTYPE plist') === -1) {
         return Promise.reject("Language definition file does not contain 'DOCTYPE plist'. Make sure the file content is really plist-XML.");
     }
-    var result = plistParser.parse(body);
-    if (!result.value) {
-        return Promise.reject("Language definition file could not be parsed. Make sure it is a valid plist file. ");
+    var languageInfo;
+    try {
+        languageInfo = plistParser.parse(body);
+    } catch (e) {
+        return Promise.reject("Language definition file could not be parsed: " + e.toString());
     }
-    if (result.errors.length) {
-        return Promise.reject("Errors while parsing the language definition file: \n" + result.errors.join('\n'));
+    if (!languageInfo) {
+        return Promise.reject("Language definition file could not be parsed. Make sure it is a valid plist file.");
     }
-    var languageInfo = result.value;
 
     extensionConfig.languageName = languageInfo.name || '';
 

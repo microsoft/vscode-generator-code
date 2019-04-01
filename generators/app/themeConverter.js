@@ -5,7 +5,7 @@
 
 var path = require('path');
 var fs = require('fs');
-var plistParser = require('./plistParser');
+var plistParser = require('fast-plist');
 var request = require('request');
 
 function convertTheme(location, extensionConfig, inline, generator) {
@@ -113,7 +113,13 @@ var mappings = {
 function migrate(content, tmThemeFileName, generator) {
     try {
         let result = {};
-        let theme = plistParser.parse(content).value;
+        var theme;
+        try {
+            theme = plistParser.parse(content);
+        } catch (e) {
+            generator.log(tmThemeFileName + " not be parsed: " + e.toString());
+            return undefined;
+        }
         let settings = theme.settings;
         if (Array.isArray(settings)) {
             let colorMap = {};
