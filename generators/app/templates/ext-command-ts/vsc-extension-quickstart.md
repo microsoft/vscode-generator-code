@@ -33,3 +33,9 @@
 * Make changes to `test/extension.test.ts` or create new test files inside the `test` folder.
   * By convention, the test runner will only consider files matching the name pattern `**.test.ts`.
   * You can create folders inside the `test` folder to structure your tests any way you want.
+
+## Go further
+
+ * Reduce the extension size and improve the startup time by [bundling your extension](https://code.visualstudio.com/api/working-with-extensions/testing-extension).
+ * [Publish your extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension) on the VSCode extension marketplace.
+ * Automate builds by setting up [Continuous Integration](https://code.visualstudio.com/api/working-with-extensions/continuous-integration).
