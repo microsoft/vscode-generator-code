@@ -19,9 +19,7 @@ function run(testsRoot, cb) {
 
 		try {
 			// Run the mocha test
-			mocha.run(failures => {
-				cb(null, failures);
-			});
+			mocha.run(failures => cb(null, failures));
 		} catch (err) {
 			cb(err);
 		}
