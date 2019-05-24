@@ -792,7 +792,6 @@ describe('test code generator', function () {
                         "glob": "^7.1.4",
                         "mocha": "^6.1.4",
                         "typescript": "^3.3.1",
-                        "tslint": "^5.12.1",
                         "vscode-test": "^0.4.2"
                     },
                     "main": "./extension.js",
