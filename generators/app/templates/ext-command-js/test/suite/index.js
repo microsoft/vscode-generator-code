@@ -7,6 +7,7 @@ function run(testsRoot, cb) {
 	const mocha = new Mocha({
 		ui: 'tdd'
 	});
+	// Use any mocha API
 	mocha.useColors(true);
 
 	glob('**/**.test.js', { cwd: testsRoot }, (err, files) => {
