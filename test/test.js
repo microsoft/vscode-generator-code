@@ -626,19 +626,22 @@ describe('test code generator', function () {
                         "onCommand:extension.helloWorld"
                     ],
                     "devDependencies": {
-                        "typescript": "^3.3.1",
-                        "vscode": "^1.1.28",
-                        "tslint": "^5.12.1",
+                        "@types/glob": "^7.1.1",
+                        "@types/mocha": "^5.2.6",
                         "@types/node": "^10.12.21",
-                        "@types/mocha": "^2.2.42"
+                        "@types/vscode": "^1.32.0",
+                        "glob": "^7.1.4",
+                        "mocha": "^6.1.4",
+                        "typescript": "^3.3.1",
+                        "tslint": "^5.12.1",
+                        "vscode-test": "^0.4.2"
                     },
                     "main": "./out/extension.js",
                     "scripts": {
                         "vscode:prepublish": "npm run compile",
                         "compile": "tsc -p ./",
                         "watch": "tsc -watch -p ./",
-                        "postinstall": "node ./node_modules/vscode/bin/install",
-                        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+                        "test": "npm run compile && node ./out/test/runTest.js"
                     },
                     "categories": [
                         "Other"
@@ -653,7 +656,7 @@ describe('test code generator', function () {
                 try {
 
 
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/extension.test.ts', 'src/test/index.ts', 'tsconfig.json']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
 
                     var packageJSONBody = fs.readFileSync('package.json', 'utf8')
                     var actualPackageJSON = JSON.parse(packageJSONBody);
@@ -692,19 +695,22 @@ describe('test code generator', function () {
                         "onCommand:extension.helloWorld"
                     ],
                     "devDependencies": {
-                        "typescript": "^3.3.1",
-                        "vscode": "^1.1.28",
-                        "tslint": "^5.12.1",
+                        "@types/glob": "^7.1.1",
+                        "@types/mocha": "^5.2.6",
                         "@types/node": "^10.12.21",
-                        "@types/mocha": "^2.2.42"
+                        "@types/vscode": "^1.32.0",
+                        "glob": "^7.1.4",
+                        "mocha": "^6.1.4",
+                        "typescript": "^3.3.1",
+                        "tslint": "^5.12.1",
+                        "vscode-test": "^0.4.2"
                     },
                     "main": "./out/extension.js",
                     "scripts": {
                         "vscode:prepublish": "yarn run compile",
                         "compile": "tsc -p ./",
                         "watch": "tsc -watch -p ./",
-                        "postinstall": "node ./node_modules/vscode/bin/install",
-                        "test": "yarn run compile && node ./node_modules/vscode/bin/test"
+                        "test": "yarn run compile && node ./out/test/runTest.js"
                     },
                     "categories": [
                         "Other"
@@ -734,7 +740,7 @@ describe('test code generator', function () {
                     ]
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/extension.test.ts', 'src/test/index.ts', 'tsconfig.json', 'tslint.json', '.vscode/extensions.json']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', 'tslint.json', '.vscode/extensions.json']);
 
                     var packageJSONBody = fs.readFileSync('package.json', 'utf8')
                     var actualPackageJSON = JSON.parse(packageJSONBody);
@@ -778,16 +784,19 @@ describe('test code generator', function () {
                         "onCommand:extension.helloWorld"
                     ],
                     "devDependencies": {
-                        "typescript": "^3.3.1",
-                        "vscode": "^1.1.28",
-                        "eslint": "^5.13.0",
+                        "@types/glob": "^7.1.1",
+                        "@types/mocha": "^5.2.6",
                         "@types/node": "^10.12.21",
-                        "@types/mocha": "^2.2.42"
+                        "@types/vscode": "^1.32.0",
+                        "eslint": "^5.13.0",
+                        "glob": "^7.1.4",
+                        "mocha": "^6.1.4",
+                        "typescript": "^3.3.1",
+                        "vscode-test": "^0.4.2"
                     },
                     "main": "./extension.js",
                     "scripts": {
-                        "postinstall": "node ./node_modules/vscode/bin/install",
-                        "test": "node ./node_modules/vscode/bin/test"
+                        "test": "node ./test/runTest.js"
                     },
                     "categories": [
                         "Other"
@@ -802,7 +811,7 @@ describe('test code generator', function () {
                 try {
 
 
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'extension.js', 'test/extension.test.js', 'test/index.js', 'jsconfig.json']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'extension.js', 'test/suite/extension.test.js', 'test/suite/index.js', 'jsconfig.json']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
