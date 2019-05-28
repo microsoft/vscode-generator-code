@@ -29,7 +29,7 @@
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^5.2.6",
 		"@types/node": "^10.12.21",
-		"@types/vscode": "^1.32.0",
+		"@types/vscode": <%- JSON.stringify(vsCodeEngine) %>,
 		"glob": "^7.1.4",
 		"mocha": "^6.1.4",
 		"typescript": "^3.3.1",
