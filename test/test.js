@@ -641,7 +641,8 @@ describe('test code generator', function () {
                         "vscode:prepublish": "npm run compile",
                         "compile": "tsc -p ./",
                         "watch": "tsc -watch -p ./",
-                        "test": "npm run compile && node ./out/test/runTest.js"
+                        "pretest": "npm run compile",
+                        "test": "node ./out/test/runTest.js"
                     },
                     "categories": [
                         "Other"
@@ -710,7 +711,8 @@ describe('test code generator', function () {
                         "vscode:prepublish": "yarn run compile",
                         "compile": "tsc -p ./",
                         "watch": "tsc -watch -p ./",
-                        "test": "yarn run compile && node ./out/test/runTest.js"
+                        "pretest": "yarn run compile",
+                        "test": "node ./out/test/runTest.js"
                     },
                     "categories": [
                         "Other"
