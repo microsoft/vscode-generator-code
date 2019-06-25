@@ -20,14 +20,17 @@
 		}]
 	},
 	"scripts": {
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"test": "node ./node_modules/vscode/bin/test"
+		"test": "node ./test/runTest.js"
 	},
 	"devDependencies": {
-		"typescript": "^3.3.1",
-		"vscode": "^1.1.28",
-		"eslint": "^5.13.0",
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^5.2.6",
 		"@types/node": "^10.12.21",
-		"@types/mocha": "^2.2.42"
+		"@types/vscode": <%- JSON.stringify(vsCodeEngine) %>,
+		"eslint": "^5.13.0",
+		"glob": "^7.1.4",
+		"mocha": "^6.1.4",
+		"typescript": "^3.3.1",
+		"vscode-test": "^1.0.0-next.0"
 	}
 }
