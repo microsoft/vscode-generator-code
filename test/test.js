@@ -370,6 +370,61 @@ describe('test code generator', function () {
             }, done);
     });
 
+    it('language import 2', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-language',
+                tmLanguageURL: path.join(__dirname, 'fixtures/grammars/foo.tmLanguage.json'),
+                name: 'testFooLan',
+                displayName: 'Test Foo Lan',
+                description: 'My TestFooLan',
+                languageId: 'foo',
+                languageName: 'FOO',
+                languageScopeName: 'source.foo',
+                languageExtensions: '.foo'
+            }) // Mock the prompt answers
+            .toPromise().then(function () {
+                var expected = {
+                    "name": "testFooLan",
+                    "displayName": "Test Foo Lan",
+                    "description": "My TestFooLan",
+                    "version": "0.0.1",
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "categories": [
+                        "Programming Languages"
+                    ],
+                    "contributes": {
+                        "languages": [{
+                            "id": "foo",
+                            "aliases": ["FOO", "foo"],
+                            "extensions": [".foo"],
+                            "configuration": "./language-configuration.json"
+                        }],
+                        "grammars": [{
+                            "language": "foo",
+                            "scopeName": "source.foo",
+                            "path": "./syntaxes/foo.tmLanguage.json"
+                        }]
+                    }
+                };
+                try {
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'syntaxes/foo.tmLanguage.json', 'language-configuration.json', 'vsc-extension-quickstart.md', '.vscodeignore']);
+
+                    var body = fs.readFileSync('package.json', 'utf8');
+
+                    var actual = JSON.parse(body);
+                    assert.deepEqual(expected, actual);
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }, done);
+    });
+
     it('language new', function (done) {
         this.timeout(10000);
 

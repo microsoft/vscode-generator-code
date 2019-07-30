@@ -58,17 +58,26 @@ function convertGrammar(location, extensionConfig) {
 }
 
 function processContent(extensionConfig, fileName, body) {
-    if (body.indexOf('<!DOCTYPE plist') === -1) {
-        return Promise.reject("Language definition file does not contain 'DOCTYPE plist'. Make sure the file content is really plist-XML.");
-    }
     var languageInfo;
-    try {
-        languageInfo = plistParser.parse(body);
-    } catch (e) {
-        return Promise.reject("Language definition file could not be parsed: " + e.toString());
+    if (path.extname(fileName) === '.json') {
+        try {
+            languageInfo = JSON.parse(body);
+        } catch (e) {
+            return Promise.reject("Language definition file could not be parsed asn JSON: " + e.toString());
+        }
+    } else {
+        if (body.indexOf('<!DOCTYPE plist') === -1) {
+            return Promise.reject("Language definition file does not contain 'DOCTYPE plist'. Make sure the file content is really plist-XML.");
+        }
+
+        try {
+            languageInfo = plistParser.parse(body);
+        } catch (e) {
+            return Promise.reject("Language definition file could not be parsed: " + e.toString());
+        }
     }
     if (!languageInfo) {
-        return Promise.reject("Language definition file could not be parsed. Make sure it is a valid plist file.");
+        return Promise.reject("Language definition file could not be parsed. Make sure it is a valid plist or JSON file.");
     }
 
     extensionConfig.languageName = languageInfo.name || '';
