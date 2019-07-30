@@ -17,6 +17,7 @@
   "bugs": {
     "url": "https://github.com/Microsoft/vscode-generator-code/issues"
   },
+  "main": "./generators/app/index.js",
   "homepage": "http://code.visualstudio.com",
   "license": "MIT",
   "author": {
