@@ -689,7 +689,7 @@ describe('test code generator', function () {
                         "mocha": "^6.1.4",
                         "typescript": "^3.3.1",
                         "tslint": "^5.12.1",
-                        "vscode-test": "^1.0.2"
+                        "vscode-test": "^1.2.0"
                     },
                     "main": "./out/extension.js",
                     "scripts": {
@@ -759,7 +759,7 @@ describe('test code generator', function () {
                         "mocha": "^6.1.4",
                         "typescript": "^3.3.1",
                         "tslint": "^5.12.1",
-                        "vscode-test": "^1.0.2"
+                        "vscode-test": "^1.2.0"
                     },
                     "main": "./out/extension.js",
                     "scripts": {
@@ -849,7 +849,7 @@ describe('test code generator', function () {
                         "glob": "^7.1.4",
                         "mocha": "^6.1.4",
                         "typescript": "^3.3.1",
-                        "vscode-test": "^1.0.2"
+                        "vscode-test": "^1.2.0"
                     },
                     "main": "./extension.js",
                     "scripts": {
