@@ -682,14 +682,14 @@ describe('test code generator', function () {
                     ],
                     "devDependencies": {
                         "@types/glob": "^7.1.1",
-                        "@types/mocha": "^5.2.6",
-                        "@types/node": "^10.12.21",
+                        "@types/mocha": "^5.2.7",
+                        "@types/node": "^12.11.7",
                         "@types/vscode": engineVersion,
-                        "glob": "^7.1.4",
-                        "mocha": "^6.1.4",
-                        "typescript": "^3.3.1",
-                        "tslint": "^5.12.1",
-                        "vscode-test": "^1.2.0"
+                        "glob": "^7.1.5",
+                        "mocha": "^6.2.2",
+                        "typescript": "^3.6.4",
+                        "tslint": "^5.20.0",
+                        "vscode-test": "^1.2.2"
                     },
                     "main": "./out/extension.js",
                     "scripts": {
@@ -752,14 +752,14 @@ describe('test code generator', function () {
                     ],
                     "devDependencies": {
                         "@types/glob": "^7.1.1",
-                        "@types/mocha": "^5.2.6",
-                        "@types/node": "^10.12.21",
+                        "@types/mocha": "^5.2.7",
+                        "@types/node": "^12.11.7",
                         "@types/vscode": engineVersion,
-                        "glob": "^7.1.4",
-                        "mocha": "^6.1.4",
-                        "typescript": "^3.3.1",
-                        "tslint": "^5.12.1",
-                        "vscode-test": "^1.2.0"
+                        "glob": "^7.1.5",
+                        "mocha": "^6.2.2",
+                        "typescript": "^3.6.4",
+                        "tslint": "^5.20.0",
+                        "vscode-test": "^1.2.2"
                     },
                     "main": "./out/extension.js",
                     "scripts": {
@@ -842,14 +842,14 @@ describe('test code generator', function () {
                     ],
                     "devDependencies": {
                         "@types/glob": "^7.1.1",
-                        "@types/mocha": "^5.2.6",
-                        "@types/node": "^10.12.21",
+                        "@types/mocha": "^5.2.7",
+                        "@types/node": "^12.11.7",
                         "@types/vscode": engineVersion,
-                        "eslint": "^5.13.0",
-                        "glob": "^7.1.4",
-                        "mocha": "^6.1.4",
-                        "typescript": "^3.3.1",
-                        "vscode-test": "^1.2.0"
+                        "eslint": "^6.6.0",
+                        "glob": "^7.1.5",
+                        "mocha": "^6.2.2",
+                        "typescript": "^3.6.4",
+                        "vscode-test": "^1.2.2"
                     },
                     "main": "./extension.js",
                     "scripts": {
