@@ -742,7 +742,7 @@ module.exports = class extends Generator {
         this.log('');
 
         if (this.extensionConfig.type === 'ext-extensionpack') {
-            this.log(chalk.default.yellow('Please review the "extensionPack" in the "package.json" before publishing the extension pack.'));
+            this.log(chalk.yellow('Please review the "extensionPack" in the "package.json" before publishing the extension pack.'));
             this.log('');
         }
 
