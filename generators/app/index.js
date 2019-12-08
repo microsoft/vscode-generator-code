@@ -677,8 +677,7 @@ module.exports = class extends Generator {
 
         this.fs.copyTpl(this.sourceRoot() + '/src/extension.ts', context.name + '/src/extension.ts', context);
         this.fs.copyTpl(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
-
-        this.fs.copy(this.sourceRoot() + '/tslint.json', context.name + '/tslint.json');
+        this.fs.copyTpl(this.sourceRoot() + '/.eslintrc.json', context.name + '/.eslintrc.json', context);
 
         this.extensionConfig.installDependencies = true;
     }

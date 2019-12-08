@@ -685,10 +685,12 @@ describe('test code generator', function () {
                         "@types/mocha": "^5.2.7",
                         "@types/node": "^12.11.7",
                         "@types/vscode": engineVersion,
+                        "@typescript-eslint/eslint-plugin": "^2.10.0",
+                        "@typescript-eslint/parser": "^2.10.0",
+                        "eslint": "^6.7.2",
                         "glob": "^7.1.5",
                         "mocha": "^6.2.2",
                         "typescript": "^3.6.4",
-                        "tslint": "^5.20.0",
                         "vscode-test": "^1.2.2"
                     },
                     "main": "./out/extension.js",
@@ -734,7 +736,6 @@ describe('test code generator', function () {
                 name: 'testCom',
                 displayName: 'Test Com',
                 description: 'My TestCom',
-                tslint: true,
                 gitInit: false,
                 pkgManager: 'yarn'
             }) // Mock the prompt answers
@@ -755,10 +756,12 @@ describe('test code generator', function () {
                         "@types/mocha": "^5.2.7",
                         "@types/node": "^12.11.7",
                         "@types/vscode": engineVersion,
+                        "@typescript-eslint/eslint-plugin": "^2.10.0",
+                        "@typescript-eslint/parser": "^2.10.0",
+                        "eslint": "^6.7.2",
                         "glob": "^7.1.5",
                         "mocha": "^6.2.2",
                         "typescript": "^3.6.4",
-                        "tslint": "^5.20.0",
                         "vscode-test": "^1.2.2"
                     },
                     "main": "./out/extension.js",
@@ -797,7 +800,7 @@ describe('test code generator', function () {
                     ]
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', 'tslint.json', '.vscode/extensions.json']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', '.eslintrc.json', '.vscode/extensions.json']);
 
                     var packageJSONBody = fs.readFileSync('package.json', 'utf8')
                     var actualPackageJSON = JSON.parse(packageJSONBody);
