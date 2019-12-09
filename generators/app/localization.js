@@ -73,5 +73,9 @@ exports.writingLocalizationExtension = (generator) => {
     generator.fs.copy(generator.sourceRoot() + '/gitignore', context.name + '/.gitignore');
     generator.fs.copy(generator.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
 
+    if (context.gitHubWorkFlowInit) {
+        generator.fs.copy(generator.sourceRoot() + '/github', context.name + '/.github');
+    }
+
     context.installDependencies = true;
 }

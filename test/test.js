@@ -59,6 +59,7 @@ describe('test code generator', function () {
                 description: 'My TestTheme',
                 themeName: 'Green',
                 themeBase: 'vs-dark',
+                gitHubWorkFlowInit: true
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expectedPackageJSON = {
@@ -93,7 +94,7 @@ describe('test code generator', function () {
                     "tokenColors": "./Monokai.tmTheme"
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Green-color-theme.json', 'themes/Monokai.tmTheme', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Green-color-theme.json', 'themes/Monokai.tmTheme', 'vsc-extension-quickstart.md', '.vscodeignore', '.github/workflows/publish.yml']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -328,7 +329,8 @@ describe('test code generator', function () {
                 languageId: 'ant',
                 languageName: 'ANT',
                 languageScopeName: 'text.xml.ant',
-                languageExtensions: '.ant'
+                languageExtensions: '.ant',
+                gitHubWorkFlowInit: true
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
@@ -357,7 +359,7 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'syntaxes/ant.tmLanguage', 'language-configuration.json', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'syntaxes/ant.tmLanguage', 'language-configuration.json', 'vsc-extension-quickstart.md', '.vscodeignore', '.github/workflows/publish.yml']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -497,7 +499,8 @@ describe('test code generator', function () {
                 name: 'testSnip',
                 displayName: 'Test Snip',
                 description: 'My TestSnip',
-                languageId: 'python'
+                languageId: 'python',
+                gitHubWorkFlowInit: true
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
@@ -519,7 +522,7 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'snippets/snippets.json', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'snippets/snippets.json', 'vsc-extension-quickstart.md', '.vscodeignore', '.github/workflows/publish.yml']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -620,6 +623,7 @@ describe('test code generator', function () {
                 name: 'testKeym',
                 displayName: 'Test Keym',
                 description: 'My TestKeym',
+                gitHubWorkFlowInit: true
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
@@ -641,7 +645,7 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.vscodeignore', '.github/workflows/publish.yml']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -666,6 +670,7 @@ describe('test code generator', function () {
                 displayName: 'Test Com',
                 description: 'My TestCom',
                 gitInit: true,
+                gitHubWorkFlowInit: true,
                 pkgManager: 'npm'
             }) // Mock the prompt answers
             .toPromise().then(function () {
@@ -712,7 +717,7 @@ describe('test code generator', function () {
                 try {
 
 
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', '.github/workflows/test-publish.yml']);
 
                     var packageJSONBody = fs.readFileSync('package.json', 'utf8')
                     var actualPackageJSON = JSON.parse(packageJSONBody);
@@ -826,6 +831,7 @@ describe('test code generator', function () {
                 description: 'My TestCom',
                 checkJavaScript: false,
                 gitInit: false,
+                gitHubWorkFlowInit: true,
                 pkgManager: 'npm'
             }) // Mock the prompt answers
             .toPromise().then(function () {
@@ -868,7 +874,7 @@ describe('test code generator', function () {
                 try {
 
 
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'extension.js', 'test/suite/extension.test.js', 'test/suite/index.js', 'jsconfig.json']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'extension.js', 'test/suite/extension.test.js', 'test/suite/index.js', 'jsconfig.json', '.github/workflows/test-publish.yml']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -930,7 +936,8 @@ describe('test code generator', function () {
                 type: 'ext-extensionpack',
                 name: 'testExtensionPack',
                 displayName: 'Test Extension Pack',
-                description: 'My Test Extension Pack'
+                description: 'My Test Extension Pack',
+                gitHubWorkFlowInit: true
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
@@ -949,7 +956,7 @@ describe('test code generator', function () {
                     ]
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.vscodeignore', '.github/workflows/publish.yml']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -970,7 +977,8 @@ describe('test code generator', function () {
                 lpLanguageId: 'ru',
                 lpLanguageName: 'Russian',
                 lpLocalizedLanguageName: 'русский',
-                pkgManager: 'npm'
+                pkgManager: 'npm',
+                gitHubWorkFlowInit: true
             }).toPromise().then(function () {
                 var expected = {
                     "name": "vscode-language-pack-ru",
@@ -995,7 +1003,7 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.vscodeignore', '.github/workflows/publish.yml']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
