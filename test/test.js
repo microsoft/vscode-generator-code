@@ -666,6 +666,7 @@ describe('test code generator', function () {
                 displayName: 'Test Com',
                 description: 'My TestCom',
                 gitInit: true,
+                prettierInit: true,
                 pkgManager: 'npm'
             }) // Mock the prompt answers
             .toPromise().then(function () {
@@ -688,8 +689,11 @@ describe('test code generator', function () {
                         "@typescript-eslint/eslint-plugin": "^2.10.0",
                         "@typescript-eslint/parser": "^2.10.0",
                         "eslint": "^6.7.2",
+                        "eslint-config-prettier": "^6.7.0",
+                        "eslint-plugin-prettier": "^3.1.1",
                         "glob": "^7.1.5",
                         "mocha": "^6.2.2",
+                        "prettier": "^1.19.1",
                         "typescript": "^3.6.4",
                         "vscode-test": "^1.2.2"
                     },
@@ -714,7 +718,7 @@ describe('test code generator', function () {
                 try {
 
 
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', '.eslintrc.json', '.prettierrc.json']);
 
                     var packageJSONBody = fs.readFileSync('package.json', 'utf8')
                     var actualPackageJSON = JSON.parse(packageJSONBody);
@@ -737,6 +741,7 @@ describe('test code generator', function () {
                 displayName: 'Test Com',
                 description: 'My TestCom',
                 gitInit: false,
+                prettierInit: false,
                 pkgManager: 'yarn'
             }) // Mock the prompt answers
             .toPromise().then(function () {
@@ -829,6 +834,7 @@ describe('test code generator', function () {
                 description: 'My TestCom',
                 checkJavaScript: false,
                 gitInit: false,
+                prettierInit: false,
                 pkgManager: 'npm'
             }) // Mock the prompt answers
             .toPromise().then(function () {
@@ -896,6 +902,7 @@ describe('test code generator', function () {
                 description: 'My TestCom',
                 checkJavaScript: true,
                 gitInit: false,
+                prettierInit: false,
                 pkgManager: 'yarn'
             }) // Mock the prompt answers
             .toPromise().then(function () {

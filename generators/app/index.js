@@ -353,6 +353,21 @@ module.exports = class extends Generator {
                 });
             },
 
+            askForPrettier: () => {
+                if (generator.extensionConfig.type !== 'ext-command-ts') {
+                    return Promise.resolve();
+                }
+
+                return generator.prompt({
+                    type: 'confirm',
+                    name: 'prettierInit',
+                    message: 'Include prettier with eslint?',
+                    default: true
+                }).then(prettierAnswer => {
+                    generator.extensionConfig.prettierInit = prettierAnswer.prettierInit;
+                });
+            },
+
             askForThemeName: () => {
                 if (generator.extensionConfig.type !== 'ext-colortheme') {
                     return Promise.resolve();
@@ -669,6 +684,9 @@ module.exports = class extends Generator {
         this.fs.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
         if (this.extensionConfig.gitInit) {
             this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+        }
+        if (this.extensionConfig.prettierInit) {
+            this.fs.copy(this.sourceRoot() + '/.prettierrc.json', context.name + '/.prettierrc.json');
         }
         this.fs.copyTpl(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.fs.copyTpl(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
