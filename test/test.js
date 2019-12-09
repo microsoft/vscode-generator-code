@@ -66,7 +66,7 @@ describe('test code generator', function () {
                     "name": "testTheme",
                     "displayName": "Test Theme",
                     "description": "My TestTheme",
-                    "version": "0.0.1",
+                    "version": "0.0.0",
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -125,6 +125,7 @@ describe('test code generator', function () {
                 description: 'My TestTheme',
                 themeName: 'Green',
                 themeBase: 'vs-dark',
+                gitHubWorkFlowInit: false,
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expectedPackageJSON = {
@@ -190,6 +191,7 @@ describe('test code generator', function () {
                 description: 'Theme SeventyFour',
                 themeName: 'Theme 74',
                 themeBase: 'vs-dark',
+                gitHubWorkFlowInit: false,
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expectedPackageJSON = {
@@ -273,6 +275,7 @@ describe('test code generator', function () {
                 description: 'My TestTheme',
                 themeName: 'Funky',
                 themeBase: 'vs',
+                gitHubWorkFlowInit: false,
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expectedPackageJSON = {
@@ -330,14 +333,14 @@ describe('test code generator', function () {
                 languageName: 'ANT',
                 languageScopeName: 'text.xml.ant',
                 languageExtensions: '.ant',
-                gitHubWorkFlowInit: true
+                gitHubWorkFlowInit: true,
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
                     "name": "testLan",
                     "displayName": "Test Lan",
                     "description": "My TestLan",
-                    "version": "0.0.1",
+                    "version": "0.0.0",
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -385,7 +388,8 @@ describe('test code generator', function () {
                 languageId: 'foo',
                 languageName: 'FOO',
                 languageScopeName: 'source.foo',
-                languageExtensions: '.foo'
+                languageExtensions: '.foo',
+                gitHubWorkFlowInit: false,
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
@@ -440,7 +444,8 @@ describe('test code generator', function () {
                 languageId: 'crusty',
                 languageName: 'Crusty',
                 languageScopeName: 'source.crusty',
-                languageExtensions: '.crusty'
+                languageExtensions: '.crusty',
+                gitHubWorkFlowInit: false,
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
@@ -500,14 +505,14 @@ describe('test code generator', function () {
                 displayName: 'Test Snip',
                 description: 'My TestSnip',
                 languageId: 'python',
-                gitHubWorkFlowInit: true
+                gitHubWorkFlowInit: true,
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
                     "name": "testSnip",
                     "displayName": 'Test Snip',
                     "description": "My TestSnip",
-                    "version": "0.0.1",
+                    "version": "0.0.0",
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -547,7 +552,8 @@ describe('test code generator', function () {
                 name: 'testSnip',
                 displayName: 'Test Snip',
                 description: 'My TestSnip',
-                languageId: 'python'
+                languageId: 'python',
+                gitHubWorkFlowInit: false,
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
@@ -623,14 +629,14 @@ describe('test code generator', function () {
                 name: 'testKeym',
                 displayName: 'Test Keym',
                 description: 'My TestKeym',
-                gitHubWorkFlowInit: true
+                gitHubWorkFlowInit: true,
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
                     "name": "testKeym",
                     "displayName": 'Test Keym',
                     "description": "My TestKeym",
-                    "version": "0.0.1",
+                    "version": "0.0.0",
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -670,15 +676,15 @@ describe('test code generator', function () {
                 displayName: 'Test Com',
                 description: 'My TestCom',
                 gitInit: true,
+                pkgManager: 'npm',
                 gitHubWorkFlowInit: true,
-                pkgManager: 'npm'
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expectedPackageJSON = {
                     "name": "testCom",
                     "displayName": 'Test Com',
                     "description": "My TestCom",
-                    "version": "0.0.1",
+                    "version": "0.0.0",
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -741,7 +747,8 @@ describe('test code generator', function () {
                 description: 'My TestCom',
                 tslint: true,
                 gitInit: false,
-                pkgManager: 'yarn'
+                pkgManager: 'yarn',
+                gitHubWorkFlowInit: false,
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expectedPackageJSON = {
@@ -831,15 +838,15 @@ describe('test code generator', function () {
                 description: 'My TestCom',
                 checkJavaScript: false,
                 gitInit: false,
+                pkgManager: 'npm',
                 gitHubWorkFlowInit: true,
-                pkgManager: 'npm'
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
                     "name": "testCom",
                     "displayName": 'Test Com',
                     "description": "My TestCom",
-                    "version": "0.0.1",
+                    "version": "0.0.0",
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -899,7 +906,8 @@ describe('test code generator', function () {
                 description: 'My TestCom',
                 checkJavaScript: true,
                 gitInit: false,
-                pkgManager: 'yarn'
+                pkgManager: 'yarn',
+                gitHubWorkFlowInit: false,
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
@@ -937,14 +945,14 @@ describe('test code generator', function () {
                 name: 'testExtensionPack',
                 displayName: 'Test Extension Pack',
                 description: 'My Test Extension Pack',
-                gitHubWorkFlowInit: true
+                gitHubWorkFlowInit: true,
             }) // Mock the prompt answers
             .toPromise().then(function () {
                 var expected = {
                     "name": "testExtensionPack",
                     "displayName": "Test Extension Pack",
                     "description": "My Test Extension Pack",
-                    "version": "0.0.1",
+                    "version": "0.0.0",
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -978,13 +986,13 @@ describe('test code generator', function () {
                 lpLanguageName: 'Russian',
                 lpLocalizedLanguageName: 'русский',
                 pkgManager: 'npm',
-                gitHubWorkFlowInit: true
+                gitHubWorkFlowInit: true,
             }).toPromise().then(function () {
                 var expected = {
                     "name": "vscode-language-pack-ru",
                     "displayName": "Russian Language Pack",
                     "description": "Language pack extension for Russian",
-                    "version": "0.0.1",
+                    "version": "0.0.0",
                     "engines": {
                         "vscode": engineVersion
                     },
@@ -1024,7 +1032,8 @@ describe('test code generator', function () {
                 lpLanguageId: 'ru',
                 lpLanguageName: 'Russian',
                 lpLocalizedLanguageName: 'русский',
-                pkgManager: 'yarn'
+                pkgManager: 'yarn',
+                gitHubWorkFlowInit: false,
             }).toPromise().then(function () {
                 var expected = {
                     "name": "vscode-language-pack-ru",

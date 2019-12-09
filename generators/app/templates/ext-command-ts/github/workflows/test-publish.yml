@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v1
       - name: Use Node.js ${{ matrix.node-version }}
@@ -43,10 +43,9 @@ jobs:
           tag=${GITHUB_REF#refs/tags/}
           echo "Setting package version $tag"
           npm --no-git-tag-version version "$tag"
-          npm install -g vsce
-          vsce package
+          npx vsce package
       - name: Publish extension to marketplace
         env:
           AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}
         run: |
-          vsce publish -p "$AZURE_TOKEN"
+          npx vsce publish -p "$AZURE_TOKEN"
