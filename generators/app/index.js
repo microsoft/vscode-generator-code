@@ -504,6 +504,17 @@ module.exports = class extends Generator {
                     generator.extensionConfig.pkgManager = pckgManagerAnswer.pkgManager;
                 });
             },
+
+            askForGithubWorkflows: () => {
+                return generator.prompt({
+                    type: 'confirm',
+                    name: 'gitHubWorkFlowInit',
+                    message: 'Include GitHub workflow file?',
+                    default: true
+                }).then(gitAnswer => {
+                    generator.extensionConfig.gitHubWorkFlowInit = gitAnswer.gitHubWorkFlowInit;
+                });
+            },
         };
 
         // run all prompts in sequence. Results can be ignored.
@@ -567,6 +578,9 @@ module.exports = class extends Generator {
             this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
             this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
         }
+        if (this.extensionConfig.gitHubWorkFlowInit) {
+            this.fs.copy(this.sourceRoot() + '/github', context.name + '/.github');
+        }
     }
 
     // Write Color Theme Extension
@@ -600,6 +614,9 @@ module.exports = class extends Generator {
             this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
             this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
         }
+        if (this.extensionConfig.gitHubWorkFlowInit) {
+            this.fs.copy(this.sourceRoot() + '/github', context.name + '/.github');
+        }
     }
 
     // Write Language Extension
@@ -624,6 +641,9 @@ module.exports = class extends Generator {
             this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
             this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
         }
+        if (this.extensionConfig.gitHubWorkFlowInit) {
+            this.fs.copy(this.sourceRoot() + '/github', context.name + '/.github');
+        }
     }
 
     // Write Snippets Extension
@@ -641,6 +661,9 @@ module.exports = class extends Generator {
             this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
             this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
         }
+        if (this.extensionConfig.gitHubWorkFlowInit) {
+            this.fs.copy(this.sourceRoot() + '/github', context.name + '/.github');
+        }
     }
 
     // Write Snippets Extension
@@ -656,6 +679,9 @@ module.exports = class extends Generator {
         if (this.extensionConfig.gitInit) {
             this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
             this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+        }
+        if (this.extensionConfig.gitHubWorkFlowInit) {
+            this.fs.copy(this.sourceRoot() + '/github', context.name + '/.github');
         }
     }
 
@@ -679,6 +705,10 @@ module.exports = class extends Generator {
         this.fs.copyTpl(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
 
         this.fs.copy(this.sourceRoot() + '/tslint.json', context.name + '/tslint.json');
+
+        if (this.extensionConfig.gitHubWorkFlowInit) {
+            this.fs.copy(this.sourceRoot() + '/github', context.name + '/.github');
+        }
 
         this.extensionConfig.installDependencies = true;
     }
@@ -704,6 +734,10 @@ module.exports = class extends Generator {
         this.fs.copyTpl(this.sourceRoot() + '/extension.js', context.name + '/extension.js', context);
         this.fs.copyTpl(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
         this.fs.copyTpl(this.sourceRoot() + '/.eslintrc.json', context.name + '/.eslintrc.json', context);
+
+        if (this.extensionConfig.gitHubWorkFlowInit) {
+            this.fs.copy(this.sourceRoot() + '/github', context.name + '/.github');
+        }
 
         this.extensionConfig.installDependencies = true;
     }
