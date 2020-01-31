@@ -682,22 +682,24 @@ describe('test code generator', function () {
                     ],
                     "devDependencies": {
                         "@types/glob": "^7.1.1",
-                        "@types/mocha": "^5.2.7",
+                        "@types/mocha": "^7.0.1",
                         "@types/node": "^12.11.7",
                         "@types/vscode": engineVersion,
+                        "eslint": "^6.8.0",
                         "@typescript-eslint/parser": "^2.18.0",
                         "@typescript-eslint/eslint-plugin": "^2.18.0",
-                        "glob": "^7.1.5",
-                        "mocha": "^6.2.2",
-                        "typescript": "^3.6.4",
+                        "glob": "^7.1.6",
+                        "mocha": "^7.0.1",
+                        "typescript": "^3.7.5",
                         "vscode-test": "^1.3.0"
                     },
                     "main": "./out/extension.js",
                     "scripts": {
                         "vscode:prepublish": "npm run compile",
                         "compile": "tsc -p ./",
+                        "lint": "eslint src --ext ts",
                         "watch": "tsc -watch -p ./",
-                        "pretest": "npm run compile",
+                        "pretest": "npm run compile && npm run lint",
                         "test": "node ./out/test/runTest.js"
                     },
                     "categories": [
@@ -752,22 +754,24 @@ describe('test code generator', function () {
                     ],
                     "devDependencies": {
                         "@types/glob": "^7.1.1",
-                        "@types/mocha": "^5.2.7",
+                        "@types/mocha": "^7.0.1",
                         "@types/node": "^12.11.7",
                         "@types/vscode": engineVersion,
+                        "eslint": "^6.8.0",
                         "@typescript-eslint/parser": "^2.18.0",
                         "@typescript-eslint/eslint-plugin": "^2.18.0",
-                        "glob": "^7.1.5",
-                        "mocha": "^6.2.2",
-                        "typescript": "^3.6.4",
+                        "glob": "^7.1.6",
+                        "mocha": "^7.0.1",
+                        "typescript": "^3.7.5",
                         "vscode-test": "^1.3.0"
                     },
                     "main": "./out/extension.js",
                     "scripts": {
                         "vscode:prepublish": "yarn run compile",
                         "compile": "tsc -p ./",
+                        "lint": "eslint src --ext ts",
                         "watch": "tsc -watch -p ./",
-                        "pretest": "yarn run compile",
+                        "pretest": "yarn run compile && yarn run lint",
                         "test": "node ./out/test/runTest.js"
                     },
                     "categories": [
@@ -843,17 +847,19 @@ describe('test code generator', function () {
                     ],
                     "devDependencies": {
                         "@types/glob": "^7.1.1",
-                        "@types/mocha": "^5.2.7",
+                        "@types/mocha": "^7.0.1",
                         "@types/node": "^12.11.7",
                         "@types/vscode": engineVersion,
-                        "eslint": "^6.6.0",
-                        "glob": "^7.1.5",
-                        "mocha": "^6.2.2",
-                        "typescript": "^3.6.4",
+                        "eslint": "^6.8.0",
+                        "glob": "^7.1.6",
+                        "mocha": "^7.0.1",
+                        "typescript": "^3.7.5",
                         "vscode-test": "^1.3.0"
                     },
                     "main": "./extension.js",
                     "scripts": {
+                        "lint": "eslint .",
+                        "pretest": "npm run lint",
                         "test": "node ./test/runTest.js"
                     },
                     "categories": [

@@ -24,20 +24,22 @@
 	"scripts": {
 		"vscode:prepublish": "<%= pkgManager %> run compile",
 		"compile": "tsc -p ./",
+		"lint": "eslint src --ext ts",
 		"watch": "tsc -watch -p ./",
-		"pretest": "<%= pkgManager %> run compile",
+		"pretest": "<%= pkgManager %> run compile && <%= pkgManager %> run lint",
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
-		"@types/mocha": "^5.2.7",
+		"@types/mocha": "^7.0.1",
 		"@types/node": "^12.11.7",
 		"@types/vscode": <%- JSON.stringify(vsCodeEngine) %>,
+		"eslint": "^6.8.0",
 		"@typescript-eslint/parser": "^2.18.0",
 		"@typescript-eslint/eslint-plugin": "^2.18.0",
-		"glob": "^7.1.5",
-		"mocha": "^6.2.2",
-		"typescript": "^3.6.4",
+		"glob": "^7.1.6",
+		"mocha": "^7.0.1",
+		"typescript": "^3.7.5",
 		"vscode-test": "^1.3.0"
 	}
 }
