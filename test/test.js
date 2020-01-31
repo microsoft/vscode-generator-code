@@ -735,7 +735,6 @@ describe('test code generator', function () {
                 name: 'testCom',
                 displayName: 'Test Com',
                 description: 'My TestCom',
-                tslint: true,
                 gitInit: false,
                 pkgManager: 'yarn'
             }) // Mock the prompt answers
