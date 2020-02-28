@@ -35,21 +35,22 @@
   },
   "dependencies": {
     "assert-plus": "^1.0.0",
+    "cd": "^0.3.3",
     "chalk": "^3.0.0",
     "fast-plist": "^0.1.2",
-    "request": "^2.88.0",
+    "request-light": "0.3.0",
     "sanitize-filename": "^1.6.3",
     "sax": "^1.2.4",
-    "yeoman-generator": "^4.2.0",
+    "yeoman-generator": "^4.6.0",
     "yosay": "^2.0.2"
   },
   "devDependencies": {
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^11.10.4",
+    "@types/mocha": "^7.0.1",
+    "@types/node": "^13.7.6",
     "@types/yeoman-generator": "^3.1.4",
-    "mocha": "^6.2.2",
+    "mocha": "^7.1.0",
     "yeoman-assert": "^3.1.1",
-    "yeoman-test": "^2.0.0",
+    "yeoman-test": "^2.2.0",
     "yo": "^3.1.1"
   }
 }

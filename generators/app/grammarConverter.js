@@ -7,7 +7,7 @@
 var path = require('path');
 var fs = require('fs');
 var plistParser = require('fast-plist');
-var request = require('request');
+var request = require('request-light');
 
 function convertGrammar(location, extensionConfig) {
     extensionConfig.languageId = '';
@@ -22,23 +22,22 @@ function convertGrammar(location, extensionConfig) {
 
     if (location.match(/\w*:\/\//)) {
         // load from url
-        return new Promise(function (resolve, reject) {
-            request(location, function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    var contentDisposition = response.headers['content-disposition'];
-                    var fileName = '';
-                    if (contentDisposition) {
-                        var fileNameMatch = contentDisposition.match(/filename="([^"]*)/);
-                        if (fileNameMatch) {
-                            fileName = fileNameMatch[1];
-                        }
+        return request.xhr({ url: location }).then(r => {
+            if (r.status == 200) {
+                var contentDisposition = r.headers && r.headers['content-disposition'];
+                var fileName = '';
+                if (contentDisposition) {
+                    var fileNameMatch = contentDisposition.match(/filename="([^"]*)/);
+                    if (fileNameMatch) {
+                        fileName = fileNameMatch[1];
                     }
-                    processContent(extensionConfig, fileName, body).then(resolve, reject);
-                } else {
-                    reject("Problems loading language definition file: " + error);
                 }
-            });
+                return processContent(extensionConfig, fileName, r.responseText);
+            } else {
+                throw new Error("Problems loading language definition file: " + r.responseText);
+            }
         });
+
     } else {
         // load from disk
         var body = null;

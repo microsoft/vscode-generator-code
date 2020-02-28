@@ -6,7 +6,7 @@
 var path = require('path');
 var fs = require('fs');
 var plistParser = require('fast-plist');
-var request = require('request');
+var request = require('request-light');
 
 function convertTheme(location, extensionConfig, inline, generator) {
     if (!location) {
@@ -14,37 +14,30 @@ function convertTheme(location, extensionConfig, inline, generator) {
         extensionConfig.tmThemeContent = '';
     } else if (location.match(/\w*:\/\//)) {
         // load from url
-        return new Promise(function (resolve, reject) {
-            request(location, function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    var tmThemeFileName = null;
-                    if (!inline) {
-                        var contentDisposition = response.headers['content-disposition'];
-                        if (contentDisposition) {
-                            var fileNameMatch = contentDisposition.match(/filename="([^"]*)/);
-                            if (fileNameMatch) {
-                                tmThemeFileName = fileNameMatch[1];
-                            }
-                        }
-                        if (!tmThemeFileName) {
-                            var lastSlash = location.lastIndexOf('/');
-                            if (lastSlash) {
-                                tmThemeFileName = location.substr(lastSlash + 1);
-                            } else {
-                                tmThemeFileName = 'theme.tmTheme';
-                            }
+        return request.xhr({ url: location }).then(r => {
+            if (r.status == 200) {
+                var tmThemeFileName = null;
+                if (!inline) {
+                    var contentDisposition = r.headers && r.headers['content-disposition'];
+                    if (contentDisposition) {
+                        var fileNameMatch = contentDisposition.match(/filename="([^"]*)/);
+                        if (fileNameMatch) {
+                            tmThemeFileName = fileNameMatch[1];
                         }
                     }
-                    processContent(extensionConfig, tmThemeFileName, body, generator);
-                    resolve();
-                } else {
-                    if (error) {
-                        reject("Problems loading theme: " + error);
-                    } else {
-                        reject("Problems loading theme: HTTP status " + response.statusCode);
+                    if (!tmThemeFileName) {
+                        var lastSlash = location.lastIndexOf('/');
+                        if (lastSlash) {
+                            tmThemeFileName = location.substr(lastSlash + 1);
+                        } else {
+                            tmThemeFileName = 'theme.tmTheme';
+                        }
                     }
                 }
-            });
+                processContent(extensionConfig, tmThemeFileName, r.responseText, generator);
+            } else {
+                throw new Error("Problems loading theme: HTTP status " + r.status);
+            }
         });
     } else {
         // load from disk
