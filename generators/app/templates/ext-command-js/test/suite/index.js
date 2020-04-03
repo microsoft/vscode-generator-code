@@ -5,10 +5,9 @@ const glob = require('glob');
 function run() {
 	// Create the mocha test
 	const mocha = new Mocha({
-		ui: 'tdd'
+		ui: 'tdd',
+		color: true
 	});
-	// Use any mocha API
-	mocha.useColors(true);
 
 	const testsRoot = path.resolve(__dirname, '..');
 
