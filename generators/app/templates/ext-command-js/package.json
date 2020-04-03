@@ -10,13 +10,14 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+        <%- JSON.stringify(`onCommand:${name}.helloWorld`) %>
 	],
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [{
-            "command": "extension.helloWorld",
-			"title": "Hello World"
+            "command": <%- JSON.stringify(`${name}.helloWorld`) %>,
+            "title": "Hello World"
+
 		}]
 	},
 	"scripts": {

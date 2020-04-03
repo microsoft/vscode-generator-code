@@ -678,7 +678,7 @@ describe('test code generator', function () {
                         "vscode": engineVersion
                     },
                     "activationEvents": [
-                        "onCommand:extension.helloWorld"
+                        "onCommand:testCom.helloWorld"
                     ],
                     "devDependencies": {
                         "@types/glob": "^7.1.1",
@@ -707,7 +707,7 @@ describe('test code generator', function () {
                     ],
                     "contributes": {
                         "commands": [{
-                            "command": "extension.helloWorld",
+                            "command": "testCom.helloWorld",
                             "title": "Hello World"
                         }]
                     }
@@ -750,7 +750,7 @@ describe('test code generator', function () {
                         "vscode": engineVersion
                     },
                     "activationEvents": [
-                        "onCommand:extension.helloWorld"
+                        "onCommand:testCom.helloWorld"
                     ],
                     "devDependencies": {
                         "@types/glob": "^7.1.1",
@@ -779,7 +779,7 @@ describe('test code generator', function () {
                     ],
                     "contributes": {
                         "commands": [{
-                            "command": "extension.helloWorld",
+                            "command": "testCom.helloWorld",
                             "title": "Hello World"
                         }]
                     }
@@ -843,7 +843,7 @@ describe('test code generator', function () {
                         "vscode": engineVersion
                     },
                     "activationEvents": [
-                        "onCommand:extension.helloWorld"
+                        "onCommand:testCom.helloWorld"
                     ],
                     "devDependencies": {
                         "@types/glob": "^7.1.1",
@@ -867,7 +867,7 @@ describe('test code generator', function () {
                     ],
                     "contributes": {
                         "commands": [{
-                            "command": "extension.helloWorld",
+                            "command": "testCom.helloWorld",
                             "title": "Hello World"
                         }]
                     }
