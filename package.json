@@ -36,21 +36,21 @@
   "dependencies": {
     "assert-plus": "^1.0.0",
     "cd": "^0.3.3",
-    "chalk": "^3.0.0",
+    "chalk": "^4.0.0",
     "fast-plist": "^0.1.2",
     "request-light": "0.3.0",
     "sanitize-filename": "^1.6.3",
     "sax": "^1.2.4",
-    "yeoman-generator": "^4.6.0",
+    "yeoman-generator": "^4.7.2",
     "yosay": "^2.0.2"
   },
   "devDependencies": {
-    "@types/mocha": "^7.0.1",
-    "@types/node": "^13.7.6",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.11.0",
     "@types/yeoman-generator": "^3.1.4",
-    "mocha": "^7.1.0",
+    "mocha": "^7.1.1",
     "yeoman-assert": "^3.1.1",
-    "yeoman-test": "^2.2.0",
+    "yeoman-test": "^2.3.0",
     "yo": "^3.1.1"
   }
 }
