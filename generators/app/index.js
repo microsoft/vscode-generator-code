@@ -635,7 +635,7 @@ module.exports = class extends Generator {
         this.fs.copyTpl(this.sourceRoot() + '/vsc-extension-quickstart.md', context.name + '/vsc-extension-quickstart.md', context);
         this.fs.copyTpl(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
         this.fs.copyTpl(this.sourceRoot() + '/CHANGELOG.md', context.name + '/CHANGELOG.md', context);
-        this.fs.copyTpl(this.sourceRoot() + '/snippets/snippets.json', context.name + '/snippets/snippets.json', context);
+        this.fs.copyTpl(this.sourceRoot() + '/snippets/snippets.code-snippets', context.name + '/snippets/snippets.code-snippets', context);
         this.fs.copy(this.sourceRoot() + '/vscodeignore', context.name + '/.vscodeignore');
         if (this.extensionConfig.gitInit) {
             this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');

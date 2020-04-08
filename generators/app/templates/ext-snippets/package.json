@@ -13,7 +13,7 @@
         "snippets": [
             {
                 "language": <%- JSON.stringify(languageId) %>,
-                "path": "./snippets/snippets.json"
+                "path": "./snippets/snippets.code-snippets"
             }
         ]
     }

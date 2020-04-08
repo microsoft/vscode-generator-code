@@ -514,12 +514,12 @@ describe('test code generator', function () {
                     "contributes": {
                         "snippets": [{
                             "language": "python",
-                            "path": "./snippets/snippets.json"
+                            "path": "./snippets/snippets.code-snippets"
                         }]
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'snippets/snippets.json', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'snippets/snippets.code-snippets', 'vsc-extension-quickstart.md', '.vscodeignore']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
@@ -561,7 +561,7 @@ describe('test code generator', function () {
                     "contributes": {
                         "snippets": [{
                             "language": "python",
-                            "path": "./snippets/snippets.json"
+                            "path": "./snippets/snippets.code-snippets"
                         }]
                     }
                 };
@@ -592,14 +592,14 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'snippets/snippets.json', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'snippets/snippets.code-snippets', 'vsc-extension-quickstart.md', '.vscodeignore']);
 
                     var body = fs.readFileSync('package.json', 'utf8');
 
                     var actual = JSON.parse(body);
                     assert.deepEqual(expected, actual);
 
-                    var snippet = fs.readFileSync('snippets/snippets.json', 'utf8');
+                    var snippet = fs.readFileSync('snippets/snippets.code-snippets', 'utf8');
 
                     var actualSnippet = JSON.parse(snippet);
                     assert.deepEqual(expectedSnippet, actualSnippet);
