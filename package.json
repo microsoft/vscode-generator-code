@@ -41,16 +41,16 @@
     "request-light": "0.3.0",
     "sanitize-filename": "^1.6.3",
     "sax": "^1.2.4",
-    "yeoman-generator": "^4.7.2",
+    "yeoman-generator": "^4.9.0",
     "yosay": "^2.0.2"
   },
   "devDependencies": {
     "@types/mocha": "^7.0.2",
-    "@types/node": "^13.11.0",
+    "@types/node": "^13.13.4",
     "@types/yeoman-generator": "^3.1.4",
-    "mocha": "^7.1.1",
+    "mocha": "^7.1.2",
     "yeoman-assert": "^3.1.1",
-    "yeoman-test": "^2.3.0",
+    "yeoman-test": "^2.4.1",
     "yo": "^3.1.1"
   }
 }
