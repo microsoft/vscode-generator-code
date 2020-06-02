@@ -185,7 +185,10 @@ module.exports = class extends Generator {
                         let snippetPath = snippetAnswer.snippetPath;
 
                         if (typeof snippetPath === 'string' && snippetPath.length > 0) {
-                            snippetConverter.processSnippetFolder(snippetPath, generator);
+                            const count = snippetConverter.processSnippetFolder(snippetPath, generator);
+                            if (count <= 0) {
+                                return snippetPrompt();
+                            }
                         } else {
                             generator.extensionConfig.snippets = {};
                             generator.extensionConfig.languageId = null;
