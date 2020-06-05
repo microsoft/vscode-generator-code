@@ -19,6 +19,8 @@ let localization = require('./localization');
 
 module.exports = class extends Generator {
 
+    abort = false;
+
     constructor(args, opts) {
         super(args, opts);
         this.option('extensionType', { type: String });
@@ -125,7 +127,6 @@ module.exports = class extends Generator {
                         }
                     ]
                 }).then(answer => {
-                    let inline = true;
                     let type = answer.themeImportType;
                     if (type === 'import-keep' || type === 'import-inline') {
                         generator.log("Enter the location (URL (http, https) or file name) of the tmTheme file, e.g., http://www.monokai.nl/blog/wp-content/asdev/Monokai.tmTheme.");
@@ -514,15 +515,23 @@ module.exports = class extends Generator {
         for (let taskName in prompts) {
             let prompt = prompts[taskName];
             result = result.then(_ => {
-                return new Promise((s, r) => {
-                    setTimeout(_ => prompt().then(s, r), 0); // set timeout is required, otherwise node hangs
-                });
+                if (!this.abort) {
+                    return new Promise((s, r) => {
+                        setTimeout(_ => prompt().then(s, r), 0); // set timeout is required, otherwise node hangs
+                    });
+                }
+            }, error => {
+                generator.log(error.toString());
+                this.abort = true;
             })
         }
         return result;
     }
     // Write files
     writing() {
+        if (this.abort) {
+            return;
+        }
         this.sourceRoot(path.join(__dirname, './templates/' + this.extensionConfig.type));
 
         switch (this.extensionConfig.type) {
@@ -713,6 +722,9 @@ module.exports = class extends Generator {
 
     // Installation
     install() {
+        if (this.abort) {
+            return;
+        }
         process.chdir(this.extensionConfig.name);
 
         if (this.extensionConfig.installDependencies) {
@@ -726,6 +738,10 @@ module.exports = class extends Generator {
 
     // End
     end() {
+        if (this.abort) {
+            return;
+        }
+
 
         // Git init
         if (this.extensionConfig.gitInit) {

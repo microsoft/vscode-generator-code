@@ -34,7 +34,7 @@ function convertGrammar(location, extensionConfig) {
                 }
                 return processContent(extensionConfig, fileName, r.responseText);
             } else {
-                throw new Error("Problems loading language definition file: " + r.responseText);
+                return Promise.reject("Problems loading language definition file: " + r.responseText);
             }
         });
 
