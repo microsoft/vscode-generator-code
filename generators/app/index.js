@@ -19,8 +19,6 @@ let localization = require('./localization');
 
 module.exports = class extends Generator {
 
-    abort = false;
-
     constructor(args, opts) {
         super(args, opts);
         this.option('extensionType', { type: String });
@@ -33,6 +31,8 @@ module.exports = class extends Generator {
 
         this.extensionConfig = Object.create(null);
         this.extensionConfig.installDependencies = false;
+
+        this.abort = false;
     }
 
     initializing() {
