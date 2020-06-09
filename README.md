@@ -32,6 +32,8 @@ These templates will
 * For Extensions: Set-up `launch.json` for running your extension and attaching to a process
 
 ## Run Generator using Docker
+If you don't want to install nodejs or any node packages, use this method to containerize the generator. \
+\
 Go into your project directory
 ```bash
 cd <project directory>

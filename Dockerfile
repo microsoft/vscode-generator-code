@@ -1,10 +1,8 @@
 FROM node:lts-alpine3.12
 LABEL Maintainer="contact@snpranav.com"
 
-# Install GIT
-RUN apk --update add git less openssh && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm /var/cache/apk/*
+# Installing GIT
+RUN apk update && apk add git
 
 # Installing Yeoman and VS Code Extension Generator globally
 RUN npm install -g yo generator-code
