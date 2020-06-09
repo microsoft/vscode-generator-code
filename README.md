@@ -31,6 +31,20 @@ These templates will
 * Import any assets required for your extension e.g. tmBundles or the VS Code Library
 * For Extensions: Set-up `launch.json` for running your extension and attaching to a process
 
+## Run Generator using Docker
+Go into your project directory
+```bash
+cd <project directory>
+```
+Build the docker image from the docker file
+```bash
+docker build -t vscode-generator-code .
+```
+Create a docker container with volumes
+```bash
+docker run -v $(pwd):/usr/src/app vscode-generator-code
+```
+
 ## History
 
 * 1.0.0: Generates a VS Code extension for TypeScript 2.0.3
