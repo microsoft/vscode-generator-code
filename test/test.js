@@ -1061,4 +1061,95 @@ describe('test code generator', function () {
                 }
             }, done);
     });
+
+    it('sample notebook renderer', function (done) {
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-notebook-renderer',
+                name: 'json-renderer-ext',
+                displayName: 'Cool JSON Renderer Extension',
+                rendererId: 'json-renderer',
+                rendererDisplayName: 'JSON Renderer',
+                includeContentProvider: false,
+                gitInit: true,
+                pkgManager: 'yarn'
+            }).toPromise().then(function () {
+                var expected = {
+                    "name": "json-renderer-ext",
+                    "displayName": "Cool JSON Renderer Extension",
+                    "description": "",
+                    "version": "0.0.1",
+                    "engines": {
+                      "vscode": "^1.46.0"
+                    },
+                    "categories": [
+                      "Other"
+                    ],
+                    "enableProposedApi": true,
+                    "activationEvents": [
+                      "*"
+                    ],
+                    "main": "./out/extension/extension.js",
+                    "contributes": {
+                      "notebookOutputRenderer": [
+                        {
+                          "viewType": "json-renderer",
+                          "displayName": "JSON Renderer",
+                          "mimeTypes": ["application/json"]
+                        }
+                      ]
+                    },
+                    "scripts": {
+                      "vscode:prepublish": "npm run compile",
+                      "compile": "npm run compile:extension && npm run compile:client",
+                      "compile:extension": "tsc -b",
+                      "compile:client": "webpack --info-verbosity verbose --mode production",
+                      "lint": "eslint src --ext ts",
+                      "watch": "concurrently -r \"npm:watch:*\"",
+                      "watch:extension": "tsc -b --watch",
+                      "watch:client": "webpack --info-verbosity verbose --mode development --watch",
+                      "dev": "concurrently -r npm:watch:extension npm:dev:client",
+                      "dev:client": "webpack-dev-server",
+                      "pretest": "npm run compile && npm run lint",
+                      "test": "node ./out/test/runTest.js",
+                      "updatetypes": "cd src/extension/types && vscode-dts dev && vscode-dts master",
+                      "postinstall": "npm run updatetypes"
+                    },
+                    "devDependencies": {
+                      "@types/glob": "^7.1.1",
+                      "@types/mocha": "^7.0.1",
+                      "@types/node": "^12.11.7",
+                      "@types/webpack-env": "^1.15.2",
+                      "@typescript-eslint/eslint-plugin": "^2.18.0",
+                      "@typescript-eslint/parser": "^2.18.0",
+                      "concurrently": "^5.1.0",
+                      "css-loader": "^3.5.2",
+                      "eslint": "^6.8.0",
+                      "fork-ts-checker-webpack-plugin": "^4.1.3",
+                      "glob": "^7.1.6",
+                      "mocha": "^7.0.1",
+                      "style-loader": "^1.1.4",
+                      "ts-loader": "^7.0.1",
+                      "typescript": "^3.7.5",
+                      "vscode-dts": "^0.3.1",
+                      "vscode-notebook-error-overlay": "^1.0.1",
+                      "vscode-test": "^1.3.0",
+                      "webpack": "^4.43.0",
+                      "webpack-cli": "^3.3.11",
+                      "webpack-dev-server": "^3.10.3"
+                    }
+                  };
+                try {
+                    assert.file(['package.json', 'README.md', 'webpack.config.js', '.gitignore', '.vscodeignore', '.eslintrc.json']);
+
+                    const body = fs.readFileSync('package.json', 'utf8');
+                    const actual = JSON.parse(body);
+                    assert.deepEqual(expected, actual);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }, done);
+    });
 });
