@@ -1100,7 +1100,7 @@ describe('test code generator', function () {
                       ]
                     },
                     "scripts": {
-                      "vscode:prepublish": "npm run compile",
+                      "vscode:prepublish": "npm run compile && node out/test/checkNoTestProvider.js",
                       "compile": "npm run compile:extension && npm run compile:client",
                       "compile:extension": "tsc -b",
                       "compile:client": "webpack --info-verbosity verbose --mode production",
@@ -1112,7 +1112,7 @@ describe('test code generator', function () {
                       "dev:client": "webpack-dev-server",
                       "pretest": "npm run compile && npm run lint",
                       "test": "node ./out/test/runTest.js",
-                      "updatetypes": "cd src/extension/types && vscode-dts dev && vscode-dts master",
+                      "updatetypes": "cd src/extension/types && vscode-dts dev && vscode-dts master && cd ../../test/types && vscode-dts dev && vscode-dts master",
                       "postinstall": "npm run updatetypes"
                     },
                     "devDependencies": {

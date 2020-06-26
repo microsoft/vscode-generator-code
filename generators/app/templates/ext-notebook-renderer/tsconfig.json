@@ -8,6 +8,9 @@
       "path": "./src/common"
     },
     {
+      "path": "./src/test"
+    },
+    {
       "path": "./src/extension"
     }
   ]

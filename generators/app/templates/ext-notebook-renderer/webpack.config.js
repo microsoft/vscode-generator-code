@@ -56,9 +56,9 @@ module.exports = (env, argv) => ({
   devServer: {
     port: devServerPort,
     hot: true,
-    // Set host policies, otherwise the bundle running in VS Code won't be
+    // Disable the host check, otherwise the bundle running in VS Code won't be
     // able to connect to the dev server
-    allowedHosts: ['null'],
+    disableHostCheck: true,
     headers: { 'Access-Control-Allow-Origin': '*' },
   },
   plugins: [

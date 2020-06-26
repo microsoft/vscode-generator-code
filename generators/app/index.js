@@ -525,7 +525,7 @@ module.exports = class extends Generator {
                     {
                         type: 'confirm',
                         name: 'includeContentProvider',
-                        message: 'Should we generate a stub notebook content provider and kernel?',
+                        message: 'Should we generate a test notebook content provider and kernel?',
                         default: false,
                     },
                     {
@@ -638,6 +638,7 @@ module.exports = class extends Generator {
         this.fs.copy(this.sourceRoot() + '/webpack.config.js', context.name + '/webpack.config.js');
         this.fs.copy(this.sourceRoot() + '/.eslintrc.json', context.name + '/.eslintrc.json');
         this.fs.copy(this.sourceRoot() + '/src/extension/types/.gitkeep', context.name + '/src/extension/types/.gitkeep');
+        this.fs.copy(this.sourceRoot() + '/src/extension/types/.gitkeep', context.name + '/src/test/types/.gitkeep');
 
         this.fs.copyTpl(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
         this.fs.copyTpl(this.sourceRoot() + '/README.md', context.name + '/README.md', context);

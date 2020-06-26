@@ -19,8 +19,10 @@
 			"outFiles": [
 				"${workspaceFolder}/out/**/*.js"
 			],
+			"debugWebviews": {
+				"urlFilter": "*notebookRenderer*"
+			},
 			"trace": true,
-			"debugWebviews": true,
 			"preLaunchTask": "npm: dev"
 		},
 		{

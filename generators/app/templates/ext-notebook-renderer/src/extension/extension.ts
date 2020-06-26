@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 import { rendererId } from '../common/constants';
 import { SampleRenderer } from './sampleRenderer';<% if (includeContentProvider) { %>
-import { SampleProvider } from './sampleProvider';<% } %>
+import { TestProvider } from './testProvider';<% } %>
 
 // This method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -16,8 +16,10 @@ export function activate(context: vscode.ExtensionContext) {
 			{ mimeTypes: <%- JSON.stringify(rendererMimeTypes) %> },
 			new SampleRenderer(context),
 		),<% if (includeContentProvider) { %>
+
+		// todo: remove this before publishing:
 		vscode.notebook.registerNotebookContentProvider(
-			'sample-notebook-renderer', new SampleProvider()
+			'sample-notebook-renderer', new TestProvider()
 		),<% } %>
 	);
 }
