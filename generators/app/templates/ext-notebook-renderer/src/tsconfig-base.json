@@ -5,6 +5,7 @@
     "lib": [
       "ES2019"
     ],
+    "types": ["node"],
     "moduleResolution": "node",
     "sourceMap": true,
     "strict": true   /* enable all strict type-checking options */

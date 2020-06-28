@@ -6,12 +6,13 @@
 // names into JavaScript: https://github.com/css-modules/css-modules
 // You can configure or change this in the webpack.config.js file.
 import * as style from './style.css';
+import type { NotebookRendererApi } from 'vscode-notebook-renderer';
 
 interface IRenderInfo {
   container: HTMLElement;
   mimeType: string;
   data: any;
-  notebookApi: INotebookRendererApi<unknown>;
+  notebookApi: NotebookRendererApi<unknown>;
 }
 
 // This function is called to render your contents.
