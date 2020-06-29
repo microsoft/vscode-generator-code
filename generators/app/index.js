@@ -61,11 +61,8 @@ module.exports = class extends Generator {
                     return Promise.resolve();
                 }
 
-                return generator.prompt({
-                    type: 'list',
-                    name: 'type',
-                    message: 'What type of extension do you want to create?',
-                    choices: [{
+                const choices = [
+                    {
                         name: 'New Extension (TypeScript)',
                         value: 'ext-command-ts'
                     },
@@ -96,8 +93,24 @@ module.exports = class extends Generator {
                     {
                         name: 'New Language Pack (Localization)',
                         value: 'ext-localization'
-                    }
-                    ]
+                    },
+                ];
+
+                if (process.env.INCLUDE_PROPOSED) {
+                    choices.push(
+                        {
+                            name: 'New Notebook Renderer (TypeScript)',
+                            value: 'ext-notebook-renderer'
+                        },
+                    );
+                }
+
+                return generator.prompt({
+                    type: 'list',
+                    name: 'type',
+                    message: 'What type of extension do you want to create?',
+                    pageSize: choices.length,
+                    choices,
                 }).then(typeAnswer => {
                     generator.extensionConfig.type = typeAnswer.type;
                 });
@@ -343,7 +356,7 @@ module.exports = class extends Generator {
             },
 
             askForGit: () => {
-                if (['ext-command-ts', 'ext-command-js'].indexOf(generator.extensionConfig.type) === -1) {
+                if (['ext-command-ts', 'ext-command-js', 'ext-notebook-renderer'].indexOf(generator.extensionConfig.type) === -1) {
                     return Promise.resolve();
                 }
 
@@ -485,8 +498,53 @@ module.exports = class extends Generator {
                 });
             },
 
+            askForNotebookRendererInfo: async () => {
+                if (generator.extensionConfig.type !== 'ext-notebook-renderer') {
+                    return;
+                }
+
+                const answers = await generator.prompt([
+                    {
+                        type: 'input',
+                        name: 'rendererId',
+                        message: 'What\'s the ID for your renderer?',
+                        default: generator.extensionConfig.name
+                    },
+                    {
+                        type: 'input',
+                        name: 'rendererDisplayName',
+                        message: 'What\'s your renderer display name?',
+                        default: generator.extensionConfig.displayName
+                    },
+                    {
+                        type: 'input',
+                        name: 'rendererMimeTypes',
+                        message: 'What mime types will your renderer handle? (separate multiple by commas)',
+                        default: 'application/json',
+                    },
+                    {
+                        type: 'confirm',
+                        name: 'includeContentProvider',
+                        message: 'Should we generate a test notebook content provider and kernel?',
+                        default: false,
+                    },
+                    {
+                        type: 'input',
+                        name: 'contentProviderFileType',
+                        message: 'What the file extension should the content provider handle?',
+                        default: '.sample-json-notebook',
+                        // @ts-ignore
+                        when: answers => answers.includeContentProvider,
+                        validate: answer => answer.startsWith('.') ? true : 'Extension should be given in the form ".ext"',
+                    },
+                ]);
+
+                answers.rendererMimeTypes = answers.rendererMimeTypes.split(/,\s*/g);
+                Object.assign(generator.extensionConfig, answers);
+            },
+
             askForPackageManager: () => {
-                if (['ext-command-ts', 'ext-command-js', 'ext-localization'].indexOf(generator.extensionConfig.type) === -1) {
+                if (!['ext-command-ts', 'ext-command-js', 'ext-localization', 'ext-notebook-renderer'].includes(generator.extensionConfig.type)) {
                     return Promise.resolve();
                 }
                 generator.extensionConfig.pkgManager = 'npm';
@@ -556,13 +614,48 @@ module.exports = class extends Generator {
             case 'ext-extensionpack':
                 this._writingExtensionPack();
                 break;
+            case 'ext-notebook-renderer':
+                this._writingNotebookRenderer();
+                break;
             case 'ext-localization':
                 localization.writingLocalizationExtension(this);
                 break;
+
             default:
                 //unknown project type
                 break;
         }
+    }
+
+    // Write Notebook Renderer Extension
+    _writingNotebookRenderer() {
+        let context = this.extensionConfig;
+
+        this.fs.copy(this.sourceRoot() + '/src', context.name + '/src');
+        this.fs.copy(this.sourceRoot() + '/vscode', context.name + '/.vscode');
+        this.fs.copy(this.sourceRoot() + '/tsconfig.json', context.name + '/tsconfig.json');
+        this.fs.copy(this.sourceRoot() + '/.vscodeignore', context.name + '/.vscodeignore');
+        this.fs.copy(this.sourceRoot() + '/webpack.config.js', context.name + '/webpack.config.js');
+        this.fs.copy(this.sourceRoot() + '/.eslintrc.json', context.name + '/.eslintrc.json');
+        this.fs.copy(this.sourceRoot() + '/src/extension/types/.gitkeep', context.name + '/src/extension/types/.gitkeep');
+        this.fs.copy(this.sourceRoot() + '/src/extension/types/.gitkeep', context.name + '/src/test/types/.gitkeep');
+
+        this.fs.copyTpl(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
+        this.fs.copyTpl(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
+
+        this.fs.copyTpl(this.sourceRoot() + '/src/common/constants.ts', context.name + '/src/common/constants.ts', context);
+        this.fs.copyTpl(this.sourceRoot() + '/src/extension/extension.ts', context.name + '/src/extension/extension.ts', context);
+
+        if (!this.extensionConfig.includeContentProvider) {
+            this.fs.delete(context.name + '/src/extension/sampleProvider.ts');
+        }
+
+        if (this.extensionConfig.gitInit) {
+            this.fs.copy(this.sourceRoot() + '/gitignore', context.name + '/.gitignore');
+            this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
+        }
+
+        this.extensionConfig.installDependencies = true;
     }
 
     // Write Color Theme Extension

@@ -17,7 +17,7 @@
 		"commands": [
 			{
 				"command": <%- JSON.stringify(`${name}.helloWorld`) %>,
-                "title": "Hello World"
+				"title": "Hello World"
 			}
 		]
 	},
