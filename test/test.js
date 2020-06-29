@@ -1119,6 +1119,7 @@ describe('test code generator', function () {
                       "@types/glob": "^7.1.1",
                       "@types/mocha": "^7.0.1",
                       "@types/node": "^12.11.7",
+                      "@types/vscode-notebook-renderer": "^1.47.0",
                       "@types/webpack-env": "^1.15.2",
                       "@typescript-eslint/eslint-plugin": "^2.18.0",
                       "@typescript-eslint/parser": "^2.18.0",
