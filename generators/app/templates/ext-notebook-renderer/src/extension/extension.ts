@@ -19,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 		// todo: remove this before publishing:
 		vscode.notebook.registerNotebookContentProvider(
-			'sample-notebook-renderer', new TestProvider()
+			'test-notebook-renderer', new TestProvider()
 		),<% } %>
 	);
 }
