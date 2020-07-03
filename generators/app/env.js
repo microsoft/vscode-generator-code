@@ -4,7 +4,7 @@
 'use strict';
 var request = require('request-light');
 
-var fallbackVersion = '^1.39.0';
+var fallbackVersion = '^1.46.0';
 var promise = request.xhr({ url: 'https://vscode-update.azurewebsites.net/api/releases/stable', headers: { "X-API-Version": "2" } }).then(res => {
     if (res.status === 200) {
         try {
@@ -19,8 +19,11 @@ var promise = request.xhr({ url: 'https://vscode-update.azurewebsites.net/api/re
             console.log('Problem parsing version: ' + res.responseText, e);
         }
     } else {
-        console.log('Unable to fetch latest vscode version: Status code: ' + res.status + ', ' + res.responseText);
+        console.warn('Unable to fetch latest vscode version: Status code: ' + res.status + ', ' + res.responseText);
     }
+    return fallbackVersion;
+}, err => {
+    console.warn('Unable to fetch latest vscode version: Error: ' + err);
     return fallbackVersion;
 });
 
