@@ -4,8 +4,8 @@ pool:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '8.x'
-  displayName: 'Install Node.js 8.x'
+    versionSpec: '12.x'
+  displayName: 'Install Node.js 12.x'
 
 - script: |
     npm ci
