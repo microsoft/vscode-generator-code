@@ -36,12 +36,12 @@
   "dependencies": {
     "assert-plus": "^1.0.0",
     "cd": "^0.3.3",
-    "chalk": "^4.0.0",
+    "chalk": "^4.1.0",
     "fast-plist": "^0.1.2",
-    "request-light": "0.3.0",
+    "request-light": "^0.4.0",
     "sanitize-filename": "^1.6.3",
     "sax": "^1.2.4",
-    "yeoman-generator": "^4.10.1",
+    "yeoman-generator": "^4.11.0",
     "yosay": "^2.0.2"
   },
   "devDependencies": {
