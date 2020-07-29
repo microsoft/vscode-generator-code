@@ -28,9 +28,9 @@
 	"devDependencies": {
         "@types/vscode": <%- JSON.stringify(vsCodeEngine) %>,
         "@types/glob": "^7.1.1",
-        "@types/mocha": "^7.0.2",
-        "@types/node": "^14.0.14",
-        "eslint": "^7.4.0",
+        "@types/mocha": "^8.0.0",
+        "@types/node": "^14.0.27",
+        "eslint": "^7.5.0",
         "glob": "^7.1.6",
         "mocha": "^8.0.1",
         "typescript": "^3.8.3",
