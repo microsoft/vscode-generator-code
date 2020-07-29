@@ -42,7 +42,8 @@
     "sanitize-filename": "^1.6.3",
     "sax": "^1.2.4",
     "yeoman-generator": "^4.11.0",
-    "yosay": "^2.0.2"
+    "yosay": "^2.0.2",
+    "kind-of": "6.0.3"
   },
   "devDependencies": {
     "@types/mocha": "^7.0.2",
