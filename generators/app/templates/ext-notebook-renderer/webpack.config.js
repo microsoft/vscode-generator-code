@@ -59,11 +59,14 @@ module.exports = (env, argv) => ({
     // Disable the host check, otherwise the bundle running in VS Code won't be
     // able to connect to the dev server
     disableHostCheck: true,
+    writeToDisk: true,
     headers: { 'Access-Control-Allow-Origin': '*' },
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin({
-      tsconfig: 'src/client/tsconfig.json',
+      typescript: {
+        tsconfig: 'src/client/tsconfig.json',
+      },
     }),
     new DefinePlugin({
       // Path from the output filename to the output directory
