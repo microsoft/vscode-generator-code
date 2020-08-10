@@ -35,14 +35,21 @@ module.exports = class extends Generator {
         this.abort = false;
     }
 
-    initializing() {
+    async initializing() {
 
         // Welcome
         this.log(yosay('Welcome to the Visual Studio Code Extension generator!'));
 
         // evaluateEngineVersion
-        let extensionConfig = this.extensionConfig;
-        return env.getLatestVSCodeVersion().then(version => { extensionConfig.vsCodeEngine = version; });
+        const dependencyVersions = await env.getDependencyVersions();
+        this.extensionConfig.dep = function (name) {
+            const version = dependencyVersions[name];
+            if (typeof version === 'undefined') {
+                throw new Error(`Module ${name} is not listed in env.js`);
+            }
+            return `${JSON.stringify(name)}: ${JSON.stringify(version)}`;
+        };
+        this.extensionConfig.vsCodeEngine = await env.getLatestVSCodeVersion();
     }
 
     prompting() {

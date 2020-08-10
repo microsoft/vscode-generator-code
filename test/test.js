@@ -41,12 +41,22 @@ describe('test code generator', function () {
     this.timeout(10000);
 
     var engineVersion;
-    before(function () {
-        return env.getLatestVSCodeVersion().then(function (version) {
-            console.info('    expecting engine version ' + version);
-            engineVersion = version;
-        });
+    var dependencyVersions;
+
+    before(async function () {
+        engineVersion = await env.getLatestVSCodeVersion();
+        console.info('    expecting engine version ' + engineVersion);
+
+        dependencyVersions = await env.getDependencyVersions();
     });
+
+    function devDependencies(names) {
+        const res = {};
+        for (const name of names) {
+            res[name] = dependencyVersions[name];
+        }
+        return res;
+    }
 
     it('theme import', function (done) {
         helpers.run(path.join(__dirname, '../generators/app'))
@@ -680,19 +690,19 @@ describe('test code generator', function () {
                     "activationEvents": [
                         "onCommand:testCom.helloWorld"
                     ],
-                    "devDependencies": {
-                        "@types/vscode": engineVersion,
-                        "@types/glob": "^7.1.1",
-                        "@types/mocha": "^8.0.0",
-                        "@types/node": "^14.0.27",
-                        "eslint": "^7.5.0",
-                        "@typescript-eslint/parser": "^3.7.1",
-                        "@typescript-eslint/eslint-plugin": "^3.7.1",
-                        "glob": "^7.1.6",
-                        "mocha": "^8.0.1",
-                        "typescript": "^3.8.3",
-                        "vscode-test": "^1.3.0"
-                    },
+                    "devDependencies": devDependencies([
+                        "@types/vscode",
+                        "@types/glob",
+                        "@types/mocha",
+                        "@types/node",
+                        "eslint",
+                        "@typescript-eslint/parser",
+                        "@typescript-eslint/eslint-plugin",
+                        "glob",
+                        "mocha",
+                        "typescript",
+                        "vscode-test"
+                    ]),
                     "main": "./out/extension.js",
                     "scripts": {
                         "vscode:prepublish": "npm run compile",
@@ -752,19 +762,19 @@ describe('test code generator', function () {
                     "activationEvents": [
                         "onCommand:testCom.helloWorld"
                     ],
-                    "devDependencies": {
-                        "@types/vscode": engineVersion,
-                        "@types/glob": "^7.1.1",
-                        "@types/mocha": "^8.0.0",
-                        "@types/node": "^14.0.27",
-                        "eslint": "^7.5.0",
-                        "@typescript-eslint/parser": "^3.7.1",
-                        "@typescript-eslint/eslint-plugin": "^3.7.1",
-                        "glob": "^7.1.6",
-                        "mocha": "^8.0.1",
-                        "typescript": "^3.8.3",
-                        "vscode-test": "^1.3.0"
-                    },
+                    "devDependencies": devDependencies([
+                        "@types/vscode",
+                        "@types/glob",
+                        "@types/mocha",
+                        "@types/node",
+                        "eslint",
+                        "@typescript-eslint/parser",
+                        "@typescript-eslint/eslint-plugin",
+                        "glob",
+                        "mocha",
+                        "typescript",
+                        "vscode-test"
+                    ]),
                     "main": "./out/extension.js",
                     "scripts": {
                         "vscode:prepublish": "yarn run compile",
@@ -845,17 +855,17 @@ describe('test code generator', function () {
                     "activationEvents": [
                         "onCommand:testCom.helloWorld"
                     ],
-                    "devDependencies": {
-                        "@types/vscode": engineVersion,
-                        "@types/glob": "^7.1.1",
-                        "@types/mocha": "^8.0.0",
-                        "@types/node": "^14.0.27",
-                        "eslint": "^7.5.0",
-                        "glob": "^7.1.6",
-                        "mocha": "^8.0.1",
-                        "typescript": "^3.8.3",
-                        "vscode-test": "^1.3.0"
-                    },
+                    "devDependencies": devDependencies([
+                        "@types/vscode",
+                        "@types/glob",
+                        "@types/mocha",
+                        "@types/node",
+                        "eslint",
+                        "glob",
+                        "mocha",
+                        "typescript",
+                        "vscode-test"
+                    ]),
                     "main": "./extension.js",
                     "scripts": {
                         "lint": "eslint .",
@@ -1080,65 +1090,65 @@ describe('test code generator', function () {
                     "description": "",
                     "version": "0.0.1",
                     "engines": {
-                      "vscode": engineVersion
+                        "vscode": engineVersion
                     },
                     "categories": [
-                      "Other"
+                        "Other"
                     ],
                     "enableProposedApi": true,
                     "activationEvents": [],
                     "main": "./out/extension/extension.js",
                     "contributes": {
-                      "notebookOutputRenderer": [
-                        {
-                          "entrypoint": "./out/client/index.js",
-                          "viewType": "json-renderer",
-                          "displayName": "JSON Renderer",
-                          "mimeTypes": ["application/json"]
-                        }
-                      ]
+                        "notebookOutputRenderer": [
+                            {
+                                "entrypoint": "./out/client/index.js",
+                                "viewType": "json-renderer",
+                                "displayName": "JSON Renderer",
+                                "mimeTypes": ["application/json"]
+                            }
+                        ]
                     },
                     "scripts": {
-                      "vscode:prepublish": "npm run compile && node out/test/checkNoTestProvider.js",
-                      "compile": "npm run compile:extension && npm run compile:client",
-                      "compile:extension": "tsc -b",
-                      "compile:client": "webpack --info-verbosity verbose --mode production",
-                      "lint": "eslint src --ext ts",
-                      "watch": "concurrently -r \"npm:watch:*\"",
-                      "watch:extension": "tsc -b --watch",
-                      "watch:client": "webpack --info-verbosity verbose --mode development --watch",
-                      "dev": "concurrently -r npm:watch:extension npm:dev:client",
-                      "dev:client": "webpack-dev-server",
-                      "pretest": "npm run compile && npm run lint",
-                      "test": "node ./out/test/runTest.js",
-                      "updatetypes": "cd src/extension/types && vscode-dts dev && vscode-dts master && cd ../../test/types && vscode-dts dev && vscode-dts master",
-                      "postinstall": "npm run updatetypes"
+                        "vscode:prepublish": "npm run compile && node out/test/checkNoTestProvider.js",
+                        "compile": "npm run compile:extension && npm run compile:client",
+                        "compile:extension": "tsc -b",
+                        "compile:client": "webpack --info-verbosity verbose --mode production",
+                        "lint": "eslint src --ext ts",
+                        "watch": "concurrently -r \"npm:watch:*\"",
+                        "watch:extension": "tsc -b --watch",
+                        "watch:client": "webpack --info-verbosity verbose --mode development --watch",
+                        "dev": "concurrently -r npm:watch:extension npm:dev:client",
+                        "dev:client": "webpack-dev-server",
+                        "pretest": "npm run compile && npm run lint",
+                        "test": "node ./out/test/runTest.js",
+                        "updatetypes": "cd src/extension/types && vscode-dts dev && vscode-dts master && cd ../../test/types && vscode-dts dev && vscode-dts master",
+                        "postinstall": "npm run updatetypes"
                     },
-                    "devDependencies": {
-                      "@types/glob": "^7.1.3",
-                      "@types/mocha": "^8.0.1",
-                      "@types/node": "^14.0.27",
-                      "@types/webpack-env": "^1.15.2",
-                      "@typescript-eslint/eslint-plugin": "^3.8.0",
-                      "@typescript-eslint/parser": "^3.8.0",
-                      "@types/vscode-notebook-renderer": "^1.48.0",
-                      "concurrently": "^5.2.0",
-                      "css-loader": "^4.2.0",
-                      "eslint": "^7.6.0",
-                      "fork-ts-checker-webpack-plugin": "^5.0.14",
-                      "glob": "^7.1.6",
-                      "mocha": "^8.1.0",
-                      "style-loader": "^1.2.1",
-                      "ts-loader": "^8.0.2",
-                      "typescript": "^3.9.7",
-                      "vscode-dts": "^0.3.1",
-                      "vscode-notebook-error-overlay": "^1.0.1",
-                      "vscode-test": "^1.4.0",
-                      "webpack": "^4.44.1",
-                      "webpack-cli": "^3.3.12",
-                      "webpack-dev-server": "^3.11.0"
-                    }
-                  };
+                    "devDependencies": devDependencies([
+                        "@types/glob",
+                        "@types/mocha",
+                        "@types/node",
+                        "@types/webpack-env",
+                        "@typescript-eslint/eslint-plugin",
+                        "@typescript-eslint/parser",
+                        "@types/vscode-notebook-renderer",
+                        "concurrently",
+                        "css-loader",
+                        "eslint",
+                        "fork-ts-checker-webpack-plugin",
+                        "glob",
+                        "mocha",
+                        "style-loader",
+                        "ts-loader",
+                        "typescript",
+                        "vscode-dts",
+                        "vscode-notebook-error-overlay",
+                        "vscode-test",
+                        "webpack",
+                        "webpack-cli",
+                        "webpack-dev-server"
+                    ])
+                };
                 try {
                     assert.file(['package.json', 'README.md', 'webpack.config.js', '.gitignore', '.vscodeignore', '.eslintrc.json']);
 

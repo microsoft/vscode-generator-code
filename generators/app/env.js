@@ -27,4 +27,34 @@ var promise = request.xhr({ url: 'https://vscode-update.azurewebsites.net/api/re
     return fallbackVersion;
 });
 
-module.exports.getLatestVSCodeVersion = function() { return promise; };
+module.exports.getLatestVSCodeVersion = function () { return promise; };
+
+module.exports.getDependencyVersions = async function () {
+    const vscodeVersion = await promise;
+    return {
+        "@types/vscode": vscodeVersion,
+        "@types/glob": "^7.1.3",
+        "@types/mocha": "^8.0.0",
+        "@types/node": "^14.0.27",
+        "@typescript-eslint/eslint-plugin": "^3.8.0",
+        "@typescript-eslint/parser": "^3.8.0",
+        "eslint": "^7.6.0",
+        "glob": "^7.1.6",
+        "mocha": "^8.0.1",
+        "typescript": "^3.8.3",
+        "vscode-test": "^1.4.0",
+        "@types/webpack-env": "^1.15.2",
+        "@types/vscode-notebook-renderer": "^1.48.0",
+        "concurrently": "^5.2.0",
+        "css-loader": "^4.2.0",
+        "fork-ts-checker-webpack-plugin": "^5.0.14",
+        "style-loader": "^1.2.1",
+        "ts-loader": "^8.0.2",
+        "vscode-dts": "^0.3.1",
+        "vscode-notebook-error-overlay": "^1.0.1",
+        "webpack": "^4.44.1",
+        "webpack-cli": "^3.3.12",
+        "webpack-dev-server": "^3.11.0"
+    }
+}
+
