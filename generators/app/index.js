@@ -309,7 +309,7 @@ module.exports = class extends Generator {
                     def = generator.extensionConfig.displayName.toLowerCase().replace(/[^a-z0-9]/g, '-');
                 }
                 if (!def) {
-                    def == '';
+                    def = '';
                 }
 
                 return generator.prompt({
@@ -642,12 +642,12 @@ module.exports = class extends Generator {
 
         this.fs.copyTpl(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
         this.fs.copyTpl(this.sourceRoot() + '/README.md', context.name + '/README.md', context);
+        this.fs.copyTpl(this.sourceRoot() + '/src/client/index.ts', context.name + '/src/client/index.ts', context);
 
-        this.fs.copyTpl(this.sourceRoot() + '/src/common/constants.ts', context.name + '/src/common/constants.ts', context);
         this.fs.copyTpl(this.sourceRoot() + '/src/extension/extension.ts', context.name + '/src/extension/extension.ts', context);
 
         if (!this.extensionConfig.includeContentProvider) {
-            this.fs.delete(context.name + '/src/extension/sampleProvider.ts');
+            this.fs.delete(context.name + '/src/extension/testProvider.ts');
         }
 
         if (this.extensionConfig.gitInit) {

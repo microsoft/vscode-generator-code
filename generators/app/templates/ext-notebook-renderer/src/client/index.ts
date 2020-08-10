@@ -2,9 +2,9 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
-import { rendererId, renderCallback } from '../common/constants';
 import { render } from './render';
 import errorOverlay from 'vscode-notebook-error-overlay';
+import { NotebookOutputEventParams } from 'vscode-notebook-renderer';
 
 // ----------------------------------------------------------------------------
 // This is the entrypoint to the notebook renderer's webview client-side code.
@@ -13,42 +13,43 @@ import errorOverlay from 'vscode-notebook-error-overlay';
 // rendering logic inside of the `render()` function.
 // ----------------------------------------------------------------------------
 
-const notebookApi = acquireNotebookRendererApi(rendererId);
+const notebookApi = acquireNotebookRendererApi(<%- JSON.stringify(rendererId) %>);
+
+// Track cells that we render so that, in development, we can re-render then
+// when the scripts change.
+const rendered = new Map<string, NotebookOutputEventParams>();
 
 // You can listen to an event that will fire right before cells unmount if
 // you need to do teardown:
-notebookApi.onWillDestroyOutput((cellUri) => {
-  console.log(cellUri ? `Cell ${cellUri} will unmount` : 'All cells will be cleared');
+notebookApi.onWillDestroyOutput((evt) => {
+  if (evt) {
+    rendered.delete(evt.outputId);
+  } else {
+    rendered.clear();
+  }
 });
 
-notebookApi.onDidCreateOutput(({ element }) => renderTag(element.querySelector('script')!));
+notebookApi.onDidCreateOutput((evt) => {
+  rendered.set(evt.outputId, evt);
+  renderTag(evt);
+});
 
 // Function to render your contents in a single tag, calls the `render()`
 // function from render.ts. Also catches and displays any thrown errors.
-const renderTag = (tag: HTMLScriptElement) =>
-  errorOverlay.wrap(tag.parentElement, () => {
-    let container: HTMLElement;
+const renderTag = ({ element, mimeType, output }: NotebookOutputEventParams) =>
+  errorOverlay.wrap(element, () => {
+    element.innerHTML = '';
+    const node = document.createElement('div');
+    element.appendChild(node);
 
-    // Create an element to render in, or reuse a previous element.
-    const maybeOldContainer = tag.previousElementSibling;
-    if (maybeOldContainer instanceof HTMLDivElement && maybeOldContainer.dataset.renderer) {
-      container = maybeOldContainer;
-      container.innerHTML = '';
-    } else {
-      container = document.createElement('div');
-      tag.parentNode?.insertBefore(container, tag.nextSibling);
-    }
-
-    const mimeType = tag.dataset.mimeType as string;
-    render({ container, mimeType, data: JSON.parse(tag.innerHTML), notebookApi });
+    render({ container: node, mimeType, data: output.data[mimeType], notebookApi });
   });
 
-const renderAllTags = () => {
-  const nodeList = document.querySelectorAll(`script[data-renderer="${rendererId}"]`);
-  for (let i = 0; i < nodeList.length; i++) {
-    renderTag(nodeList[i] as HTMLScriptElement);
+function renderAllTags() {
+  for (const evt of rendered.values()) {
+    renderTag(evt);
   }
-};
+}
 
 // Fix the public path so that any async import()'s work as expected.
 declare let __webpack_public_path__: string;

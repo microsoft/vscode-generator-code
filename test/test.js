@@ -1080,19 +1080,18 @@ describe('test code generator', function () {
                     "description": "",
                     "version": "0.0.1",
                     "engines": {
-                      "vscode": "^1.47.0"
+                      "vscode": engineVersion
                     },
                     "categories": [
                       "Other"
                     ],
                     "enableProposedApi": true,
-                    "activationEvents": [
-                      "*"
-                    ],
+                    "activationEvents": [],
                     "main": "./out/extension/extension.js",
                     "contributes": {
                       "notebookOutputRenderer": [
                         {
+                          "entrypoint": "./out/client/index.js",
                           "viewType": "json-renderer",
                           "displayName": "JSON Renderer",
                           "mimeTypes": ["application/json"]
@@ -1116,28 +1115,28 @@ describe('test code generator', function () {
                       "postinstall": "npm run updatetypes"
                     },
                     "devDependencies": {
-                      "@types/glob": "^7.1.1",
-                      "@types/mocha": "^8.0.0",
+                      "@types/glob": "^7.1.3",
+                      "@types/mocha": "^8.0.1",
                       "@types/node": "^14.0.27",
-                      "@types/vscode-notebook-renderer": "^1.47.0",
                       "@types/webpack-env": "^1.15.2",
-                      "@typescript-eslint/eslint-plugin": "^3.7.1",
-                      "@typescript-eslint/parser": "^3.7.1",
-                      "concurrently": "^5.1.0",
-                      "css-loader": "^3.5.2",
-                      "eslint": "^7.5.0",
-                      "fork-ts-checker-webpack-plugin": "^4.1.3",
+                      "@typescript-eslint/eslint-plugin": "^3.8.0",
+                      "@typescript-eslint/parser": "^3.8.0",
+                      "@types/vscode-notebook-renderer": "^1.48.0",
+                      "concurrently": "^5.2.0",
+                      "css-loader": "^4.2.0",
+                      "eslint": "^7.6.0",
+                      "fork-ts-checker-webpack-plugin": "^5.0.14",
                       "glob": "^7.1.6",
-                      "mocha": "^8.0.1",
-                      "style-loader": "^1.1.4",
-                      "ts-loader": "^7.0.1",
-                      "typescript": "^3.7.5",
+                      "mocha": "^8.1.0",
+                      "style-loader": "^1.2.1",
+                      "ts-loader": "^8.0.2",
+                      "typescript": "^3.9.7",
                       "vscode-dts": "^0.3.1",
                       "vscode-notebook-error-overlay": "^1.0.1",
-                      "vscode-test": "^1.3.0",
-                      "webpack": "^4.43.0",
-                      "webpack-cli": "^3.3.11",
-                      "webpack-dev-server": "^3.10.3"
+                      "vscode-test": "^1.4.0",
+                      "webpack": "^4.44.1",
+                      "webpack-cli": "^3.3.12",
+                      "webpack-dev-server": "^3.11.0"
                     }
                   };
                 try {
