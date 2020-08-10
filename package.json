@@ -25,7 +25,7 @@
     "url": "https://github.com/Microsoft"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=10.0.0"
   },
   "scripts": {
     "test": "mocha",
@@ -46,8 +46,8 @@
     "kind-of": "6.0.3"
   },
   "devDependencies": {
-    "@types/mocha": "^7.0.2",
-    "@types/node": "^13.13.4",
+    "@types/mocha": "^8.0.0",
+    "@types/node": "^14.0.27",
     "@types/yeoman-generator": "^3.1.4",
     "mocha": "^8.0.1",
     "yeoman-assert": "^3.1.1",
