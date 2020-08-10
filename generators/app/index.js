@@ -309,7 +309,7 @@ module.exports = class extends Generator {
                     def = generator.extensionConfig.displayName.toLowerCase().replace(/[^a-z0-9]/g, '-');
                 }
                 if (!def) {
-                    def == '';
+                    def = '';
                 }
 
                 return generator.prompt({
