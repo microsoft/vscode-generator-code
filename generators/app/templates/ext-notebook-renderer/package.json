@@ -15,8 +15,8 @@
   "contributes": {
     "notebookOutputRenderer": [
       {
+        "id": <%- JSON.stringify(rendererId) %>,
         "entrypoint": "./out/client/index.js",
-        "viewType": <%- JSON.stringify(rendererId) %>,
         "displayName": <%- JSON.stringify(rendererDisplayName) %>,
         "mimeTypes": <%- JSON.stringify(rendererMimeTypes) %>
       }

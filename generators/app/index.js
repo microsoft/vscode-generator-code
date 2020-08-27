@@ -655,6 +655,8 @@ module.exports = class extends Generator {
 
         if (!this.extensionConfig.includeContentProvider) {
             this.fs.delete(context.name + '/src/extension/testProvider.ts');
+        } else {
+            this.fs.copyTpl(this.sourceRoot() + '/src/extension/testProvider.ts', context.name + '/src/extension/testProvider.ts', context);
         }
 
         if (this.extensionConfig.gitInit) {

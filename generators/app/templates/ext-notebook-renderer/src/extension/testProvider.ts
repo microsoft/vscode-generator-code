@@ -5,20 +5,10 @@ import * as vscode from 'vscode';
  * outputs JSON cells. Doesn't read files or save anything.
  */
 export class TestProvider implements vscode.NotebookContentProvider {
-  label: string = 'CPU Profile Notebook';
+  public readonly label: string = 'My Test Provider';
 
   public readonly onDidChangeNotebook = new vscode.EventEmitter<vscode.NotebookDocumentEditEvent>()
     .event;
-
-  public readonly kernel: vscode.NotebookKernel = {
-    label: 'Default Kernel',
-    executeCell: (document, cell) => this.executeCell(document, cell),
-    executeAllCells: async (document) => {
-      await Promise.all(document.cells.map((cell) => this.executeCell(document, cell)));
-    },
-    cancelCellExecution: () => undefined,
-    cancelAllCellsExecution: () => undefined,
-  };
 
   /**
    * @inheritdoc
@@ -56,21 +46,30 @@ export class TestProvider implements vscode.NotebookContentProvider {
   /**
    * @inheritdoc
    */
-  private async executeAllCells(
-    document: vscode.NotebookDocument,
-  ): Promise<void> {
-    for (let i = 0; i < document.cells.length; i++) {
-      await this.executeCell(document, document.cells[i]);
-    }
+  public async saveNotebook(): Promise<void> {
+    return Promise.resolve(); // not implemented
   }
 
   /**
    * @inheritdoc
    */
-  private async executeCell(
-    _document: vscode.NotebookDocument,
-    cell: vscode.NotebookCell | undefined,
-  ): Promise<void> {
+  public async saveNotebookAs(): Promise<void> {
+    return Promise.resolve(); // not implemented
+  }
+}
+
+export class TestKernel implements vscode.NotebookKernel {
+  public readonly label = 'Test notebook kernel';
+
+  cancelCellExecution() {}
+
+  cancelAllCellsExecution() {}
+
+  executeAllCells(doc: vscode.NotebookDocument) {
+    doc.cells.forEach((cell) => this.executeCell(doc, cell));
+  }
+
+  executeCell(_doc: vscode.NotebookDocument, cell: vscode.NotebookCell) {
     if (cell?.language !== 'json') {
       return;
     }
@@ -79,7 +78,7 @@ export class TestProvider implements vscode.NotebookContentProvider {
       cell.outputs = [
         {
           outputKind: vscode.CellOutputKind.Rich,
-          data: { 'application/json': JSON.parse(cell.document.getText()) },
+          data: { '<%- rendererMimeTypes[0] %>': JSON.parse(cell.document.getText()) },
         },
       ];
     } catch (e) {
@@ -92,19 +91,5 @@ export class TestProvider implements vscode.NotebookContentProvider {
         },
       ];
     }
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public async saveNotebook(): Promise<void> {
-    return Promise.resolve(); // not implemented
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public async saveNotebookAs(): Promise<void> {
-    return Promise.resolve(); // not implemented
   }
 }

@@ -32,6 +32,11 @@ const checkNotInExtensionTs = () => {
     true,
   );
 
+  const removeRegistration = (node: ts.Node) => () => writeFileSync(
+    entrypoint,
+    contents.slice(0, node.pos) + contents.slice(node.end + +(contents[node.end] === ',')),
+  );
+
   ts.forEachChild(program, function walk(node: ts.Node) {
     if (
       ts.isCallExpression(node) &&
@@ -40,12 +45,18 @@ const checkNotInExtensionTs = () => {
     ) {
       throw new DetectedError(
         '`registerNotebookContentProvider()` is still called with the TestProvider.',
-        () => {
-          writeFileSync(
-            entrypoint,
-            contents.slice(0, node.pos) + contents.slice(node.end + +(contents[node.end] === ',')),
-          );
-        },
+        removeRegistration(node),
+      );
+    }
+
+    if (
+      ts.isCallExpression(node) &&
+      /(^|\W)registerNotebookKernel$/.test(node.expression.getText()) &&
+      node.arguments[2]?.getText().includes('TestKernel')
+    ) {
+      throw new DetectedError(
+        '`registerNotebookKernel()` is still called with the TestKernel.',
+        removeRegistration(node),
       );
     }
 
@@ -71,8 +82,25 @@ const checkNotInPackageJson = () => {
     );
   }
 };
-
 (() => {
+  if (process.argv.includes('--fix')) {
+    while (true) {
+      try {
+        checkNotInPackageJson();
+        checkNotInExtensionTs();
+      } catch (e) {
+        if (!(e instanceof DetectedError)) {
+          throw e;
+        } else {
+          e.fix();
+          continue;
+        }
+      }
+
+      return console.log('Test provider removed!');
+    }
+  }
+
   let errors: DetectedError[] = [];
   for (const check of [checkNotInPackageJson, checkNotInExtensionTs]) {
     try {
@@ -86,10 +114,6 @@ const checkNotInPackageJson = () => {
     }
   }
 
-  if (process.argv.includes('--fix')) {
-    errors.forEach((e) => e.fix());
-    return console.log('Test provider removed!');
-  }
 
   if (!errors.length) {
     return;
@@ -100,6 +124,6 @@ const checkNotInPackageJson = () => {
   console.error('');
   console.error(
     'You should remove the test provider before publishing your extension to avoid ' +
-      `conflicts. To fix this automatically, run \`node ${execPath} --fix\``,
+    `conflicts. To fix this automatically, run \`node ${execPath} --fix\``,
   );
 })();
