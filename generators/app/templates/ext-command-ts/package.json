@@ -37,6 +37,8 @@
 		<%- dep("eslint") %>,
 		<%- dep("@typescript-eslint/eslint-plugin") %>,
 		<%- dep("@typescript-eslint/parser") %>,
+		<%- dep("prettier") %>,
+		<%- dep("eslint-config-prettier") %>,
 		<%- dep("glob") %>,
 		<%- dep("mocha") %>,
 		<%- dep("typescript") %>,
