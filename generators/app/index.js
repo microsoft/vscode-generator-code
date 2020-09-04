@@ -664,6 +664,10 @@ module.exports = class extends Generator {
             this.fs.copy(this.sourceRoot() + '/gitattributes', context.name + '/.gitattributes');
         }
 
+        if (this.extensionConfig.pkgManager === 'yarn') {
+            this.fs.copyTpl(this.sourceRoot() + '/.yarnrc', context.name + '/.yarnrc', context);
+        }
+
         this.extensionConfig.installDependencies = true;
     }
 
@@ -794,6 +798,10 @@ module.exports = class extends Generator {
 
         this.fs.copy(this.sourceRoot() + '/.eslintrc.json', context.name + '/.eslintrc.json');
 
+        if (this.extensionConfig.pkgManager === 'yarn') {
+            this.fs.copyTpl(this.sourceRoot() + '/.yarnrc', context.name + '/.yarnrc', context);
+        }
+
         this.extensionConfig.installDependencies = true;
     }
 
@@ -818,6 +826,10 @@ module.exports = class extends Generator {
         this.fs.copyTpl(this.sourceRoot() + '/extension.js', context.name + '/extension.js', context);
         this.fs.copyTpl(this.sourceRoot() + '/package.json', context.name + '/package.json', context);
         this.fs.copyTpl(this.sourceRoot() + '/.eslintrc.json', context.name + '/.eslintrc.json', context);
+
+        if (this.extensionConfig.pkgManager === 'yarn') {
+            this.fs.copyTpl(this.sourceRoot() + '/.yarnrc', context.name + '/.yarnrc', context);
+        }
 
         this.extensionConfig.installDependencies = true;
     }
