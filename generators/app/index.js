@@ -32,6 +32,7 @@ module.exports = class extends Generator {
 
         this.option('extensionParam', { type: String });
         this.option('extensionParam2', { type: String });
+        this.option('insiders', { type: Boolean, alias: 'i' });
 
         this.extensionConfig = Object.create(null);
         this.extensionConfig.installDependencies = false;
@@ -45,7 +46,7 @@ module.exports = class extends Generator {
 
     async initializing() {
         const cliArgs = this.options['_'];
-        this.insiders = Array.isArray(cliArgs) && cliArgs.indexOf('insiders') !== -1;
+        this.insiders = Array.isArray(cliArgs) && cliArgs.indexOf('insiders') !== -1 || !!this.options['insiders'];
 
         // Welcome
         if (!this.insiders) {
