@@ -3,24 +3,23 @@
  *--------------------------------------------------------*/
 'use strict';
 
-let Generator = require('yeoman-generator');
-let yosay = require('yosay');
+const Generator = require('yeoman-generator');
+const yosay = require('yosay');
 
-let path = require('path');
-let env = require('./env');
-let chalk = require('chalk');
+const path = require('path');
+const env = require('./env');
 
-let colortheme = require('./generate-colortheme');
-let commandjs = require('./generate-command-js');
-let commandts = require('./generate-command-ts ');
-let commandweb = require('./generate-command-web');
-let extensionpack = require('./generate-extensionpack');
-let keymap = require('./generate-keymap');
-let language = require('./generate-language');
-let localization = require('./generate-localization');
-let notebook = require('./generate-notebook-renderer');
-let snippets = require('./generate-snippets');
-let webupdate = require('./generate-web-update');
+const colortheme = require('./generate-colortheme');
+const commandjs = require('./generate-command-js');
+const commandts = require('./generate-command-ts ');
+const commandweb = require('./generate-command-web');
+const extensionpack = require('./generate-extensionpack');
+const keymap = require('./generate-keymap');
+const language = require('./generate-language');
+const localization = require('./generate-localization');
+const notebook = require('./generate-notebook-renderer');
+const snippets = require('./generate-snippets');
+const webupdate = require('./generate-web-update');
 
 module.exports = class extends Generator {
 
