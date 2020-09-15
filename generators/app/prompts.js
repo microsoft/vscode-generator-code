@@ -77,11 +77,11 @@ exports.askForExtensionDescription = (generator, extensionConfig) => {
     });
 }
 
-
+/**
+* @param {import('yeoman-generator')} generator
+* @param {Object} extensionConfig
+*/
 exports.askForGit = (generator, extensionConfig) => {
-    // if (['ext-command-ts', 'ext-command-js', 'ext-notebook-renderer'].indexOf(generator.extensionConfig.type) === -1) {
-    //     return Promise.resolve();
-    // }
     return generator.prompt({
         type: 'confirm',
         name: 'gitInit',
@@ -92,10 +92,11 @@ exports.askForGit = (generator, extensionConfig) => {
     });
 }
 
+/**
+* @param {import('yeoman-generator')} generator
+* @param {Object} extensionConfig
+*/
 exports.askForPackageManager = (generator, extensionConfig) => {
-    // if (!['ext-command-ts', 'ext-command-js', 'ext-localization', 'ext-notebook-renderer'].includes(extensionConfig.type)) {
-    //     return Promise.resolve();
-    // }
     extensionConfig.pkgManager = 'npm';
     return generator.prompt({
         type: 'list',
