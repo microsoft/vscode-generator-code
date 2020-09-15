@@ -1030,6 +1030,9 @@ describe('test code generator', function () {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
                 type: 'ext-localization',
+                name: "vscode-language-pack-ru",
+                displayName: "Russian Language Pack",
+                description: "Language pack extension for Russian",
                 lpLanguageId: 'ru',
                 lpLanguageName: 'Russian',
                 lpLocalizedLanguageName: 'русский',
@@ -1078,6 +1081,7 @@ describe('test code generator', function () {
                 type: 'ext-notebook-renderer',
                 name: 'json-renderer-ext',
                 displayName: 'Cool JSON Renderer Extension',
+                description: '',
                 rendererId: 'json-renderer',
                 rendererDisplayName: 'JSON Renderer',
                 includeContentProvider: false,
