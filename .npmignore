@@ -7,3 +7,6 @@
 /.gitattributes
 /.travis.yml
 /jsconfig.json
+/.azure-pipelines.yml
+/.dockerignore
+/Dockerfile
