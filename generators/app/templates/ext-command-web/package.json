@@ -1,0 +1,51 @@
+{
+	"name": <%- JSON.stringify(name) %>,
+	"displayName": <%- JSON.stringify(displayName) %>,
+	"description": <%- JSON.stringify(description) %>,
+	"version": "0.0.1",
+	"engines": {
+		"vscode": <%- JSON.stringify(vsCodeEngine) %>
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+        <%- JSON.stringify(`onCommand:${name
+		}.helloWorld`) %>
+	],
+	"browser": "./dist/web/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": <%- JSON.stringify(`${name
+				}.helloWorld`) %>,
+				"title": "Hello World"
+			}
+		]
+	},
+	"scripts": {
+		"test": "node ./out/test/runTests.js",
+		"pretest": "tsc -p ./",
+		"vscode:prepublish": "<%= pkgManager %> run package-web",
+		"compile-web": "webpack --devtool nosources-source-map --config ./build/web-extension.webpack.config.js",
+		"watch-web": "webpack --watch --devtool nosources-source-map --info-verbosity verbose --config ./build/web-extension.webpack.config.js",
+		"package-web": "webpack --mode production --config ./build/web-extension.webpack.config.js",
+		"lint": "eslint src --ext ts"
+	},
+	"devDependencies": {
+		<%- dep("@types/vscode") %>,
+		<%- dep("@types/glob") %>,
+		<%- dep("@types/mocha") %>,
+		<%- dep("@types/node") %>,
+		<%- dep("eslint") %>,
+		<%- dep("@typescript-eslint/eslint-plugin") %>,
+		<%- dep("@typescript-eslint/parser") %>,
+		<%- dep("glob") %>,
+		<%- dep("mocha") %>,
+		<%- dep("typescript") %>,
+		<%- dep("vscode-test") %>,
+		<%- dep("ts-loader") %>,
+		<%- dep("webpack") %>,
+		<%- dep("webpack-cli") %>
+	}
+}

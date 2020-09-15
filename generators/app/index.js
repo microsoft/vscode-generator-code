@@ -13,12 +13,14 @@ let chalk = require('chalk');
 let colortheme = require('./generate-colortheme');
 let commandjs = require('./generate-command-js');
 let commandts = require('./generate-command-ts ');
+let commandweb = require('./generate-command-web');
 let extensionpack = require('./generate-extensionpack');
 let keymap = require('./generate-keymap');
 let language = require('./generate-language');
 let localization = require('./generate-localization');
 let notebook = require('./generate-notebook-renderer');
 let snippets = require('./generate-snippets');
+let webupdate = require('./generate-web-update');
 
 module.exports = class extends Generator {
 
@@ -31,7 +33,6 @@ module.exports = class extends Generator {
 
         this.option('extensionParam', { type: String });
         this.option('extensionParam2', { type: String });
-        this.option('proposed', { type: Boolean });
 
         this.extensionConfig = Object.create(null);
         this.extensionConfig.installDependencies = false;
@@ -39,15 +40,24 @@ module.exports = class extends Generator {
         this.extensionGenerator = undefined;
 
         this.abort = false;
+
+        this.insiders = false;
     }
 
     async initializing() {
+        const cliArgs = this.options['_'];
+        this.insiders = Array.isArray(cliArgs) && cliArgs.indexOf('insiders') !== -1;
 
         // Welcome
-        this.log(yosay('Welcome to the Visual Studio Code Extension generator!'));
+        if (!this.insiders) {
+            this.log(yosay('Welcome to the Visual Studio Code Extension generator!'));
+        } else {
+            this.log(yosay('Welcome to the Visual Studio Code Insiders Extension generator!'));
+        }
 
         // evaluateEngineVersion
         const dependencyVersions = await env.getDependencyVersions();
+        this.extensionConfig.dependencyVersions = dependencyVersions;
         this.extensionConfig.dep = function (name) {
             const version = dependencyVersions[name];
             if (typeof version === 'undefined') {
@@ -60,7 +70,8 @@ module.exports = class extends Generator {
 
     async prompting() {
         const extensionGenerators = [
-            commandts, commandjs, colortheme, language, snippets, keymap, extensionpack, localization, notebook
+            commandts, commandjs, colortheme, language, snippets, keymap, extensionpack, localization,
+            commandweb, notebook, webupdate
         ]
 
         // Ask for extension type
@@ -74,10 +85,7 @@ module.exports = class extends Generator {
                 this.abort = true;
             }
         } else {
-            const proposed = !!this.options['proposed'];
-
-
-            const choices = extensionGenerators.filter(g => !!g.proposed === proposed).map(g => ({ name: g.name, value: g.id }));
+            const choices = extensionGenerators.filter(g => !!g.insiders === this.insiders).map(g => ({ name: g.name, value: g.id }));
             this.extensionConfig.type = (await this.prompt({
                 type: 'list',
                 name: 'type',
@@ -111,8 +119,9 @@ module.exports = class extends Generator {
         if (this.abort) {
             return;
         }
-        process.chdir(this.extensionConfig.name);
-
+        if (!this.extensionGenerator.update) {
+            process.chdir(this.extensionConfig.name);
+        }
         if (this.extensionConfig.installDependencies) {
             this.installDependencies({
                 yarn: this.extensionConfig.pkgManager === 'yarn',
@@ -128,6 +137,21 @@ module.exports = class extends Generator {
             return;
         }
 
+        if (this.extensionGenerator.update) {
+            this.log('');
+            this.log('Your extension has been updated!');
+            this.log('');
+            this.log('To start editing with Visual Studio Code, use the following commands:');
+            this.log('');
+            if (!this.insiders) {
+                this.log('     code .');
+            } else {
+                this.log('     code-insiders .');
+            }
+            this.log(`     ${this.extensionConfig.pkgManager} run compile-web`);
+            this.log('');
+            return;
+        }
 
         // Git init
         if (this.extensionConfig.gitInit) {
@@ -135,20 +159,32 @@ module.exports = class extends Generator {
         }
 
         this.log('');
-        this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
-        this.log('');
-        this.log('To start editing with Visual Studio Code, use the following commands:');
-        this.log('');
-        this.log('     cd ' + this.extensionConfig.name);
-        this.log('     code .');
-        this.log('');
-        this.log('Open vsc-extension-quickstart.md inside the new extension for further instructions');
-        this.log('on how to modify, test and publish your extension.');
+
+        if (!this.insiders) {
+            this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
+            this.log('');
+            this.log('To start editing with Visual Studio Code, use the following commands:');
+            this.log('');
+            this.log('     cd ' + this.extensionConfig.name);
+            this.log('     code .');
+            this.log('');
+            this.log('Open vsc-extension-quickstart.md inside the new extension for further instructions');
+            this.log('on how to modify, test and publish your extension.');
+        } else {
+            this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
+            this.log('');
+            this.log('To start editing with Visual Studio Code, use the following commands:');
+            this.log('');
+            this.log('     cd ' + this.extensionConfig.name);
+            this.log('     code-insiders .');
+            this.log('');
+            this.log('Open vsc-extension-quickstart.md inside the new extension for further instructions');
+            this.log('on how to modify and test your extension.');
+        }
         this.log('');
 
-        if (this.extensionConfig.type === 'ext-extensionpack') {
-            this.log(chalk.yellow('Please review the "extensionPack" in the "package.json" before publishing the extension pack.'));
-            this.log('');
+        if (this.extensionGenerator.endMessage) {
+            this.extensionGenerator.endMessage(this, this.extensionConfig);
         }
 
         this.log('For more information, also visit http://code.visualstudio.com and follow us @code.');
