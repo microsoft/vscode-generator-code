@@ -10,7 +10,7 @@
     "Other"
   ],
   "enableProposedApi": true,<%# todo: remove for general availability %>
-  "activationEvents": [<% if (includeContentProvider) { %>"onNotebookEditor:test-notebook-renderer"<% } %>],
+  "activationEvents": [<% if (includeContentProvider) { %>"onNotebook:test-notebook-renderer"<% } %>],
   "main": "./out/extension/extension.js",
   "contributes": {
     "notebookOutputRenderer": [
