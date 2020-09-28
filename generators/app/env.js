@@ -35,7 +35,7 @@ module.exports.getDependencyVersions = async function () {
         "@types/vscode": vscodeVersion,
         "@types/glob": "^7.1.3",
         "@types/mocha": "^8.0.0",
-        "@types/node": "^14.0.27",
+        "@types/node": "^12.11.7",
         "@typescript-eslint/eslint-plugin": "^4.1.1",
         "@typescript-eslint/parser": "^4.1.1",
         "eslint": "^7.9.0",
