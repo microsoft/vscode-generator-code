@@ -44,14 +44,13 @@ module.exports = class extends Generator {
 
     async initializing() {
         const cliArgs = this.options['_'];
-        const insiders = Array.isArray(cliArgs) && cliArgs.indexOf('insiders') !== -1 || !!this.options['insiders'];
+        this.extensionConfig.insiders = Array.isArray(cliArgs) && cliArgs.indexOf('insiders') !== -1 || !!this.options['insiders'];
 
         // Welcome
-        if (!insiders) {
+        if (!this.extensionConfig.insiders) {
             this.log(yosay('Welcome to the Visual Studio Code Extension generator!'));
         } else {
             this.log(yosay('Welcome to the Visual Studio Code Insiders Extension generator!'));
-            this.extensionConfig.insiders = true;
         }
 
         // evaluateEngineVersion
