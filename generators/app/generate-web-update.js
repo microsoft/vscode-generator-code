@@ -4,9 +4,8 @@
 
 module.exports = {
     id: 'ext-web-update',
-    name: 'Add Web bits to existing extension (TypeScript)',
+    insidersName: 'Add Web bits to existing extension (TypeScript)',
     update: true,
-    insiders: true,
     /**
      * @param {import('yeoman-generator')} generator
      * @param {Object} extensionConfig

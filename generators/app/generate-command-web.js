@@ -6,8 +6,7 @@ const prompts = require("./prompts");
 
 module.exports = {
     id: 'ext-command-web',
-    name: 'New Web Extension (TypeScript)',
-    insiders: true,
+    insidersName: 'New Web Extension (TypeScript)',
     /**
      * @param {import('yeoman-generator')} generator
      * @param {Object} extensionConfig
@@ -45,5 +44,6 @@ module.exports = {
         generator.fs.copy(generator.sourceRoot() + '/.eslintrc.json', extensionConfig.name + '/.eslintrc.json');
 
         extensionConfig.installDependencies = true;
+        extensionConfig.proposedAPI = extensionConfig.insiders;
     }
 }

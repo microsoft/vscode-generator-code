@@ -40,19 +40,18 @@ module.exports = class extends Generator {
         this.extensionGenerator = undefined;
 
         this.abort = false;
-
-        this.insiders = false;
     }
 
     async initializing() {
         const cliArgs = this.options['_'];
-        this.insiders = Array.isArray(cliArgs) && cliArgs.indexOf('insiders') !== -1 || !!this.options['insiders'];
+        const insiders = Array.isArray(cliArgs) && cliArgs.indexOf('insiders') !== -1 || !!this.options['insiders'];
 
         // Welcome
-        if (!this.insiders) {
+        if (!insiders) {
             this.log(yosay('Welcome to the Visual Studio Code Extension generator!'));
         } else {
             this.log(yosay('Welcome to the Visual Studio Code Insiders Extension generator!'));
+            this.extensionConfig.insiders = true;
         }
 
         // evaluateEngineVersion
@@ -85,7 +84,13 @@ module.exports = class extends Generator {
                 this.abort = true;
             }
         } else {
-            const choices = extensionGenerators.filter(g => !!g.insiders === this.insiders).map(g => ({ name: g.name, value: g.id }));
+            const choices = [];
+            for (const g of extensionGenerators) {
+                const name = this.extensionConfig.insiders ? g.insidersName : g.name;
+                if (name) {
+                    choices.push({ name, value: g.id })
+                }
+            }
             this.extensionConfig.type = (await this.prompt({
                 type: 'list',
                 name: 'type',
@@ -143,7 +148,7 @@ module.exports = class extends Generator {
             this.log('');
             this.log('To start editing with Visual Studio Code, use the following commands:');
             this.log('');
-            if (!this.insiders) {
+            if (!this.extensionConfig.insiders) {
                 this.log('     code .');
             } else {
                 this.log('     code-insiders .');
@@ -158,9 +163,12 @@ module.exports = class extends Generator {
             this.spawnCommand('git', ['init', '--quiet']);
         }
 
+        if (this.extensionConfig.proposedAPI) {
+            this.spawnCommand(this.extensionConfig.pkgManager, ['run', 'update-proposed-api']);
+        }
         this.log('');
 
-        if (!this.insiders) {
+        if (!this.extensionConfig.insiders) {
             this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
             this.log('');
             this.log('To start editing with Visual Studio Code, use the following commands:');
@@ -189,5 +197,9 @@ module.exports = class extends Generator {
 
         this.log('For more information, also visit http://code.visualstudio.com and follow us @code.');
         this.log('\r\n');
+
+        if (this.extensionConfig.insiders) {
+            this.spawnCommand('code-insiders', [this.destinationPath(this.extensionConfig.name)]);
+        }
     }
 }

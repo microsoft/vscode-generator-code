@@ -7,6 +7,7 @@ const prompts = require("./prompts");
 module.exports = {
     id: 'ext-command-ts',
     name: 'New Extension (TypeScript)',
+    insidersName: 'New Extension with Proposed API (TypeScript)',
     /**
      * @param {import('yeoman-generator')} generator
      * @param {Object} extensionConfig
@@ -18,6 +19,9 @@ module.exports = {
 
         await prompts.askForGit(generator, extensionConfig);
         await prompts.askForPackageManager(generator, extensionConfig);
+
+
+
     },
     /**
      * @param {import('yeoman-generator')} generator
@@ -46,5 +50,6 @@ module.exports = {
         }
 
         extensionConfig.installDependencies = true;
+        extensionConfig.proposedAPI = extensionConfig.insiders;
     }
 }

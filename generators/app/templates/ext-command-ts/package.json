@@ -12,7 +12,8 @@
 	"activationEvents": [
         <%- JSON.stringify(`onCommand:${name}.helloWorld`) %>
 	],
-	"main": "./out/extension.js",
+	"main": "./out/extension.js",<% if (insiders) { %>
+	"enableProposedApi": true,<% } %>
 	"contributes": {
 		"commands": [
 			{
@@ -27,7 +28,8 @@
 		"lint": "eslint src --ext ts",
 		"watch": "tsc -watch -p ./",
 		"pretest": "<%= pkgManager %> run compile && <%= pkgManager %> run lint",
-		"test": "node ./out/test/runTest.js"
+		"test": "node ./out/test/runTest.js"<% if (insiders) { %>,
+		"update-proposed-api": "vscode-dts dev"<% } %>
 	},
 	"devDependencies": {
 		<%- dep("@types/vscode") %>,
@@ -40,6 +42,7 @@
 		<%- dep("glob") %>,
 		<%- dep("mocha") %>,
 		<%- dep("typescript") %>,
-		<%- dep("vscode-test") %>
+		<%- dep("vscode-test") %><% if (insiders) { %>,
+		<%- dep("vscode-dts") %><% } %>
 	}
 }
