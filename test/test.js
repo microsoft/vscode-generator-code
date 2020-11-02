@@ -830,6 +830,85 @@ describe('test code generator', function () {
             });
     });
 
+    it('command-ts with webpack', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-command-ts',
+                name: 'testCom',
+                displayName: 'Test Com',
+                description: 'My TestCom',
+                gitInit: true,
+                pkgManager: 'npm',
+                webpack: true
+            }) // Mock the prompt answers
+            .toPromise().then(function () {
+                var expectedPackageJSON = {
+                    "name": "testCom",
+                    "displayName": 'Test Com',
+                    "description": "My TestCom",
+                    "version": "0.0.1",
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "activationEvents": [
+                        "onCommand:testCom.helloWorld"
+                    ],
+                    "devDependencies": devDependencies([
+                        "@types/vscode",
+                        "@types/glob",
+                        "@types/mocha",
+                        "@types/node",
+                        "eslint",
+                        "@typescript-eslint/parser",
+                        "@typescript-eslint/eslint-plugin",
+                        "glob",
+                        "mocha",
+                        "typescript",
+                        "vscode-test",
+                        "webpack",
+                        "webpack-cli",
+                        "ts-loader"
+                    ]),
+                    "main": "./dist/extension.js",
+                    "scripts": {
+                        "vscode:prepublish": "npm run package",
+                        "compile": "webpack --devtool nosources-source-map --config ./build/node-extension.webpack.config.js",
+                        "watch": "webpack --watch --devtool nosources-source-map --info-verbosity verbose --config ./build/node-extension.webpack.config.js",
+                        "package": "webpack --mode production --config ./build/node-extension.webpack.config.js",
+                        "test-compile": "tsc -p ./",
+                        "test-watch": "tsc -watch -p ./",
+                        "lint": "eslint src --ext ts",
+                        "pretest": "npm run test-compile && npm run lint",
+                        "test": "node ./out/test/runTest.js"
+                    },
+                    "categories": [
+                        "Other"
+                    ],
+                    "contributes": {
+                        "commands": [{
+                            "command": "testCom.helloWorld",
+                            "title": "Hello World"
+                        }]
+                    }
+                };
+                try {
+
+
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
+
+                    var packageJSONBody = fs.readFileSync('package.json', 'utf8')
+                    var actualPackageJSON = JSON.parse(packageJSONBody);
+                    assert.deepEqual(expectedPackageJSON, actualPackageJSON);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            });
+    });
+
     it('command-js', function (done) {
         this.timeout(10000);
 

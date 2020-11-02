@@ -12,7 +12,7 @@
 	"activationEvents": [
         <%- JSON.stringify(`onCommand:${name}.helloWorld`) %>
 	],
-	"main": "./out/extension.js",<% if (insiders) { %>
+	"main": <%- JSON.stringify(webpack ? './dist/extension.js' : './out/extension.js') %>,<% if (insiders) { %>
 	"enableProposedApi": true,<% } %>
 	"contributes": {
 		"commands": [
@@ -22,12 +22,19 @@
 			}
 		]
 	},
-	"scripts": {
+	"scripts": {<% if (webpack) { %>
+		"vscode:prepublish": "<%= pkgManager %> run package",
+		"compile": "webpack --devtool nosources-source-map --config ./build/node-extension.webpack.config.js",
+		"watch": "webpack --watch --devtool nosources-source-map --info-verbosity verbose --config ./build/node-extension.webpack.config.js",
+		"package": "webpack --mode production --config ./build/node-extension.webpack.config.js",
+		"test-compile": "tsc -p ./",
+		"test-watch": "tsc -watch -p ./",
+		"pretest": "<%= pkgManager %> run test-compile && <%= pkgManager %> run lint",<% } else { %>
 		"vscode:prepublish": "<%= pkgManager %> run compile",
 		"compile": "tsc -p ./",
-		"lint": "eslint src --ext ts",
 		"watch": "tsc -watch -p ./",
-		"pretest": "<%= pkgManager %> run compile && <%= pkgManager %> run lint",
+		"pretest": "<%= pkgManager %> run compile && <%= pkgManager %> run lint",<% } %>
+		"lint": "eslint src --ext ts",
 		"test": "node ./out/test/runTest.js"<% if (insiders) { %>,
 		"update-proposed-api": "vscode-dts dev"<% } %>
 	},
@@ -43,6 +50,9 @@
 		<%- dep("mocha") %>,
 		<%- dep("typescript") %>,
 		<%- dep("vscode-test") %><% if (insiders) { %>,
-		<%- dep("vscode-dts") %><% } %>
+		<%- dep("vscode-dts") %><% } if (webpack) { %>,
+		<%- dep("ts-loader") %>,
+		<%- dep("webpack") %>,
+		<%- dep("webpack-cli") %><% } %>
 	}
 }

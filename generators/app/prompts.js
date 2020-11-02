@@ -116,3 +116,18 @@ exports.askForPackageManager = (generator, extensionConfig) => {
         extensionConfig.pkgManager = pckgManagerAnswer.pkgManager;
     });
 }
+
+/**
+* @param {import('yeoman-generator')} generator
+* @param {Object} extensionConfig
+*/
+exports.askForWebpack = (generator, extensionConfig) => {
+    return generator.prompt({
+        type: 'confirm',
+        name: 'webpack',
+        message: 'Bundle the source code with webpack?',
+        default: false
+    }).then(gitAnswer => {
+        extensionConfig.webpack = gitAnswer.webpack;
+    });
+}

@@ -18,20 +18,22 @@ module.exports = {
         await prompts.askForExtensionDescription(generator, extensionConfig);
 
         await prompts.askForGit(generator, extensionConfig);
+        await prompts.askForWebpack(generator, extensionConfig);
         await prompts.askForPackageManager(generator, extensionConfig);
-
-
-
     },
     /**
      * @param {import('yeoman-generator')} generator
      * @param {Object} extensionConfig
      */
     writing: (generator, extensionConfig) => {
-        generator.fs.copy(generator.sourceRoot() + '/vscode', extensionConfig.name + '/.vscode');
+        if (extensionConfig.webpack) {
+            generator.fs.copy(generator.sourceRoot() + '/vscode-webpack', extensionConfig.name + '/.vscode');
+        } else {
+            generator.fs.copy(generator.sourceRoot() + '/vscode', extensionConfig.name + '/.vscode');
+        }
         generator.fs.copy(generator.sourceRoot() + '/src/test', extensionConfig.name + '/src/test');
 
-        generator.fs.copy(generator.sourceRoot() + '/vscodeignore', extensionConfig.name + '/.vscodeignore');
+        generator.fs.copyTpl(generator.sourceRoot() + '/vscodeignore', extensionConfig.name + '/.vscodeignore', extensionConfig);
         if (extensionConfig.gitInit) {
             generator.fs.copy(generator.sourceRoot() + '/gitignore', extensionConfig.name + '/.gitignore');
         }
@@ -47,6 +49,10 @@ module.exports = {
 
         if (extensionConfig.pkgManager === 'yarn') {
             generator.fs.copyTpl(generator.sourceRoot() + '/.yarnrc', extensionConfig.name + '/.yarnrc', extensionConfig);
+        }
+
+        if (extensionConfig.webpack) {
+            generator.fs.copyTpl(generator.sourceRoot() + '/build/node-extension.webpack.config.js', extensionConfig.name + '/build/node-extension.webpack.config.js', extensionConfig);
         }
 
         extensionConfig.installDependencies = true;

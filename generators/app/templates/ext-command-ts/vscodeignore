@@ -1,6 +1,6 @@
 .vscode/**
 .vscode-test/**
-out/test/**
+<% if (webpack) { %>out/**<% } else { %>out/test/**<% } %>
 src/**
 .gitignore
 .yarnrc
