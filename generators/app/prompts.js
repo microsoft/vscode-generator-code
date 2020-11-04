@@ -82,6 +82,12 @@ exports.askForExtensionDescription = (generator, extensionConfig) => {
 * @param {Object} extensionConfig
 */
 exports.askForGit = (generator, extensionConfig) => {
+    let gitInit = generator.options['gitInit'];
+    if (gitInit === 'true' || gitInit === 'false') {
+        extensionConfig.gitInit = Boolean(gitInit);
+        return Promise.resolve();
+    }
+    
     return generator.prompt({
         type: 'confirm',
         name: 'gitInit',
@@ -97,6 +103,12 @@ exports.askForGit = (generator, extensionConfig) => {
 * @param {Object} extensionConfig
 */
 exports.askForPackageManager = (generator, extensionConfig) => {
+    let pkgManager = generator.options['pkgManager'];
+    if (pkgManager === 'npm' || pkgManager === 'yarn') {
+        extensionConfig.pkgManager = pkgManager;
+        return Promise.resolve();
+    }
+    
     extensionConfig.pkgManager = 'npm';
     return generator.prompt({
         type: 'list',
@@ -122,6 +134,12 @@ exports.askForPackageManager = (generator, extensionConfig) => {
 * @param {Object} extensionConfig
 */
 exports.askForWebpack = (generator, extensionConfig) => {
+    let webpack = generator.options['webpack'];
+    if (webpack === 'true' || webpack === 'false') {
+        extensionConfig.webpack = Boolean(webpack);
+        return Promise.resolve();
+    }
+    
     return generator.prompt({
         type: 'confirm',
         name: 'webpack',
