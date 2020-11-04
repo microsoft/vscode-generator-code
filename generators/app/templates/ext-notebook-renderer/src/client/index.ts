@@ -54,15 +54,9 @@ function renderAllTags() {
 // Fix the public path so that any async import()'s work as expected.
 declare let __webpack_public_path__: string;
 declare let __webpack_relative_entrypoint_to_root__: string;
+declare const scriptUrl: string;
 
-const getPublicPath = () => {
-  // important: do not move this out of your entrypoint --
-  // document.currentScript needs to be called synchronously.
-  const currentDirname = (document.currentScript as HTMLScriptElement).src.replace(/[^/]+$/, '');
-  return new URL(currentDirname + __webpack_relative_entrypoint_to_root__).toString();
-};
-
-__webpack_public_path__ = getPublicPath();
+__webpack_public_path__ = new URL(scriptUrl.replace(/[^/]+$/, '') + __webpack_relative_entrypoint_to_root__).toString();
 
 renderAllTags();
 
