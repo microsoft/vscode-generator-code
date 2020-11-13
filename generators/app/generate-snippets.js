@@ -49,10 +49,10 @@ module.exports = {
  */
 function askForSnippetsInfo(generator, extensionConfig) {
     extensionConfig.isCustomization = true;
-    let extensionParam = generator.options['extensionParam'];
+    let snippetFolderParam = generator.options['snippetFolder'] || generator.options['extensionParam'];
 
-    if (extensionParam) {
-        let count = processSnippetFolder(extensionParam, generator);
+    if (snippetFolderParam) {
+        let count = processSnippetFolder(snippetFolderParam, generator);
         if (count <= 0) {
             generator.log('')
         }
@@ -92,10 +92,10 @@ function askForSnippetsInfo(generator, extensionConfig) {
  * @param {Object} extensionConfig
  */
 function askForSnippetLanguage(generator, extensionConfig) {
-    let extensionParam2 = generator.options['extensionParam2'];
+    let snippetLanguage = generator.options['snippetLanguage'] || generator.options['extensionParam2'];
 
-    if (extensionParam2) {
-        extensionConfig.languageId = extensionParam2;
+    if (snippetLanguage) {
+        extensionConfig.languageId = snippetLanguage;
         return Promise.resolve();
     }
 

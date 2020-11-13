@@ -62,17 +62,6 @@ function askForExtensionPackInfo(generator, extensionConfig) {
             );
         });
 
-    const extensionParam = generator.options['extensionParam'];
-    if (extensionParam) {
-        switch (extensionParam.toString().trim().toLowerCase()) {
-            case 'n':
-                extensionConfig.extensionList = defaultExtensionList;
-                return Promise.resolve();
-            case 'y':
-                return getExtensionList();
-        }
-    }
-
     return generator.prompt({
         type: 'confirm',
         name: 'addExtensions',

@@ -21,18 +21,28 @@ const notebook = require('./generate-notebook-renderer');
 const snippets = require('./generate-snippets');
 const webupdate = require('./generate-web-update');
 
+const extensionGenerators = [
+    commandts, commandjs, colortheme, language, snippets, keymap, extensionpack, localization,
+    commandweb, notebook, webupdate
+]
+
 module.exports = class extends Generator {
 
     constructor(args, opts) {
         super(args, opts);
-        this.option('extensionType', { type: String });
-        this.option('extensionName', { type: String });
-        this.option('extensionDescription', { type: String });
-        this.option('extensionDisplayName', { type: String });
+        this.option('extensionType', { type: String, description: extensionGenerators.map(e => `'${e.id.substr(4)}'`).join(', ') });
+        this.option('extensionName', { type: String, description: 'Name of the extension' });
+        this.option('extensionDescription', { type: String, description: 'Description of the extension' });
+        this.option('extensionDisplayName', { type: String, description: 'Display name of the extension' });
 
-        this.option('extensionParam', { type: String });
-        this.option('extensionParam2', { type: String });
-        this.option('insiders', { type: Boolean, alias: 'i' });
+        this.option('pkgManager', { type: String, description: `'npm' or 'yarn'`});
+        this.option('webpack', { type: Boolean, description: `Bundle the extension with webpack` });
+        this.option('gitInit', { type: Boolean, description: `Initialize a git repo` });
+
+        this.option('snippetFolder', { type: String, description: `Snippet folder location` });
+        this.option('snippetLanguage', { type: String, description: `Snippet language` });
+
+        this.option('insiders', { type: Boolean, alias: 'i' , description: `Show the insiders options for the generator`});
 
         this.extensionConfig = Object.create(null);
         this.extensionConfig.installDependencies = false;
@@ -67,10 +77,6 @@ module.exports = class extends Generator {
     }
 
     async prompting() {
-        const extensionGenerators = [
-            commandts, commandjs, colortheme, language, snippets, keymap, extensionpack, localization,
-            commandweb, notebook, webupdate
-        ]
 
         // Ask for extension type
         const extensionType = this.options['extensionType'];
