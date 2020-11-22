@@ -316,8 +316,8 @@ describe('test code generator', function () {
 
                     actual = JSON.parse(body);
 
-                    assert.equal(actual.name, "Funky");
-                    assert.equal(actual.colors['editor.background'], "#f5f5f5");
+                    assert.strictEqual(actual.name, "Funky");
+                    assert.strictEqual(actual.colors['editor.background'], "#f5f5f5");
                     done();
                 } catch (e) {
                     done(e);
@@ -487,8 +487,8 @@ describe('test code generator', function () {
                     var grammar = fs.readFileSync('syntaxes/crusty.tmLanguage.json', 'utf8');
 
                     var actualGrammar = JSON.parse(grammar);
-                    assert.equal("Crusty", actualGrammar.name);
-                    assert.equal("source.crusty", actualGrammar.scopeName);
+                    assert.strictEqual("Crusty", actualGrammar.name);
+                    assert.strictEqual("source.crusty", actualGrammar.scopeName);
 
                     done();
                 } catch (e) {
