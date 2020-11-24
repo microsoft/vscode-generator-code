@@ -48,6 +48,25 @@
 				"SELECT_SUITE": "1",
 				"CUR_OPENED_FILE": "${fileBasenameNoExtension}"
 			}
+		},
+		{
+			"name": "Extension Tests (Coverage)",
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+				"--disable-extensions",
+				"--extensionDevelopmentPath=${workspaceFolder}",
+				"--extensionTestsPath=${workspaceFolder}/out/test/suite/nyc-coverage-test-runner"
+			],
+			"outFiles": [
+				"${workspaceFolder}/out/test/**/*.js"
+			],
+			"preLaunchTask": "npm: pretest",
+			"env": {
+				"COVERAGE": "1",
+				"SELECT_SUITE": "1",
+				"CUR_OPENED_FILE": "${fileBasenameNoExtension}"
+			}
 		}
 	]
 }
