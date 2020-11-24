@@ -48,6 +48,7 @@
 		<%- dep("@typescript-eslint/parser") %>,
 		<%- dep("glob") %>,
 		<%- dep("mocha") %>,
+		<%- dep("nyc") %>,
 		<%- dep("typescript") %>,
 		<%- dep("vscode-test") %><% if (insiders) { %>,
 		<%- dep("vscode-dts") %><% } if (webpack) { %>,
