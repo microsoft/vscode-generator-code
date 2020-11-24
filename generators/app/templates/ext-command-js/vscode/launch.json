@@ -21,6 +21,22 @@
 				"--extensionDevelopmentPath=${workspaceFolder}",
 				"--extensionTestsPath=${workspaceFolder}/test/suite/index"
 			]
+		},
+		{
+			"name": "Extension Tests (Select)",
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+				"--disable-extensions",
+				"--extensionDevelopmentPath=${workspaceFolder}",
+				"--extensionTestsPath=${workspaceFolder}/test/suite/nyc-coverage-test-runner"
+			],
+			"preLaunchTask": "npm: pretest",
+			"env": {
+				"COVERAGE": "0",
+				"SELECT_SUITE": "1",
+				"CUR_OPENED_FILE": "${fileBasenameNoExtension}"
+			}
 		}
 	]
 }
