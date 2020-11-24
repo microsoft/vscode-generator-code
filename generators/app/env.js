@@ -41,6 +41,7 @@ module.exports.getDependencyVersions = async function () {
         "eslint": "^7.9.0",
         "glob": "^7.1.6",
         "mocha": "^8.1.3",
+        "nyc": "^15.1.0",
         "typescript": "^4.0.2",
         "vscode-test": "^1.4.0",
         "@types/webpack-env": "^1.15.2",
@@ -57,4 +58,3 @@ module.exports.getDependencyVersions = async function () {
         "webpack-dev-server": "^3.11.0"
     }
 }
-
