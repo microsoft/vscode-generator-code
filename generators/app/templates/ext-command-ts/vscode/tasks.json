@@ -15,6 +15,20 @@
 				"kind": "build",
 				"isDefault": true
 			}
+		},
+		{
+			"type": "npm",
+			"script": "pretest",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: pretest",
+			"detail": "tsc -p ./",
+			"presentation": {
+				"reveal": "silent",
+				"panel": "shared",
+				"showReuseMessage": false,
+				"clear": true
+			}
 		}
 	]
 }
