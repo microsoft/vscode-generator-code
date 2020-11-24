@@ -1,0 +1,21 @@
+// See https://go.microsoft.com/fwlink/?LinkId=733558
+// for the documentation about the tasks.json format
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "pretest",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: pretest",
+			"detail": "tsc -p ./",
+			"presentation": {
+				"reveal": "silent",
+				"panel": "shared",
+				"showReuseMessage": false,
+				"clear": true
+			}
+		}
+	]
+}
