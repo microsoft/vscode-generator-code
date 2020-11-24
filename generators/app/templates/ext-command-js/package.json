@@ -33,6 +33,7 @@
         <%- dep("eslint") %>,
         <%- dep("glob") %>,
         <%- dep("mocha") %>,
+        <%- dep("nyc") %>,
         <%- dep("typescript") %>,
         <%- dep("vscode-test") %>
     }
