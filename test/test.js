@@ -700,6 +700,7 @@ describe('test code generator', function () {
                         "@typescript-eslint/eslint-plugin",
                         "glob",
                         "mocha",
+                        "nyc",
                         "typescript",
                         "vscode-test"
                     ]),
@@ -772,6 +773,7 @@ describe('test code generator', function () {
                         "@typescript-eslint/eslint-plugin",
                         "glob",
                         "mocha",
+                        "nyc",
                         "typescript",
                         "vscode-test"
                     ]),
@@ -865,6 +867,7 @@ describe('test code generator', function () {
                         "@typescript-eslint/eslint-plugin",
                         "glob",
                         "mocha",
+                        "nyc",
                         "typescript",
                         "vscode-test",
                         "webpack",
@@ -942,6 +945,7 @@ describe('test code generator', function () {
                         "eslint",
                         "glob",
                         "mocha",
+                        "nyc",
                         "typescript",
                         "vscode-test"
                     ]),
