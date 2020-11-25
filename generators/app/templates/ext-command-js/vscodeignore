@@ -1,5 +1,7 @@
 .vscode/**
 .vscode-test/**
+.nyc_output/**
+coverage/**
 test/**
 .gitignore
 .yarnrc
