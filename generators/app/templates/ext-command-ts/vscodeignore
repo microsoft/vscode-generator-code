@@ -1,6 +1,8 @@
 .vscode/**
 .vscode-test/**
+.nyc_output/**
 <% if (webpack) { %>out/**<% } else { %>out/test/**<% } %>
+coverage/**
 src/**
 .gitignore
 .yarnrc
