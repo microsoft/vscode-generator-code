@@ -64,7 +64,8 @@ function askForSnippetsInfo(generator, extensionConfig) {
         return generator.prompt({
             type: 'input',
             name: 'snippetPath',
-            message: 'Folder name for import or none for new:'
+            message: 'Folder name for import or none for new:',
+            default: ''
         }).then(snippetAnswer => {
             let count = 0;
             let snippetPath = snippetAnswer.snippetPath;

@@ -68,6 +68,7 @@ function askForLanguageInfo(generator, extensionConfig) {
         type: 'input',
         name: 'tmLanguageURL',
         message: 'URL or file to import, or none for new:',
+        default: ''
     }).then(urlAnswer => {
         return convertGrammar(urlAnswer.tmLanguageURL, extensionConfig);
     });

@@ -51,7 +51,7 @@
     "@types/yeoman-generator": "^4.11.3",
     "mocha": "^8.2.1",
     "yeoman-assert": "^3.1.1",
-    "yeoman-test": "^2.6.0",
+    "yeoman-test": "^3.0.0",
     "yo": "^3.1.1"
   }
 }

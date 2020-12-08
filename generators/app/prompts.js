@@ -71,7 +71,8 @@ exports.askForExtensionDescription = (generator, extensionConfig) => {
     return generator.prompt({
         type: 'input',
         name: 'description',
-        message: 'What\'s the description of your extension?'
+        message: 'What\'s the description of your extension?',
+        default: ''
     }).then(descriptionAnswer => {
         extensionConfig.description = descriptionAnswer.description;
     });
