@@ -44,6 +44,6 @@ module.exports = {
         generator.fs.copy(generator.sourceRoot() + '/.eslintrc.json', extensionConfig.name + '/.eslintrc.json');
 
         extensionConfig.installDependencies = true;
-        extensionConfig.proposedAPI = extensionConfig.insiders;
+        extensionConfig.proposedAPI = false;
     }
 }

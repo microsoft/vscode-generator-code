@@ -42,9 +42,9 @@ module.exports = {
         generator.fs.extendJSON('package.json', {
             'browser': './dist/web/extension.js',
             'scripts': {
-                "compile-web": "webpack --devtool nosources-source-map --config ./build/web-extension.webpack.config.js",
-                "watch-web": "webpack --watch --devtool nosources-source-map --config ./build/web-extension.webpack.config.js",
-                "package-web": "webpack --mode production --config ./build/web-extension.webpack.config.js",
+                "compile-web": "webpack --config ./build/web-extension.webpack.config.js",
+                "watch-web": "webpack --watch --config ./build/web-extension.webpack.config.js",
+                "package-web": "webpack --mode production --devtool hidden-source-map --config ./build/web-extension.webpack.config.js",
             },
             'devDependencies': {
                 'ts-loader': dependencyVersions['ts-loader'],

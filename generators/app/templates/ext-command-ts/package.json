@@ -24,9 +24,9 @@
 	},
 	"scripts": {<% if (webpack) { %>
 		"vscode:prepublish": "<%= pkgManager %> run package",
-		"compile": "webpack --devtool nosources-source-map --config ./build/node-extension.webpack.config.js",
-		"watch": "webpack --watch --devtool nosources-source-map --config ./build/node-extension.webpack.config.js",
-		"package": "webpack --mode production --config ./build/node-extension.webpack.config.js",
+		"compile": "webpack --config ./build/node-extension.webpack.config.js",
+		"watch": "webpack --watch --config ./build/node-extension.webpack.config.js",
+		"package": "webpack --mode production --devtool hidden-source-map --config ./build/node-extension.webpack.config.js",
 		"test-compile": "tsc -p ./",
 		"test-watch": "tsc -watch -p ./",
 		"pretest": "<%= pkgManager %> run test-compile && <%= pkgManager %> run lint",<% } else { %>

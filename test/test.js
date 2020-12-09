@@ -874,9 +874,9 @@ describe('test code generator', function () {
                     "main": "./dist/extension.js",
                     "scripts": {
                         "vscode:prepublish": "npm run package",
-                        "compile": "webpack --devtool nosources-source-map --config ./build/node-extension.webpack.config.js",
-                        "watch": "webpack --watch --devtool nosources-source-map --config ./build/node-extension.webpack.config.js",
-                        "package": "webpack --mode production --config ./build/node-extension.webpack.config.js",
+                        "compile": "webpack --config ./build/node-extension.webpack.config.js",
+                        "watch": "webpack --watch --config ./build/node-extension.webpack.config.js",
+                        "package": "webpack --mode production --devtool hidden-source-map --config ./build/node-extension.webpack.config.js",
                         "test-compile": "tsc -p ./",
                         "test-watch": "tsc -watch -p ./",
                         "lint": "eslint src --ext ts",
@@ -1199,9 +1199,9 @@ describe('test code generator', function () {
                         "test": "node ./out/test/runTests.js",
                         "pretest": "tsc -p ./",
                         "vscode:prepublish": "npm run package-web",
-                        "compile-web": "webpack --devtool nosources-source-map --config ./build/web-extension.webpack.config.js",
-                        "watch-web": "webpack --watch --devtool nosources-source-map --config ./build/web-extension.webpack.config.js",
-                        "package-web": "webpack --mode production --config ./build/web-extension.webpack.config.js",
+                        "compile-web": "webpack --config ./build/web-extension.webpack.config.js",
+                        "watch-web": "webpack --watch --config ./build/web-extension.webpack.config.js",
+                        "package-web": "webpack --mode production --devtool hidden-source-map --config ./build/web-extension.webpack.config.js",
                         "lint": "eslint src --ext ts"
                     },
                     "categories": [

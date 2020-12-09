@@ -28,17 +28,11 @@ module.exports = /** @type WebpackConfig */ {
 		rules: [{
 			test: /\.ts$/,
 			exclude: /node_modules/,
-			use: [{
-				// configure TypeScript loader:
-				// * enable sources maps for end-to-end source maps
-				loader: 'ts-loader',
-				options: {
-					compilerOptions: {
-						'sourceMap': true,
-						'declaration': false
-					}
+			use: [
+				{
+					loader: 'ts-loader'
 				}
-			}]
+			]
 		}]
 	},
 	externals: {
@@ -52,5 +46,5 @@ module.exports = /** @type WebpackConfig */ {
 		path: path.join(__dirname, '../dist/web'),
 		libraryTarget: 'commonjs'
 	},
-	devtool: 'source-map'
+	devtool: 'nosources-source-map'
 };
