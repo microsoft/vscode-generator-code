@@ -38,20 +38,20 @@
     "cd": "^0.3.3",
     "chalk": "^4.1.0",
     "fast-plist": "^0.1.2",
-    "kind-of": "6.0.3",
+    "kind-of": "^6.0.3",
     "request-light": "^0.4.0",
     "sanitize-filename": "^1.6.3",
     "sax": "^1.2.4",
-    "yeoman-generator": "^4.12.0",
+    "yeoman-generator": "^4.13.0",
     "yosay": "^2.0.2"
   },
   "devDependencies": {
-    "@types/mocha": "^8.0.4",
+    "@types/mocha": "^8.2.0",
     "@types/node": "^14.14.10",
     "@types/yeoman-generator": "^4.11.3",
     "mocha": "^8.2.1",
     "yeoman-assert": "^3.1.1",
-    "yeoman-test": "^3.0.0",
+    "yeoman-test": "^4.0.0",
     "yo": "^3.1.1"
   }
 }

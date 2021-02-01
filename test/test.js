@@ -874,9 +874,9 @@ describe('test code generator', function () {
                     "main": "./dist/extension.js",
                     "scripts": {
                         "vscode:prepublish": "npm run package",
-                        "compile": "webpack --config ./build/node-extension.webpack.config.js",
-                        "watch": "webpack --watch --config ./build/node-extension.webpack.config.js",
-                        "package": "webpack --mode production --devtool hidden-source-map --config ./build/node-extension.webpack.config.js",
+                        "compile": "webpack",
+                        "watch": "webpack --watch",
+                        "package": "webpack --mode production --devtool hidden-source-map",
                         "test-compile": "tsc -p ./",
                         "test-watch": "tsc -watch -p ./",
                         "lint": "eslint src --ext ts",

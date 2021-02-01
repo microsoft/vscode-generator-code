@@ -52,7 +52,7 @@ module.exports = {
         }
 
         if (extensionConfig.webpack) {
-            generator.fs.copyTpl(generator.sourceRoot() + '/build/node-extension.webpack.config.js', extensionConfig.name + '/build/node-extension.webpack.config.js', extensionConfig);
+            generator.fs.copyTpl(generator.sourceRoot() + '/webpack.config.js', extensionConfig.name + '/webpack.config.js', extensionConfig);
         }
 
         extensionConfig.installDependencies = true;
