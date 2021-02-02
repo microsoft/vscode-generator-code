@@ -45,8 +45,8 @@ module.exports = {
     },
 
     endMessage: (generator, extensionConfig) => {
-            generator.log(chalk.yellow('Please review the "extensionPack" in the "package.json" before publishing the extension pack.'));
-            generator.log('');
+        generator.log(chalk.yellow('Please review the "extensionPack" in the "package.json" before publishing the extension pack.'));
+        generator.log('');
     }
 }
 

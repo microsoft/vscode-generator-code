@@ -1259,14 +1259,14 @@ describe('test code generator', function () {
                     "activationEvents": [],
                     "main": "./out/extension/extension.js",
                     "contributes": {
-                      "notebookOutputRenderer": [
-                        {
-                          "entrypoint": "./out/client/index.js",
-                          "id": "json-renderer",
-                          "displayName": "JSON Renderer",
-                          "mimeTypes": ["application/json"]
-                        }
-                      ]
+                        "notebookOutputRenderer": [
+                            {
+                                "entrypoint": "./out/client/index.js",
+                                "id": "json-renderer",
+                                "displayName": "JSON Renderer",
+                                "mimeTypes": ["application/json"]
+                            }
+                        ]
                     },
                     "scripts": {
                         "vscode:prepublish": "npm run compile && node out/test/checkNoTestProvider.js",

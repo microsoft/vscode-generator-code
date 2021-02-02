@@ -15,12 +15,16 @@ exports.askForExtensionDisplayName = (generator, extensionConfig) => {
         extensionConfig.displayName = extensionDisplayName;
         return Promise.resolve();
     }
+    if (generator.options['compact'] && extensionConfig.extensionNameFromCLI) {
+        extensionConfig.displayName = extensionConfig.extensionNameFromCLI;
+        return Promise.resolve();
+    }
 
     return generator.prompt({
         type: 'input',
         name: 'displayName',
         message: 'What\'s the name of your extension?',
-        default: extensionConfig.displayName
+        default: extensionConfig.extensionNameFromCLI || ''
     }).then(displayNameAnswer => {
         extensionConfig.displayName = displayNameAnswer.displayName;
     });
@@ -41,15 +45,16 @@ exports.askForExtensionId = (generator, extensionConfig) => {
     if (!def && extensionConfig.displayName) {
         def = extensionConfig.displayName.toLowerCase().replace(/[^a-z0-9]/g, '-');
     }
-    if (!def) {
-        def = '';
+    if (def && generator.options['compact']) {
+        extensionConfig.name = def;
+        return Promise.resolve();
     }
 
     return generator.prompt({
         type: 'input',
         name: 'name',
         message: 'What\'s the identifier of your extension?',
-        default: def,
+        default: def || '',
         validate: validator.validateExtensionId
     }).then(nameAnswer => {
         extensionConfig.name = nameAnswer.name;
@@ -65,6 +70,10 @@ exports.askForExtensionDescription = (generator, extensionConfig) => {
     let extensionDescription = generator.options['extensionDescription'];
     if (extensionDescription) {
         extensionConfig.description = extensionDescription;
+        return Promise.resolve();
+    }
+    if (generator.options['compact']) {
+        extensionConfig.description = '';
         return Promise.resolve();
     }
 
@@ -86,6 +95,10 @@ exports.askForGit = (generator, extensionConfig) => {
     let gitInit = generator.options['gitInit'];
     if (typeof gitInit === 'boolean') {
         extensionConfig.gitInit = Boolean(gitInit);
+        return Promise.resolve();
+    }
+    if (generator.options['compact']) {
+        extensionConfig.gitInit = true;
         return Promise.resolve();
     }
 
@@ -111,6 +124,11 @@ exports.askForPackageManager = (generator, extensionConfig) => {
     }
 
     extensionConfig.pkgManager = 'npm';
+    if (generator.options['compact']) {
+        return Promise.resolve();
+    }
+
+
     return generator.prompt({
         type: 'list',
         name: 'pkgManager',
@@ -138,6 +156,11 @@ exports.askForWebpack = (generator, extensionConfig) => {
     let webpack = generator.options['webpack'];
     if (typeof webpack === 'boolean') {
         extensionConfig.webpack = Boolean(webpack);
+        return Promise.resolve();
+    }
+
+    if (generator.options['compact']) {
+        extensionConfig.webpack = false;
         return Promise.resolve();
     }
 

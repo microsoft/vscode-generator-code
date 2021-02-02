@@ -30,22 +30,27 @@ module.exports = class extends Generator {
 
     constructor(args, opts) {
         super(args, opts);
-        this.option('extensionType', { type: String, description: extensionGenerators.map(e => `'${e.id.substr(4)}'`).join(', ') });
+        this.option('extensionType', { type: String, description: [commandts, commandjs, colortheme, language].map(e => `'${e.id.substr(4)}'`).join(', ') + '...' });
         this.option('extensionName', { type: String, description: 'Name of the extension' });
         this.option('extensionDescription', { type: String, description: 'Description of the extension' });
         this.option('extensionDisplayName', { type: String, description: 'Display name of the extension' });
 
-        this.option('pkgManager', { type: String, description: `'npm' or 'yarn'`});
+        this.option('pkgManager', { type: String, description: `'npm' or 'yarn'` });
         this.option('webpack', { type: Boolean, description: `Bundle the extension with webpack` });
         this.option('gitInit', { type: Boolean, description: `Initialize a git repo` });
 
         this.option('snippetFolder', { type: String, description: `Snippet folder location` });
         this.option('snippetLanguage', { type: String, description: `Snippet language` });
 
-        this.option('insiders', { type: Boolean, alias: 'i' , description: `Show the insiders options for the generator`});
+        this.option('insiders', { type: Boolean, alias: 'i', description: `Show the insiders options for the generator` });
+        this.option('compact', { type: Boolean, alias: 'c', description: 'Compact mode, skip all optional propmpts and use defaults' });
+        this.option('open', { type: Boolean, alias: 'o', description: 'Open the new extension in Visual Studio Code' });
+        this.option('openInInsiders', { type: Boolean, alias: 'O', description: 'Open the new extension in Visual Studio Code Insiders' });
 
         this.extensionConfig = Object.create(null);
         this.extensionConfig.installDependencies = false;
+        this.extensionConfig.insiders = false;
+        this.extensionConfig.extensionNameFromCLI = undefined;
 
         this.extensionGenerator = undefined;
 
@@ -54,7 +59,18 @@ module.exports = class extends Generator {
 
     async initializing() {
         const cliArgs = this.options['_'];
-        this.extensionConfig.insiders = Array.isArray(cliArgs) && cliArgs.indexOf('insiders') !== -1 || !!this.options['insiders'];
+
+        if (Array.isArray(cliArgs) && cliArgs.length > 0) {
+            if (cliArgs[0] === 'insiders') {
+                this.extensionConfig.insiders = true;
+            } else {
+                this.extensionConfig.extensionNameFromCLI = cliArgs[0];
+            }
+        }
+        if (this.options['insiders']) {
+            this.extensionConfig.insiders = true;
+        }
+
 
         // Welcome
         if (!this.extensionConfig.insiders) {
@@ -173,27 +189,18 @@ module.exports = class extends Generator {
         }
         this.log('');
 
-        if (!this.extensionConfig.insiders) {
-            this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
-            this.log('');
-            this.log('To start editing with Visual Studio Code, use the following commands:');
-            this.log('');
-            this.log('     cd ' + this.extensionConfig.name);
-            this.log('     code .');
-            this.log('');
-            this.log('Open vsc-extension-quickstart.md inside the new extension for further instructions');
-            this.log('on how to modify, test and publish your extension.');
-        } else {
-            this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
-            this.log('');
+        this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
+        this.log('');
+
+        if (!this.extensionConfig.insiders && !this.options['open'] && !this.options['openInInsiders']) {
             this.log('To start editing with Visual Studio Code, use the following commands:');
             this.log('');
             this.log('     cd ' + this.extensionConfig.name);
             this.log('     code-insiders .');
             this.log('');
-            this.log('Open vsc-extension-quickstart.md inside the new extension for further instructions');
-            this.log('on how to modify and test your extension.');
         }
+        this.log('Open vsc-extension-quickstart.md inside the new extension for further instructions');
+        this.log('on how to modify, test and publish your extension.');
         this.log('');
 
         if (this.extensionGenerator.endMessage) {
@@ -203,8 +210,13 @@ module.exports = class extends Generator {
         this.log('For more information, also visit http://code.visualstudio.com and follow us @code.');
         this.log('\r\n');
 
-        if (this.extensionConfig.insiders) {
-            this.spawnCommand('code-insiders', [this.destinationPath(this.extensionConfig.name)]);
+        const folderLocation = this.destinationPath(this.extensionConfig.name);
+        if (this.options['open']) {
+            this.log(`Opening ${folderLocation} in Visual Studio Code...`);
+            this.spawnCommand('code', [folderLocation]);
+        } else if (this.extensionConfig.insiders || this.options['openInInsiders']) {
+            this.log(`Opening ${folderLocation} with Visual Studio Code Insiders...`);
+            this.spawnCommand('code-insiders', [folderLocation]);
         }
     }
 }

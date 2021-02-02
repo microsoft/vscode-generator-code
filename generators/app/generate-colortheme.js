@@ -97,6 +97,11 @@ module.exports = {
  * @param {Object} extensionConfig
  */
 async function askForThemeInfo(generator, extensionConfig) {
+    if (generator.options['compact']) {
+        return Promise.resolve();
+    }
+
+
     const answer = await generator.prompt({
         type: 'list',
         name: 'themeImportType',
