@@ -64,8 +64,8 @@ function askForLanguageId(generator, extensionConfig) {
         message: 'Language id:',
     }).then(answer => {
         extensionConfig.lpLanguageId = answer.lpLanguageId;
-        if (!generator.options['extensionName']) {
-            generator.options['extensionName'] = "vscode-language-pack-" + answer.lpLanguageId;
+        if (!generator.options['extensionId']) {
+            generator.options['extensionId'] = "vscode-language-pack-" + answer.lpLanguageId;
         }
         return Promise.resolve();
     });
