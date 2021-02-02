@@ -31,7 +31,7 @@
     "lint": "eslint .",
     "test": "mocha",
     "prepublish": "npm test",
-    "preversion": "npm test && npm lint",
+    "preversion": "npm test && npm run lint",
     "postversion": "git push && git push --tags"
   },
   "dependencies": {
