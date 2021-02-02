@@ -4,6 +4,7 @@
 
 module.exports = {
     id: 'ext-web-update',
+    aliases: ['web-update'],
     insidersName: 'Add Web bits to existing extension (TypeScript)',
     update: true,
     /**
@@ -12,7 +13,7 @@ module.exports = {
      */
     prompting: async (generator, extensionConfig) => {
         const pkgJSON = generator.fs.readJSON(generator.destinationPath('package.json'));
-        if (!pkgJSON || !pkgJSON.engines || !pkgJSON.engines.vscode) {
+        if (!pkgJSON || !pkgJSON['engines'] || !pkgJSON['engines'].vscode) {
             generator.log('');
             generator.log('Unable to find `package.json` in the current directory.');
             generator.log('Please run the generator on the folder on an existing VSCode extension.');

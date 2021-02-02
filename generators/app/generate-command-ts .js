@@ -6,6 +6,7 @@ const prompts = require("./prompts");
 
 module.exports = {
     id: 'ext-command-ts',
+    aliases: ['ts', 'command-ts'],
     name: 'New Extension (TypeScript)',
     insidersName: 'New Extension with Proposed API (TypeScript)',
     /**

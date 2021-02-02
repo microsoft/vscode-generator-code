@@ -11,6 +11,7 @@ const request = require('request-light');
 
 module.exports = {
     id: 'ext-language',
+    aliases: ['language'],
     name: 'New Language Support',
     /**
      * @param {import('yeoman-generator')} generator

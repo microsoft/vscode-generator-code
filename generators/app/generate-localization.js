@@ -7,6 +7,7 @@ const chalk = require("chalk");
 
 module.exports = {
     id: 'ext-localization',
+    aliases: ['localization'],
     name: 'New Language Pack (Localization)',
     /**
      * @param {import('yeoman-generator')} generator

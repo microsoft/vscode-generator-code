@@ -9,6 +9,7 @@ const plistParser = require('fast-plist');
 
 module.exports = {
     id: 'ext-snippets',
+    aliases: ['snippets'],
     name: 'New Code Snippets',
     /**
      * @param {import('yeoman-generator')} generator

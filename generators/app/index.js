@@ -30,10 +30,15 @@ module.exports = class extends Generator {
 
     constructor(args, opts) {
         super(args, opts);
-        this.option('extensionType', { type: String, description: [commandts, commandjs, colortheme, language].map(e => `'${e.id.substr(4)}'`).join(', ') + '...' });
-        this.option('extensionName', { type: String, description: 'Name of the extension' });
+        this.option('insiders', { type: Boolean, alias: 'i', description: `Show the insiders options for the generator` });
+        this.option('quick', { type: Boolean, alias: 'q', description: 'Quick mode, skip all optional prompts and use defaults' });
+        this.option('open', { type: Boolean, alias: 'o', description: 'Open the generated extension in Visual Studio Code' });
+        this.option('openInInsiders', { type: Boolean, alias: 'O', description: 'Open the generated extension in Visual Studio Code Insiders' });
+
+        this.option('extensionType', { type: String, alias: 't', description: extensionGenerators.slice(0, 6).map(e => e.aliases[0]).join(', ') + '...' });
+        this.option('extensionDisplayName', { type: String,  alias: 'n', description: 'Display name of the extension' });
+        this.option('extensionId', { type: String, description: 'Id of the extension' });
         this.option('extensionDescription', { type: String, description: 'Description of the extension' });
-        this.option('extensionDisplayName', { type: String, description: 'Display name of the extension' });
 
         this.option('pkgManager', { type: String, description: `'npm' or 'yarn'` });
         this.option('webpack', { type: Boolean, description: `Bundle the extension with webpack` });
@@ -41,11 +46,6 @@ module.exports = class extends Generator {
 
         this.option('snippetFolder', { type: String, description: `Snippet folder location` });
         this.option('snippetLanguage', { type: String, description: `Snippet language` });
-
-        this.option('insiders', { type: Boolean, alias: 'i', description: `Show the insiders options for the generator` });
-        this.option('compact', { type: Boolean, alias: 'c', description: 'Compact mode, skip all optional propmpts and use defaults' });
-        this.option('open', { type: Boolean, alias: 'o', description: 'Open the new extension in Visual Studio Code' });
-        this.option('openInInsiders', { type: Boolean, alias: 'O', description: 'Open the new extension in Visual Studio Code Insiders' });
 
         this.extensionConfig = Object.create(null);
         this.extensionConfig.installDependencies = false;
@@ -98,10 +98,11 @@ module.exports = class extends Generator {
         const extensionType = this.options['extensionType'];
         if (extensionType) {
             const extensionTypeId = 'ext-' + extensionType;
-            if (extensionGenerators.find(g => g.id === extensionTypeId)) {
-                this.extensionConfig.type = extensionTypeId;
+            const extensionGenerator = extensionGenerators.find(g => g.aliases.indexOf(extensionType) !== -1);
+            if (extensionGenerator) {
+                this.extensionConfig.type = extensionGenerator.id;
             } else {
-                this.log("Invalid extension type: " + extensionType + '\nPossible types are: ' + extensionGenerators.map(g => g.id.substr(4)).join(', '));
+                this.log("Invalid extension type: " + extensionType + '\nPossible types are: ' + extensionGenerators.map(g => g.aliases.join(', ')).join(', '));
                 this.abort = true;
             }
         } else {
@@ -192,7 +193,7 @@ module.exports = class extends Generator {
         this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
         this.log('');
 
-        if (!this.extensionConfig.insiders && !this.options['open'] && !this.options['openInInsiders']) {
+        if (!this.extensionConfig.insiders && !this.options['open'] && !this.options['openInInsiders'] && !this.options['quick']) {
             this.log('To start editing with Visual Studio Code, use the following commands:');
             this.log('');
             this.log('     cd ' + this.extensionConfig.name);
@@ -214,7 +215,7 @@ module.exports = class extends Generator {
         if (this.options['open']) {
             this.log(`Opening ${folderLocation} in Visual Studio Code...`);
             this.spawnCommand('code', [folderLocation]);
-        } else if (this.extensionConfig.insiders || this.options['openInInsiders']) {
+        } else if (this.extensionConfig.insiders || this.options['openInInsiders'] || this.options['quick']) {
             this.log(`Opening ${folderLocation} with Visual Studio Code Insiders...`);
             this.spawnCommand('code-insiders', [folderLocation]);
         }

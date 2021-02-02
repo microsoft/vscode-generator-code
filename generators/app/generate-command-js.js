@@ -6,6 +6,7 @@ const prompts = require("./prompts");
 
 module.exports = {
     id: 'ext-command-js',
+    aliases: ['js', 'command-js'],
     name: 'New Extension (JavaScript)',
     /**
      * @param {import('yeoman-generator')} generator

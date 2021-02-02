@@ -7,6 +7,7 @@ let childProcess = require('child_process');
 
 module.exports = {
     id: 'ext-extensionpack',
+    aliases: ['extensionpack'],
     name: 'New Extension Pack',
     /**
      * @param {import('yeoman-generator')} generator

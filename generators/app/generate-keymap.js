@@ -6,6 +6,7 @@ const prompts = require("./prompts");
 
 module.exports = {
     id: 'ext-keymap',
+    aliases: ['keymap'],
     name: 'New Keymap',
     /**
      * @param {import('yeoman-generator')} generator

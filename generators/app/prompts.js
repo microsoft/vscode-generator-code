@@ -15,7 +15,7 @@ exports.askForExtensionDisplayName = (generator, extensionConfig) => {
         extensionConfig.displayName = extensionDisplayName;
         return Promise.resolve();
     }
-    if (generator.options['compact'] && extensionConfig.extensionNameFromCLI) {
+    if (generator.options['quick'] && extensionConfig.extensionNameFromCLI) {
         extensionConfig.displayName = extensionConfig.extensionNameFromCLI;
         return Promise.resolve();
     }
@@ -36,7 +36,7 @@ exports.askForExtensionDisplayName = (generator, extensionConfig) => {
 * @param {Object} extensionConfig
 */
 exports.askForExtensionId = (generator, extensionConfig) => {
-    let extensionName = generator.options['extensionName'];
+    let extensionName = generator.options['extensionId'];
     if (extensionName) {
         extensionConfig.name = extensionName;
         return Promise.resolve();
@@ -45,7 +45,7 @@ exports.askForExtensionId = (generator, extensionConfig) => {
     if (!def && extensionConfig.displayName) {
         def = extensionConfig.displayName.toLowerCase().replace(/[^a-z0-9]/g, '-');
     }
-    if (def && generator.options['compact']) {
+    if (def && generator.options['quick']) {
         extensionConfig.name = def;
         return Promise.resolve();
     }
@@ -72,7 +72,7 @@ exports.askForExtensionDescription = (generator, extensionConfig) => {
         extensionConfig.description = extensionDescription;
         return Promise.resolve();
     }
-    if (generator.options['compact']) {
+    if (generator.options['quick']) {
         extensionConfig.description = '';
         return Promise.resolve();
     }
@@ -97,7 +97,7 @@ exports.askForGit = (generator, extensionConfig) => {
         extensionConfig.gitInit = Boolean(gitInit);
         return Promise.resolve();
     }
-    if (generator.options['compact']) {
+    if (generator.options['quick']) {
         extensionConfig.gitInit = true;
         return Promise.resolve();
     }
@@ -124,7 +124,7 @@ exports.askForPackageManager = (generator, extensionConfig) => {
     }
 
     extensionConfig.pkgManager = 'npm';
-    if (generator.options['compact']) {
+    if (generator.options['quick']) {
         return Promise.resolve();
     }
 
@@ -159,7 +159,7 @@ exports.askForWebpack = (generator, extensionConfig) => {
         return Promise.resolve();
     }
 
-    if (generator.options['compact']) {
+    if (generator.options['quick']) {
         extensionConfig.webpack = false;
         return Promise.resolve();
     }

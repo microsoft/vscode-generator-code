@@ -6,6 +6,7 @@ const prompts = require("./prompts");
 
 module.exports = {
     id: 'ext-notebook-renderer',
+    aliases: ['notebook'],
     insidersName: 'New Notebook Renderer (TypeScript)',
     /**
      * @param {import('yeoman-generator')} generator

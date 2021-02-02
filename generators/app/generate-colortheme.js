@@ -12,6 +12,7 @@ const request = require('request-light');
 
 module.exports = {
     id: 'ext-colortheme',
+    aliases: ['colortheme'],
     name: 'New Color Theme',
     /**
      * @param {import('yeoman-generator')} generator
@@ -97,7 +98,7 @@ module.exports = {
  * @param {Object} extensionConfig
  */
 async function askForThemeInfo(generator, extensionConfig) {
-    if (generator.options['compact']) {
+    if (generator.options['quick']) {
         return Promise.resolve();
     }
 
