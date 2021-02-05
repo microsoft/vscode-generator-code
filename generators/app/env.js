@@ -51,10 +51,16 @@ module.exports.getDependencyVersions = async function () {
         "style-loader": "^1.2.1",
         "ts-loader": "^8.0.14",
         "vscode-dts": "^0.3.1",
+        "vscode-languageclient": "^7.0.0",
+        "vscode-languageserver": "^7.0.0",
+        "vscode-languageserver-textdocument": "^1.0.1",
         "vscode-notebook-error-overlay": "^1.0.1",
+        "vscode-uri": "^3.0.2",
         "webpack": "^5.19.0",
         "webpack-cli": "^4.4.0",
-        "webpack-dev-server": "^3.11.2"
+        "webpack-dev-server": "^3.11.2",
+        "merge-options": "^2.0.0",
+        "rimraf": "^3.0.2"
     }
 }
 

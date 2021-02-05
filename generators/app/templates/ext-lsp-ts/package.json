@@ -1,0 +1,41 @@
+{
+	"name": <%- JSON.stringify(name) %>,
+	"displayName": <%- JSON.stringify(displayName) %>,
+	"description": <%- JSON.stringify(description) %>,
+	"version": "0.0.1",
+	"engines": {
+		"vscode": <%- JSON.stringify(vsCodeEngine) %>
+	},
+	"keywords": [
+		"multi-root ready"
+	],
+	"activationEvents": [
+		"onLanguage:plaintext"
+	],
+	"main": "./client/out/extension",
+	"scripts": {
+		"vscode:prepublish": "<%= pkgManager %> run webpack",
+		"webpack": "<%= pkgManager %> run clean && webpack --mode production --config ./client/webpack.config.js && webpack --mode production --config ./server/webpack.config.js",
+		"webpack:dev": "<%= pkgManager %> run clean && webpack --mode none --config ./client/webpack.config.js && webpack --mode none --config ./server/webpack.config.js",
+		"compile": "tsc -b",
+		"compile:client": "tsc -b ./client/tsconfig.json",
+		"compile:server": "tsc -b ./server/tsconfig.json",
+		"watch": "tsc -b -w",
+		"lint": "<%= pkgManager %> run lint:client && <%= pkgManager %> run lint:server",
+		"lint:client": "eslint --config ./client/.eslintrc.json ./client/src/*.ts",
+		"lint:server": "eslint --config ./server/.eslintrc.json ./server/src/*.ts",
+		"clean": "rimraf client/out && rimraf server/out",
+		"postinstall": "cd client && <%= pkgManager %> install && cd ../server && <%= pkgManager %> install && cd .."
+	},
+	"devDependencies": {
+		<%- dep("@types/node") %>,
+		<%- dep("typescript") %>,
+		<%- dep("eslint") %>,
+		<%- dep("@typescript-eslint/parser") %>,
+		<%- dep("webpack") %>,
+		<%- dep("webpack-cli") %>,
+		<%- dep("ts-loader") %>,
+		<%- dep("merge-options") %>,
+		<%- dep("rimraf") %>
+	}
+}
