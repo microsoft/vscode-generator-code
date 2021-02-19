@@ -1018,6 +1018,241 @@ describe('test code generator', function () {
             });
     });
 
+    it('lsp-ts', async function () {
+        this.timeout(10000);
+
+        await helpers
+            .run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-lsp-ts',
+                name: 'testLsp',
+                displayName: 'Test LSP',
+                description: 'My TestLSP',
+                gitInit: true,
+                pkgManager: 'npm'
+            }) // Mock the prompt answers
+            .toPromise()
+
+        let expectedPackageJSON = {
+            "name": "testLsp",
+            "displayName": 'Test LSP',
+            "description": "My TestLSP",
+            "version": "0.0.1",
+            "engines": {
+                "vscode": engineVersion
+            },
+            "activationEvents": [
+                "onLanguage:plaintext"
+            ],
+            "devDependencies": devDependencies([
+                "@types/node",
+                "eslint",
+                "@typescript-eslint/parser",
+                "typescript",
+                "merge-options",
+                "rimraf",
+                "ts-loader",
+                "webpack",
+                "webpack-cli"
+            ]),
+            "main": "./client/out/extension",
+            "scripts": {
+                "vscode:prepublish": "npm run webpack",
+                "webpack": "npm run clean && webpack --mode production --config ./client/webpack.config.js && webpack --mode production --config ./server/webpack.config.js",
+                "webpack:dev": "npm run clean && webpack --mode none --config ./client/webpack.config.js && webpack --mode none --config ./server/webpack.config.js",
+                "compile": "tsc -b",
+                "compile:client": "tsc -b ./client/tsconfig.json",
+                "compile:server": "tsc -b ./server/tsconfig.json",
+                "watch": "tsc -b -w",
+                "lint": "npm run lint:client && npm run lint:server",
+                "lint:client": "eslint --config ./client/.eslintrc.json ./client/src/*.ts",
+                "lint:server": "eslint --config ./server/.eslintrc.json ./server/src/*.ts",
+                "clean": "rimraf client/out && rimraf server/out",
+                "postinstall": "cd client && npm install && cd ../server && npm install && cd .."
+            },
+            "keywords": [
+                "multi-root ready"
+            ]
+        };
+
+        let expectClientPackageJSON = {
+            "name": "client",
+            "displayName": "Test LSP - Client",
+            "version": "0.0.1",
+            "engines": {
+                "vscode": engineVersion
+            },
+            "devDependencies": {
+                "@types/vscode": engineVersion
+            },
+            "dependencies": devDependencies([
+                "vscode-languageclient"
+            ])
+        };
+        let expectServerPackageJSON = {
+            "name": "server",
+            "displayName": "Test LSP - Server",
+            "version": "0.0.1",
+            "engines": {
+                "node": "*"
+            },
+            "dependencies": devDependencies([
+                "vscode-uri",
+                "vscode-languageserver",
+                "vscode-languageserver-textdocument"
+            ])
+        };
+
+
+        assert.file([
+            'package.json',
+            'README.md',
+            'CHANGELOG.md',
+            '.eslintrc.base.json',
+            '.vscodeignore',
+            'server/src/sampleServer.ts',
+            'server/package.json',
+            'server/.eslintrc.json',
+            'server/tsconfig.json',
+            'server/webpack.config.js',
+            'client/src/extension.ts',
+            'client/package.json',
+            'client/.eslintrc.json',
+            'client/tsconfig.json',
+            'client/webpack.config.js',
+            'tsconfig.json'
+        ]);
+
+        let packageJSONBody = fs.readFileSync('package.json', 'utf8')
+        let actualPackageJSON = JSON.parse(packageJSONBody);
+        assert.deepEqual(expectedPackageJSON, actualPackageJSON);
+
+        let clientPackageJSONBody = fs.readFileSync('client/package.json', 'utf8')
+        let actualClientPackageJSON = JSON.parse(clientPackageJSONBody);
+        assert.deepEqual(expectClientPackageJSON, actualClientPackageJSON);
+
+        let serverPackageJSONBody = fs.readFileSync('server/package.json', 'utf8')
+        let actualServerPackageJSON = JSON.parse(serverPackageJSONBody);
+        assert.deepEqual(expectServerPackageJSON, actualServerPackageJSON);
+    });
+
+    it('lsp-ts with yarn', async function () {
+        this.timeout(10000);
+
+        await helpers
+            .run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-lsp-ts',
+                name: 'testLsp',
+                displayName: 'Test LSP',
+                description: 'My TestLSP',
+                gitInit: true,
+                pkgManager: 'yarn'
+            }) // Mock the prompt answers
+            .toPromise()
+
+        let expectedPackageJSON = {
+            "name": "testLsp",
+            "displayName": 'Test LSP',
+            "description": "My TestLSP",
+            "version": "0.0.1",
+            "engines": {
+                "vscode": engineVersion
+            },
+            "activationEvents": [
+                "onLanguage:plaintext"
+            ],
+            "devDependencies": devDependencies([
+                "@types/node",
+                "eslint",
+                "@typescript-eslint/parser",
+                "typescript",
+                "merge-options",
+                "rimraf",
+                "ts-loader",
+                "webpack",
+                "webpack-cli"
+            ]),
+            "main": "./client/out/extension",
+            "scripts": {
+                "vscode:prepublish": "yarn run webpack",
+                "webpack": "yarn run clean && webpack --mode production --config ./client/webpack.config.js && webpack --mode production --config ./server/webpack.config.js",
+                "webpack:dev": "yarn run clean && webpack --mode none --config ./client/webpack.config.js && webpack --mode none --config ./server/webpack.config.js",
+                "compile": "tsc -b",
+                "compile:client": "tsc -b ./client/tsconfig.json",
+                "compile:server": "tsc -b ./server/tsconfig.json",
+                "watch": "tsc -b -w",
+                "lint": "yarn run lint:client && yarn run lint:server",
+                "lint:client": "eslint --config ./client/.eslintrc.json ./client/src/*.ts",
+                "lint:server": "eslint --config ./server/.eslintrc.json ./server/src/*.ts",
+                "clean": "rimraf client/out && rimraf server/out",
+                "postinstall": "cd client && yarn install && cd ../server && yarn install && cd .."
+            },
+            "keywords": [
+                "multi-root ready"
+            ]
+        };
+
+        let expectClientPackageJSON = {
+            "name": "client",
+            "displayName": "Test LSP - Client",
+            "version": "0.0.1",
+            "engines": {
+                "vscode": engineVersion
+            },
+            "devDependencies": {
+                "@types/vscode": engineVersion
+            },
+            "dependencies": devDependencies([
+                "vscode-languageclient"
+            ])
+        };
+        let expectServerPackageJSON = {
+            "name": "server",
+            "displayName": "Test LSP - Server",
+            "version": "0.0.1",
+            "engines": {
+                "node": "*"
+            },
+            "dependencies": devDependencies([
+                "vscode-uri",
+                "vscode-languageserver",
+                "vscode-languageserver-textdocument"
+            ])
+        };
+
+
+        assert.file([
+            'package.json',
+            'README.md',
+            'CHANGELOG.md',
+            '.eslintrc.base.json',
+            '.vscodeignore',
+            'server/src/sampleServer.ts',
+            'server/package.json',
+            'server/.eslintrc.json',
+            'server/tsconfig.json',
+            'server/webpack.config.js',
+            'client/src/extension.ts',
+            'client/package.json',
+            'client/.eslintrc.json',
+            'client/tsconfig.json',
+            'client/webpack.config.js',
+            'tsconfig.json'
+        ]);
+
+        let packageJSONBody = fs.readFileSync('package.json', 'utf8')
+        let actualPackageJSON = JSON.parse(packageJSONBody);
+        assert.deepEqual(expectedPackageJSON, actualPackageJSON);
+
+        let clientPackageJSONBody = fs.readFileSync('client/package.json', 'utf8')
+        let actualClientPackageJSON = JSON.parse(clientPackageJSONBody);
+        assert.deepEqual(expectClientPackageJSON, actualClientPackageJSON);
+
+        let serverPackageJSONBody = fs.readFileSync('server/package.json', 'utf8')
+        let actualServerPackageJSON = JSON.parse(serverPackageJSONBody);
+        assert.deepEqual(expectServerPackageJSON, actualServerPackageJSON);
+    });
 
     it('extension-pack', function (done) {
         helpers.run(path.join(__dirname, '../generators/app'))
