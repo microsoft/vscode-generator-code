@@ -26,10 +26,12 @@ const extensionGenerators = [
     commandweb, notebook, webupdate
 ]
 
+
 module.exports = class extends Generator {
 
     constructor(args, opts) {
         super(args, opts);
+        this.description = 'Scaffolds a Visual Studio Code extension ready for development.';
 
         this.argument('destination', { type: String, required: false, description: `The folder to create the extension in, absolute or relative to the current working directory. Use '.' for the current folder. If not provided, defaults to a folder with the extension display name.` })
 
