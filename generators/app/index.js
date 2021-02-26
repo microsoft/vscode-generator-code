@@ -71,7 +71,6 @@ module.exports = class extends Generator {
             this.extensionConfig.insiders = true;
         }
 
-
         // Welcome
         if (!this.extensionConfig.insiders) {
             this.log(yosay('Welcome to the Visual Studio Code Extension generator!'));
@@ -124,6 +123,16 @@ module.exports = class extends Generator {
         }
 
         this.extensionGenerator = extensionGenerators.find(g => g.id === this.extensionConfig.type);
+
+        if (!this.extensionConfig.update) {
+            // handle '.' as folder name
+            if (this.extensionConfig.extensionNameFromCLI === '.') {
+                const dest = this.destinationPath();
+                this.extensionConfig.extensionNameFromCLI = path.basename(dest);
+                this.destinationRoot(path.dirname(dest))
+            }
+        }
+
         try {
             await this.extensionGenerator.prompting(this, this.extensionConfig);
         } catch (e) {
