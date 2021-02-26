@@ -3,7 +3,8 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
-let validator = require('./validator');
+const validator = require('./validator');
+const path = require('path');
 
 /**
 * @param {import('yeoman-generator')} generator
@@ -15,8 +16,10 @@ exports.askForExtensionDisplayName = (generator, extensionConfig) => {
         extensionConfig.displayName = extensionDisplayName;
         return Promise.resolve();
     }
-    if (generator.options['quick'] && extensionConfig.extensionNameFromCLI) {
-        extensionConfig.displayName = extensionConfig.extensionNameFromCLI;
+    const nameFromFolder = generator.options['destination'] ? path.basename(generator.destinationPath()) : '';
+
+    if (generator.options['quick'] && nameFromFolder) {
+        extensionConfig.displayName = nameFromFolder;
         return Promise.resolve();
     }
 
@@ -24,7 +27,7 @@ exports.askForExtensionDisplayName = (generator, extensionConfig) => {
         type: 'input',
         name: 'displayName',
         message: 'What\'s the name of your extension?',
-        default: extensionConfig.extensionNameFromCLI || ''
+        default: nameFromFolder
     }).then(displayNameAnswer => {
         extensionConfig.displayName = displayNameAnswer.displayName;
     });

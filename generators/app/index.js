@@ -30,13 +30,16 @@ module.exports = class extends Generator {
 
     constructor(args, opts) {
         super(args, opts);
-        this.option('insiders', { type: Boolean, alias: 'i', description: `Show the insiders options for the generator` });
+
+        this.argument('destination', { type: String, required: false, description: `The folder to create the extension in, absolute or relative to the current working directory. Use '.' for the current folder. If not provided, defaults to a folder with the extension display name.` })
+
+        this.option('insiders', { type: Boolean, alias: 'i', description: 'Show the insiders options for the generator' });
         this.option('quick', { type: Boolean, alias: 'q', description: 'Quick mode, skip all optional prompts and use defaults' });
         this.option('open', { type: Boolean, alias: 'o', description: 'Open the generated extension in Visual Studio Code' });
         this.option('openInInsiders', { type: Boolean, alias: 'O', description: 'Open the generated extension in Visual Studio Code Insiders' });
 
         this.option('extensionType', { type: String, alias: 't', description: extensionGenerators.slice(0, 6).map(e => e.aliases[0]).join(', ') + '...' });
-        this.option('extensionDisplayName', { type: String,  alias: 'n', description: 'Display name of the extension' });
+        this.option('extensionDisplayName', { type: String, alias: 'n', description: 'Display name of the extension' });
         this.option('extensionId', { type: String, description: 'Id of the extension' });
         this.option('extensionDescription', { type: String, description: 'Description of the extension' });
 
@@ -50,7 +53,6 @@ module.exports = class extends Generator {
         this.extensionConfig = Object.create(null);
         this.extensionConfig.installDependencies = false;
         this.extensionConfig.insiders = false;
-        this.extensionConfig.extensionNameFromCLI = undefined;
 
         this.extensionGenerator = undefined;
 
@@ -58,15 +60,6 @@ module.exports = class extends Generator {
     }
 
     async initializing() {
-        const cliArgs = this.options['_'];
-
-        if (Array.isArray(cliArgs) && cliArgs.length > 0) {
-            if (cliArgs[0] === 'insiders') {
-                this.extensionConfig.insiders = true;
-            } else {
-                this.extensionConfig.extensionNameFromCLI = cliArgs[0];
-            }
-        }
         if (this.options['insiders']) {
             this.extensionConfig.insiders = true;
         }
@@ -76,6 +69,12 @@ module.exports = class extends Generator {
             this.log(yosay('Welcome to the Visual Studio Code Extension generator!'));
         } else {
             this.log(yosay('Welcome to the Visual Studio Code Insiders Extension generator!'));
+        }
+
+        const destination = this.options['destination'];
+        if (destination) {
+            const folderPath = path.resolve(this.destinationPath(), destination);
+            this.destinationRoot(folderPath);
         }
 
         // evaluateEngineVersion
@@ -123,16 +122,6 @@ module.exports = class extends Generator {
         }
 
         this.extensionGenerator = extensionGenerators.find(g => g.id === this.extensionConfig.type);
-
-        if (!this.extensionConfig.update) {
-            // handle '.' as folder name
-            if (this.extensionConfig.extensionNameFromCLI === '.') {
-                const dest = this.destinationPath();
-                this.extensionConfig.extensionNameFromCLI = path.basename(dest);
-                this.destinationRoot(path.dirname(dest))
-            }
-        }
-
         try {
             await this.extensionGenerator.prompting(this, this.extensionConfig);
         } catch (e) {
@@ -145,6 +134,13 @@ module.exports = class extends Generator {
         if (this.abort) {
             return;
         }
+        if (!this.options['destination']) {
+            this.destinationRoot(this.destinationPath(this.extensionConfig.name))
+        }
+
+        this.log();
+        this.log(`Writing in ${this.destinationPath()}...`);
+
         this.sourceRoot(path.join(__dirname, './templates/' + this.extensionConfig.type));
 
         return this.extensionGenerator.writing(this, this.extensionConfig);
@@ -154,9 +150,6 @@ module.exports = class extends Generator {
     install() {
         if (this.abort) {
             return;
-        }
-        if (!this.extensionGenerator.update) {
-            process.chdir(this.extensionConfig.name);
         }
         if (this.extensionConfig.installDependencies) {
             this.installDependencies({
@@ -203,9 +196,13 @@ module.exports = class extends Generator {
         this.log('');
 
         if (!this.extensionConfig.insiders && !this.options['open'] && !this.options['openInInsiders'] && !this.options['quick']) {
+            const cdLocation = this.options['destination'] || this.extensionConfig.name;
+
             this.log('To start editing with Visual Studio Code, use the following commands:');
             this.log('');
-            this.log('     cd ' + this.extensionConfig.name);
+            if (cdLocation !== '.') {
+                this.log('     cd ' + cdLocation);
+            }
             this.log('     code-insiders .');
             this.log('');
         }
@@ -220,13 +217,12 @@ module.exports = class extends Generator {
         this.log('For more information, also visit http://code.visualstudio.com and follow us @code.');
         this.log('\r\n');
 
-        const folderLocation = this.destinationPath(this.extensionConfig.name);
         if (this.options['open']) {
-            this.log(`Opening ${folderLocation} in Visual Studio Code...`);
-            this.spawnCommand('code', [folderLocation]);
+            this.log(`Opening ${this.destinationPath()} in Visual Studio Code...`);
+            this.spawnCommand('code', [this.destinationPath()]);
         } else if (this.extensionConfig.insiders || this.options['openInInsiders'] || this.options['quick']) {
-            this.log(`Opening ${folderLocation} with Visual Studio Code Insiders...`);
-            this.spawnCommand('code-insiders', [folderLocation]);
+            this.log(`Opening ${this.destinationPath()} with Visual Studio Code Insiders...`);
+            this.spawnCommand('code-insiders', [this.destinationPath()]);
         }
     }
 }

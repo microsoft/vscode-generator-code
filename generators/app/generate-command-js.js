@@ -36,26 +36,26 @@ module.exports = {
      * @param {Object} extensionConfig
      */
     writing: (generator, extensionConfig) => {
-        generator.fs.copy(generator.sourceRoot() + '/vscode', extensionConfig.name + '/.vscode');
-        generator.fs.copy(generator.sourceRoot() + '/test', extensionConfig.name + '/test');
+        generator.fs.copy(generator.sourceRoot() + '/vscode', '.vscode');
+        generator.fs.copy(generator.sourceRoot() + '/test', 'test');
 
-        generator.fs.copy(generator.sourceRoot() + '/vscodeignore', extensionConfig.name + '/.vscodeignore');
+        generator.fs.copy(generator.sourceRoot() + '/vscodeignore', '.vscodeignore');
 
         if (extensionConfig.gitInit) {
-            generator.fs.copy(generator.sourceRoot() + '/gitignore', extensionConfig.name + '/.gitignore');
+            generator.fs.copy(generator.sourceRoot() + '/gitignore', '.gitignore');
         }
 
-        generator.fs.copyTpl(generator.sourceRoot() + '/README.md', extensionConfig.name + '/README.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/CHANGELOG.md', extensionConfig.name + '/CHANGELOG.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/vsc-extension-quickstart.md', extensionConfig.name + '/vsc-extension-quickstart.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/jsconfig.json', extensionConfig.name + '/jsconfig.json', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/README.md', 'README.md', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/CHANGELOG.md', 'CHANGELOG.md', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/vsc-extension-quickstart.md', 'vsc-extension-quickstart.md', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/jsconfig.json', 'jsconfig.json', extensionConfig);
 
-        generator.fs.copyTpl(generator.sourceRoot() + '/extension.js', extensionConfig.name + '/extension.js', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/package.json', extensionConfig.name + '/package.json', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/.eslintrc.json', extensionConfig.name + '/.eslintrc.json', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/extension.js', 'extension.js', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/package.json', 'package.json', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/.eslintrc.json', '.eslintrc.json', extensionConfig);
 
         if (extensionConfig.pkgManager === 'yarn') {
-            generator.fs.copyTpl(generator.sourceRoot() + '/.yarnrc', extensionConfig.name + '/.yarnrc', extensionConfig);
+            generator.fs.copyTpl(generator.sourceRoot() + '/.yarnrc', '.yarnrc', extensionConfig);
         }
 
         extensionConfig.installDependencies = true;

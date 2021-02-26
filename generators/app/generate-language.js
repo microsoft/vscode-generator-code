@@ -40,21 +40,21 @@ module.exports = {
         if (!extensionConfig.languageContent) {
             extensionConfig.languageFileName = sanitize(extensionConfig.languageId + '.tmLanguage.json');
 
-            generator.fs.copyTpl(generator.sourceRoot() + '/syntaxes/new.tmLanguage.json', extensionConfig.name + '/syntaxes/' + extensionConfig.languageFileName, extensionConfig);
+            generator.fs.copyTpl(generator.sourceRoot() + '/syntaxes/new.tmLanguage.json', 'syntaxes/' + extensionConfig.languageFileName, extensionConfig);
         } else {
-            generator.fs.copyTpl(generator.sourceRoot() + '/syntaxes/language.tmLanguage', extensionConfig.name + '/syntaxes/' + sanitize(extensionConfig.languageFileName), extensionConfig);
+            generator.fs.copyTpl(generator.sourceRoot() + '/syntaxes/language.tmLanguage', 'syntaxes/' + sanitize(extensionConfig.languageFileName), extensionConfig);
         }
 
-        generator.fs.copy(generator.sourceRoot() + '/vscode', extensionConfig.name + '/.vscode');
-        generator.fs.copyTpl(generator.sourceRoot() + '/package.json', extensionConfig.name + '/package.json', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/README.md', extensionConfig.name + '/README.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/CHANGELOG.md', extensionConfig.name + '/CHANGELOG.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/vsc-extension-quickstart.md', extensionConfig.name + '/vsc-extension-quickstart.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/language-configuration.json', extensionConfig.name + '/language-configuration.json', extensionConfig);
-        generator.fs.copy(generator.sourceRoot() + '/vscodeignore', extensionConfig.name + '/.vscodeignore');
+        generator.fs.copy(generator.sourceRoot() + '/vscode', '.vscode');
+        generator.fs.copyTpl(generator.sourceRoot() + '/package.json', 'package.json', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/README.md', 'README.md', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/CHANGELOG.md', 'CHANGELOG.md', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/vsc-extension-quickstart.md', 'vsc-extension-quickstart.md', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/language-configuration.json', 'language-configuration.json', extensionConfig);
+        generator.fs.copy(generator.sourceRoot() + '/vscodeignore', '.vscodeignore');
         if (extensionConfig.gitInit) {
-            generator.fs.copy(generator.sourceRoot() + '/gitignore', extensionConfig.name + '/.gitignore');
-            generator.fs.copy(generator.sourceRoot() + '/gitattributes', extensionConfig.name + '/.gitattributes');
+            generator.fs.copy(generator.sourceRoot() + '/gitignore', '.gitignore');
+            generator.fs.copy(generator.sourceRoot() + '/gitattributes', '.gitattributes');
         }
     }
 }

@@ -24,15 +24,15 @@ module.exports = {
      * @param {Object} extensionConfig
      */
     writing: (generator, extensionConfig) => {
-        generator.fs.copy(generator.sourceRoot() + '/vscode', extensionConfig.name + '/.vscode');
-        generator.fs.copyTpl(generator.sourceRoot() + '/package.json', extensionConfig.name + '/package.json', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/vsc-extension-quickstart.md', extensionConfig.name + '/vsc-extension-quickstart.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/README.md', extensionConfig.name + '/README.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/CHANGELOG.md', extensionConfig.name + '/CHANGELOG.md', extensionConfig);
-        generator.fs.copy(generator.sourceRoot() + '/vscodeignore', extensionConfig.name + '/.vscodeignore');
+        generator.fs.copy(generator.sourceRoot() + '/vscode', '.vscode');
+        generator.fs.copyTpl(generator.sourceRoot() + '/package.json', 'package.json', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/vsc-extension-quickstart.md', 'vsc-extension-quickstart.md', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/README.md', 'README.md', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/CHANGELOG.md', 'CHANGELOG.md', extensionConfig);
+        generator.fs.copy(generator.sourceRoot() + '/vscodeignore', '.vscodeignore');
         if (extensionConfig.gitInit) {
-            generator.fs.copy(generator.sourceRoot() + '/gitignore', extensionConfig.name + '/.gitignore');
-            generator.fs.copy(generator.sourceRoot() + '/gitattributes', extensionConfig.name + '/.gitattributes');
+            generator.fs.copy(generator.sourceRoot() + '/gitignore', '.gitignore');
+            generator.fs.copy(generator.sourceRoot() + '/gitattributes', '.gitattributes');
         }
     }
 }

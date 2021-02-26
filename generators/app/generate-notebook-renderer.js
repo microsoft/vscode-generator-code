@@ -29,34 +29,34 @@ module.exports = {
      */
     writing: (generator, extensionConfig) => {
 
-        generator.fs.copy(generator.sourceRoot() + '/src', extensionConfig.name + '/src');
-        generator.fs.copy(generator.sourceRoot() + '/vscode', extensionConfig.name + '/.vscode');
-        generator.fs.copy(generator.sourceRoot() + '/tsconfig.json', extensionConfig.name + '/tsconfig.json');
-        generator.fs.copy(generator.sourceRoot() + '/.vscodeignore', extensionConfig.name + '/.vscodeignore');
-        generator.fs.copy(generator.sourceRoot() + '/webpack.config.js', extensionConfig.name + '/webpack.config.js');
-        generator.fs.copy(generator.sourceRoot() + '/.eslintrc.json', extensionConfig.name + '/.eslintrc.json');
-        generator.fs.copy(generator.sourceRoot() + '/src/extension/types/.gitkeep', extensionConfig.name + '/src/extension/types/.gitkeep');
-        generator.fs.copy(generator.sourceRoot() + '/src/extension/types/.gitkeep', extensionConfig.name + '/src/test/types/.gitkeep');
+        generator.fs.copy(generator.sourceRoot() + '/src', 'src');
+        generator.fs.copy(generator.sourceRoot() + '/vscode', '.vscode');
+        generator.fs.copy(generator.sourceRoot() + '/tsconfig.json', 'tsconfig.json');
+        generator.fs.copy(generator.sourceRoot() + '/.vscodeignore', '.vscodeignore');
+        generator.fs.copy(generator.sourceRoot() + '/webpack.config.js', 'webpack.config.js');
+        generator.fs.copy(generator.sourceRoot() + '/.eslintrc.json', '.eslintrc.json');
+        generator.fs.copy(generator.sourceRoot() + '/src/extension/types/.gitkeep', 'src/extension/types/.gitkeep');
+        generator.fs.copy(generator.sourceRoot() + '/src/extension/types/.gitkeep', 'src/test/types/.gitkeep');
 
-        generator.fs.copyTpl(generator.sourceRoot() + '/package.json', extensionConfig.name + '/package.json', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/README.md', extensionConfig.name + '/README.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/src/client/index.ts', extensionConfig.name + '/src/client/index.ts', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/package.json', 'package.json', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/README.md', 'README.md', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/src/client/index.ts', 'src/client/index.ts', extensionConfig);
 
-        generator.fs.copyTpl(generator.sourceRoot() + '/src/extension/extension.ts', extensionConfig.name + '/src/extension/extension.ts', extensionConfig);
+        generator.fs.copyTpl(generator.sourceRoot() + '/src/extension/extension.ts', 'src/extension/extension.ts', extensionConfig);
 
         if (!extensionConfig.includeContentProvider) {
-            generator.fs.delete(extensionConfig.name + '/src/extension/testProvider.ts');
+            generator.fs.delete('src/extension/testProvider.ts');
         } else {
-            generator.fs.copyTpl(generator.sourceRoot() + '/src/extension/testProvider.ts', extensionConfig.name + '/src/extension/testProvider.ts', extensionConfig);
+            generator.fs.copyTpl(generator.sourceRoot() + '/src/extension/testProvider.ts', 'src/extension/testProvider.ts', extensionConfig);
         }
 
         if (extensionConfig.gitInit) {
-            generator.fs.copy(generator.sourceRoot() + '/gitignore', extensionConfig.name + '/.gitignore');
-            generator.fs.copy(generator.sourceRoot() + '/gitattributes', extensionConfig.name + '/.gitattributes');
+            generator.fs.copy(generator.sourceRoot() + '/gitignore', '.gitignore');
+            generator.fs.copy(generator.sourceRoot() + '/gitattributes', '.gitattributes');
         }
 
         if (extensionConfig.pkgManager === 'yarn') {
-            generator.fs.copyTpl(generator.sourceRoot() + '/.yarnrc', extensionConfig.name + '/.yarnrc', extensionConfig);
+            generator.fs.copyTpl(generator.sourceRoot() + '/.yarnrc', '.yarnrc', extensionConfig);
         }
 
         extensionConfig.installDependencies = true;
