@@ -35,14 +35,10 @@
     "postversion": "git push && git push --tags"
   },
   "dependencies": {
-    "assert-plus": "^1.0.0",
-    "cd": "^0.3.3",
     "chalk": "^4.1.0",
     "fast-plist": "^0.1.2",
-    "kind-of": "^6.0.3",
     "request-light": "^0.4.0",
     "sanitize-filename": "^1.6.3",
-    "sax": "^1.2.4",
     "yeoman-generator": "^4.13.0",
     "yosay": "^2.0.2"
   },
