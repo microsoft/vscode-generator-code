@@ -1,14 +1,11 @@
 import * as vscode from 'vscode';
 
 /**
- * An ultra-minimal test provider that lets the user type in JSON, and then
+ * An ultra-minimal sample provider that lets the user type in JSON, and then
  * outputs JSON cells. Doesn't read files or save anything.
  */
-export class SampleProvider implements vscode.NotebookContentProvider {
-  public readonly label: string = 'My Test Provider';
-
-  public readonly onDidChangeNotebook = new vscode.EventEmitter<vscode.NotebookDocumentEditEvent>()
-    .event;
+export class SampleContentProvider implements vscode.NotebookContentProvider {
+  public readonly label: string = 'My Sample Content Provider';
 
   /**
    * @inheritdoc
@@ -58,8 +55,19 @@ export class SampleProvider implements vscode.NotebookContentProvider {
   }
 }
 
+export class SampleKernelProvider implements vscode.NotebookKernelProvider {
+  public readonly label = 'My Sample Kernel Provider';
+  provideKernels(): vscode.ProviderResult<vscode.NotebookKernel[]> {
+    return [new SampleKernel()];
+  }
+
+  resolveKernel(): vscode.ProviderResult<void> {
+    return Promise.resolve(); // not implemented
+  }
+}
+
 export class SampleKernel implements vscode.NotebookKernel {
-  public readonly label = 'Test notebook kernel';
+  public readonly label = 'Sample Notebook Kernel';
 
   cancelCellExecution() {}
 
