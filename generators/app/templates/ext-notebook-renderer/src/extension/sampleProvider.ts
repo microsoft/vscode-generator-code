@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
  * An ultra-minimal test provider that lets the user type in JSON, and then
  * outputs JSON cells. Doesn't read files or save anything.
  */
-export class TestProvider implements vscode.NotebookContentProvider {
+export class SampleProvider implements vscode.NotebookContentProvider {
   public readonly label: string = 'My Test Provider';
 
   public readonly onDidChangeNotebook = new vscode.EventEmitter<vscode.NotebookDocumentEditEvent>()
@@ -58,7 +58,7 @@ export class TestProvider implements vscode.NotebookContentProvider {
   }
 }
 
-export class TestKernel implements vscode.NotebookKernel {
+export class SampleKernel implements vscode.NotebookKernel {
   public readonly label = 'Test notebook kernel';
 
   cancelCellExecution() {}
