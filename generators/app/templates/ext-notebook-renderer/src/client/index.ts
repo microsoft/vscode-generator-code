@@ -36,13 +36,13 @@ notebookApi.onDidCreateOutput((evt) => {
 
 // Function to render your contents in a single tag, calls the `render()`
 // function from render.ts. Also catches and displays any thrown errors.
-const renderTag = ({ element, mimeType, output }: NotebookOutputEventParams) =>
+const renderTag = ({ element, mime, value }: NotebookOutputEventParams) =>
   errorOverlay.wrap(element, () => {
     element.innerHTML = '';
     const node = document.createElement('div');
     element.appendChild(node);
 
-    render({ container: node, mimeType, data: output.data[mimeType], notebookApi });
+    render({ container: node, mimeType: mime, data: value.data[mime], notebookApi });
   });
 
 function renderAllTags() {

@@ -12,9 +12,8 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.notebook.registerNotebookContentProvider(
       'test-notebook-renderer', new SampleContentProvider()
     ),
-    vscode.notebook.registerNotebookKernel(
-      'test-notebook-kernel',
-      ['*<%- contentProviderFileType %>'],
+    vscode.notebook.registerNotebookKernelProvider(
+      { viewType: 'test-notebook-renderer'},
       new SampleKernelProvider(),
     ),
   );

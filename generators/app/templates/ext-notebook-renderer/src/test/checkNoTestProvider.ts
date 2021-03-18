@@ -41,10 +41,10 @@ const checkNotInExtensionTs = () => {
     if (
       ts.isCallExpression(node) &&
       /(^|\W)registerNotebookContentProvider$/.test(node.expression.getText()) &&
-      node.arguments[1]?.getText().includes('TestProvider')
+      node.arguments[1]?.getText().includes('SampleContentProvider')
     ) {
       throw new DetectedError(
-        '`registerNotebookContentProvider()` is still called with the TestProvider.',
+        '`registerNotebookContentProvider()` is still called with the SampleContentProvider.',
         removeRegistration(node),
       );
     }
@@ -52,7 +52,7 @@ const checkNotInExtensionTs = () => {
     if (
       ts.isCallExpression(node) &&
       /(^|\W)registerNotebookKernel$/.test(node.expression.getText()) &&
-      node.arguments[2]?.getText().includes('TestKernel')
+      node.arguments[2]?.getText().includes('SampleKernel')
     ) {
       throw new DetectedError(
         '`registerNotebookKernel()` is still called with the TestKernel.',

@@ -45,9 +45,9 @@ module.exports = {
         generator.fs.copyTpl(generator.sourceRoot() + '/src/extension/extension.ts', 'src/extension/extension.ts', extensionConfig);
 
         if (!extensionConfig.includeContentProvider) {
-            generator.fs.delete('src/extension/testProvider.ts');
+            generator.fs.delete('src/extension/sampleProvider.ts');
         } else {
-            generator.fs.copyTpl(generator.sourceRoot() + '/src/extension/testProvider.ts', 'src/extension/testProvider.ts', extensionConfig);
+            generator.fs.copyTpl(generator.sourceRoot() + '/src/extension/sampleProvider.ts', 'src/extension/sampleProvider.ts', extensionConfig);
         }
 
         if (extensionConfig.gitInit) {
