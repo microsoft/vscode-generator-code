@@ -95,5 +95,7 @@ export class SampleKernel implements vscode.NotebookKernel {
 
       edit.replaceNotebookCellOutput(cell.notebook.uri, cell.index, errorOutput);
     }
+
+    return vscode.workspace.applyEdit(edit);
   }
 }

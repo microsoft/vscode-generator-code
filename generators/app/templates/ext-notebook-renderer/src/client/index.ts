@@ -6,6 +6,13 @@ import { render } from './render';
 import errorOverlay from 'vscode-notebook-error-overlay';
 import { NotebookOutputEventParams } from 'vscode-notebook-renderer';
 
+// Fix the public path so that any async import()'s work as expected.
+// declare let __webpack_public_path__: string;
+declare let __webpack_relative_entrypoint_to_root__: string;
+declare const scriptUrl: string
+
+__webpack_public_path__ = new URL(scriptUrl.replace(/[^/]+$/, '') + __webpack_relative_entrypoint_to_root__).toString();
+
 // ----------------------------------------------------------------------------
 // This is the entrypoint to the notebook renderer's webview client-side code.
 // This contains some boilerplate that calls the `render()` function when new
@@ -42,7 +49,7 @@ const renderTag = ({ element, mime, value }: NotebookOutputEventParams) =>
     const node = document.createElement('div');
     element.appendChild(node);
 
-    render({ container: node, mimeType: mime, data: value.data[mime], notebookApi });
+    render({ container: node, mimeType: mime, data: value, notebookApi });
   });
 
 function renderAllTags() {
@@ -50,13 +57,6 @@ function renderAllTags() {
     renderTag(evt);
   }
 }
-
-// Fix the public path so that any async import()'s work as expected.
-declare let __webpack_public_path__: string;
-declare let __webpack_relative_entrypoint_to_root__: string;
-declare const scriptUrl: string;
-
-__webpack_public_path__ = new URL(scriptUrl.replace(/[^/]+$/, '') + __webpack_relative_entrypoint_to_root__).toString();
 
 renderAllTags();
 
