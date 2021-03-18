@@ -1277,7 +1277,7 @@ describe('test code generator', function () {
                         "watch": "concurrently -r \"npm:watch:*\"",
                         "watch:extension": "tsc -b --watch",
                         "watch:client": "webpack --mode development --watch",
-                        "dev": "concurrently -r npm:watch:extension npm:dev:client",
+                        "dev": "npm run compile && concurrently -r npm:watch:extension npm:dev:client",
                         "dev:client": "webpack-dev-server",
                         "pretest": "npm run compile && npm run lint",
                         "test": "node ./out/test/runTest.js",
