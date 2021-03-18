@@ -13,7 +13,7 @@ module.exports = (env, argv) => ({
   output: {
     // Multiple renderers might exist on the same page, so provide a random
     // jsonpFunction name--otherwise the bundles could interfere with each other.
-    jsonpFunction: crypto.randomBytes(8).toString('hex'),
+    // jsonpFunction: crypto.randomBytes(8).toString('hex'),
     path: path.join(__dirname, 'out', 'client'),
     filename: outputFilename,
     publicPath: process.env.WEBPACK_DEV_SERVER ? `http://localhost:${devServerPort}/` : undefined,
