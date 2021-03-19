@@ -23,7 +23,7 @@ var promise = request.xhr({ url: 'https://vscode-update.azurewebsites.net/api/re
     }
     return fallbackVersion;
 }, err => {
-    console.warn('Unable to fetch latest vscode version: Error: ' + err);
+    console.warn('Unable to fetch latest vscode version: Error: ', err);
     return fallbackVersion;
 });
 
