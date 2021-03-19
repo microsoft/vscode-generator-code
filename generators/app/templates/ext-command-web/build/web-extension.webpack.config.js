@@ -10,6 +10,7 @@
 /** @typedef {import('webpack').Configuration} WebpackConfig **/
 
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = /** @type WebpackConfig */ {
 	context: path.dirname(__dirname),
@@ -17,11 +18,15 @@ module.exports = /** @type WebpackConfig */ {
 	target: 'webworker', // extensions run in a webworker context
 	entry: {
 		extension: './src/web/extension.ts',
+		test: './src/test/web/test.ts'
 	},
 	resolve: {
 		mainFields: ['module', 'main'],
 		extensions: ['.ts', '.js'], // support ts-files and js-files
 		alias: {
+		},
+		fallback: {
+			"assert": require.resolve("assert"),
 		}
 	},
 	module: {
@@ -35,6 +40,11 @@ module.exports = /** @type WebpackConfig */ {
 			]
 		}]
 	},
+	plugins: [
+		new webpack.ProvidePlugin({
+			process: 'process/browser',
+		}),
+	],
 	externals: {
 		'vscode': 'commonjs vscode', // ignored because it doesn't exist
 	},

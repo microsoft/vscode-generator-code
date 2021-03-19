@@ -46,6 +46,9 @@
 		<%- dep("vscode-test") %>,
 		<%- dep("ts-loader") %>,
 		<%- dep("webpack") %>,
-		<%- dep("webpack-cli") %>
+		<%- dep("webpack-cli") %>,
+		<%- dep("@types/webpack-env") %>,
+		<%- dep("assert") %>,
+		<%- dep("process") %>
 	}
 }
