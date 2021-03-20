@@ -136,7 +136,7 @@ module.exports = class extends Generator {
         if (this.abort) {
             return;
         }
-        if (!this.options['destination']) {
+        if (!this.options['destination'] && !this.extensionGenerator.update) {
             this.destinationRoot(this.destinationPath(this.extensionConfig.name))
         }
 
