@@ -1,0 +1,14 @@
+{
+	"name": "client",
+	"displayName": "<%= displayName %> - Client",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": <%- JSON.stringify(vsCodeEngine) %>
+	},
+	"devDependencies": {
+		"@types/vscode": <%- JSON.stringify(vsCodeEngine) %>
+	},
+	"dependencies": {
+		<%- dep("vscode-languageclient") %>
+	}
+}

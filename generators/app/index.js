@@ -16,13 +16,14 @@ const commandweb = require('./generate-command-web');
 const extensionpack = require('./generate-extensionpack');
 const keymap = require('./generate-keymap');
 const language = require('./generate-language');
+const lspts = require('./generate-lsp-ts');
 const localization = require('./generate-localization');
 const notebook = require('./generate-notebook-renderer');
 const snippets = require('./generate-snippets');
 const webupdate = require('./generate-web-update');
 
 const extensionGenerators = [
-    commandts, commandjs, colortheme, language, snippets, keymap, extensionpack, localization,
+    commandts, commandjs, colortheme, language, lspts, snippets, keymap, extensionpack, localization,
     commandweb, notebook, webupdate
 ]
 

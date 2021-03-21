@@ -1,0 +1,13 @@
+{
+	"name": "server",
+	"displayName": "<%= displayName %> - Server",
+	"version": "0.0.1",
+	"engines": {
+		"node": "*"
+	},
+	"dependencies": {
+		<%- dep("vscode-uri") %>,
+		<%- dep("vscode-languageserver") %>,
+		<%- dep("vscode-languageserver-textdocument") %>
+	}
+}
