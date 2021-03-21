@@ -11,7 +11,8 @@
 			"debugWebWorkerHost": true,
 			"request": "launch",
 			"args": [
-				"--extensionDevelopmentPath=${workspaceFolder}"
+				"--extensionDevelopmentPath=${workspaceFolder}",
+				"--extensionDevelopmentKind=web"
 			],
 			"outFiles": [
 				"${workspaceFolder}/dist/web/**/*.js"
@@ -21,15 +22,17 @@
 		{
 			"name": "Extension Tests",
 			"type": "extensionHost",
+			"debugWebWorkerHost": true,
 			"request": "launch",
 			"args": [
 				"--extensionDevelopmentPath=${workspaceFolder}",
-				"--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
+				"--extensionDevelopmentKind=web",
+				"--extensionTestsPath=${workspaceFolder}/dist/web/test/suite/index"
 			],
 			"outFiles": [
-				"${workspaceFolder}/out/test/**/*.js"
+				"${workspaceFolder}/dist/web/**/*.js"
 			],
-			"preLaunchTask": "npm: pretest"
+			"preLaunchTask": "npm: watch-web"
 		}
 	]
 }

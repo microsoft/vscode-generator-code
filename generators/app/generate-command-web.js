@@ -26,7 +26,7 @@ module.exports = {
      */
     writing: (generator, extensionConfig) => {
         generator.fs.copy(generator.sourceRoot() + '/vscode', '.vscode');
-        generator.fs.copy(generator.sourceRoot() + '/src/test', 'src/test');
+        generator.fs.copy(generator.sourceRoot() + '/src/web/test', 'src/web/test');
 
         generator.fs.copy(generator.sourceRoot() + '/vscodeignore', '.vscodeignore');
         if (extensionConfig.gitInit) {

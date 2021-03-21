@@ -43,6 +43,8 @@ module.exports = {
         generator.fs.extendJSON('package.json', {
             'browser': './dist/web/extension.js',
             'scripts': {
+                "test-web": "node ./dist/web/test/runTest.js",
+                "pretest-web": "npm run compile-web && tsc ./src/web/test/runTest.ts --outDir ./dist --rootDir ./src --target es6 --module commonjs",
                 "compile-web": "webpack --config ./build/web-extension.webpack.config.js",
                 "watch-web": "webpack --watch --config ./build/web-extension.webpack.config.js",
                 "package-web": "webpack --mode production --devtool hidden-source-map --config ./build/web-extension.webpack.config.js",
@@ -50,12 +52,15 @@ module.exports = {
             'devDependencies': {
                 'ts-loader': dependencyVersions['ts-loader'],
                 'webpack': dependencyVersions['webpack'],
-                'webpack-cli': dependencyVersions['webpack-cli']
+                'webpack-cli': dependencyVersions['webpack-cli'],
+                "@types/webpack-env": dependencyVersions['@types/webpack-env'],
+                "assert": dependencyVersions['assert'],
+                "process": dependencyVersions['process']
             }
         });
 
         generator.fs.copyTpl(generator.sourceRoot() + '/src/web/extension.ts', 'src/web/extension.ts', extensionConfig, {});
-
+        generator.fs.copy(generator.sourceRoot() + '/src/web/test', 'src/web/test');
         generator.fs.copyTpl(generator.sourceRoot() + '/build/web-extension.webpack.config.js', 'build/web-extension.webpack.config.js', extensionConfig);
 
         if (generator.fs.exists(generator.destinationPath('yarn.lock'))) {

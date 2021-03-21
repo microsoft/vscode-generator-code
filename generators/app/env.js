@@ -54,7 +54,9 @@ module.exports.getDependencyVersions = async function () {
         "vscode-notebook-error-overlay": "^1.0.1",
         "webpack": "^5.19.0",
         "webpack-cli": "^4.4.0",
-        "webpack-dev-server": "^3.11.2"
+        "webpack-dev-server": "^3.11.2",
+        "assert": "^2.0.0",
+        "process": "^0.11.10"
     }
 }
 

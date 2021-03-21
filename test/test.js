@@ -1183,21 +1183,24 @@ describe('test code generator', function () {
                         "@types/glob",
                         "@types/mocha",
                         "@types/node",
+                        "@types/webpack-env",
                         "eslint",
                         "@typescript-eslint/parser",
                         "@typescript-eslint/eslint-plugin",
+                        "assert",
                         "glob",
                         "mocha",
+                        "process",
                         "typescript",
-                        "vscode-test",
                         "ts-loader",
+                        "vscode-test",
                         "webpack",
                         "webpack-cli"
                     ]),
                     "browser": "./dist/web/extension.js",
                     "scripts": {
-                        "test": "node ./out/test/runTests.js",
-                        "pretest": "tsc -p ./",
+                        "test": "node ./dist/web/test/runTest.js",
+                        "pretest": "npm run compile-web && tsc ./src/web/test/runTest.ts --outDir ./dist --rootDir ./src --target es6 --module commonjs",
                         "vscode:prepublish": "npm run package-web",
                         "compile-web": "webpack --config ./build/web-extension.webpack.config.js",
                         "watch-web": "webpack --watch --config ./build/web-extension.webpack.config.js",
@@ -1217,7 +1220,7 @@ describe('test code generator', function () {
                 try {
 
 
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/web/extension.ts', 'build/web-extension.webpack.config.js', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
+                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/web/extension.ts', 'build/web-extension.webpack.config.js', 'src/web/test/suite/extension.test.ts', 'src/web/test/suite/index.ts', 'tsconfig.json']);
 
                     var packageJSONBody = fs.readFileSync('package.json', 'utf8')
                     var actualPackageJSON = JSON.parse(packageJSONBody);

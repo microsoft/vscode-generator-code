@@ -10,37 +10,41 @@
 /** @typedef {import('webpack').Configuration} WebpackConfig **/
 
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = /** @type WebpackConfig */ {
 	context: path.dirname(__dirname),
 	mode: 'none', // this leaves the source code as close as possible to the original (when packaging we set this to 'production')
 	target: 'webworker', // extensions run in a webworker context
 	entry: {
-		extension: './src/web/extension.ts',
+		'extension': './src/web/extension.ts',
+		'test/suite/index': './src/web/test/suite/index.ts'
 	},
 	resolve: {
 		mainFields: ['module', 'main'],
 		extensions: ['.ts', '.js'], // support ts-files and js-files
 		alias: {
+		},
+		fallback: {
+			'assert': require.resolve('assert')
 		}
 	},
 	module: {
 		rules: [{
 			test: /\.ts$/,
 			exclude: /node_modules/,
-			use: [{
-				// configure TypeScript loader:
-				// * enable sources maps for end-to-end source maps
-				loader: 'ts-loader',
-				options: {
-					compilerOptions: {
-						'sourceMap': true,
-						'declaration': false
-					}
+			use: [
+				{
+					loader: 'ts-loader'
 				}
-			}]
+			]
 		}]
 	},
+	plugins: [
+		new webpack.ProvidePlugin({
+			process: 'process/browser',
+		}),
+	],
 	externals: {
 		'vscode': 'commonjs vscode', // ignored because it doesn't exist
 	},
@@ -48,9 +52,9 @@ module.exports = /** @type WebpackConfig */ {
 		hints: false
 	},
 	output: {
-		filename: 'extension.js',
+		filename: '[name].js',
 		path: path.join(__dirname, '../dist/web'),
 		libraryTarget: 'commonjs'
 	},
-	devtool: 'source-map'
+	devtool: 'nosources-source-map'
 };
