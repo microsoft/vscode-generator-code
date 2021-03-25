@@ -1,52 +1,90 @@
 import * as vscode from 'vscode';
+import { TextDecoder, TextEncoder } from "util";
 
 /**
  * An ultra-minimal sample provider that lets the user type in JSON, and then
- * outputs JSON cells. Doesn't read files or save anything.
+ * outputs JSON cells.
  */
-export class SampleContentProvider implements vscode.NotebookContentProvider {
-  public readonly label: string = 'My Sample Content Provider';
+
+ interface RawNotebookData {
+  cells: RawNotebookCell[]
+}
+
+interface RawNotebookCell {
+  language: string;
+  value: string;
+  kind: vscode.NotebookCellKind;
+  editable?: boolean;
+  outputs: RawCellOutput[];
+}
+
+interface RawCellOutput {
+  mime: string;
+  value: any;
+}
+
+export class SampleContentSerializer implements vscode.NotebookSerializer {
+  public readonly label: string = 'My Sample Content Serializer';
 
   /**
    * @inheritdoc
    */
-  public resolveNotebook() {
-    return Promise.resolve();
+   public async dataToNotebook(data: Uint8Array): Promise<vscode.NotebookData> {
+    var contents = new TextDecoder().decode(data);
+
+    let raw: RawNotebookData = { cells: [] };
+    try {
+      raw = <RawNotebookData>JSON.parse(contents);
+    } catch {
+      raw = { cells: []};
+    }
+
+    if(raw.cells === undefined) {
+      raw.cells = [];
+    }
+
+    const cells = raw.cells.map(item => new vscode.NotebookCellData(
+      item.kind,
+      item.value,
+      item.language,
+      item.outputs ? [new vscode.NotebookCellOutput(item.outputs.map(raw => new vscode.NotebookCellOutputItem(raw.mime, raw.value)))] : [],
+      new vscode.NotebookCellMetadata().with({ editable: item.editable ?? true })
+    ));
+
+    return new vscode.NotebookData(
+      cells,
+      new vscode.NotebookDocumentMetadata().with({ cellHasExecutionOrder: true, })
+    );
   }
 
   /**
    * @inheritdoc
    */
-  public async backupNotebook() {
-    return { id: '', delete: () => undefined };
-  }
+   public async notebookToData(data: vscode.NotebookData): Promise<Uint8Array> {
+    function asRawOutput(cell: vscode.NotebookCellData): RawCellOutput[] {
+      let result: RawCellOutput[] = [];
+      for (let output of cell.outputs ?? []) {
+        for (let item of output.outputs) {
+          result.push({ mime: item.mime, value: item.value });
+        }
+      }
+      return result;
+    }
 
-  /**
-   * @inheritdoc
-   */
-  public async openNotebook(): Promise<vscode.NotebookData> {
-    return {
-      metadata:new vscode.NotebookDocumentMetadata().with({
-        editable: true,
-        cellEditable: true,
-      }),
-      cells: [ new vscode.NotebookCellData(vscode.NotebookCellKind.Code, `{ "hello": "world!" }`, 'json', [])]
-    };
-  }
+    let contents: RawNotebookData = { cells: []};
 
-  /**
-   * @inheritdoc
-   */
-  public async saveNotebook(): Promise<void> {
-    return Promise.resolve(); // not implemented
-  }
+    for (const cell of data.cells) {
+      contents.cells.push({
+        kind: cell.kind,
+        language: cell.language,
+        value: cell.source,
+        editable: cell.metadata?.editable,
+        outputs: asRawOutput(cell)
+      });
+    }
 
-  /**
-   * @inheritdoc
-   */
-  public async saveNotebookAs(): Promise<void> {
-    return Promise.resolve(); // not implemented
-  }
+    return new TextEncoder().encode(JSON.stringify(contents));
+   }
 }
 
 export class SampleKernelProvider implements vscode.NotebookKernelProvider {
