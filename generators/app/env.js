@@ -5,7 +5,7 @@
 var request = require('request-light');
 
 var fallbackVersion = '^1.46.0';
-var promise = request.xhr({ url: 'https://vscode-update.azurewebsites.net/api/releases/stable', headers: { "X-API-Version": "2" } }).then(res => {
+var promise = request.xhr({ url: 'https://update.code.visualstudio.com/api/releases/stable', headers: { "X-API-Version": "2" } }).then(res => {
     if (res.status === 200) {
         try {
             var tagsAndCommits = JSON.parse(res.responseText);
