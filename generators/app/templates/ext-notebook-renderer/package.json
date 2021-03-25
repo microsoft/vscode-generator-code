@@ -24,7 +24,7 @@
     "notebookProvider": [
       {
         "viewType": "test-notebook-renderer",
-        "displayName": "Test Notebook Renderer",
+        "displayName": "Sample Notebook",
         "selector": [
           {
             "filenamePattern": <%- JSON.stringify(`*${contentProviderFileType}`) %>
