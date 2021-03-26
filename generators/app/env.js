@@ -4,7 +4,7 @@
 'use strict';
 const request = require('request-light');
 
-const fallbackVersion = '^1.46.0';
+const fallbackVersion = '^1.54.0';
 let versionPromise = undefined;
 
 function getLatestVSCodeVersion() {
