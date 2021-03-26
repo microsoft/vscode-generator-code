@@ -31,9 +31,9 @@ module.exports = class extends Generator {
 
     constructor(args, opts) {
         super(args, opts);
-        this.description = 'Scaffolds a Visual Studio Code extension ready for development.';
+        this.description = 'Generates a Visual Studio Code extension ready for development.';
 
-        this.argument('destination', { type: String, required: false, description: `The folder to create the extension in, absolute or relative to the current working directory. Use '.' for the current folder. If not provided, defaults to a folder with the extension display name.` })
+        this.argument('destination', { type: String, required: false, description: `\n    The folder to create the extension in, absolute or relative to the current working directory.\n    Use '.' for the current folder. If not provided, defaults to a folder with the extension display name.\n  ` })
 
         this.option('insiders', { type: Boolean, alias: 'i', description: 'Show the insiders options for the generator' });
         this.option('quick', { type: Boolean, alias: 'q', description: 'Quick mode, skip all optional prompts and use defaults' });
