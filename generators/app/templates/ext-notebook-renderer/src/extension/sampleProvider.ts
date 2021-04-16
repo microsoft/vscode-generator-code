@@ -107,7 +107,7 @@ export class SampleKernel implements vscode.NotebookKernel {
 
   private _executionOrder = 0;
 
-  async executeCellsRequest(document: vscode.NotebookDocument, ranges: vscode.NotebookCellRange[]): Promise<void> {
+  async executeCellsRequest(document: vscode.NotebookDocument, ranges: vscode.NotebookRange[]): Promise<void> {
     for (let range of ranges) {
       for (let cell of document.getCells(range)) {
         const execution = vscode.notebook.createNotebookCellExecutionTask(cell.notebook.uri, cell.index, this.id)!;
