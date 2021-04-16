@@ -6,7 +6,7 @@ import { TextDecoder, TextEncoder } from "util";
  * outputs JSON cells.
  */
 
- interface RawNotebookData {
+interface RawNotebookData {
   cells: RawNotebookCell[]
 }
 
@@ -29,38 +29,38 @@ export class SampleContentSerializer implements vscode.NotebookSerializer {
   /**
    * @inheritdoc
    */
-   public async deserializeNotebook(data: Uint8Array, _token: vscode.CancellationToken): Promise<vscode.NotebookData> {
-    var contents = new TextDecoder().decode(data);
+  public async deserializeNotebook(data: Uint8Array, token: vscode.CancellationToken): Promise<vscode.NotebookData> {
+    var contents = new TextDecoder().decode(data);    // convert to String to make JSON object
 
-    let raw: RawNotebookData = { cells: [] };
+    // Read file contents
+    let raw: RawNotebookData;
     try {
       raw = <RawNotebookData>JSON.parse(contents);
     } catch {
-      raw = { cells: []};
+      raw = { cells: [] };
     }
 
-    if(raw.cells === undefined) {
-      raw.cells = [];
-    }
-
+    // Create array of Notebook cells for the VS Code API from file contents
     const cells = raw.cells.map(item => new vscode.NotebookCellData(
       item.kind,
       item.value,
       item.language,
       item.outputs ? [new vscode.NotebookCellOutput(item.outputs.map(raw => new vscode.NotebookCellOutputItem(raw.mime, raw.value)))] : [],
-      new vscode.NotebookCellMetadata().with()
+      new vscode.NotebookCellMetadata()
     ));
 
+    // Pass read and formatted Notebook Data to VS Code to display Notebook with saved cells
     return new vscode.NotebookData(
       cells,
-      new vscode.NotebookDocumentMetadata().with()
+      new vscode.NotebookDocumentMetadata()
     );
   }
 
   /**
    * @inheritdoc
    */
-   public async serializeNotebook(data: vscode.NotebookData, _token: vscode.CancellationToken): Promise<Uint8Array> {
+  public async serializeNotebook(data: vscode.NotebookData, token: vscode.CancellationToken): Promise<Uint8Array> {
+    // function to take output renderer data to a format to save to the file
     function asRawOutput(cell: vscode.NotebookCellData): RawCellOutput[] {
       let result: RawCellOutput[] = [];
       for (let output of cell.outputs ?? []) {
@@ -71,6 +71,7 @@ export class SampleContentSerializer implements vscode.NotebookSerializer {
       return result;
     }
 
+    // Map the Notebook data into the format we want to save the Notebook data as
     let contents: RawNotebookData = { cells: []};
 
     for (const cell of data.cells) {
@@ -78,13 +79,13 @@ export class SampleContentSerializer implements vscode.NotebookSerializer {
         kind: cell.kind,
         language: cell.language,
         value: cell.source,
-        editable: cell.metadata?.editable,
         outputs: asRawOutput(cell)
       });
     }
 
+    // Give a string of all the data to save and VS Code will handle the rest
     return new TextEncoder().encode(JSON.stringify(contents));
-   }
+  }
 }
 
 export class SampleKernelProvider implements vscode.NotebookKernelProvider {
@@ -107,10 +108,10 @@ export class SampleKernel implements vscode.NotebookKernel {
   private _executionOrder = 0;
 
   async executeCellsRequest(document: vscode.NotebookDocument, ranges: vscode.NotebookCellRange[]): Promise<void> {
-    for(let range of ranges) {
-      for(let cell of document.getCells(range)) {
-          const execution = vscode.notebook.createNotebookCellExecutionTask(cell.notebook.uri, cell.index, this.id)!;
-          await this._doExecution(execution);
+    for (let range of ranges) {
+      for (let cell of document.getCells(range)) {
+        const execution = vscode.notebook.createNotebookCellExecutionTask(cell.notebook.uri, cell.index, this.id)!;
+        await this._doExecution(execution);
       }
     }
   }
