@@ -29,7 +29,7 @@ export class SampleContentSerializer implements vscode.NotebookSerializer {
   /**
    * @inheritdoc
    */
-   public async dataToNotebook(data: Uint8Array): Promise<vscode.NotebookData> {
+   public async deserializeNotebook(data: Uint8Array, _token: vscode.CancellationToken): Promise<vscode.NotebookData> {
     var contents = new TextDecoder().decode(data);
 
     let raw: RawNotebookData = { cells: [] };
@@ -60,7 +60,7 @@ export class SampleContentSerializer implements vscode.NotebookSerializer {
   /**
    * @inheritdoc
    */
-   public async notebookToData(data: vscode.NotebookData): Promise<Uint8Array> {
+   public async serializeNotebook(data: vscode.NotebookData, _token: vscode.CancellationToken): Promise<Uint8Array> {
     function asRawOutput(cell: vscode.NotebookCellData): RawCellOutput[] {
       let result: RawCellOutput[] = [];
       for (let output of cell.outputs ?? []) {
