@@ -48,12 +48,12 @@ export class SampleContentSerializer implements vscode.NotebookSerializer {
       item.value,
       item.language,
       item.outputs ? [new vscode.NotebookCellOutput(item.outputs.map(raw => new vscode.NotebookCellOutputItem(raw.mime, raw.value)))] : [],
-      new vscode.NotebookCellMetadata().with({ editable: item.editable ?? true })
+      new vscode.NotebookCellMetadata().with()
     ));
 
     return new vscode.NotebookData(
       cells,
-      new vscode.NotebookDocumentMetadata().with({ cellHasExecutionOrder: true, })
+      new vscode.NotebookDocumentMetadata().with()
     );
   }
 
