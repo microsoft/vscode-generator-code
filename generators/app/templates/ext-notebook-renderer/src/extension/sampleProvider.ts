@@ -88,36 +88,37 @@ export class SampleContentSerializer implements vscode.NotebookSerializer {
   }
 }
 
-export class SampleKernelProvider implements vscode.NotebookKernelProvider {
-  public readonly label = 'My Sample Kernel Provider';
-
-  provideKernels(): vscode.ProviderResult<vscode.NotebookKernel[]> {
-    return [new SampleKernel()];
-  }
-
-  resolveKernel(): vscode.ProviderResult<void> {
-    return Promise.resolve(); // not implemented
-  }
-}
-
-export class SampleKernel implements vscode.NotebookKernel {
-  readonly id = 'sample-kernel';
+export class SampleKernel {
+  readonly id = 'test-notebook-renderer-kernel';
   public readonly label = 'Sample Notebook Kernel';
   readonly supportedLanguages = ['json'];
 
   private _executionOrder = 0;
+  private readonly _controller: vscode.NotebookController;
 
-  async executeCellsRequest(document: vscode.NotebookDocument, ranges: vscode.NotebookRange[]): Promise<void> {
-    for (let range of ranges) {
-      for (let cell of document.getCells(range)) {
-        const execution = vscode.notebook.createNotebookCellExecutionTask(cell.notebook.uri, cell.index, this.id)!;
-        await this._doExecution(execution);
-      }
-    }
+  constructor() {
+    this._controller = vscode.notebook.createNotebookController(
+      this.id,
+      { viewType: 'test-notebook-renderer' },
+      this.label,
+    );
+    this._controller.supportedLanguages = this.supportedLanguages;
+    this._controller.hasExecutionOrder = true;
+    this._controller.executeHandler = this._executeAll.bind(this);
   }
 
-  private async _doExecution(execution: vscode.NotebookCellExecutionTask): Promise<void> {
-    const doc = await vscode.workspace.openTextDocument(execution.cell.document.uri);
+  dispose(): void {
+		this._controller.dispose();
+	}
+
+  private _executeAll(cells: vscode.NotebookCell[], _controller: vscode.NotebookController): void {
+		for (let cell of cells) {
+			this._doExecution(cell);
+		}
+	}
+
+  private async _doExecution(cell: vscode.NotebookCell): Promise<void> {
+    const execution = this._controller.createNotebookCellExecutionTask(cell);
 
     execution.executionOrder = ++this._executionOrder;
     execution.start({ startTime: Date.now() });
@@ -128,7 +129,7 @@ export class SampleKernel implements vscode.NotebookKernel {
 
     try {
       execution.replaceOutput([new vscode.NotebookCellOutput([
-        new vscode.NotebookCellOutputItem('<%- rendererMimeTypes[0] %>', JSON.parse(doc.getText())),
+        new vscode.NotebookCellOutputItem('application/json', JSON.parse(cell.document.getText())),
       ], metadata)]);
 
       execution.end({ success: true });
