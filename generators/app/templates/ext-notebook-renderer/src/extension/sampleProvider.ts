@@ -97,11 +97,11 @@ export class SampleKernel {
   private readonly _controller: vscode.NotebookController;
 
   constructor() {
-    this._controller = vscode.notebook.createNotebookController(
-      this.id,
-      { viewType: 'test-notebook-renderer' },
-      this.label,
-    );
+
+    this._controller = vscode.notebook.createNotebookController(this.id,
+                                                                'test-notebook-renderer',
+                                                                this.label);
+
     this._controller.supportedLanguages = this.supportedLanguages;
     this._controller.hasExecutionOrder = true;
     this._controller.executeHandler = this._executeAll.bind(this);
@@ -111,7 +111,7 @@ export class SampleKernel {
 		this._controller.dispose();
 	}
 
-  private _executeAll(cells: vscode.NotebookCell[], _controller: vscode.NotebookController): void {
+  private _executeAll(cells: vscode.NotebookCell[], _notebook: vscode.NotebookDocument, _controller: vscode.NotebookController): void {
 		for (let cell of cells) {
 			this._doExecution(cell);
 		}
