@@ -12,7 +12,7 @@ module.exports = (env, argv) => ({
   output: {
     path: path.join(__dirname, 'out', 'client'),
     filename: outputFilename,
-    publicPath: process.env.WEBPACK_DEV_SERVER ? `http://localhost:${devServerPort}/` : undefined,
+    publicPath: '',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.css'],
