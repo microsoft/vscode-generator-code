@@ -2,6 +2,7 @@
 .vscode-test/**
 <% if (webpack) { %>out/**<% } else { %>out/test/**<% } %>
 <% if (webpack) { %>node_modules/**<% } %>
+<% if (webpack) { %>dist/**/*.map<% } %>
 src/**
 .gitignore
 .yarnrc
