@@ -20,7 +20,7 @@ __webpack_public_path__ = new URL(scriptUrl.replace(/[^/]+$/, '') + __webpack_re
 // rendering logic inside of the `render()` function.
 // ----------------------------------------------------------------------------
 
-const notebookApi = acquireNotebookRendererApi(<%- JSON.stringify(rendererId) %>);
+const notebookApi = acquireNotebookRendererApi();
 
 // Track cells that we render so that, in development, we can re-render then
 // when the scripts change.
