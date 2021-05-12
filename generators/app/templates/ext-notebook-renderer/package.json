@@ -21,7 +21,7 @@
         "mimeTypes": <%- JSON.stringify(rendererMimeTypes) %>
       }
     ]<% if (includeContentProvider) { %>,
-    "notebookProvider": [
+    "notebooks": [
       {
         "viewType": "test-notebook-renderer",
         "displayName": "Sample Notebook",
