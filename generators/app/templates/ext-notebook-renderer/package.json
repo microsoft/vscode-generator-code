@@ -43,7 +43,7 @@
     "watch:extension": "tsc -b --watch",
     "watch:client": "webpack --mode development --watch",
     "dev": "npm run compile && concurrently -r npm:watch:extension npm:dev:client",
-    "dev:client": "webpack-dev-server",
+    "dev:client": "webpack serve --mode development --env development",
     "pretest": "npm run compile && npm run lint",
     "test": "node ./out/test/runTest.js",
     "updatetypes": "cd src/extension/types && vscode-dts dev && vscode-dts master && cd ../../test/types && vscode-dts dev && vscode-dts master",
