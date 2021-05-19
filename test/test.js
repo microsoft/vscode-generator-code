@@ -1280,8 +1280,7 @@ describe('test code generator', function () {
                         "watch": "concurrently -r \"npm:watch:*\"",
                         "watch:extension": "tsc -b --watch",
                         "watch:client": "webpack --mode development --watch",
-                        "dev": "npm run compile && concurrently -r npm:watch:extension npm:dev:client",
-                        "dev:client": "webpack-dev-server",
+                        "dev": "concurrently -r npm:watch:extension npm:watch:client",
                         "pretest": "npm run compile && npm run lint",
                         "test": "node ./out/test/runTest.js",
                         "updatetypes": "cd src/extension/types && vscode-dts dev && vscode-dts master && cd ../../test/types && vscode-dts dev && vscode-dts master",
@@ -1309,7 +1308,6 @@ describe('test code generator', function () {
                         "vscode-test",
                         "webpack",
                         "webpack-cli",
-                        "webpack-dev-server"
                     ])
                 };
                 try {

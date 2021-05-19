@@ -13,9 +13,13 @@ module.exports = (env, argv) => ({
     path: path.join(__dirname, 'out', 'client'),
     filename: outputFilename,
     publicPath: '',
+    libraryTarget: 'module',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.css'],
+  },
+  experiments: {
+      outputModule: true,
   },
   module: {
     rules: [
@@ -69,6 +73,7 @@ module.exports = (env, argv) => ({
       __webpack_relative_entrypoint_to_root__: JSON.stringify(
         path.posix.relative(path.posix.dirname(`/${outputFilename}`), '/'),
       ),
+      scriptUrl: 'import.meta.url',
     }),
   ],
 });

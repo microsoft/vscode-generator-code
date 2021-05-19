@@ -1,15 +1,10 @@
-/*---------------------------------------------------------
- * Copyright (C) Microsoft Corporation. All rights reserved.
- *--------------------------------------------------------*/
-
 import { render } from './render';
 import errorOverlay from 'vscode-notebook-error-overlay';
-import { NotebookOutputEventParams } from 'vscode-notebook-renderer';
+import { ActivationFunction } from 'vscode-notebook-renderer';
 
 // Fix the public path so that any async import()'s work as expected.
-// declare let __webpack_public_path__: string;
-declare let __webpack_relative_entrypoint_to_root__: string;
-declare const scriptUrl: string
+declare const __webpack_relative_entrypoint_to_root__: string;
+declare const scriptUrl: string;
 
 __webpack_public_path__ = new URL(scriptUrl.replace(/[^/]+$/, '') + __webpack_relative_entrypoint_to_root__).toString();
 
@@ -20,50 +15,20 @@ __webpack_public_path__ = new URL(scriptUrl.replace(/[^/]+$/, '') + __webpack_re
 // rendering logic inside of the `render()` function.
 // ----------------------------------------------------------------------------
 
-const notebookApi = acquireNotebookRendererApi();
+export const activate: ActivationFunction = context => {
+  return {
+    renderCell(outputId, { element, mime, value }) {
+      errorOverlay.wrap(element, () => {
+        element.innerHTML = '';
+        const node = document.createElement('div');
+        element.appendChild(node);
 
-// Track cells that we render so that, in development, we can re-render then
-// when the scripts change.
-const rendered = new Map<string, NotebookOutputEventParams>();
-
-// You can listen to an event that will fire right before cells unmount if
-// you need to do teardown:
-notebookApi.onWillDestroyOutput((evt) => {
-  if (evt) {
-    rendered.delete(evt.outputId);
-  } else {
-    rendered.clear();
-  }
-});
-
-notebookApi.onDidCreateOutput((evt) => {
-  rendered.set(evt.outputId, evt);
-  renderTag(evt);
-});
-
-// Function to render your contents in a single tag, calls the `render()`
-// function from render.ts. Also catches and displays any thrown errors.
-const renderTag = ({ element, mime, value }: NotebookOutputEventParams) =>
-  errorOverlay.wrap(element, () => {
-    element.innerHTML = '';
-    const node = document.createElement('div');
-    element.appendChild(node);
-
-    render({ container: node, mimeType: mime, data: value, notebookApi });
-  });
-
-function renderAllTags() {
-  for (const evt of rendered.values()) {
-    renderTag(evt);
-  }
-}
-
-renderAllTags();
-
-// When the module is hot-reloaded, rerender all tags. Webpack will update
-// update the `render` function we imported, so we just need to call it again.
-if (module.hot) {
-  // note: using `module.hot?.accept` breaks HMR in Webpack 4--they parse
-  // for specific syntax in the module.
-  module.hot.accept(['./render'], renderAllTags);
-}
+        render({ container: node, mime, value, context });
+      });
+    },
+    destroyCell(outputId) {
+      // Do any teardown here. outputId is the cell output being deleted, or
+      // undefined if we're clearing all outputs.
+    }
+  };
+};

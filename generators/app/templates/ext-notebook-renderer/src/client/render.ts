@@ -1,28 +1,24 @@
-/*---------------------------------------------------------
- * Copyright (C) Microsoft Corporation. All rights reserved.
- *--------------------------------------------------------*/
-
 // We've set up this sample using CSS modules, which lets you import class
 // names into JavaScript: https://github.com/css-modules/css-modules
 // You can configure or change this in the webpack.config.js file.
 import * as style from './style.css';
-import type { NotebookRendererApi } from 'vscode-notebook-renderer';
+import type { RendererContext } from 'vscode-notebook-renderer';
 
 interface IRenderInfo {
   container: HTMLElement;
-  mimeType: string;
-  data: any;
-  notebookApi: NotebookRendererApi<unknown>;
+  mime: string;
+  value: any;
+  context: RendererContext<unknown>;
 }
 
 // This function is called to render your contents.
-export function render({ container, mimeType, data }: IRenderInfo) {
+export function render({ container, mime, value }: IRenderInfo) {
   // Format the JSON and insert it as <pre><code>{ ... }</code></pre>
   // Replace this with your custom code!
   const pre = document.createElement('pre');
   pre.classList.add(style.json);
   const code = document.createElement('code');
-  code.textContent = `mime type: ${mimeType}\n\n${JSON.stringify(data, null, 2)}`;
+  code.textContent = `mime type: ${mime}\n\n${JSON.stringify(value, null, 2)}`;
   pre.appendChild(code);
   container.appendChild(pre);
 }
