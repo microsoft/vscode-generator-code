@@ -1,6 +1,6 @@
 import { render } from './render';
 import errorOverlay from 'vscode-notebook-error-overlay';
-import { ActivationFunction } from 'vscode-notebook-renderer';
+import type { ActivationFunction } from 'vscode-notebook-renderer';
 
 // Fix the public path so that any async import()'s work as expected.
 declare const __webpack_relative_entrypoint_to_root__: string;
