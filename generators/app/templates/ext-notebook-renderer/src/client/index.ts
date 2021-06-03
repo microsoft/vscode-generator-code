@@ -17,16 +17,16 @@ __webpack_public_path__ = new URL(scriptUrl.replace(/[^/]+$/, '') + __webpack_re
 
 export const activate: ActivationFunction = context => {
   return {
-    renderCell(outputId, { element, mime, value }) {
+    renderOutputItem(outputItem, element) {
       errorOverlay.wrap(element, () => {
         element.innerHTML = '';
         const node = document.createElement('div');
         element.appendChild(node);
 
-        render({ container: node, mime, value, context });
+        render({ container: node, mime: outputItem.mime, value: outputItem.text(), context });
       });
     },
-    destroyCell(outputId) {
+    disposeOutputItem(outputId) {
       // Do any teardown here. outputId is the cell output being deleted, or
       // undefined if we're clearing all outputs.
     }

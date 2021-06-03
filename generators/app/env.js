@@ -52,7 +52,7 @@ module.exports.getDependencyVersions = async function () {
         "typescript": "^4.1.3",
         "vscode-test": "^1.5.0",
         "@types/webpack-env": "^1.16.0",
-        "@types/vscode-notebook-renderer": "^1.48.0",
+        "@types/vscode-notebook-renderer": "^1.57.8",
         "concurrently": "^5.3.0",
         "css-loader": "^4.2.0",
         "fork-ts-checker-webpack-plugin": "^5.0.14",
