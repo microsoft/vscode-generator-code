@@ -30,7 +30,7 @@
   "scripts": {
     "test": "mocha",
     "prepublishOnly": "npm test",
-    "preversion": "npm test && npm run lint",
+    "preversion": "npm test",
     "postversion": "git push && git push --tags"
   },
   "dependencies": {
