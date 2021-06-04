@@ -5,6 +5,7 @@
 
 const Generator = require('yeoman-generator');
 const yosay = require('yosay');
+const installActions = require('yeoman-generator/lib/actions/install');
 
 const path = require('path');
 const env = require('./env');
@@ -26,6 +27,7 @@ const extensionGenerators = [
     commandweb, notebook, webupdate
 ]
 
+Object.assign(Generator.prototype, installActions);
 
 module.exports = class extends Generator {
 
