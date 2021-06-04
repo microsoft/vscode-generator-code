@@ -137,8 +137,9 @@ module.exports = class extends Generator {
         }
         if (!this.options['destination'] && !this.extensionGenerator.update) {
             this.destinationRoot(this.destinationPath(this.extensionConfig.name))
-
         }
+        this.env.cwd = this.destinationPath();
+
         this.log();
         this.log(`Writing in ${this.destinationPath()}...`);
 
@@ -154,7 +155,6 @@ module.exports = class extends Generator {
             return;
         }
         if (this.extensionConfig.installDependencies) {
-            this.env.cwd = this.destinationPath();
             this.env.options.nodePackageManager = this.extensionConfig.pkgManager;
         } else {
             this.env.options.skipInstall = true;

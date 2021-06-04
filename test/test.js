@@ -1,8 +1,10 @@
 "use strict";
 const path = require('path');
 const helpers = require('yeoman-test');
+const spawn = require('execa');
 
 const env = require('../generators/app/env');
+const assert = require('assert');
 
 function stripComments(content) {
     /**
@@ -81,7 +83,7 @@ describe('test code generator', function () {
                 themeName: 'Green',
                 themeBase: 'vs-dark',
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "testTheme",
                     "displayName": "Test Theme",
@@ -114,10 +116,10 @@ describe('test code generator', function () {
                     "tokenColors": "./Monokai.tmTheme"
                 };
                 try {
-                    assertFiles(runResults, 'testTheme', ['themes/Green-color-theme.json', 'themes/Monokai.tmTheme']);
+                    assertFiles(runResult, 'testTheme', ['themes/Green-color-theme.json', 'themes/Monokai.tmTheme']);
 
-                    runResults.assertJsonFileContent('testTheme/package.json', expectedPackageJSON);
-                    runResults.assertJsonFileContent('testTheme/themes/Green-color-theme.json', expectedColorTheme);
+                    runResult.assertJsonFileContent('testTheme/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('testTheme/themes/Green-color-theme.json', expectedColorTheme);
 
                     done();
                 } catch (e) {
@@ -139,7 +141,7 @@ describe('test code generator', function () {
                 themeName: 'Green',
                 themeBase: 'vs-dark',
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "testTheme",
                     "displayName": "Test Theme",
@@ -172,10 +174,10 @@ describe('test code generator', function () {
                     "tokenColors": "./new theme.tmTheme"
                 };
                 try {
-                    assertFiles(runResults, 'testTheme', ['themes/Green-color-theme.json', 'themes/new theme.tmTheme']);
+                    assertFiles(runResult, 'testTheme', ['themes/Green-color-theme.json', 'themes/new theme.tmTheme']);
 
-                    runResults.assertJsonFileContent('testTheme/package.json', expectedPackageJSON);
-                    runResults.assertJsonFileContent('testTheme/themes/Green-color-theme.json', expectedColorTheme);
+                    runResult.assertJsonFileContent('testTheme/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('testTheme/themes/Green-color-theme.json', expectedColorTheme);
 
                     done();
                 } catch (e) {
@@ -197,7 +199,7 @@ describe('test code generator', function () {
                 themeName: 'Theme 74',
                 themeBase: 'vs-dark',
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "theme74",
                     "displayName": "Theme 74",
@@ -248,10 +250,10 @@ describe('test code generator', function () {
                         }]
                 };
                 try {
-                    assertFiles(runResults, 'theme74', ['themes/Theme 74-color-theme.json']);
+                    assertFiles(runResult, 'theme74', ['themes/Theme 74-color-theme.json']);
 
-                    runResults.assertJsonFileContent('theme74/package.json', expectedPackageJSON);
-                    runResults.assertJsonFileContent('theme74/themes/Theme 74-color-theme.json', expectedColorTheme);
+                    runResult.assertJsonFileContent('theme74/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('theme74/themes/Theme 74-color-theme.json', expectedColorTheme);
 
                     done();
                 } catch (e) {
@@ -273,7 +275,7 @@ describe('test code generator', function () {
                 themeName: 'Funky',
                 themeBase: 'vs',
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "testTheme",
                     "displayName": "Test Theme",
@@ -294,10 +296,10 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assertFiles(runResults, 'testTheme', ['themes/Funky-color-theme.json']);
+                    assertFiles(runResult, 'testTheme', ['themes/Funky-color-theme.json']);
 
-                    runResults.assertJsonFileContent('testTheme/package.json', expectedPackageJSON);
-                    runResults.assertJsonFileContent('testTheme/themes/Funky-color-theme.json', { name: 'Funky', colors: { 'editor.background': "#f5f5f5" } });
+                    runResult.assertJsonFileContent('testTheme/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('testTheme/themes/Funky-color-theme.json', { name: 'Funky', colors: { 'editor.background': "#f5f5f5" } });
                     done();
                 } catch (e) {
                     done(e);
@@ -320,7 +322,7 @@ describe('test code generator', function () {
                 languageScopeName: 'text.xml.ant',
                 languageExtensions: '.ant'
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "testLan",
                     "displayName": "Test Lan",
@@ -347,9 +349,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assertFiles(runResults, 'testLan', ['syntaxes/ant.tmLanguage']);
+                    assertFiles(runResult, 'testLan', ['syntaxes/ant.tmLanguage']);
 
-                    runResults.assertJsonFileContent('testLan/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('testLan/package.json', expectedPackageJSON);
                     done();
                 } catch (e) {
                     done(e);
@@ -372,7 +374,7 @@ describe('test code generator', function () {
                 languageScopeName: 'source.foo',
                 languageExtensions: '.foo'
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "testFooLan",
                     "displayName": "Test Foo Lan",
@@ -399,9 +401,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assertFiles(runResults, 'testFooLan', ['syntaxes/foo.tmLanguage.json', 'language-configuration.json']);
+                    assertFiles(runResult, 'testFooLan', ['syntaxes/foo.tmLanguage.json', 'language-configuration.json']);
 
-                    runResults.assertJsonFileContent('testFooLan/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('testFooLan/package.json', expectedPackageJSON);
                     done();
                 } catch (e) {
                     done(e);
@@ -424,7 +426,7 @@ describe('test code generator', function () {
                 languageScopeName: 'source.crusty',
                 languageExtensions: '.crusty'
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "crusty",
                     "displayName": "Crusty",
@@ -451,11 +453,11 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assertFiles(runResults, 'crusty', ['syntaxes/crusty.tmLanguage.json', 'language-configuration.json']);
+                    assertFiles(runResult, 'crusty', ['syntaxes/crusty.tmLanguage.json', 'language-configuration.json']);
 
-                    runResults.assertJsonFileContent('crusty/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('crusty/package.json', expectedPackageJSON);
 
-                    runResults.assertJsonFileContent('crusty/syntaxes/crusty.tmLanguage.json', {
+                    runResult.assertJsonFileContent('crusty/syntaxes/crusty.tmLanguage.json', {
                         name: 'Crusty',
                         scopeName: 'source.crusty'
                     });
@@ -479,7 +481,7 @@ describe('test code generator', function () {
                 description: 'My TestSnip',
                 languageId: 'python'
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "testSnip",
                     "displayName": 'Test Snip',
@@ -499,9 +501,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assertFiles(runResults, 'testSnip', ['snippets/snippets.code-snippets']);
+                    assertFiles(runResult, 'testSnip', ['snippets/snippets.code-snippets']);
 
-                    runResults.assertJsonFileContent('testSnip/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('testSnip/package.json', expectedPackageJSON);
                     done();
                 } catch (e) {
                     done(e);
@@ -522,7 +524,7 @@ describe('test code generator', function () {
                 description: 'My TestSnip',
                 languageId: 'python'
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "testSnip",
                     "displayName": 'Test Snip',
@@ -568,10 +570,10 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assertFiles(runResults, 'testSnip', ['snippets/snippets.code-snippets']);
+                    assertFiles(runResult, 'testSnip', ['snippets/snippets.code-snippets']);
 
-                    runResults.assertJsonFileContent('testSnip/package.json', expectedPackageJSON);
-                    runResults.assertJsonFileContent('testSnip/snippets/snippets.code-snippets', expectedSnippet);
+                    runResult.assertJsonFileContent('testSnip/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('testSnip/snippets/snippets.code-snippets', expectedSnippet);
 
 
                     done();
@@ -591,7 +593,7 @@ describe('test code generator', function () {
                 displayName: 'Test Keym',
                 description: 'My TestKeym',
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "testKeym",
                     "displayName": 'Test Keym',
@@ -611,9 +613,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assertFiles(runResults, 'testKeym', []);
+                    assertFiles(runResult, 'testKeym', []);
 
-                    runResults.assertJsonFileContent('testKeym/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('testKeym/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {
@@ -635,7 +637,7 @@ describe('test code generator', function () {
                 gitInit: true,
                 pkgManager: 'npm'
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "testCom",
                     "displayName": 'Test Com',
@@ -680,10 +682,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assertFiles(runResults, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
+                    assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
 
-                    runResults.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
-
+                    runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
                     done();
                 } catch (e) {
                     done(e);
@@ -703,7 +704,7 @@ describe('test code generator', function () {
                 gitInit: false,
                 pkgManager: 'yarn'
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "testCom",
                     "displayName": 'Test Com',
@@ -765,12 +766,12 @@ describe('test code generator', function () {
                     ]
                 };
                 try {
-                    assertFiles(runResults, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', '.eslintrc.json', '.vscode/extensions.json']);
+                    assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', '.eslintrc.json', '.vscode/extensions.json']);
 
-                    runResults.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
-                    const tsconfigBody = JSON.parse(stripComments(runResults.fs.read('testCom/tsconfig.json')));
-                    runResults.assertObjectContent(tsconfigBody, expectedTsConfig);
+                    const tsconfigBody = JSON.parse(stripComments(runResult.fs.read('testCom/tsconfig.json')));
+                    runResult.assertObjectContent(tsconfigBody, expectedTsConfig);
 
                     done();
                 } catch (e) {
@@ -792,7 +793,7 @@ describe('test code generator', function () {
                 pkgManager: 'npm',
                 webpack: true
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "testCom",
                     "displayName": 'Test Com',
@@ -845,9 +846,9 @@ describe('test code generator', function () {
                 try {
 
 
-                    assertFiles(runResults, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
+                    assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
 
-                    runResults.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {
@@ -869,7 +870,7 @@ describe('test code generator', function () {
                 gitInit: false,
                 pkgManager: 'npm'
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "testCom",
                     "displayName": 'Test Com',
@@ -909,11 +910,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
+                    assertFiles(runResult, 'testCom', ['extension.js', 'test/suite/extension.test.js', 'test/suite/index.js', 'jsconfig.json']);
 
-
-                    assertFiles(runResults, 'testCom', ['extension.js', 'test/suite/extension.test.js', 'test/suite/index.js', 'jsconfig.json']);
-
-                    runResults.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {
@@ -935,7 +934,7 @@ describe('test code generator', function () {
                 gitInit: false,
                 pkgManager: 'yarn'
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedJSConfig = {
                     "compilerOptions": {
                         "module": "commonjs",
@@ -950,8 +949,8 @@ describe('test code generator', function () {
                     ]
                 };
                 try {
-                    const tsconfigBody = JSON.parse(stripComments(runResults.fs.read('testCom/jsconfig.json')));
-                    runResults.assertObjectContent(tsconfigBody, expectedJSConfig);
+                    const tsconfigBody = JSON.parse(stripComments(runResult.fs.read('testCom/jsconfig.json')));
+                    runResult.assertObjectContent(tsconfigBody, expectedJSConfig);
 
                     done();
                 } catch (e) {
@@ -970,7 +969,7 @@ describe('test code generator', function () {
                 displayName: 'Test Extension Pack',
                 description: 'My Test Extension Pack'
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "testExtensionPack",
                     "displayName": "Test Extension Pack",
@@ -987,9 +986,9 @@ describe('test code generator', function () {
                     ]
                 };
                 try {
-                    assertFiles(runResults, 'testExtensionPack', []);
+                    assertFiles(runResult, 'testExtensionPack', []);
 
-                    runResults.assertJsonFileContent('testExtensionPack/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('testExtensionPack/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {
@@ -1006,7 +1005,7 @@ describe('test code generator', function () {
                 lpLanguageName: 'Russian',
                 lpLocalizedLanguageName: 'русский',
                 pkgManager: 'npm'
-            }).toPromise().then(runResults => {
+            }).toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "vscode-language-pack-ru",
                     "displayName": "Russian Language Pack",
@@ -1030,9 +1029,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assertFiles(runResults, 'vscode-language-pack-ru', []);
+                    assertFiles(runResult, 'vscode-language-pack-ru', []);
 
-                    runResults.assertJsonFileContent('vscode-language-pack-ru/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('vscode-language-pack-ru/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {
@@ -1052,7 +1051,7 @@ describe('test code generator', function () {
                 lpLanguageName: 'Russian',
                 lpLocalizedLanguageName: 'русский',
                 pkgManager: 'yarn'
-            }).toPromise().then(runResults => {
+            }).toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "vscode-language-pack-ru",
                     "displayName": "Russian Language Pack",
@@ -1076,9 +1075,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assertFiles(runResults, 'vscode-language-pack-ru', []);
+                    assertFiles(runResult, 'vscode-language-pack-ru', []);
 
-                    runResults.assertJsonFileContent('vscode-language-pack-ru/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('vscode-language-pack-ru/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {
@@ -1099,7 +1098,7 @@ describe('test code generator', function () {
                 gitInit: true,
                 pkgManager: 'npm'
             }) // Mock the prompt answers
-            .toPromise().then(runResults => {
+            .toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "testCom",
                     "displayName": 'Test Com',
@@ -1151,9 +1150,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assertFiles(runResults, 'testCom', ['src/web/extension.ts', 'build/web-extension.webpack.config.js', 'src/web/test/suite/extension.test.ts', 'src/web/test/suite/index.ts', 'tsconfig.json']);
+                    assertFiles(runResult, 'testCom', ['src/web/extension.ts', 'build/web-extension.webpack.config.js', 'src/web/test/suite/extension.test.ts', 'src/web/test/suite/index.ts', 'tsconfig.json']);
 
-                    runResults.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {
@@ -1175,7 +1174,7 @@ describe('test code generator', function () {
                 includeContentProvider: false,
                 gitInit: true,
                 pkgManager: 'yarn'
-            }).toPromise().then(runResults => {
+            }).toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "json-renderer-ext",
                     "displayName": "Cool JSON Renderer Extension",
@@ -1240,14 +1239,109 @@ describe('test code generator', function () {
                     ])
                 };
                 try {
-                    assertFiles(runResults, 'json-renderer-ext', ['webpack.config.js', '.gitignore', '.eslintrc.json']);
+                    assertFiles(runResult, 'json-renderer-ext', ['webpack.config.js', '.gitignore', '.eslintrc.json']);
 
-                    runResults.assertJsonFileContent('json-renderer-ext/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('json-renderer-ext/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {
                     done(e);
                 }
             }, done);
+    });
+
+    it('command-ts with test', function (done) {
+        this.timeout(60000);
+
+        helpers.run(path.join(__dirname, '../generators/app')).withPrompts({
+            type: 'ext-command-ts',
+            name: 'testCom',
+            displayName: 'Test Com',
+            description: 'My TestCom',
+            gitInit: false,
+            pkgManager: 'npm'
+        }).toPromise().then(runResult => {
+            try {
+                console.log('Running npm install');
+                const res = spawn.sync('npm', ['i'], { cwd: runResult.env.cwd });
+                if (res.exitCode !== 0) {
+                    assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
+                }
+
+                console.log('Running extension test');
+                const res2 = spawn.sync('npm', ['test'], { cwd: runResult.env.cwd });
+                if (res2.exitCode !== 0) {
+                    assert.fail(`npm test failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
+                }
+                done();
+            } catch (e) {
+                done(e);
+            }
+        });
+    });
+
+    it('command-ts-webpack with test', function (done) {
+        this.timeout(60000);
+
+        helpers.run(path.join(__dirname, '../generators/app')).withPrompts({
+            type: 'ext-command-ts',
+            name: 'testCom',
+            displayName: 'Test Com',
+            description: 'My TestCom',
+            gitInit: false,
+            pkgManager: 'npm',
+            webpack: true
+        }).toPromise().then(runResult => {
+            try {
+                console.log('Running npm install');
+                const res = spawn.sync('npm', ['i'], { cwd: runResult.env.cwd });
+                if (res.exitCode !== 0) {
+                    assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
+                }
+
+                console.log('Running extension compile');
+                const res2 = spawn.sync('npm', ['run', 'compile'], { cwd: runResult.env.cwd });
+                if (res2.exitCode !== 0) {
+                    assert.fail(`npm run compile failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
+                } else {
+
+                }
+                done();
+            } catch (e) {
+                done(e);
+            }
+        });
+    });
+
+    it('command-ts-web with test', function (done) {
+        this.timeout(60000);
+
+        helpers.run(path.join(__dirname, '../generators/app')).withPrompts({
+            type: 'ext-command-web',
+            name: 'testCom',
+            displayName: 'Test Com',
+            description: 'My TestCom',
+            gitInit: false,
+            pkgManager: 'npm'
+        }).toPromise().then(runResult => {
+            try {
+                console.log('Running npm install');
+                const res = spawn.sync('npm', ['i'], { cwd: runResult.env.cwd });
+                if (res.exitCode !== 0) {
+                    assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
+                }
+
+                console.log('Running extension test');
+                const res2 = spawn.sync('npm', ['run', 'test'], { cwd: runResult.env.cwd });
+                if (res2.exitCode !== 0) {
+                    assert.fail(`npm run test failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
+                } else {
+
+                }
+                done();
+            } catch (e) {
+                done(e);
+            }
+        });
     });
 });
