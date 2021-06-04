@@ -59,9 +59,9 @@ module.exports = {
             }
         });
 
-        generator.fs.copyTpl(generator.sourceRoot() + '/src/web/extension.ts', 'src/web/extension.ts', extensionConfig, {});
-        generator.fs.copy(generator.sourceRoot() + '/src/web/test', 'src/web/test');
-        generator.fs.copyTpl(generator.sourceRoot() + '/build/web-extension.webpack.config.js', 'build/web-extension.webpack.config.js', extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('src/web/extension.ts'), generator.destinationPath('src/web/extension.ts'), extensionConfig, {});
+        generator.fs.copy(generator.templatePath('src/web/test'), generator.destinationPath('src/web/test'));
+        generator.fs.copyTpl(generator.templatePath('build/web-extension.webpack.config.js'), generator.destinationPath('build/web-extension.webpack.config.js'), extensionConfig);
 
         if (generator.fs.exists(generator.destinationPath('yarn.lock'))) {
             extensionConfig.pkgManager = 'yarn';

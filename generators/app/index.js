@@ -5,7 +5,6 @@
 
 const Generator = require('yeoman-generator');
 const yosay = require('yosay');
-const installActions = require('yeoman-generator/lib/actions/install');
 
 const path = require('path');
 const env = require('./env');
@@ -26,8 +25,6 @@ const extensionGenerators = [
     commandts, commandjs, colortheme, language, snippets, keymap, extensionpack, localization,
     commandweb, notebook, webupdate
 ]
-
-Object.assign(Generator.prototype, installActions);
 
 module.exports = class extends Generator {
 
@@ -140,8 +137,8 @@ module.exports = class extends Generator {
         }
         if (!this.options['destination'] && !this.extensionGenerator.update) {
             this.destinationRoot(this.destinationPath(this.extensionConfig.name))
-        }
 
+        }
         this.log();
         this.log(`Writing in ${this.destinationPath()}...`);
 
@@ -153,14 +150,14 @@ module.exports = class extends Generator {
     // Installation
     install() {
         if (this.abort) {
+            this.env.options.skipInstall = true;
             return;
         }
         if (this.extensionConfig.installDependencies) {
-            this.installDependencies({
-                yarn: this.extensionConfig.pkgManager === 'yarn',
-                npm: this.extensionConfig.pkgManager === 'npm',
-                bower: false
-            });
+            this.env.cwd = this.destinationPath();
+            this.env.options.nodePackageManager = this.extensionConfig.pkgManager;
+        } else {
+            this.env.options.skipInstall = true;
         }
     }
 

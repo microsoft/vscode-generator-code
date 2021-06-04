@@ -29,34 +29,35 @@ module.exports = {
      */
     writing: (generator, extensionConfig) => {
 
-        generator.fs.copy(generator.sourceRoot() + '/src', 'src');
-        generator.fs.copy(generator.sourceRoot() + '/vscode', '.vscode');
-        generator.fs.copy(generator.sourceRoot() + '/tsconfig.json', 'tsconfig.json');
-        generator.fs.copy(generator.sourceRoot() + '/.vscodeignore', '.vscodeignore');
-        generator.fs.copy(generator.sourceRoot() + '/webpack.config.js', 'webpack.config.js');
-        generator.fs.copy(generator.sourceRoot() + '/.eslintrc.json', '.eslintrc.json');
-        generator.fs.copy(generator.sourceRoot() + '/src/extension/types/.gitkeep', 'src/extension/types/.gitkeep');
-        generator.fs.copy(generator.sourceRoot() + '/src/extension/types/.gitkeep', 'src/test/types/.gitkeep');
+        generator.fs.copy(generator.templatePath('src'), generator.destinationPath('src'));
+        generator.fs.copy(generator.templatePath('vscode'), generator.destinationPath('.vscode'));
+        generator.fs.copy(generator.templatePath('tsconfig.json'), generator.destinationPath('tsconfig.json'));
+        generator.fs.copy(generator.templatePath('.vscodeignore'), generator.destinationPath('.vscodeignore'));
+        generator.fs.copy(generator.templatePath('webpack.config.js'), generator.destinationPath('webpack.config.js'));
+        generator.fs.copy(generator.templatePath('.eslintrc.json'), generator.destinationPath('.eslintrc.json'));
+        generator.fs.copy(generator.templatePath('src/extension/types/.gitkeep'), generator.destinationPath('src/extension/types/.gitkeep'));
+        generator.fs.copy(generator.templatePath('src/extension/types/.gitkeep'), generator.destinationPath('src/test/types/.gitkeep'));
 
-        generator.fs.copyTpl(generator.sourceRoot() + '/package.json', 'package.json', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/README.md', 'README.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/src/client/index.ts', 'src/client/index.ts', extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('package.json'), generator.destinationPath('package.json'), extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('README.md'), generator.destinationPath('README.md'), extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('CHANGELOG.md'), generator.destinationPath('CHANGELOG.md'), extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('src/client/index.ts'), generator.destinationPath('src/client/index.ts'), extensionConfig);
 
-        generator.fs.copyTpl(generator.sourceRoot() + '/src/extension/extension.ts', 'src/extension/extension.ts', extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('src/extension/extension.ts'), generator.destinationPath('src/extension/extension.ts'), extensionConfig);
 
         if (!extensionConfig.includeContentProvider) {
-            generator.fs.delete('src/extension/sampleProvider.ts');
+            generator.fs.delete(generator.destinationPath('src/extension/sampleProvider.ts'));
         } else {
-            generator.fs.copyTpl(generator.sourceRoot() + '/src/extension/sampleProvider.ts', 'src/extension/sampleProvider.ts', extensionConfig);
+            generator.fs.copyTpl(generator.templatePath('src/extension/sampleProvider.ts'), generator.destinationPath('src/extension/sampleProvider.ts'), extensionConfig);
         }
 
         if (extensionConfig.gitInit) {
-            generator.fs.copy(generator.sourceRoot() + '/gitignore', '.gitignore');
-            generator.fs.copy(generator.sourceRoot() + '/gitattributes', '.gitattributes');
+            generator.fs.copy(generator.templatePath('gitignore'), generator.destinationPath('.gitignore'));
+            generator.fs.copy(generator.templatePath('gitattributes'), generator.destinationPath('.gitattributes'));
         }
 
         if (extensionConfig.pkgManager === 'yarn') {
-            generator.fs.copyTpl(generator.sourceRoot() + '/.yarnrc', '.yarnrc', extensionConfig);
+            generator.fs.copyTpl(generator.templatePath('.yarnrc'), generator.destinationPath('.yarnrc'), extensionConfig);
         }
 
         extensionConfig.installDependencies = true;

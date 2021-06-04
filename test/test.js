@@ -1,11 +1,8 @@
 "use strict";
-var path = require('path');
-var assert = require('yeoman-assert')
-var helpers = require('yeoman-test');
+const path = require('path');
+const helpers = require('yeoman-test');
 
-var env = require('../generators/app/env');
-
-var fs = require('fs');
+const env = require('../generators/app/env');
 
 function stripComments(content) {
     /**
@@ -14,15 +11,15 @@ function stripComments(content) {
     * Third matches block comments
     * Fourth matches line comments
     */
-    var regexp = /("(?:[^\\\"]*(?:\\.)?)*")|('(?:[^\\\']*(?:\\.)?)*')|(\/\*(?:\r?\n|.)*?\*\/)|(\/{2,}.*?(?:(?:\r?\n)|$))/g;
-    var result = content.replace(regexp, (match, m1, m2, m3, m4) => {
+    const regexp = /("(?:[^\\\"]*(?:\\.)?)*")|('(?:[^\\\']*(?:\\.)?)*')|(\/\*(?:\r?\n|.)*?\*\/)|(\/{2,}.*?(?:(?:\r?\n)|$))/g;
+    const result = content.replace(regexp, (match, m1, m2, m3, m4) => {
         // Only one of m1, m2, m3, m4 matches
         if (m3) {
             // A block comment. Replace with nothing
             return '';
         } else if (m4) {
             // A line comment. If it ends in \r?\n then keep it.
-            var length = m4.length;
+            const length = m4.length;
             if (length > 2 && m4[length - 1] === '\n') {
                 return m4[length - 2] === '\r' ? '\r\n' : '\n';
             } else {
@@ -40,8 +37,8 @@ function stripComments(content) {
 describe('test code generator', function () {
     this.timeout(10000);
 
-    var engineVersion;
-    var dependencyVersions;
+    let engineVersion;
+    let dependencyVersions;
 
     before(async function () {
         engineVersion = await env.getLatestVSCodeVersion();
@@ -58,6 +55,20 @@ describe('test code generator', function () {
         return res;
     }
 
+
+    const standartFiles = ['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore']
+
+    /**
+     * @param {helpers.RunResult} runResult
+     * @param {String} extensionName
+     * @param {String[]} expectedFileNames
+     */
+    function assertFiles(runResult, extensionName, expectedFileNames) {
+        const allFileNames = expectedFileNames.concat(standartFiles).map(fileName => `${extensionName}/${fileName}`);
+
+        runResult.assertFile(allFileNames);
+    }
+
     it('theme import', function (done) {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
@@ -70,8 +81,8 @@ describe('test code generator', function () {
                 themeName: 'Green',
                 themeBase: 'vs-dark',
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expectedPackageJSON = {
+            .toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "testTheme",
                     "displayName": "Test Theme",
                     "description": "My TestTheme",
@@ -90,7 +101,7 @@ describe('test code generator', function () {
                         }]
                     }
                 };
-                var expectedColorTheme = {
+                const expectedColorTheme = {
                     "name": "Green",
                     "colors": {
                         "editor.background": "#272822",
@@ -103,17 +114,10 @@ describe('test code generator', function () {
                     "tokenColors": "./Monokai.tmTheme"
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Green-color-theme.json', 'themes/Monokai.tmTheme', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assertFiles(runResults, 'testTheme', ['themes/Green-color-theme.json', 'themes/Monokai.tmTheme']);
 
-                    var body = fs.readFileSync('package.json', 'utf8');
-
-                    var actual = JSON.parse(body);
-                    assert.deepEqual(actual, expectedPackageJSON);
-
-                    body = fs.readFileSync('themes/Green-color-theme.json', 'utf8');
-
-                    actual = JSON.parse(body);
-                    assert.deepEqual(actual, expectedColorTheme);
+                    runResults.assertJsonFileContent('testTheme/package.json', expectedPackageJSON);
+                    runResults.assertJsonFileContent('testTheme/themes/Green-color-theme.json', expectedColorTheme);
 
                     done();
                 } catch (e) {
@@ -135,8 +139,8 @@ describe('test code generator', function () {
                 themeName: 'Green',
                 themeBase: 'vs-dark',
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expectedPackageJSON = {
+            .toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "testTheme",
                     "displayName": "Test Theme",
                     "description": "My TestTheme",
@@ -155,7 +159,7 @@ describe('test code generator', function () {
                         }]
                     }
                 };
-                var expectedColorTheme = {
+                const expectedColorTheme = {
                     "name": "Green",
                     "colors": {
                         "editor.background": "#002B36",
@@ -168,17 +172,10 @@ describe('test code generator', function () {
                     "tokenColors": "./new theme.tmTheme"
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Green-color-theme.json', 'themes/new theme.tmTheme', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assertFiles(runResults, 'testTheme', ['themes/Green-color-theme.json', 'themes/new theme.tmTheme']);
 
-                    var body = fs.readFileSync('package.json', 'utf8');
-
-                    var actual = JSON.parse(body);
-                    assert.deepEqual(actual, expectedPackageJSON);
-
-                    body = fs.readFileSync('themes/Green-color-theme.json', 'utf8');
-
-                    actual = JSON.parse(body);
-                    assert.deepEqual(actual, expectedColorTheme);
+                    runResults.assertJsonFileContent('testTheme/package.json', expectedPackageJSON);
+                    runResults.assertJsonFileContent('testTheme/themes/Green-color-theme.json', expectedColorTheme);
 
                     done();
                 } catch (e) {
@@ -200,8 +197,8 @@ describe('test code generator', function () {
                 themeName: 'Theme 74',
                 themeBase: 'vs-dark',
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expectedPackageJSON = {
+            .toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "theme74",
                     "displayName": "Theme 74",
                     "description": "Theme SeventyFour",
@@ -220,7 +217,7 @@ describe('test code generator', function () {
                         }]
                     }
                 };
-                var expectedColorTheme = {
+                const expectedColorTheme = {
                     "name": "Theme 74",
                     "colors": {
                         "editor.background": "#002B36",
@@ -251,17 +248,10 @@ describe('test code generator', function () {
                         }]
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Theme 74-color-theme.json', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assertFiles(runResults, 'theme74', ['themes/Theme 74-color-theme.json']);
 
-                    var body = fs.readFileSync('package.json', 'utf8');
-
-                    var actual = JSON.parse(body);
-                    assert.deepEqual(actual, expectedPackageJSON);
-
-                    body = fs.readFileSync('themes/Theme 74-color-theme.json', 'utf8');
-
-                    actual = JSON.parse(body);
-                    assert.deepEqual(actual, expectedColorTheme);
+                    runResults.assertJsonFileContent('theme74/package.json', expectedPackageJSON);
+                    runResults.assertJsonFileContent('theme74/themes/Theme 74-color-theme.json', expectedColorTheme);
 
                     done();
                 } catch (e) {
@@ -283,8 +273,8 @@ describe('test code generator', function () {
                 themeName: 'Funky',
                 themeBase: 'vs',
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expectedPackageJSON = {
+            .toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "testTheme",
                     "displayName": "Test Theme",
                     "description": "My TestTheme",
@@ -304,20 +294,10 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'themes/Funky-color-theme.json', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assertFiles(runResults, 'testTheme', ['themes/Funky-color-theme.json']);
 
-                    var body = fs.readFileSync('package.json', 'utf8');
-
-                    var actual = JSON.parse(body);
-
-                    assert.deepEqual(actual, expectedPackageJSON);
-
-                    body = fs.readFileSync('themes/Funky-color-theme.json', 'utf8');
-
-                    actual = JSON.parse(body);
-
-                    assert.strictEqual(actual.name, "Funky");
-                    assert.strictEqual(actual.colors['editor.background'], "#f5f5f5");
+                    runResults.assertJsonFileContent('testTheme/package.json', expectedPackageJSON);
+                    runResults.assertJsonFileContent('testTheme/themes/Funky-color-theme.json', { name: 'Funky', colors: { 'editor.background': "#f5f5f5" } });
                     done();
                 } catch (e) {
                     done(e);
@@ -340,8 +320,8 @@ describe('test code generator', function () {
                 languageScopeName: 'text.xml.ant',
                 languageExtensions: '.ant'
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expected = {
+            .toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "testLan",
                     "displayName": "Test Lan",
                     "description": "My TestLan",
@@ -367,12 +347,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'syntaxes/ant.tmLanguage', 'language-configuration.json', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assertFiles(runResults, 'testLan', ['syntaxes/ant.tmLanguage']);
 
-                    var body = fs.readFileSync('package.json', 'utf8');
-
-                    var actual = JSON.parse(body);
-                    assert.deepEqual(expected, actual);
+                    runResults.assertJsonFileContent('testLan/package.json', expectedPackageJSON);
                     done();
                 } catch (e) {
                     done(e);
@@ -395,8 +372,8 @@ describe('test code generator', function () {
                 languageScopeName: 'source.foo',
                 languageExtensions: '.foo'
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expected = {
+            .toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "testFooLan",
                     "displayName": "Test Foo Lan",
                     "description": "My TestFooLan",
@@ -422,12 +399,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'syntaxes/foo.tmLanguage.json', 'language-configuration.json', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assertFiles(runResults, 'testFooLan', ['syntaxes/foo.tmLanguage.json', 'language-configuration.json']);
 
-                    var body = fs.readFileSync('package.json', 'utf8');
-
-                    var actual = JSON.parse(body);
-                    assert.deepEqual(expected, actual);
+                    runResults.assertJsonFileContent('testFooLan/package.json', expectedPackageJSON);
                     done();
                 } catch (e) {
                     done(e);
@@ -450,8 +424,8 @@ describe('test code generator', function () {
                 languageScopeName: 'source.crusty',
                 languageExtensions: '.crusty'
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expected = {
+            .toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "crusty",
                     "displayName": "Crusty",
                     "description": "Crusty, the language",
@@ -477,18 +451,14 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'syntaxes/crusty.tmLanguage.json', 'language-configuration.json', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assertFiles(runResults, 'crusty', ['syntaxes/crusty.tmLanguage.json', 'language-configuration.json']);
 
-                    var body = fs.readFileSync('package.json', 'utf8');
+                    runResults.assertJsonFileContent('crusty/package.json', expectedPackageJSON);
 
-                    var actual = JSON.parse(body);
-                    assert.deepEqual(expected, actual);
-
-                    var grammar = fs.readFileSync('syntaxes/crusty.tmLanguage.json', 'utf8');
-
-                    var actualGrammar = JSON.parse(grammar);
-                    assert.strictEqual("Crusty", actualGrammar.name);
-                    assert.strictEqual("source.crusty", actualGrammar.scopeName);
+                    runResults.assertJsonFileContent('crusty/syntaxes/crusty.tmLanguage.json', {
+                        name: 'Crusty',
+                        scopeName: 'source.crusty'
+                    });
 
                     done();
                 } catch (e) {
@@ -509,8 +479,8 @@ describe('test code generator', function () {
                 description: 'My TestSnip',
                 languageId: 'python'
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expected = {
+            .toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "testSnip",
                     "displayName": 'Test Snip',
                     "description": "My TestSnip",
@@ -529,13 +499,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'snippets/snippets.code-snippets', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assertFiles(runResults, 'testSnip', ['snippets/snippets.code-snippets']);
 
-                    var body = fs.readFileSync('package.json', 'utf8');
-
-                    var actual = JSON.parse(body);
-                    assert.deepEqual(expected, actual);
-
+                    runResults.assertJsonFileContent('testSnip/package.json', expectedPackageJSON);
                     done();
                 } catch (e) {
                     done(e);
@@ -556,8 +522,8 @@ describe('test code generator', function () {
                 description: 'My TestSnip',
                 languageId: 'python'
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expected = {
+            .toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "testSnip",
                     "displayName": 'Test Snip',
                     "description": "My TestSnip",
@@ -575,7 +541,7 @@ describe('test code generator', function () {
                         }]
                     }
                 };
-                var expectedSnippet = {
+                const expectedSnippet = {
                     "ase": {
                         "prefix": "ase",
                         "body": "self.assertEqual(${1:expected}, ${2:actual}${3:, '${4:message}'})$0",
@@ -602,17 +568,11 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'snippets/snippets.code-snippets', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assertFiles(runResults, 'testSnip', ['snippets/snippets.code-snippets']);
 
-                    var body = fs.readFileSync('package.json', 'utf8');
+                    runResults.assertJsonFileContent('testSnip/package.json', expectedPackageJSON);
+                    runResults.assertJsonFileContent('testSnip/snippets/snippets.code-snippets', expectedSnippet);
 
-                    var actual = JSON.parse(body);
-                    assert.deepEqual(expected, actual);
-
-                    var snippet = fs.readFileSync('snippets/snippets.code-snippets', 'utf8');
-
-                    var actualSnippet = JSON.parse(snippet);
-                    assert.deepEqual(expectedSnippet, actualSnippet);
 
                     done();
                 } catch (e) {
@@ -631,8 +591,8 @@ describe('test code generator', function () {
                 displayName: 'Test Keym',
                 description: 'My TestKeym',
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expected = {
+            .toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "testKeym",
                     "displayName": 'Test Keym',
                     "description": "My TestKeym",
@@ -651,12 +611,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assertFiles(runResults, 'testKeym', []);
 
-                    var body = fs.readFileSync('package.json', 'utf8');
-
-                    var actual = JSON.parse(body);
-                    assert.deepEqual(expected, actual);
+                    runResults.assertJsonFileContent('testKeym/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {
@@ -678,8 +635,8 @@ describe('test code generator', function () {
                 gitInit: true,
                 pkgManager: 'npm'
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expectedPackageJSON = {
+            .toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "testCom",
                     "displayName": 'Test Com',
                     "description": "My TestCom",
@@ -723,13 +680,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
+                    assertFiles(runResults, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
 
-
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
-
-                    var packageJSONBody = fs.readFileSync('package.json', 'utf8')
-                    var actualPackageJSON = JSON.parse(packageJSONBody);
-                    assert.deepEqual(expectedPackageJSON, actualPackageJSON);
+                    runResults.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {
@@ -750,8 +703,8 @@ describe('test code generator', function () {
                 gitInit: false,
                 pkgManager: 'yarn'
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expectedPackageJSON = {
+            .toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "testCom",
                     "displayName": 'Test Com',
                     "description": "My TestCom",
@@ -794,7 +747,7 @@ describe('test code generator', function () {
                         }]
                     }
                 };
-                var expectedTsConfig = {
+                const expectedTsConfig = {
                     "compilerOptions": {
                         "module": "commonjs",
                         "target": "es6",
@@ -812,16 +765,12 @@ describe('test code generator', function () {
                     ]
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', '.eslintrc.json', '.vscode/extensions.json']);
+                    assertFiles(runResults, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', '.eslintrc.json', '.vscode/extensions.json']);
 
-                    var packageJSONBody = fs.readFileSync('package.json', 'utf8')
-                    var actualPackageJSON = JSON.parse(packageJSONBody);
-                    assert.deepEqual(expectedPackageJSON, actualPackageJSON);
+                    runResults.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
-                    var tsconfigBody = fs.readFileSync('tsconfig.json', 'utf8');
-
-                    var actualTsConfig = JSON.parse(stripComments(tsconfigBody));
-                    assert.deepEqual(expectedTsConfig, actualTsConfig);
+                    const tsconfigBody = JSON.parse(stripComments(runResults.fs.read('testCom/tsconfig.json')));
+                    runResults.assertObjectContent(tsconfigBody, expectedTsConfig);
 
                     done();
                 } catch (e) {
@@ -843,8 +792,8 @@ describe('test code generator', function () {
                 pkgManager: 'npm',
                 webpack: true
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expectedPackageJSON = {
+            .toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "testCom",
                     "displayName": 'Test Com',
                     "description": "My TestCom",
@@ -896,11 +845,9 @@ describe('test code generator', function () {
                 try {
 
 
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
+                    assertFiles(runResults, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
 
-                    var packageJSONBody = fs.readFileSync('package.json', 'utf8')
-                    var actualPackageJSON = JSON.parse(packageJSONBody);
-                    assert.deepEqual(expectedPackageJSON, actualPackageJSON);
+                    runResults.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {
@@ -922,8 +869,8 @@ describe('test code generator', function () {
                 gitInit: false,
                 pkgManager: 'npm'
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expected = {
+            .toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "testCom",
                     "displayName": 'Test Com',
                     "description": "My TestCom",
@@ -964,12 +911,9 @@ describe('test code generator', function () {
                 try {
 
 
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'extension.js', 'test/suite/extension.test.js', 'test/suite/index.js', 'jsconfig.json']);
+                    assertFiles(runResults, 'testCom', ['extension.js', 'test/suite/extension.test.js', 'test/suite/index.js', 'jsconfig.json']);
 
-                    var body = fs.readFileSync('package.json', 'utf8');
-
-                    var actual = JSON.parse(body);
-                    assert.deepEqual(expected, actual);
+                    runResults.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {
@@ -991,8 +935,8 @@ describe('test code generator', function () {
                 gitInit: false,
                 pkgManager: 'yarn'
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expected = {
+            .toPromise().then(runResults => {
+                const expectedJSConfig = {
                     "compilerOptions": {
                         "module": "commonjs",
                         "target": "es6",
@@ -1006,10 +950,8 @@ describe('test code generator', function () {
                     ]
                 };
                 try {
-                    var body = fs.readFileSync('jsconfig.json', 'utf8');
-
-                    var actual = JSON.parse(stripComments(body));
-                    assert.deepEqual(expected, actual);
+                    const tsconfigBody = JSON.parse(stripComments(runResults.fs.read('testCom/jsconfig.json')));
+                    runResults.assertObjectContent(tsconfigBody, expectedJSConfig);
 
                     done();
                 } catch (e) {
@@ -1028,8 +970,8 @@ describe('test code generator', function () {
                 displayName: 'Test Extension Pack',
                 description: 'My Test Extension Pack'
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expected = {
+            .toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "testExtensionPack",
                     "displayName": "Test Extension Pack",
                     "description": "My Test Extension Pack",
@@ -1045,12 +987,9 @@ describe('test code generator', function () {
                     ]
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assertFiles(runResults, 'testExtensionPack', []);
 
-                    var body = fs.readFileSync('package.json', 'utf8');
-
-                    var actual = JSON.parse(body);
-                    assert.deepEqual(expected, actual);
+                    runResults.assertJsonFileContent('testExtensionPack/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {
@@ -1067,8 +1006,8 @@ describe('test code generator', function () {
                 lpLanguageName: 'Russian',
                 lpLocalizedLanguageName: 'русский',
                 pkgManager: 'npm'
-            }).toPromise().then(function () {
-                var expected = {
+            }).toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "vscode-language-pack-ru",
                     "displayName": "Russian Language Pack",
                     "description": "Language pack extension for Russian",
@@ -1091,12 +1030,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.vscodeignore']);
+                    assertFiles(runResults, 'vscode-language-pack-ru', []);
 
-                    var body = fs.readFileSync('package.json', 'utf8');
-
-                    var actual = JSON.parse(body);
-                    assert.deepEqual(expected, actual);
+                    runResults.assertJsonFileContent('vscode-language-pack-ru/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {
@@ -1116,8 +1052,8 @@ describe('test code generator', function () {
                 lpLanguageName: 'Russian',
                 lpLocalizedLanguageName: 'русский',
                 pkgManager: 'yarn'
-            }).toPromise().then(function () {
-                var expected = {
+            }).toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "vscode-language-pack-ru",
                     "displayName": "Russian Language Pack",
                     "description": "Language pack extension for Russian",
@@ -1140,12 +1076,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', 'vsc-extension-quickstart.md', '.gitignore', '.gitattributes', '.vscodeignore']);
+                    assertFiles(runResults, 'vscode-language-pack-ru', []);
 
-                    var body = fs.readFileSync('package.json', 'utf8');
-
-                    var actual = JSON.parse(body);
-                    assert.deepEqual(expected, actual);
+                    runResults.assertJsonFileContent('vscode-language-pack-ru/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {
@@ -1166,8 +1099,8 @@ describe('test code generator', function () {
                 gitInit: true,
                 pkgManager: 'npm'
             }) // Mock the prompt answers
-            .toPromise().then(function () {
-                var expectedPackageJSON = {
+            .toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "testCom",
                     "displayName": 'Test Com',
                     "description": "My TestCom",
@@ -1218,13 +1151,9 @@ describe('test code generator', function () {
                     }
                 };
                 try {
+                    assertFiles(runResults, 'testCom', ['src/web/extension.ts', 'build/web-extension.webpack.config.js', 'src/web/test/suite/extension.test.ts', 'src/web/test/suite/index.ts', 'tsconfig.json']);
 
-
-                    assert.file(['package.json', 'README.md', 'CHANGELOG.md', '.vscodeignore', 'src/web/extension.ts', 'build/web-extension.webpack.config.js', 'src/web/test/suite/extension.test.ts', 'src/web/test/suite/index.ts', 'tsconfig.json']);
-
-                    var packageJSONBody = fs.readFileSync('package.json', 'utf8')
-                    var actualPackageJSON = JSON.parse(packageJSONBody);
-                    assert.deepEqual(expectedPackageJSON, actualPackageJSON);
+                    runResults.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {
@@ -1246,8 +1175,8 @@ describe('test code generator', function () {
                 includeContentProvider: false,
                 gitInit: true,
                 pkgManager: 'yarn'
-            }).toPromise().then(function () {
-                var expected = {
+            }).toPromise().then(runResults => {
+                const expectedPackageJSON = {
                     "name": "json-renderer-ext",
                     "displayName": "Cool JSON Renderer Extension",
                     "description": "",
@@ -1311,11 +1240,9 @@ describe('test code generator', function () {
                     ])
                 };
                 try {
-                    assert.file(['package.json', 'README.md', 'webpack.config.js', '.gitignore', '.vscodeignore', '.eslintrc.json']);
+                    assertFiles(runResults, 'json-renderer-ext', ['webpack.config.js', '.gitignore', '.eslintrc.json']);
 
-                    const body = fs.readFileSync('package.json', 'utf8');
-                    const actual = JSON.parse(body);
-                    assert.deepEqual(expected, actual);
+                    runResults.assertJsonFileContent('json-renderer-ext/package.json', expectedPackageJSON);
 
                     done();
                 } catch (e) {

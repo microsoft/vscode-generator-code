@@ -25,24 +25,24 @@ module.exports = {
      * @param {Object} extensionConfig
      */
     writing: (generator, extensionConfig) => {
-        generator.fs.copy(generator.sourceRoot() + '/vscode', '.vscode');
-        generator.fs.copy(generator.sourceRoot() + '/src/web/test', 'src/web/test');
+        generator.fs.copy(generator.templatePath('vscode'), generator.destinationPath('.vscode'));
+        generator.fs.copy(generator.templatePath('src/web/test'), generator.destinationPath('src/web/test'));
 
-        generator.fs.copy(generator.sourceRoot() + '/vscodeignore', '.vscodeignore');
+        generator.fs.copy(generator.templatePath('vscodeignore'), generator.destinationPath('.vscodeignore'));
         if (extensionConfig.gitInit) {
-            generator.fs.copy(generator.sourceRoot() + '/gitignore', '.gitignore');
+            generator.fs.copy(generator.templatePath('gitignore'), generator.destinationPath('.gitignore'));
         }
-        generator.fs.copyTpl(generator.sourceRoot() + '/README.md', 'README.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/CHANGELOG.md', 'CHANGELOG.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/vsc-extension-quickstart.md', 'vsc-extension-quickstart.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/tsconfig.json', 'tsconfig.json', extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('README.md'), generator.destinationPath('README.md'), extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('CHANGELOG.md'), generator.destinationPath('CHANGELOG.md'), extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('vsc-extension-quickstart.md'), generator.destinationPath('vsc-extension-quickstart.md'), extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('tsconfig.json'), generator.destinationPath('tsconfig.json'), extensionConfig);
 
-        generator.fs.copyTpl(generator.sourceRoot() + '/src/web/extension.ts', 'src/web/extension.ts', extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('src/web/extension.ts'), generator.destinationPath('src/web/extension.ts'), extensionConfig);
 
-        generator.fs.copyTpl(generator.sourceRoot() + '/build/web-extension.webpack.config.js', 'build/web-extension.webpack.config.js', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/package.json', 'package.json', extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('build/web-extension.webpack.config.js'), generator.destinationPath('build/web-extension.webpack.config.js'), extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('package.json'), generator.destinationPath('package.json'), extensionConfig);
 
-        generator.fs.copy(generator.sourceRoot() + '/.eslintrc.json', '.eslintrc.json');
+        generator.fs.copy(generator.templatePath('.eslintrc.json'), generator.destinationPath('.eslintrc.json'));
 
         extensionConfig.installDependencies = true;
         extensionConfig.proposedAPI = false;

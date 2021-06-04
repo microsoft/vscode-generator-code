@@ -28,32 +28,32 @@ module.exports = {
      */
     writing: (generator, extensionConfig) => {
         if (extensionConfig.webpack) {
-            generator.fs.copy(generator.sourceRoot() + '/vscode-webpack', '.vscode');
+            generator.fs.copy(generator.templatePath('vscode-webpack'), generator.destinationPath('.vscode'));
         } else {
-            generator.fs.copy(generator.sourceRoot() + '/vscode', '.vscode');
+            generator.fs.copy(generator.templatePath('vscode'), generator.destinationPath('.vscode'));
         }
-        generator.fs.copy(generator.sourceRoot() + '/src/test', 'src/test');
+        generator.fs.copy(generator.templatePath('src/test'), generator.destinationPath('src/test'));
 
-        generator.fs.copyTpl(generator.sourceRoot() + '/vscodeignore', '.vscodeignore', extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('vscodeignore'), generator.destinationPath('.vscodeignore'), extensionConfig);
         if (extensionConfig.gitInit) {
-            generator.fs.copy(generator.sourceRoot() + '/gitignore', '.gitignore');
+            generator.fs.copy(generator.templatePath('gitignore'), generator.destinationPath('.gitignore'));
         }
-        generator.fs.copyTpl(generator.sourceRoot() + '/README.md', 'README.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/CHANGELOG.md', 'CHANGELOG.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/vsc-extension-quickstart.md', 'vsc-extension-quickstart.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/tsconfig.json', 'tsconfig.json', extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('README.md'), generator.destinationPath('README.md'), extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('CHANGELOG.md'), generator.destinationPath('CHANGELOG.md'), extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('vsc-extension-quickstart.md'), generator.destinationPath('vsc-extension-quickstart.md'), extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('tsconfig.json'), generator.destinationPath('tsconfig.json'), extensionConfig);
 
-        generator.fs.copyTpl(generator.sourceRoot() + '/src/extension.ts', 'src/extension.ts', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/package.json', 'package.json', extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('src/extension.ts'), generator.destinationPath('src/extension.ts'), extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('package.json'), generator.destinationPath('package.json'), extensionConfig);
 
-        generator.fs.copy(generator.sourceRoot() + '/.eslintrc.json', '.eslintrc.json');
+        generator.fs.copy(generator.templatePath('.eslintrc.json'), generator.destinationPath('.eslintrc.json'));
 
         if (extensionConfig.pkgManager === 'yarn') {
-            generator.fs.copyTpl(generator.sourceRoot() + '/.yarnrc', '.yarnrc', extensionConfig);
+            generator.fs.copyTpl(generator.templatePath('.yarnrc'), generator.destinationPath('.yarnrc'), extensionConfig);
         }
 
         if (extensionConfig.webpack) {
-            generator.fs.copyTpl(generator.sourceRoot() + '/webpack.config.js', 'webpack.config.js', extensionConfig);
+            generator.fs.copyTpl(generator.templatePath('webpack.config.js'), generator.destinationPath('webpack.config.js'), extensionConfig);
         }
 
         extensionConfig.installDependencies = true;

@@ -64,31 +64,31 @@ module.exports = {
      */
     writing: (generator, extensionConfig) => {
         if (extensionConfig.tmThemeFileName) {
-            generator.fs.copyTpl(generator.sourceRoot() + '/themes/theme.tmTheme', 'themes/' + extensionConfig.tmThemeFileName, extensionConfig);
+            generator.fs.copyTpl(generator.templatePath('themes/theme.tmTheme'), generator.destinationPath('themes', extensionConfig.tmThemeFileName), extensionConfig);
         }
         extensionConfig.themeFileName = sanitize(extensionConfig.themeName + '-color-theme.json');
         if (extensionConfig.themeContent) {
             extensionConfig.themeContent.name = extensionConfig.themeName;
-            generator.fs.copyTpl(generator.sourceRoot() + '/themes/color-theme.json', 'themes/' + extensionConfig.themeFileName, extensionConfig);
+            generator.fs.copyTpl(generator.templatePath('themes/color-theme.json'), generator.destinationPath('themes', extensionConfig.themeFileName), extensionConfig);
         } else {
             if (extensionConfig.themeBase === 'vs') {
-                generator.fs.copyTpl(generator.sourceRoot() + '/themes/new-light-color-theme.json', 'themes/' + extensionConfig.themeFileName, extensionConfig);
+                generator.fs.copyTpl(generator.templatePath('themes/new-light-color-theme.json'), generator.destinationPath('themes', extensionConfig.themeFileName), extensionConfig);
             } else if (extensionConfig.themeBase === 'hc') {
-                generator.fs.copyTpl(generator.sourceRoot() + '/themes/new-hc-color-theme.json', 'themes/' + extensionConfig.themeFileName, extensionConfig);
+                generator.fs.copyTpl(generator.templatePath('themes/new-hc-color-theme.json'), generator.destinationPath('themes', extensionConfig.themeFileName), extensionConfig);
             } else {
-                generator.fs.copyTpl(generator.sourceRoot() + '/themes/new-dark-color-theme.json', 'themes/' + extensionConfig.themeFileName, extensionConfig);
+                generator.fs.copyTpl(generator.templatePath('themes/new-dark-color-theme.json'), generator.destinationPath('themes', extensionConfig.themeFileName), extensionConfig);
             }
         }
 
-        generator.fs.copy(generator.sourceRoot() + '/vscode', '.vscode');
-        generator.fs.copyTpl(generator.sourceRoot() + '/package.json', 'package.json', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/vsc-extension-quickstart.md', 'vsc-extension-quickstart.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/README.md', 'README.md', extensionConfig);
-        generator.fs.copyTpl(generator.sourceRoot() + '/CHANGELOG.md', 'CHANGELOG.md', extensionConfig);
-        generator.fs.copy(generator.sourceRoot() + '/vscodeignore', '.vscodeignore');
+        generator.fs.copy(generator.templatePath('vscode'), generator.destinationPath('.vscode'));
+        generator.fs.copyTpl(generator.templatePath('package.json'), generator.destinationPath('package.json'), extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('vsc-extension-quickstart.md'), generator.destinationPath('vsc-extension-quickstart.md'), extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('README.md'), generator.destinationPath('README.md'), extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('CHANGELOG.md'), generator.destinationPath('CHANGELOG.md'), extensionConfig);
+        generator.fs.copy(generator.templatePath('vscodeignore'), generator.destinationPath('.vscodeignore'));
         if (extensionConfig.gitInit) {
-            generator.fs.copy(generator.sourceRoot() + '/gitignore', '.gitignore');
-            generator.fs.copy(generator.sourceRoot() + '/gitattributes', '.gitattributes');
+            generator.fs.copy(generator.templatePath('gitignore'), generator.destinationPath('.gitignore'));
+            generator.fs.copy(generator.templatePath('gitattributes'), generator.destinationPath('.gitattributes'));
         }
     }
 }
