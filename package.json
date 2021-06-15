@@ -48,6 +48,6 @@
     "@types/yeoman-test": "^4.0.1",
     "mocha": "^8.4.0",
     "yeoman-test": "^6.1.0",
-    "yo": "^4.2.0"
+    "yeoman-environment": "^3.4.1"
   }
 }
