@@ -1186,16 +1186,15 @@ describe('test code generator', function () {
                     "categories": [
                         "Other"
                     ],
-                    "enableProposedApi": true,
                     "activationEvents": [],
                     "main": "./out/extension/extension.js",
                     "contributes": {
-                        "notebookOutputRenderer": [
+                        "notebookRenderer": [
                             {
                                 "entrypoint": "./out/client/index.js",
                                 "id": "json-renderer",
                                 "displayName": "JSON Renderer",
-                                "mimeTypes": ["application/json"]
+                                "mimeTypes": ["x-application/sample-json-renderer"]
                             }
                         ]
                     },
@@ -1210,14 +1209,13 @@ describe('test code generator', function () {
                         "watch:client": "webpack --mode development --watch",
                         "dev": "concurrently -r npm:watch:extension npm:watch:client",
                         "pretest": "npm run compile && npm run lint",
-                        "test": "node ./out/test/runTest.js",
-                        "updatetypes": "cd src/extension/types && vscode-dts dev && vscode-dts master && cd ../../test/types && vscode-dts dev && vscode-dts master",
-                        "postinstall": "npm run updatetypes"
+                        "test": "node ./out/test/runTest.js"
                     },
                     "devDependencies": devDependencies([
                         "@types/glob",
                         "@types/mocha",
                         "@types/node",
+                        "@types/vscode",
                         "@types/webpack-env",
                         "@typescript-eslint/eslint-plugin",
                         "@typescript-eslint/parser",
@@ -1231,7 +1229,6 @@ describe('test code generator', function () {
                         "style-loader",
                         "ts-loader",
                         "typescript",
-                        "vscode-dts",
                         "vscode-notebook-error-overlay",
                         "vscode-test",
                         "webpack",
