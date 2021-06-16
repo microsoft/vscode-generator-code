@@ -770,7 +770,7 @@ describe('test code generator', function () {
 
                     runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
-                    const tsconfigBody = JSON.parse(stripComments(runResult.fs.read('testCom/tsconfig.json')));
+                    const tsconfigBody = JSON.parse(stripComments(runResult.fs.read('tsconfig.json')));
                     runResult.assertObjectContent(tsconfigBody, expectedTsConfig);
 
                     done();
@@ -949,8 +949,8 @@ describe('test code generator', function () {
                     ]
                 };
                 try {
-                    const tsconfigBody = JSON.parse(stripComments(runResult.fs.read('testCom/jsconfig.json')));
-                    runResult.assertObjectContent(tsconfigBody, expectedJSConfig);
+                    const jsconfigBody = JSON.parse(stripComments(runResult.fs.read('jsconfig.json')));
+                    runResult.assertObjectContent(jsconfigBody, expectedJSConfig);
 
                     done();
                 } catch (e) {
