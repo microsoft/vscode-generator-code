@@ -7,7 +7,7 @@ const prompts = require("./prompts");
 module.exports = {
     id: 'ext-notebook-renderer',
     aliases: ['notebook'],
-    insidersName: 'New Notebook Renderer (TypeScript)',
+    name: 'New Notebook Renderer (TypeScript)',
     /**
      * @param {import('yeoman-generator')} generator
      * @param {Object} extensionConfig
@@ -86,7 +86,7 @@ async function askForNotebookRendererInfo(generator, extensionConfig) {
             type: 'input',
             name: 'rendererMimeTypes',
             message: 'What mime types will your renderer handle? (separate multiple by commas)',
-            default: 'application/json',
+            default: 'x-application/sample-json-renderer',
         },
         {
             type: 'confirm',

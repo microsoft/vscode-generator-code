@@ -3,10 +3,10 @@ import { TextDecoder, TextEncoder } from "util";
 
 /**
  * An ultra-minimal sample provider that lets the user type in JSON, and then
- * outputs JSON cells.
+ * outputs JSON cells. The outputs are transient and not saved to notebook file on disk.
  */
 
-interface RawNotebookData {
+ interface RawNotebookData {
   cells: RawNotebookCell[]
 }
 
@@ -15,12 +15,6 @@ interface RawNotebookCell {
   value: string;
   kind: vscode.NotebookCellKind;
   editable?: boolean;
-  outputs: RawCellOutput[];
-}
-
-interface RawCellOutput {
-  mime: string;
-  value: any;
 }
 
 export class SampleContentSerializer implements vscode.NotebookSerializer {
@@ -44,15 +38,12 @@ export class SampleContentSerializer implements vscode.NotebookSerializer {
     const cells = raw.cells.map(item => new vscode.NotebookCellData(
       item.kind,
       item.value,
-      item.language,
-      item.outputs ? [new vscode.NotebookCellOutput(item.outputs.map(raw => new vscode.NotebookCellOutputItem(raw.mime, raw.value)))] : [],
-      new vscode.NotebookCellMetadata()
+      item.language
     ));
 
     // Pass read and formatted Notebook Data to VS Code to display Notebook with saved cells
     return new vscode.NotebookData(
-      cells,
-      new vscode.NotebookDocumentMetadata()
+      cells
     );
   }
 
@@ -60,17 +51,6 @@ export class SampleContentSerializer implements vscode.NotebookSerializer {
    * @inheritdoc
    */
   public async serializeNotebook(data: vscode.NotebookData, token: vscode.CancellationToken): Promise<Uint8Array> {
-    // function to take output renderer data to a format to save to the file
-    function asRawOutput(cell: vscode.NotebookCellData): RawCellOutput[] {
-      let result: RawCellOutput[] = [];
-      for (let output of cell.outputs ?? []) {
-        for (let item of output.outputs) {
-          result.push({ mime: item.mime, value: item.value });
-        }
-      }
-      return result;
-    }
-
     // Map the Notebook data into the format we want to save the Notebook data as
     let contents: RawNotebookData = { cells: []};
 
@@ -78,8 +58,7 @@ export class SampleContentSerializer implements vscode.NotebookSerializer {
       contents.cells.push({
         kind: cell.kind,
         language: cell.languageId,
-        value: cell.value,
-        outputs: asRawOutput(cell)
+        value: cell.value
       });
     }
 
@@ -98,12 +77,12 @@ export class SampleKernel {
 
   constructor() {
 
-    this._controller = vscode.notebook.createNotebookController(this.id,
+    this._controller = vscode.notebooks.createNotebookController(this.id,
                                                                 'test-notebook-renderer',
                                                                 this.label);
 
     this._controller.supportedLanguages = this.supportedLanguages;
-    this._controller.hasExecutionOrder = true;
+    this._controller.supportsExecutionOrder = true;
     this._controller.executeHandler = this._executeAll.bind(this);
   }
 
@@ -118,30 +97,23 @@ export class SampleKernel {
 	}
 
   private async _doExecution(cell: vscode.NotebookCell): Promise<void> {
-    const execution = this._controller.createNotebookCellExecutionTask(cell);
+    const execution = this._controller.createNotebookCellExecution(cell);
 
     execution.executionOrder = ++this._executionOrder;
-    execution.start({ startTime: Date.now() });
-
-    const metadata = {
-      startTime: Date.now()
-    };
+    execution.start(Date.now());
 
     try {
       execution.replaceOutput([new vscode.NotebookCellOutput([
-        new vscode.NotebookCellOutputItem('application/json', JSON.parse(cell.document.getText())),
-      ], metadata)]);
+        vscode.NotebookCellOutputItem.json(JSON.parse(cell.document.getText()), "<%- rendererMimeTypes[0] %>"),
+        vscode.NotebookCellOutputItem.json(JSON.parse(cell.document.getText()))
+      ])]);
 
-      execution.end({ success: true });
+      execution.end(true, Date.now());
     } catch (err) {
       execution.replaceOutput([new vscode.NotebookCellOutput([
-        new vscode.NotebookCellOutputItem('application/x.notebook.error-traceback', {
-          ename: err instanceof Error && err.name || 'error',
-          evalue: err instanceof Error && err.message || JSON.stringify(err, undefined, 4),
-          traceback: []
-        })
+        vscode.NotebookCellOutputItem.error(err)
       ])]);
-      execution.end({ success: false });
+      execution.end(false, Date.now());
     }
   }
 }
