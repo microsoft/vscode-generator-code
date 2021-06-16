@@ -9,8 +9,8 @@ import { SampleContentSerializer, SampleKernel } from './sampleProvider';<% } %>
 export function activate(context: vscode.ExtensionContext) {
   <% if (includeContentProvider) { %>
   context.subscriptions.push(
-    vscode.notebook.registerNotebookSerializer(
-      'test-notebook-renderer', new SampleContentSerializer()
+    vscode.workspace.registerNotebookSerializer(
+      'test-notebook-renderer', new SampleContentSerializer(), { transientOutputs: true }
     ),
     new SampleKernel()
   );

@@ -31,7 +31,7 @@ export const activate: ActivationFunction = context => {
         const node = document.createElement('div');
         root.appendChild(node);
 
-        render({ container: node, mime: outputItem.mime, value: outputItem.text(), context });
+        render({ container: node, mime: outputItem.mime, value: outputItem.json(), context });
       });
     },
     disposeOutputItem(outputId) {
