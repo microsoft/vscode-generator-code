@@ -4,7 +4,7 @@
 		"target": "es6",
 		"outDir": "dist",
 		"lib": [
-			"es6"
+			"es6", "WebWorker"
 		],
 		"sourceMap": true,
 		"rootDir": "src",
@@ -16,6 +16,6 @@
 	},
 	"exclude": [
 		"node_modules",
-		".vscode-test"
+		".vscode-test-web"
 	]
 }

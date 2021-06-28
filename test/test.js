@@ -770,7 +770,7 @@ describe('test code generator', function () {
 
                     runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
-                    const tsconfigBody = JSON.parse(stripComments(runResult.fs.read('tsconfig.json')));
+                    const tsconfigBody = JSON.parse(stripComments(runResult.fs.read('testCom/tsconfig.json')));
                     runResult.assertObjectContent(tsconfigBody, expectedTsConfig);
 
                     done();
@@ -949,7 +949,7 @@ describe('test code generator', function () {
                     ]
                 };
                 try {
-                    const jsconfigBody = JSON.parse(stripComments(runResult.fs.read('jsconfig.json')));
+                    const jsconfigBody = JSON.parse(stripComments(runResult.fs.read('testCom/jsconfig.json')));
                     runResult.assertObjectContent(jsconfigBody, expectedJSConfig);
 
                     done();
@@ -1112,7 +1112,6 @@ describe('test code generator', function () {
                     ],
                     "devDependencies": devDependencies([
                         "@types/vscode",
-                        "@types/glob",
                         "@types/mocha",
                         "@types/node",
                         "@types/webpack-env",
@@ -1120,19 +1119,18 @@ describe('test code generator', function () {
                         "@typescript-eslint/parser",
                         "@typescript-eslint/eslint-plugin",
                         "assert",
-                        "glob",
                         "mocha",
                         "process",
                         "typescript",
                         "ts-loader",
-                        "vscode-test",
+                        "vscode-test-web",
                         "webpack",
                         "webpack-cli"
                     ]),
                     "browser": "./dist/web/extension.js",
                     "scripts": {
-                        "test": "node ./dist/web/test/runTest.js",
-                        "pretest": "npm run compile-web && tsc ./src/web/test/runTest.ts --outDir ./dist --rootDir ./src --target es6 --module commonjs",
+                        "test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js",
+                        "pretest": "npm run compile-web",
                         "vscode:prepublish": "npm run package-web",
                         "compile-web": "webpack --config ./build/web-extension.webpack.config.js",
                         "watch-web": "webpack --watch --config ./build/web-extension.webpack.config.js",
@@ -1259,13 +1257,13 @@ describe('test code generator', function () {
             pkgManager: 'npm'
         }).toPromise().then(runResult => {
             try {
-                console.log('Running npm install');
+                //console.log('command-ts with test: Running npm install');
                 const res = spawn.sync('npm', ['i'], { cwd: runResult.env.cwd });
                 if (res.exitCode !== 0) {
                     assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
                 }
 
-                console.log('Running extension compile');
+                //console.log('command-ts with test: Running extension compile');
                 const res2 = spawn.sync('npm', ['run', 'compile'], { cwd: runResult.env.cwd });
                 if (res2.exitCode !== 0) {
                     assert.fail(`npm run compile failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
@@ -1290,13 +1288,13 @@ describe('test code generator', function () {
             webpack: true
         }).toPromise().then(runResult => {
             try {
-                console.log('Running npm install');
+                //console.log('command-ts-webpack with test: Running npm install');
                 const res = spawn.sync('npm', ['i'], { cwd: runResult.env.cwd });
                 if (res.exitCode !== 0) {
                     assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
                 }
 
-                console.log('Running extension compile');
+                //console.log('command-ts-webpack with test: Running extension compile');
                 const res2 = spawn.sync('npm', ['run', 'compile'], { cwd: runResult.env.cwd });
                 if (res2.exitCode !== 0) {
                     assert.fail(`npm run compile failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
@@ -1322,13 +1320,13 @@ describe('test code generator', function () {
             pkgManager: 'npm'
         }).toPromise().then(runResult => {
             try {
-                console.log('Running npm install');
+                //console.log('command-ts-web with test: Running npm install');
                 const res = spawn.sync('npm', ['i'], { cwd: runResult.env.cwd });
                 if (res.exitCode !== 0) {
                     assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
                 }
 
-                console.log('Running extension compile-web');
+                //console.log('command-ts-web with test: Running extension compile-web');
                 const res2 = spawn.sync('npm', ['run', 'compile-web'], { cwd: runResult.env.cwd });
                 if (res2.exitCode !== 0) {
                     assert.fail(`npm run compile-web failed: stdout ${res2.stdout} stderr ${res2.stderr}`);

@@ -24,8 +24,8 @@
 		]
 	},
 	"scripts": {
-		"test": "node ./dist/web/test/runTest.js",
-		"pretest": "<%= pkgManager %> run compile-web && tsc ./src/web/test/runTest.ts --outDir ./dist --rootDir ./src --target es6 --module commonjs",
+		"test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js",
+		"pretest": "<%= pkgManager %> run compile-web",
 		"vscode:prepublish": "<%= pkgManager %> run package-web",
 		"compile-web": "webpack --config ./build/web-extension.webpack.config.js",
 		"watch-web": "webpack --watch --config ./build/web-extension.webpack.config.js",
@@ -34,16 +34,14 @@
 	},
 	"devDependencies": {
 		<%- dep("@types/vscode") %>,
-		<%- dep("@types/glob") %>,
 		<%- dep("@types/mocha") %>,
 		<%- dep("@types/node") %>,
 		<%- dep("eslint") %>,
 		<%- dep("@typescript-eslint/eslint-plugin") %>,
 		<%- dep("@typescript-eslint/parser") %>,
-		<%- dep("glob") %>,
 		<%- dep("mocha") %>,
 		<%- dep("typescript") %>,
-		<%- dep("vscode-test") %>,
+		<%- dep("vscode-test-web") %>,
 		<%- dep("ts-loader") %>,
 		<%- dep("webpack") %>,
 		<%- dep("webpack-cli") %>,

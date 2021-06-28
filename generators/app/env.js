@@ -51,6 +51,7 @@ module.exports.getDependencyVersions = async function () {
         "mocha": "^8.4.0",
         "typescript": "^4.3.2",
         "vscode-test": "^1.5.2",
+        "vscode-test-web": "^0.0.2",
         "@types/webpack-env": "^1.16.0",
         "@types/vscode-notebook-renderer": "^1.57.8",
         "concurrently": "^5.3.0",

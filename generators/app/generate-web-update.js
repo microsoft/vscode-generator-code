@@ -43,13 +43,14 @@ module.exports = {
         generator.fs.extendJSON('package.json', {
             'browser': './dist/web/extension.js',
             'scripts': {
-                "test-web": "node ./dist/web/test/runTest.js",
-                "pretest-web": "npm run compile-web && tsc ./src/web/test/runTest.ts --outDir ./dist --rootDir ./src --target es6 --module commonjs",
+                "test-web": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js",
+                "pretest-web": "npm run compile-web",
                 "compile-web": "webpack --config ./build/web-extension.webpack.config.js",
                 "watch-web": "webpack --watch --config ./build/web-extension.webpack.config.js",
                 "package-web": "webpack --mode production --devtool hidden-source-map --config ./build/web-extension.webpack.config.js",
             },
             'devDependencies': {
+                'vscode-test-web': dependencyVersions['vscode-test-web'],
                 'ts-loader': dependencyVersions['ts-loader'],
                 'webpack': dependencyVersions['webpack'],
                 'webpack-cli': dependencyVersions['webpack-cli'],
