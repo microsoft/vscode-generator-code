@@ -1,6 +1,6 @@
 # Yo Code - Extension and Customization Generator
 
-[![Build Status](https://dev.azure.com/ms/vscode-generator-code/_apis/build/status/Microsoft.vscode-generator-code)](https://dev.azure.com/ms/vscode-generator-code/_build/latest?definitionId=17)
+[![Build Status](https://github.com/microsoft/vscode-generator-code/actions/workflows/node.js.yml/badge.svg)](https://github.com/microsoft/vscode-generator-code/actions)
 
 We have written a Yeoman generator to help get you started. We plan to add templates for most extension/customization types into this.
 
