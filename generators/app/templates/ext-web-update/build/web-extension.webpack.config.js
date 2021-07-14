@@ -40,11 +40,6 @@ module.exports = /** @type WebpackConfig */ {
 			]
 		}]
 	},
-	plugins: [
-		new webpack.ProvidePlugin({
-			process: 'process/browser',
-		}),
-	],
 	externals: {
 		'vscode': 'commonjs vscode', // ignored because it doesn't exist
 	},
