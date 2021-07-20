@@ -21,7 +21,7 @@ module.exports = /** @type WebpackConfig */ {
 		'test/suite/index': './src/web/test/suite/index.ts'
 	},
 	resolve: {
-		mainFields: ['module', 'main'],
+		mainFields: ['browser', 'module', 'main'],
 		extensions: ['.ts', '.js'], // support ts-files and js-files
 		alias: {
 		},
