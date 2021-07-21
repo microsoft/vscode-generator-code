@@ -41,7 +41,7 @@
 		<%- dep("@typescript-eslint/parser") %>,
 		<%- dep("mocha") %>,
 		<%- dep("typescript") %>,
-		<%- dep("vscode-test-web") %>,
+		<%- dep("@vscode/test-web") %>,
 		<%- dep("ts-loader") %>,
 		<%- dep("webpack") %>,
 		<%- dep("webpack-cli") %>,
