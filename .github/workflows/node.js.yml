@@ -26,5 +26,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+    - name: Run headless test
+      uses: GabrielBB/xvfb-action@v1
+      with:
+        run: npm test
