@@ -9,8 +9,9 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [<% if (includeContentProvider) { %>"onNotebook:test-notebook-renderer"<% } %>],
+  "activationEvents": [],
   "main": "./out/extension/extension.js",
+  "browser": "./out/extension/extension.web.js",
   "contributes": {
     "notebookRenderer": [
       {
@@ -19,30 +20,14 @@
         "displayName": <%- JSON.stringify(rendererDisplayName) %>,
         "mimeTypes": <%- JSON.stringify(rendererMimeTypes) %>
       }
-    ]<% if (includeContentProvider) { %>,
-    "notebooks": [
-      {
-        "type": "test-notebook-renderer",
-        "displayName": "Sample Notebook",
-        "selector": [
-          {
-            "filenamePattern": <%- JSON.stringify(`*${contentProviderFileType}`) %>
-          }
-        ]
-      }
-    ]<% } %>
+    ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile && node out/test/checkNoTestProvider.js",
-    "compile": "npm run compile:extension && npm run compile:client",
-    "compile:extension": "tsc -b",
-    "compile:client": "webpack --mode production",
+    "vscode:prepublish": "npm run compile",
+    "compile": "webpack --mode production",
     "lint": "eslint src --ext ts",
-    "watch": "concurrently -r \"npm:watch:*\"",
-    "watch:extension": "tsc -b --watch",
-    "watch:client": "webpack --mode development --watch",
-    "dev": "concurrently -r npm:watch:extension npm:watch:client",
-    "pretest": "npm run compile && npm run lint",
+    "watch": "webpack --mode development --watch",
+    "pretest": "webpack --mode development && npm run lint",
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
@@ -54,7 +39,6 @@
     <%- dep("@typescript-eslint/parser") %>,
     <%- dep("@types/vscode-notebook-renderer") %>,
     <%- dep("@types/vscode") %>,
-    <%- dep("concurrently") %>,
     <%- dep("css-loader") %>,
     <%- dep("eslint") %>,
     <%- dep("fork-ts-checker-webpack-plugin") %>,

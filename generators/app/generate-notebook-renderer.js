@@ -35,21 +35,14 @@ module.exports = {
         generator.fs.copy(generator.templatePath('.vscodeignore'), generator.destinationPath('.vscodeignore'));
         generator.fs.copy(generator.templatePath('webpack.config.js'), generator.destinationPath('webpack.config.js'));
         generator.fs.copy(generator.templatePath('.eslintrc.json'), generator.destinationPath('.eslintrc.json'));
-        generator.fs.copy(generator.templatePath('src/extension/types/.gitkeep'), generator.destinationPath('src/extension/types/.gitkeep'));
-        generator.fs.copy(generator.templatePath('src/extension/types/.gitkeep'), generator.destinationPath('src/test/types/.gitkeep'));
 
         generator.fs.copyTpl(generator.templatePath('package.json'), generator.destinationPath('package.json'), extensionConfig);
         generator.fs.copyTpl(generator.templatePath('README.md'), generator.destinationPath('README.md'), extensionConfig);
         generator.fs.copyTpl(generator.templatePath('CHANGELOG.md'), generator.destinationPath('CHANGELOG.md'), extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('example/notebook.ipynb'), generator.destinationPath('example/notebook.ipynb'), extensionConfig);
         generator.fs.copyTpl(generator.templatePath('src/client/index.ts'), generator.destinationPath('src/client/index.ts'), extensionConfig);
 
         generator.fs.copyTpl(generator.templatePath('src/extension/extension.ts'), generator.destinationPath('src/extension/extension.ts'), extensionConfig);
-
-        if (!extensionConfig.includeContentProvider) {
-            generator.fs.delete(generator.destinationPath('src/extension/sampleProvider.ts'));
-        } else {
-            generator.fs.copyTpl(generator.templatePath('src/extension/sampleProvider.ts'), generator.destinationPath('src/extension/sampleProvider.ts'), extensionConfig);
-        }
 
         if (extensionConfig.gitInit) {
             generator.fs.copy(generator.templatePath('gitignore'), generator.destinationPath('.gitignore'));
@@ -86,22 +79,7 @@ async function askForNotebookRendererInfo(generator, extensionConfig) {
             type: 'input',
             name: 'rendererMimeTypes',
             message: 'What mime types will your renderer handle? (separate multiple by commas)',
-            default: 'x-application/sample-json-renderer',
-        },
-        {
-            type: 'confirm',
-            name: 'includeContentProvider',
-            message: 'Should we generate a test notebook content provider and kernel?',
-            default: false,
-        },
-        {
-            type: 'input',
-            name: 'contentProviderFileType',
-            message: 'What the file extension should the content provider handle?',
-            default: '.sample-json-notebook',
-            // @ts-ignore
-            when: answers => answers.includeContentProvider,
-            validate: answer => answer.startsWith('.') ? true : 'Extension should be given in the form ".ext"',
+            default: 'x-application/custom-json-output',
         },
     ]);
 

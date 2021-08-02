@@ -1169,7 +1169,6 @@ describe('test code generator', function () {
                 description: '',
                 rendererId: 'json-renderer',
                 rendererDisplayName: 'JSON Renderer',
-                includeContentProvider: false,
                 gitInit: true,
                 pkgManager: 'yarn'
             }).toPromise().then(runResult => {
@@ -1192,21 +1191,16 @@ describe('test code generator', function () {
                                 "entrypoint": "./out/client/index.js",
                                 "id": "json-renderer",
                                 "displayName": "JSON Renderer",
-                                "mimeTypes": ["x-application/sample-json-renderer"]
+                                "mimeTypes": ["x-application/custom-json-output"]
                             }
                         ]
                     },
                     "scripts": {
-                        "vscode:prepublish": "npm run compile && node out/test/checkNoTestProvider.js",
-                        "compile": "npm run compile:extension && npm run compile:client",
-                        "compile:extension": "tsc -b",
-                        "compile:client": "webpack --mode production",
+                        "vscode:prepublish": "npm run compile",
+                        "compile": "webpack --mode production",
                         "lint": "eslint src --ext ts",
-                        "watch": "concurrently -r \"npm:watch:*\"",
-                        "watch:extension": "tsc -b --watch",
-                        "watch:client": "webpack --mode development --watch",
-                        "dev": "concurrently -r npm:watch:extension npm:watch:client",
-                        "pretest": "npm run compile && npm run lint",
+                        "watch": "webpack --mode development --watch",
+                        "pretest": "webpack --mode development && npm run lint",
                         "test": "node ./out/test/runTest.js"
                     },
                     "devDependencies": devDependencies([
@@ -1218,7 +1212,6 @@ describe('test code generator', function () {
                         "@typescript-eslint/eslint-plugin",
                         "@typescript-eslint/parser",
                         "@types/vscode-notebook-renderer",
-                        "concurrently",
                         "css-loader",
                         "eslint",
                         "fork-ts-checker-webpack-plugin",

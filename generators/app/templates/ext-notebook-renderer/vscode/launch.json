@@ -10,16 +10,15 @@
       "type": "pwa-extensionHost",
       "request": "launch",
       "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}"
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "${workspaceFolder}/example"
       ],
       "outFiles": [
         "${workspaceFolder}/out/**/*.js"
       ],
-      "debugWebviews": {
-        "urlFilter": "*notebookRenderer*"
-      },
+      "debugWebviews": true,
       "trace": true,
-      "preLaunchTask": "npm: dev"
+      "preLaunchTask": "npm: watch"
     },
     {
       "name": "Run Extension (no server)",
