@@ -60,6 +60,10 @@ module.exports = {
             }
         });
 
+        if(generator.fs.exists('.gitignore')) {
+            generator.fs.append('.gitignore', '.vscode-test-web/')
+        }
+
         generator.fs.copyTpl(generator.templatePath('src/web/extension.ts'), generator.destinationPath('src/web/extension.ts'), extensionConfig, {});
         generator.fs.copy(generator.templatePath('src/web/test'), generator.destinationPath('src/web/test'));
         generator.fs.copyTpl(generator.templatePath('build/web-extension.webpack.config.js'), generator.destinationPath('build/web-extension.webpack.config.js'), extensionConfig);
