@@ -50,7 +50,7 @@ module.exports = {
                 "package-web": "webpack --mode production --devtool hidden-source-map --config ./build/web-extension.webpack.config.js",
             },
             'devDependencies': {
-                'v@vscode/test-web': dependencyVersions['@vscode/test-web'],
+                '@vscode/test-web': dependencyVersions['@vscode/test-web'],
                 'ts-loader': dependencyVersions['ts-loader'],
                 'webpack': dependencyVersions['webpack'],
                 'webpack-cli': dependencyVersions['webpack-cli'],
