@@ -50,7 +50,7 @@ module.exports = {
                 "package-web": "webpack --mode production --devtool hidden-source-map --config ./build/web-extension.webpack.config.js",
             },
             'devDependencies': {
-                'v@vscode/test-web': dependencyVersions['@vscode/test-web'],
+                '@vscode/test-web': dependencyVersions['@vscode/test-web'],
                 'ts-loader': dependencyVersions['ts-loader'],
                 'webpack': dependencyVersions['webpack'],
                 'webpack-cli': dependencyVersions['webpack-cli'],
@@ -59,6 +59,10 @@ module.exports = {
                 "process": dependencyVersions['process']
             }
         });
+
+        if(generator.fs.exists('.gitignore')) {
+            generator.fs.append('.gitignore', '.vscode-test-web/')
+        }
 
         generator.fs.copyTpl(generator.templatePath('src/web/extension.ts'), generator.destinationPath('src/web/extension.ts'), extensionConfig, {});
         generator.fs.copy(generator.templatePath('src/web/test'), generator.destinationPath('src/web/test'));
