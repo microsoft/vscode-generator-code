@@ -64,6 +64,7 @@ Example usages:
 ```
 
 ## Run Generator using Docker
+
 If you don't want to install nodejs or any node packages, use this method to containerize the generator. \
 \
 Go into your project directory
@@ -78,6 +79,14 @@ Create a docker container with volumes
 ```bash
 docker run -v $(pwd):/usr/src/app vscode-generator-code
 ```
+
+## Local development
+
+After making necessary changes, run `npm link` before running `yo code` to
+test the local version.
+
+You can learn more about Yeoman generator development on its
+[documentation website](https://yeoman.io/authoring/index.html).
 
 ## History
 
