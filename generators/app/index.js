@@ -19,11 +19,10 @@ const language = require('./generate-language');
 const localization = require('./generate-localization');
 const notebook = require('./generate-notebook-renderer');
 const snippets = require('./generate-snippets');
-const webupdate = require('./generate-web-update');
 
 const extensionGenerators = [
     commandts, commandjs, colortheme, language, snippets, keymap, extensionpack, localization,
-    commandweb, notebook, webupdate
+    commandweb, notebook
 ]
 
 module.exports = class extends Generator {
