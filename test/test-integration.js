@@ -7,10 +7,9 @@ const env = require('../generators/app/env');
 const assert = require('assert');
 
 describe('integration tests', function () {
-    this.timeout(20000);
+    this.timeout(90000);
 
     it('command-ts integration test (install, compile and run extension tests)', function (done) {
-        this.timeout(60000);
 
         helpers.run(path.join(__dirname, '../generators/app')).withPrompts({
             type: 'ext-command-ts',
@@ -40,7 +39,6 @@ describe('integration tests', function () {
     });
 
     it('command-ts-webpack integration test (install, pack and run extension tests)', function (done) {
-        this.timeout(60000);
 
         helpers.run(path.join(__dirname, '../generators/app')).withPrompts({
             type: 'ext-command-ts',
@@ -73,7 +71,6 @@ describe('integration tests', function () {
     });
 
     it('command-ts-web integration test (install, pack and run extension tests)', function (done) {
-        this.timeout(60000);
 
         helpers.run(path.join(__dirname, '../generators/app')).withPrompts({
             type: 'ext-command-web',
