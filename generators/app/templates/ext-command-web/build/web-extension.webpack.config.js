@@ -21,11 +21,15 @@ module.exports = /** @type WebpackConfig */ {
 		'test/suite/index': './src/web/test/suite/index.ts'
 	},
 	resolve: {
-		mainFields: ['browser', 'module', 'main'],
+		mainFields: ['browser', 'module', 'main'], // look for `browser` entry point in imported node modules
 		extensions: ['.ts', '.js'], // support ts-files and js-files
 		alias: {
+			// provides alternate implementation for node module and source files
 		},
 		fallback: {
+			// Webpack 5 no longer polyfills Node.js core modules automatically.
+			// see https://webpack.js.org/configuration/resolve/#resolvefallback
+			// for the list of Node.js core module polyfills.
 			'assert': require.resolve('assert')
 		}
 	},
@@ -33,16 +37,14 @@ module.exports = /** @type WebpackConfig */ {
 		rules: [{
 			test: /\.ts$/,
 			exclude: /node_modules/,
-			use: [
-				{
-					loader: 'ts-loader'
-				}
-			]
+			use: [{
+				loader: 'ts-loader'
+			}]
 		}]
 	},
 	plugins: [
 		new webpack.ProvidePlugin({
-			process: 'process/browser',
+			process: 'process/browser', // provide a shim for the global `process` variable
 		}),
 	],
 	externals: {
@@ -56,5 +58,5 @@ module.exports = /** @type WebpackConfig */ {
 		path: path.join(__dirname, '../dist/web'),
 		libraryTarget: 'commonjs'
 	},
-	devtool: 'nosources-source-map'
+	devtool: 'nosources-source-map' // create a source map that points to the original source file
 };

@@ -1113,7 +1113,6 @@ describe('test code generator', function () {
                     "devDependencies": devDependencies([
                         "@types/vscode",
                         "@types/mocha",
-                        "@types/node",
                         "@types/webpack-env",
                         "eslint",
                         "@typescript-eslint/parser",
