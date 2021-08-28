@@ -4,6 +4,7 @@
 
 const prompts = require("./prompts");
 const chalk = require("chalk");
+const { validateTransifexLanguageId } = require("./validator");
 
 module.exports = {
     id: 'ext-localization',
@@ -62,6 +63,7 @@ function askForLanguageId(generator, extensionConfig) {
         type: 'input',
         name: 'lpLanguageId',
         message: 'Language id:',
+        validate: validateTransifexLanguageId
     }).then(answer => {
         extensionConfig.lpLanguageId = answer.lpLanguageId;
         if (!generator.options['extensionId']) {
