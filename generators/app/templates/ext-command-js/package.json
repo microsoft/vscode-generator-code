@@ -34,7 +34,7 @@
         <%- dep("glob") %>,
         <%- dep("mocha") %>,
         <%- dep("typescript") %>,
-        <%- dep("vscode-test") %>
+        <%- dep("@vscode/test-electron") %>
     }
 
 }

@@ -49,7 +49,7 @@
 		<%- dep("glob") %>,
 		<%- dep("mocha") %>,
 		<%- dep("typescript") %>,
-		<%- dep("vscode-test") %><% if (insiders) { %>,
+		<%- dep("@vscode/test-electron") %><% if (insiders) { %>,
 		<%- dep("vscode-dts") %><% } if (webpack) { %>,
 		<%- dep("ts-loader") %>,
 		<%- dep("webpack") %>,

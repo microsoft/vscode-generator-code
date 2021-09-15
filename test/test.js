@@ -660,7 +660,7 @@ describe('test code generator', function () {
                         "glob",
                         "mocha",
                         "typescript",
-                        "vscode-test"
+                        "@vscode/test-electron"
                     ]),
                     "main": "./out/extension.js",
                     "scripts": {
@@ -727,7 +727,7 @@ describe('test code generator', function () {
                         "glob",
                         "mocha",
                         "typescript",
-                        "vscode-test"
+                        "@vscode/test-electron"
                     ]),
                     "main": "./out/extension.js",
                     "scripts": {
@@ -816,7 +816,7 @@ describe('test code generator', function () {
                         "glob",
                         "mocha",
                         "typescript",
-                        "vscode-test",
+                        "@vscode/test-electron",
                         "webpack",
                         "webpack-cli",
                         "ts-loader"
@@ -891,7 +891,7 @@ describe('test code generator', function () {
                         "glob",
                         "mocha",
                         "typescript",
-                        "vscode-test"
+                        "@vscode/test-electron"
                     ]),
                     "main": "./extension.js",
                     "scripts": {
@@ -1134,7 +1134,8 @@ describe('test code generator', function () {
                         "compile-web": "webpack",
                         "watch-web": "webpack --watch",
                         "package-web": "webpack --mode production --devtool hidden-source-map",
-                        "lint": "eslint src --ext ts"
+                        "lint": "eslint src --ext ts",
+                        "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
                     },
                     "categories": [
                         "Other"
@@ -1220,7 +1221,7 @@ describe('test code generator', function () {
                         "ts-loader",
                         "typescript",
                         "vscode-notebook-error-overlay",
-                        "vscode-test",
+                        "@vscode/test-electron",
                         "webpack",
                         "webpack-cli",
                     ])

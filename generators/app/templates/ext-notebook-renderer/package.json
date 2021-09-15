@@ -48,7 +48,7 @@
     <%- dep("ts-loader") %>,
     <%- dep("typescript") %>,
     <%- dep("vscode-notebook-error-overlay") %>,
-    <%- dep("vscode-test") %>,
+    <%- dep("@vscode/test-electron") %>,
     <%- dep("webpack") %>,
     <%- dep("webpack-cli") %>
   }
