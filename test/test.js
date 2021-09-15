@@ -1131,9 +1131,9 @@ describe('test code generator', function () {
                         "test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js",
                         "pretest": "npm run compile-web",
                         "vscode:prepublish": "npm run package-web",
-                        "compile-web": "webpack --config ./build/web-extension.webpack.config.js",
-                        "watch-web": "webpack --watch --config ./build/web-extension.webpack.config.js",
-                        "package-web": "webpack --mode production --devtool hidden-source-map --config ./build/web-extension.webpack.config.js",
+                        "compile-web": "webpack",
+                        "watch-web": "webpack --watch",
+                        "package-web": "webpack --mode production --devtool hidden-source-map",
                         "lint": "eslint src --ext ts"
                     },
                     "categories": [
@@ -1147,7 +1147,7 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assertFiles(runResult, 'testCom', ['src/web/extension.ts', 'build/web-extension.webpack.config.js', 'src/web/test/suite/extension.test.ts', 'src/web/test/suite/index.ts', 'tsconfig.json']);
+                    assertFiles(runResult, 'testCom', ['src/web/extension.ts', 'webpack.config.js', 'src/web/test/suite/extension.test.ts', 'src/web/test/suite/index.ts', 'tsconfig.json']);
 
                     runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 

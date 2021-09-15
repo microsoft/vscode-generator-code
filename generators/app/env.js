@@ -3,6 +3,8 @@
  *--------------------------------------------------------*/
 'use strict';
 const request = require('request-light');
+const fs = require('fs');
+const path = require('path');
 
 const fallbackVersion = '^1.54.0';
 let versionPromise = undefined;
@@ -39,33 +41,7 @@ module.exports.getLatestVSCodeVersion = getLatestVSCodeVersion;
 
 module.exports.getDependencyVersions = async function () {
     const vscodeVersion = await getLatestVSCodeVersion();
-    return {
-        "@types/vscode": vscodeVersion,
-        "@types/glob": "^7.1.3",
-        "@types/mocha": "^8.2.2",
-        "@types/node": "14.x",
-        "@typescript-eslint/eslint-plugin": "^4.26.0",
-        "@typescript-eslint/parser": "^4.26.0",
-        "eslint": "^7.27.0",
-        "glob": "^7.1.7",
-        "mocha": "^8.4.0",
-        "typescript": "^4.3.2",
-        "vscode-test": "^1.5.2",
-        "@vscode/test-web": "^0.0.8",
-        "@types/webpack-env": "^1.16.0",
-        "@types/vscode-notebook-renderer": "^1.57.8",
-        "concurrently": "^5.3.0",
-        "css-loader": "^4.2.0",
-        "fork-ts-checker-webpack-plugin": "^5.0.14",
-        "style-loader": "^1.2.1",
-        "ts-loader": "^9.2.2",
-        "vscode-dts": "^0.3.1",
-        "vscode-notebook-error-overlay": "^1.0.1",
-        "webpack": "^5.38.1",
-        "webpack-cli": "^4.7.0",
-        "webpack-dev-server": "^3.11.2",
-        "assert": "^2.0.0",
-        "process": "^0.11.10"
-    }
+    const versions = JSON.parse((await fs.promises.readFile(path.join(__dirname, 'package.json'))).toString()).dependencies;
+    versions["@types/vscode"] = vscodeVersion
+    return versions;
 }
-

@@ -39,7 +39,7 @@ module.exports = {
 
         generator.fs.copyTpl(generator.templatePath('src/web/extension.ts'), generator.destinationPath('src/web/extension.ts'), extensionConfig);
 
-        generator.fs.copyTpl(generator.templatePath('build/web-extension.webpack.config.js'), generator.destinationPath('build/web-extension.webpack.config.js'), extensionConfig);
+        generator.fs.copyTpl(generator.templatePath('webpack.config.js'), generator.destinationPath('webpack.config.js'), extensionConfig);
         generator.fs.copyTpl(generator.templatePath('package.json'), generator.destinationPath('package.json'), extensionConfig);
 
         generator.fs.copy(generator.templatePath('.eslintrc.json'), generator.destinationPath('.eslintrc.json'));

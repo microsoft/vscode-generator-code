@@ -6,7 +6,7 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Run Web Extension in VS Code",
+			"name": "Run Web Extension ",
 			"type": "pwa-extensionHost",
 			"debugWebWorkerHost": true,
 			"request": "launch",
@@ -20,7 +20,7 @@
 			"preLaunchTask": "npm: watch-web"
 		},
 		{
-			"name": "Extension Tests in VS Code",
+			"name": "Extension Tests",
 			"type": "extensionHost",
 			"debugWebWorkerHost": true,
 			"request": "launch",
