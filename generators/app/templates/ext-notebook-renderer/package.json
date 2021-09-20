@@ -6,6 +6,9 @@
   "engines": {
     "vscode": <%- JSON.stringify(vsCodeEngine) %>
   },
+  "keywords": [
+    "notebookRenderer"
+  ],
   "categories": [
     "Other"
   ],

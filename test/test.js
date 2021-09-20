@@ -1180,6 +1180,9 @@ describe('test code generator', function () {
                     "engines": {
                         "vscode": engineVersion
                     },
+                    "keywords": [
+                      "notebookRenderer"
+                    ],
                     "categories": [
                         "Other"
                     ],
