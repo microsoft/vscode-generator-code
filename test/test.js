@@ -654,9 +654,9 @@ describe('test code generator', function () {
                         "@types/glob",
                         "@types/mocha",
                         "@types/node",
-                        "eslint",
                         "@typescript-eslint/parser",
                         "@typescript-eslint/eslint-plugin",
+                        "eslint",
                         "glob",
                         "mocha",
                         "typescript",
@@ -751,10 +751,10 @@ describe('test code generator', function () {
                 const expectedTsConfig = {
                     "compilerOptions": {
                         "module": "commonjs",
-                        "target": "es6",
+                        "target": "ES2020",
                         "outDir": "out",
                         "lib": [
-                            "es6"
+                            "ES2020"
                         ],
                         "sourceMap": true,
                         "rootDir": "src",
@@ -810,9 +810,9 @@ describe('test code generator', function () {
                         "@types/glob",
                         "@types/mocha",
                         "@types/node",
-                        "eslint",
                         "@typescript-eslint/parser",
                         "@typescript-eslint/eslint-plugin",
+                        "eslint",
                         "glob",
                         "mocha",
                         "typescript",
@@ -827,10 +827,9 @@ describe('test code generator', function () {
                         "compile": "webpack",
                         "watch": "webpack --watch",
                         "package": "webpack --mode production --devtool hidden-source-map",
-                        "test-compile": "tsc -p ./",
-                        "test-watch": "tsc -watch -p ./",
+                        "test-compile": "tsc -p . --outDir out",
                         "lint": "eslint src --ext ts",
-                        "pretest": "npm run test-compile && npm run lint",
+                        "pretest": "npm run test-compile && npm run compile && npm run lint",
                         "test": "node ./out/test/runTest.js"
                     },
                     "categories": [
@@ -938,10 +937,10 @@ describe('test code generator', function () {
                 const expectedJSConfig = {
                     "compilerOptions": {
                         "module": "commonjs",
-                        "target": "es6",
+                        "target": "ES2020",
                         "checkJs": true,
                         "lib": [
-                            "es6"
+                            "ES2020"
                         ]
                     },
                     "exclude": [

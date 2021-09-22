@@ -12,7 +12,7 @@
 	"activationEvents": [
         <%- JSON.stringify(`onCommand:${name}.helloWorld`) %>
 	],
-	"main": "./out/extension.js",<% if (insiders) { %>
+	"main": "./dist/extension.js",<% if (insiders) { %>
 	"enableProposedApi": true,<% } %>
 	"contributes": {
 		"commands": [
@@ -23,10 +23,12 @@
 		]
 	},
 	"scripts": {
-		"vscode:prepublish": "<%= pkgManager %> run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "<%= pkgManager %> run compile && <%= pkgManager %> run lint",
+		"vscode:prepublish": "<%= pkgManager %> run package",
+		"compile": "webpack",
+		"watch": "webpack --watch",
+		"package": "webpack --mode production --devtool hidden-source-map",
+		"test-compile": "tsc -p . --outDir out",
+		"pretest": "<%= pkgManager %> run test-compile && <%= pkgManager %> run compile && <%= pkgManager %> run lint",
 		"lint": "eslint src --ext ts",
 		"test": "node ./out/test/runTest.js"<% if (insiders) { %>,
 		"update-proposed-api": "vscode-dts dev"<% } %>
@@ -42,6 +44,9 @@
 		<%- dep("glob") %>,
 		<%- dep("mocha") %>,
 		<%- dep("typescript") %>,
+		<%- dep("ts-loader") %>,
+		<%- dep("webpack") %>,
+		<%- dep("webpack-cli") %>,
 		<%- dep("@vscode/test-electron") %><% if (insiders) { %>,
 		<%- dep("vscode-dts") %><% } %>
 	}

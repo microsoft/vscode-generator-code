@@ -57,7 +57,7 @@ describe('integration tests', function () {
                 }
 
                 //console.log('command-ts-webpack with test: Running extension compile');
-                const res2 = spawn.sync('npm', ['run', 'compile'], { cwd: runResult.env.cwd });
+                const res2 = spawn.sync('npm', ['run', 'test'], { cwd: runResult.env.cwd });
                 if (res2.exitCode !== 0) {
                     assert.fail(`npm run compile failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
                 } else {
