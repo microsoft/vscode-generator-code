@@ -7,7 +7,8 @@ const path = require('path');
 //@ts-check
 /** @typedef {import('webpack').Configuration} WebpackConfig **/
 
-const extensionConfig = /** @type WebpackConfig */ {
+/** @type WebpackConfig */
+const extensionConfig = {
   target: 'node', // vscode extensions run in a Node.js-context 📖 -> https://webpack.js.org/configuration/node/
 	mode: 'none', // this leaves the source code as close as possible to the original (when packaging we set this to 'production')
 

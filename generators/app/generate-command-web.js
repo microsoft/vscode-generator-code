@@ -7,7 +7,7 @@ const prompts = require("./prompts");
 module.exports = {
     id: 'ext-command-web',
     aliases: ['web', 'command-web'],
-    insidersName: 'New Web Extension (TypeScript)',
+    name: 'New Web Extension (TypeScript)',
     /**
      * @param {import('yeoman-generator')} generator
      * @param {Object} extensionConfig
