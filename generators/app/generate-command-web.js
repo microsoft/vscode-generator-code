@@ -44,6 +44,10 @@ module.exports = {
 
         generator.fs.copy(generator.templatePath('.eslintrc.json'), generator.destinationPath('.eslintrc.json'));
 
+        if (extensionConfig.pkgManager === 'yarn') {
+            generator.fs.copyTpl(generator.templatePath('.yarnrc'), generator.destinationPath('.yarnrc'), extensionConfig);
+        }
+
         extensionConfig.installDependencies = true;
         extensionConfig.proposedAPI = false;
     }
