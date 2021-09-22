@@ -31,6 +31,11 @@ describe('integration tests', function () {
                 if (res2.exitCode !== 0) {
                     assert.fail(`npm run test failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
                 }
+
+                runResult.assertFile('testCom/out/extension.js');
+                runResult.assertFile('testCom/out/test/suite/index.js');
+                runResult.assertFile('testCom/out/test/runTest.js');
+
                 done();
             } catch (e) {
                 done(e);
@@ -60,9 +65,12 @@ describe('integration tests', function () {
                 const res2 = spawn.sync('npm', ['run', 'test'], { cwd: runResult.env.cwd });
                 if (res2.exitCode !== 0) {
                     assert.fail(`npm run compile failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
-                } else {
-
                 }
+
+                runResult.assertFile('testCom/dist/extension.js');
+                runResult.assertFile('testCom/out/test/suite/index.js');
+                runResult.assertFile('testCom/out/test/runTest.js');
+
                 done();
             } catch (e) {
                 done(e);
@@ -91,9 +99,10 @@ describe('integration tests', function () {
                 const res2 = spawn.sync('npm', ['run', 'test'], { cwd: runResult.env.cwd });
                 if (res2.exitCode !== 0) {
                     assert.fail(`npm run test failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
-                } else {
-
                 }
+
+                runResult.assertFile('testCom/dist/web/extension.js');
+                runResult.assertFile('testCom/dist/web/test/suite/index.js');
                 done();
             } catch (e) {
                 done(e);
