@@ -71,64 +71,6 @@ describe('test code generator', function () {
         runResult.assertFile(allFileNames);
     }
 
-    it('theme import', function (done) {
-        helpers.run(path.join(__dirname, '../generators/app'))
-            .withPrompts({
-                type: 'ext-colortheme',
-                themeImportType: 'import-keep',
-                themeURL: 'http://www.monokai.nl/blog/wp-content/asdev/Monokai.tmTheme',
-                name: 'testTheme',
-                displayName: 'Test Theme',
-                description: 'My TestTheme',
-                themeName: 'Green',
-                themeBase: 'vs-dark',
-            }) // Mock the prompt answers
-            .toPromise().then(runResult => {
-                const expectedPackageJSON = {
-                    "name": "testTheme",
-                    "displayName": "Test Theme",
-                    "description": "My TestTheme",
-                    "version": "0.0.1",
-                    "engines": {
-                        "vscode": engineVersion
-                    },
-                    "categories": [
-                        "Themes"
-                    ],
-                    "contributes": {
-                        "themes": [{
-                            "label": "Green",
-                            "uiTheme": "vs-dark",
-                            "path": "./themes/Green-color-theme.json"
-                        }]
-                    }
-                };
-                const expectedColorTheme = {
-                    "name": "Green",
-                    "colors": {
-                        "editor.background": "#272822",
-                        "editorCursor.foreground": "#F8F8F0",
-                        "editor.foreground": "#F8F8F2",
-                        "editor.lineHighlightBackground": "#3E3D32",
-                        "editor.selectionBackground": "#49483E",
-                        "editorWhitespace.foreground": "#3B3A32"
-                    },
-                    "tokenColors": "./Monokai.tmTheme"
-                };
-                try {
-                    assertFiles(runResult, 'testTheme', ['themes/Green-color-theme.json', 'themes/Monokai.tmTheme']);
-
-                    runResult.assertJsonFileContent('testTheme/package.json', expectedPackageJSON);
-                    runResult.assertJsonFileContent('testTheme/themes/Green-color-theme.json', expectedColorTheme);
-
-                    done();
-                } catch (e) {
-                    done(e);
-                }
-
-            }, done);
-    });
-
     it('theme import from file', function (done) {
         helpers.run(path.join(__dirname, '../generators/app'))
             .withPrompts({
