@@ -769,9 +769,10 @@ describe('test code generator', function () {
                         "compile": "webpack",
                         "watch": "webpack --watch",
                         "package": "webpack --mode production --devtool hidden-source-map",
-                        "test-compile": "tsc -p . --outDir out",
+                        "compile-tests": "tsc -p . --outDir out",
+                        "watch-tests": "tsc -p -w . --outDir out",
                         "lint": "eslint src --ext ts",
-                        "pretest": "npm run test-compile && npm run compile && npm run lint",
+                        "pretest": "npm run compile-tests && npm run compile && npm run lint",
                         "test": "node ./out/test/runTest.js"
                     },
                     "categories": [
