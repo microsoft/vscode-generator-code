@@ -3,9 +3,10 @@
 src/**
 out/**
 node_modules/**
-build/**
 .gitignore
 vsc-extension-quickstart.md
+webpack.config.js
+.yarnrc
 **/tsconfig.json
 **/.eslintrc.json
 **/*.map
