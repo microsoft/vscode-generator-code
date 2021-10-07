@@ -9,7 +9,7 @@
 
 ## Setup
 
-* install the recommended extensions (eamodio.tsl-problem-matcher and dbaeumer.vscode-eslint)
+* install the recommended extensions ([amodio.tsl-problem-matcher](https://marketplace.visualstudio.com/items?itemName=amodio.tsl-problem-matcher) and [dbaeumer.vscode-eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint))
 
 ## Get up and running the Web Extension
 
