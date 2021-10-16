@@ -66,6 +66,10 @@ const makeConfig = (argv, { entry, out, target, library = 'commonjs' }) => ({
             scriptUrl: 'import.meta.url',
         }),
     ],
+    // allow VS Code's build task to properly detect states in watch mode
+    infrastructureLogging: {
+        level: 'log',
+    },
 });
 
 module.exports = (env, argv) => [

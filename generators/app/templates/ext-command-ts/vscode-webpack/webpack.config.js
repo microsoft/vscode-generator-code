@@ -40,6 +40,10 @@ const extensionConfig = {
       }
     ]
   },
-  devtool: 'nosources-source-map'
+  devtool: 'nosources-source-map',
+  // allow VS Code's build task to properly detect states in watch mode
+  infrastructureLogging: {
+    level: 'log',
+  },
 };
 module.exports = [ extensionConfig ];
