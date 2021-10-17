@@ -66,6 +66,9 @@ const makeConfig = (argv, { entry, out, target, library = 'commonjs' }) => ({
             scriptUrl: 'import.meta.url',
         }),
     ],
+    infrastructureLogging: {
+        level: "log", // enables logging required for problem matchers
+    },
 });
 
 module.exports = (env, argv) => [
