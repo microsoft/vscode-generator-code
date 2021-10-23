@@ -2,6 +2,7 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
+const chalk = require("chalk");
 const prompts = require("./prompts");
 
 module.exports = {
@@ -50,5 +51,13 @@ module.exports = {
 
         extensionConfig.installDependencies = true;
         extensionConfig.proposedAPI = false;
+    },
+    /**
+     * @param {import('yeoman-generator')} generator
+     * @param {Object} extensionConfig
+     */
+    endMessage: (generator, extensionConfig) => {
+        generator.log(chalk.yellow(`To run the extension you need to install the recommended extension 'amodio.tsl-problem-matcher'.`));
+        generator.log('');
     }
 }
