@@ -82,6 +82,7 @@ describe('test code generator', function () {
                 description: 'My TestTheme',
                 themeName: 'Green',
                 themeBase: 'vs-dark',
+                openWith: 'skip'
             }) // Mock the prompt answers
             .toPromise().then(runResult => {
                 const expectedPackageJSON = {
@@ -140,6 +141,7 @@ describe('test code generator', function () {
                 description: 'Theme SeventyFour',
                 themeName: 'Theme 74',
                 themeBase: 'vs-dark',
+                openWith: 'skip'
             }) // Mock the prompt answers
             .toPromise().then(runResult => {
                 const expectedPackageJSON = {
@@ -216,6 +218,7 @@ describe('test code generator', function () {
                 description: 'My TestTheme',
                 themeName: 'Funky',
                 themeBase: 'vs',
+                openWith: 'skip'
             }) // Mock the prompt answers
             .toPromise().then(runResult => {
                 const expectedPackageJSON = {
@@ -262,7 +265,8 @@ describe('test code generator', function () {
                 languageId: 'ant',
                 languageName: 'ANT',
                 languageScopeName: 'text.xml.ant',
-                languageExtensions: '.ant'
+                languageExtensions: '.ant',
+                openWith: 'skip'
             }) // Mock the prompt answers
             .toPromise().then(runResult => {
                 const expectedPackageJSON = {
@@ -314,7 +318,8 @@ describe('test code generator', function () {
                 languageId: 'foo',
                 languageName: 'FOO',
                 languageScopeName: 'source.foo',
-                languageExtensions: '.foo'
+                languageExtensions: '.foo',
+                openWith: 'skip'
             }) // Mock the prompt answers
             .toPromise().then(runResult => {
                 const expectedPackageJSON = {
@@ -366,7 +371,8 @@ describe('test code generator', function () {
                 languageId: 'crusty',
                 languageName: 'Crusty',
                 languageScopeName: 'source.crusty',
-                languageExtensions: '.crusty'
+                languageExtensions: '.crusty',
+                openWith: 'skip'
             }) // Mock the prompt answers
             .toPromise().then(runResult => {
                 const expectedPackageJSON = {
@@ -464,7 +470,8 @@ describe('test code generator', function () {
                 name: 'testSnip',
                 displayName: 'Test Snip',
                 description: 'My TestSnip',
-                languageId: 'python'
+                languageId: 'python',
+                openWith: 'skip'
             }) // Mock the prompt answers
             .toPromise().then(runResult => {
                 const expectedPackageJSON = {
@@ -534,6 +541,7 @@ describe('test code generator', function () {
                 name: 'testKeym',
                 displayName: 'Test Keym',
                 description: 'My TestKeym',
+                openWith: 'skip'
             }) // Mock the prompt answers
             .toPromise().then(runResult => {
                 const expectedPackageJSON = {
@@ -577,7 +585,8 @@ describe('test code generator', function () {
                 displayName: 'Test Com',
                 description: 'My TestCom',
                 gitInit: true,
-                pkgManager: 'npm'
+                pkgManager: 'npm',
+                openWith: 'skip'
             }) // Mock the prompt answers
             .toPromise().then(runResult => {
                 const expectedPackageJSON = {
@@ -644,7 +653,8 @@ describe('test code generator', function () {
                 displayName: 'Test Com',
                 description: 'My TestCom',
                 gitInit: false,
-                pkgManager: 'yarn'
+                pkgManager: 'yarn',
+                openWith: 'skip'
             }) // Mock the prompt answers
             .toPromise().then(runResult => {
                 const expectedPackageJSON = {
@@ -733,7 +743,8 @@ describe('test code generator', function () {
                 description: 'My TestCom',
                 gitInit: true,
                 pkgManager: 'npm',
-                webpack: true
+                webpack: true,
+                openWith: 'skip'
             }) // Mock the prompt answers
             .toPromise().then(runResult => {
                 const expectedPackageJSON = {
@@ -810,7 +821,8 @@ describe('test code generator', function () {
                 description: 'My TestCom',
                 checkJavaScript: false,
                 gitInit: false,
-                pkgManager: 'npm'
+                pkgManager: 'npm',
+                openWith: 'skip'
             }) // Mock the prompt answers
             .toPromise().then(runResult => {
                 const expectedPackageJSON = {
@@ -874,7 +886,8 @@ describe('test code generator', function () {
                 description: 'My TestCom',
                 checkJavaScript: true,
                 gitInit: false,
-                pkgManager: 'yarn'
+                pkgManager: 'yarn',
+                openWith: 'skip'
             }) // Mock the prompt answers
             .toPromise().then(runResult => {
                 const expectedJSConfig = {
@@ -909,7 +922,8 @@ describe('test code generator', function () {
                 type: 'ext-extensionpack',
                 name: 'testExtensionPack',
                 displayName: 'Test Extension Pack',
-                description: 'My Test Extension Pack'
+                description: 'My Test Extension Pack',
+                openWith: 'skip'
             }) // Mock the prompt answers
             .toPromise().then(runResult => {
                 const expectedPackageJSON = {
@@ -946,7 +960,8 @@ describe('test code generator', function () {
                 lpLanguageId: 'ru',
                 lpLanguageName: 'Russian',
                 lpLocalizedLanguageName: 'русский',
-                pkgManager: 'npm'
+                pkgManager: 'npm',
+                openWith: 'skip'
             }).toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "vscode-language-pack-ru",
@@ -992,7 +1007,8 @@ describe('test code generator', function () {
                 lpLanguageId: 'ru',
                 lpLanguageName: 'Russian',
                 lpLocalizedLanguageName: 'русский',
-                pkgManager: 'yarn'
+                pkgManager: 'yarn',
+                openWith: 'skip'
             }).toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "vscode-language-pack-ru",
@@ -1038,7 +1054,8 @@ describe('test code generator', function () {
                 displayName: 'Test Com',
                 description: 'My TestCom',
                 gitInit: true,
-                pkgManager: 'npm'
+                pkgManager: 'npm',
+                openWith: 'skip'
             }) // Mock the prompt answers
             .toPromise().then(runResult => {
                 const expectedPackageJSON = {
@@ -1112,7 +1129,8 @@ describe('test code generator', function () {
                 rendererId: 'json-renderer',
                 rendererDisplayName: 'JSON Renderer',
                 gitInit: true,
-                pkgManager: 'yarn'
+                pkgManager: 'yarn',
+                openWith: 'skip'
             }).toPromise().then(runResult => {
                 const expectedPackageJSON = {
                     "name": "json-renderer-ext",
@@ -1123,7 +1141,7 @@ describe('test code generator', function () {
                         "vscode": engineVersion
                     },
                     "keywords": [
-                      "notebookRenderer"
+                        "notebookRenderer"
                     ],
                     "categories": [
                         "Other"

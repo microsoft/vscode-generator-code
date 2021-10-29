@@ -8,6 +8,7 @@ const yosay = require('yosay');
 
 const path = require('path');
 const env = require('./env');
+const witch = require('which');
 
 const colortheme = require('./generate-colortheme');
 const commandjs = require('./generate-command-js');
@@ -161,7 +162,7 @@ module.exports = class extends Generator {
     }
 
     // End
-    end() {
+    async end() {
         if (this.abort) {
             return;
         }
@@ -195,6 +196,8 @@ module.exports = class extends Generator {
         this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
         this.log('');
 
+        const [codeStableLocation, codeInsidersLocation] = await Promise.all([witch('code').catch(() => undefined), witch('code-insiders').catch(() => undefined)]);
+
         if (!this.extensionConfig.insiders && !this.options['open'] && !this.options['openInInsiders'] && !this.options['quick']) {
             const cdLocation = this.options['destination'] || this.extensionConfig.name;
 
@@ -203,7 +206,11 @@ module.exports = class extends Generator {
             if (cdLocation !== '.') {
                 this.log('     cd ' + cdLocation);
             }
-            this.log('     code-insiders .');
+            if (!this.extensionConfig.insiders) {
+                this.log('     code .');
+            } else {
+                this.log('     code-insiders .');
+            }
             this.log('');
         }
         this.log('Open vsc-extension-quickstart.md inside the new extension for further instructions');
@@ -217,12 +224,43 @@ module.exports = class extends Generator {
         this.log('For more information, also visit http://code.visualstudio.com and follow us @code.');
         this.log('\r\n');
 
-        if (this.options['open']) {
-            this.log(`Opening ${this.destinationPath()} in Visual Studio Code...`);
-            this.spawnCommand('code', [this.destinationPath()]);
-        } else if (this.extensionConfig.insiders || this.options['openInInsiders'] || this.options['quick']) {
-            this.log(`Opening ${this.destinationPath()} with Visual Studio Code Insiders...`);
-            this.spawnCommand('code-insiders', [this.destinationPath()]);
+        if (this.options["open"]) {
+            if (codeStableLocation) {
+                this.log(`Opening ${this.destinationPath()} in Visual Studio Code...`);
+                this.spawnCommand(codeStableLocation, [this.destinationPath()]);
+            } else {
+                this.log(`'code' command not found.`);
+            }
+        } else if (this.options["openInInsiders"]) {
+            if (codeInsidersLocation) {
+                this.log(`Opening ${this.destinationPath()} with Visual Studio Code Insiders...`);
+                this.spawnCommand(codeInsidersLocation, [this.destinationPath()]);
+            } else {
+                this.log(`'code-insiders' command not found.`);
+            }
+        } else if (codeInsidersLocation || codeStableLocation) {
+            if (this.options["quick"]) {
+                this.spawnCommand(codeInsidersLocation ?? codeStableLocation, [this.destinationPath()]);
+            } else {
+                const choices = [];
+                if (codeInsidersLocation) {
+                    choices.push({ name: "Open with `code-insiders`", value: codeInsidersLocation });
+                }
+                if (codeStableLocation) {
+                    choices.push({ name: "Open with `code`", value: codeStableLocation });
+                }
+                choices.push({ name: "Skip", value: 'skip' });
+
+                const answer = await this.prompt({
+                    type: "list",
+                    name: "openWith",
+                    message: "Do you want to open the new folder with Visual Studio Code?",
+                    choices
+                });
+                if (answer && answer.openWith && answer.openWith !== 'skip') {
+                    this.spawnCommand(answer.openWith, [this.destinationPath()]);
+                }
+            }
         }
     }
 }

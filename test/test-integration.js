@@ -17,7 +17,8 @@ describe('integration tests', function () {
             displayName: 'Test Com',
             description: 'My TestCom',
             gitInit: false,
-            pkgManager: 'npm'
+            pkgManager: 'npm',
+            openWith: 'skip'
         }).toPromise().then(runResult => {
             try {
                 //console.log('command-ts with test: Running npm install');
@@ -52,7 +53,8 @@ describe('integration tests', function () {
             description: 'My TestCom',
             gitInit: false,
             pkgManager: 'npm',
-            webpack: true
+            webpack: true,
+            openWith: 'skip'
         }).toPromise().then(runResult => {
             try {
                 //console.log('command-ts-webpack with test: Running npm install');
@@ -86,7 +88,8 @@ describe('integration tests', function () {
             displayName: 'Test Com',
             description: 'My TestCom',
             gitInit: false,
-            pkgManager: 'npm'
+            pkgManager: 'npm',
+            openWith: 'skip'
         }).toPromise().then(runResult => {
             try {
                 //console.log('command-ts-web with test: Running npm install');

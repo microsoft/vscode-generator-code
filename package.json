@@ -38,15 +38,16 @@
     "fast-plist": "^0.1.2",
     "request-light": "^0.5.4",
     "sanitize-filename": "^1.6.3",
+    "which": "^2.0.2",
     "yeoman-generator": "^5.4.2",
     "yosay": "^2.0.2"
   },
   "devDependencies": {
     "@types/mocha": "^9.0.0",
-    "@types/node": "^15.12.0",
-    "@types/yeoman-generator": "^5.2.2",
-    "@types/yeoman-test": "^4.0.2",
-    "mocha": "^9.1.0",
+    "@types/node": "^16.11.6",
+    "@types/yeoman-generator": "^5.2.7",
+    "@types/yeoman-test": "^4.0.3",
+    "mocha": "^9.1.3",
     "yeoman-test": "^6.2.0",
     "yeoman-environment": "^3.6.0"
   }
