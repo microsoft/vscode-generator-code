@@ -240,7 +240,7 @@ module.exports = class extends Generator {
             }
         } else if (codeInsidersLocation || codeStableLocation) {
             if (this.options["quick"]) {
-                this.spawnCommand(codeInsidersLocation ?? codeStableLocation, [this.destinationPath()]);
+                this.spawnCommand(codeInsidersLocation || codeStableLocation, [this.destinationPath()]);
             } else {
                 const choices = [];
                 if (codeInsidersLocation) {
