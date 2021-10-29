@@ -781,7 +781,7 @@ describe('test code generator', function () {
                         "watch": "webpack --watch",
                         "package": "webpack --mode production --devtool hidden-source-map",
                         "compile-tests": "tsc -p . --outDir out",
-                        "watch-tests": "tsc -p -w . --outDir out",
+                        "watch-tests": "tsc -p . -w --outDir out",
                         "lint": "eslint src --ext ts",
                         "pretest": "npm run compile-tests && npm run compile && npm run lint",
                         "test": "node ./out/test/runTest.js"
