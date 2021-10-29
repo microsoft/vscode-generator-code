@@ -28,7 +28,7 @@
 		"watch": "webpack --watch",
 		"package": "webpack --mode production --devtool hidden-source-map",
 		"compile-tests": "tsc -p . --outDir out",
-		"watch-tests": "tsc -p -w . --outDir out",
+		"watch-tests": "tsc -p . -w --outDir out",
 		"pretest": "<%= pkgManager %> run compile-tests && <%= pkgManager %> run compile && <%= pkgManager %> run lint",
 		"lint": "eslint src --ext ts",
 		"test": "node ./out/test/runTest.js"<% if (insiders) { %>,
