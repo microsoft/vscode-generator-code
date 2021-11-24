@@ -1185,6 +1185,7 @@ describe('test code generator', function () {
                         "typescript",
                         "vscode-notebook-error-overlay",
                         "@vscode/test-electron",
+                        "util",
                         "webpack",
                         "webpack-cli",
                     ])
