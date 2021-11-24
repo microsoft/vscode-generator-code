@@ -14,8 +14,12 @@ const makeConfig = (argv, { entry, out, target, library = 'commonjs' }) => ({
         libraryTarget: library,
         chunkFormat: library,
     },
+    externals: {
+        vscode: 'commonjs vscode',
+    },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.css'],
+        fallback: { "util": require.resolve("util/") }
     },
     experiments: {
         outputModule: true,
