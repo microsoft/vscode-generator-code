@@ -52,7 +52,7 @@
     <%- dep("typescript") %>,
     <%- dep("vscode-notebook-error-overlay") %>,
     <%- dep("@vscode/test-electron") %>,
-    <%- dep("util") %>
+    <%- dep("util") %>,
     <%- dep("webpack") %>,
     <%- dep("webpack-cli") %>
   }
