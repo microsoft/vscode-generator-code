@@ -11,7 +11,7 @@
 
 ## Setup
 
-- install the recommended extensions (amodio.tsl-problem-matcher and dbaeumer.vscode-eslint)
+* install the recommended extensions (amodio.tsl-problem-matcher and dbaeumer.vscode-eslint)
 
 
 ## Get up and running straight away
