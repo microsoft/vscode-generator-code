@@ -13,7 +13,7 @@
         <%- JSON.stringify(`onCommand:${name}.helloWorld`) %>
 	],
 	"main": "./dist/extension.js",<% if (insiders) { %>
-	"enableProposedApi": true,<% } %>
+	"enabledApiProposals": [],<% } %>
 	"contributes": {
 		"commands": [
 			{
