@@ -11,7 +11,7 @@
 
 ## Setup
 
-- install the recommended extensions (amodio.tsl-problem-matcher and dbaeumer.vscode-eslint)
+* install the recommended extensions (amodio.tsl-problem-matcher and dbaeumer.vscode-eslint)
 
 
 ## Get up and running straight away
@@ -42,6 +42,6 @@
 
 ## Go further
 
- * Reduce the extension size and improve the startup time by [bundling your extension](https://code.visualstudio.com/api/working-with-extensions/bundling-extension).
- * [Publish your extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension) on the VSCode extension marketplace.
- * Automate builds by setting up [Continuous Integration](https://code.visualstudio.com/api/working-with-extensions/continuous-integration).
+* Reduce the extension size and improve the startup time by [bundling your extension](https://code.visualstudio.com/api/working-with-extensions/bundling-extension).
+* [Publish your extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension) on the VSCode extension marketplace.
+* Automate builds by setting up [Continuous Integration](https://code.visualstudio.com/api/working-with-extensions/continuous-integration).
