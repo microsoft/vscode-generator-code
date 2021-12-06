@@ -12,7 +12,7 @@ const witch = require('which');
 
 const colortheme = require('./generate-colortheme');
 const commandjs = require('./generate-command-js');
-const commandts = require('./generate-command-ts ');
+const commandts = require('./generate-command-ts');
 const commandweb = require('./generate-command-web');
 const extensionpack = require('./generate-extensionpack');
 const keymap = require('./generate-keymap');

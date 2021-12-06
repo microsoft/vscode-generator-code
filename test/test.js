@@ -427,7 +427,8 @@ describe('test code generator', function () {
                 name: 'testSnip',
                 displayName: 'Test Snip',
                 description: 'My TestSnip',
-                languageId: 'python'
+                languageId: 'python',
+                openWith: 'skip'
             }) // Mock the prompt answers
             .toPromise().then(runResult => {
                 const expectedPackageJSON = {
