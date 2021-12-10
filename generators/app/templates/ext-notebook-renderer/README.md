@@ -11,8 +11,7 @@ This starter includes:
 
 ### Running this Sample
 
- 1. `cd <%- name %>`
- 1. `code-insiders .`: Open the folder in VS Code Insiders
+ 1. `code-insiders <%- name %>`: Open the folder in VS Code Insiders
  1. Hit `F5` to build+debug
 
 ### Structure
