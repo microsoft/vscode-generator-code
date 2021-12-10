@@ -203,13 +203,10 @@ module.exports = class extends Generator {
 
             this.log('To start editing with Visual Studio Code, use the following commands:');
             this.log('');
-            if (cdLocation !== '.') {
-                this.log('     cd ' + cdLocation);
-            }
             if (!this.extensionConfig.insiders) {
-                this.log('     code .');
+                this.log('     code ' + cdLocation);
             } else {
-                this.log('     code-insiders .');
+                this.log('     code-insiders ' + cdLocation);
             }
             this.log('');
         }
