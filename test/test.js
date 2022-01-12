@@ -712,11 +712,7 @@ describe('test code generator', function () {
                         "sourceMap": true,
                         "rootDir": "src",
                         "strict": true
-                    },
-                    "exclude": [
-                        "node_modules",
-                        ".vscode-test"
-                    ]
+                    }
                 };
                 try {
                     assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', '.eslintrc.json', '.vscode/extensions.json']);
