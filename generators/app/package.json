@@ -1,4 +1,8 @@
 {
+    "name": "yo-code-dependencies-versions",
+    "description": "Helper file to manage the versions of the node modules used by the generators.",
+    "version": "0.0.0",
+    "private": true,
     "dependencies": {
         "@types/glob": "^7.2.0",
         "@types/mocha": "^9.0.0",
