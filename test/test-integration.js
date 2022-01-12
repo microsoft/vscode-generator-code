@@ -27,6 +27,11 @@ describe('integration tests', function () {
                     assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
                 }
 
+                const resAudit = spawn.sync('npm', ['audit'], { cwd: runResult.env.cwd });
+                if (resAudit.exitCode !== 0) {
+                    assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
+                }
+
                 //console.log('command-ts with test: Running extension compile');
                 const res2 = spawn.sync('npm', ['run', 'test'], { cwd: runResult.env.cwd });
                 if (res2.exitCode !== 0) {
@@ -63,6 +68,11 @@ describe('integration tests', function () {
                     assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
                 }
 
+                const resAudit = spawn.sync('npm', ['audit'], { cwd: runResult.env.cwd });
+                if (resAudit.exitCode !== 0) {
+                    assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
+                }
+
                 //console.log('command-ts-webpack with test: Running extension compile');
                 const res2 = spawn.sync('npm', ['run', 'test'], { cwd: runResult.env.cwd });
                 if (res2.exitCode !== 0) {
@@ -96,6 +106,11 @@ describe('integration tests', function () {
                 const res = spawn.sync('npm', ['i'], { cwd: runResult.env.cwd });
                 if (res.exitCode !== 0) {
                     assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
+                }
+
+                const resAudit = spawn.sync('npm', ['audit'], { cwd: runResult.env.cwd });
+                if (resAudit.exitCode !== 0) {
+                    assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
                 }
 
                 //console.log('command-ts-web with test: Running extension compile-web');
