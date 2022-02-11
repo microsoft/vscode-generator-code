@@ -185,7 +185,7 @@ module.exports = class extends Generator {
 
         // Git init
         if (this.extensionConfig.gitInit) {
-            this.spawnCommand('git', ['init', '--quiet']);
+            this.spawnCommand('git', ['init', '--quiet', '--initial-branch=main']);
         }
 
         if (this.extensionConfig.proposedAPI) {
