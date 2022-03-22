@@ -8,7 +8,7 @@ const yosay = require('yosay');
 
 const path = require('path');
 const env = require('./env');
-const witch = require('which');
+const which = require('which');
 
 const colortheme = require('./generate-colortheme');
 const commandjs = require('./generate-command-js');
@@ -196,7 +196,7 @@ module.exports = class extends Generator {
         this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
         this.log('');
 
-        const [codeStableLocation, codeInsidersLocation] = await Promise.all([witch('code').catch(() => undefined), witch('code-insiders').catch(() => undefined)]);
+        const [codeStableLocation, codeInsidersLocation] = await Promise.all([which('code').catch(() => undefined), which('code-insiders').catch(() => undefined)]);
 
         if (!this.extensionConfig.insiders && !this.options['open'] && !this.options['openInInsiders'] && !this.options['quick']) {
             const cdLocation = this.options['destination'] || this.extensionConfig.name;
