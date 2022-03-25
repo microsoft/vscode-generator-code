@@ -1,8 +1,12 @@
 import * as path from 'path';
 import * as Mocha from 'mocha';
 import * as glob from 'glob';
+import * as sm from 'source-map-support';
 
 export function run(): Promise<void> {
+  // Install support for source map files in stack traces.
+  sm.install();
+
   // Create the mocha test
   const mocha = new Mocha({
     ui: 'tdd',
