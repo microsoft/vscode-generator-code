@@ -36,11 +36,13 @@
 		<%- dep("@types/glob") %>,
 		<%- dep("@types/mocha") %>,
 		<%- dep("@types/node") %>,
+		<%- dep("@types/source-map-support") %>,
 		<%- dep("@typescript-eslint/eslint-plugin") %>,
 		<%- dep("@typescript-eslint/parser") %>,
 		<%- dep("eslint") %>,
 		<%- dep("glob") %>,
 		<%- dep("mocha") %>,
+		<%- dep("source-map-support") %>,
 		<%- dep("typescript") %>,
 		<%- dep("@vscode/test-electron") %><% if (insiders) { %>,
 		<%- dep("vscode-dts") %><% } %>
