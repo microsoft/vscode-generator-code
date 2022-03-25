@@ -1,6 +1,6 @@
 {
-    "name": "yo-code-dependencies-versions",
-    "description": "Helper file to manage the versions of the node modules used by the generators.",
+    "name": "generator-code-dependencies-versions",
+    "description": "Helper file to manage the versions of the node modules used by the generators. Named package.json so the VS Code dependencies completions work. Must be in a subfolder due to #325",
     "version": "0.0.0",
     "private": true,
     "dependencies": {

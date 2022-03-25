@@ -3,7 +3,6 @@ const path = require('path');
 const helpers = require('yeoman-test');
 const spawn = require('execa');
 
-const env = require('../generators/app/env');
 const assert = require('assert');
 
 describe('integration tests', function () {

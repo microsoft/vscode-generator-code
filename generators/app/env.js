@@ -41,7 +41,7 @@ module.exports.getLatestVSCodeVersion = getLatestVSCodeVersion;
 
 module.exports.getDependencyVersions = async function () {
     const vscodeVersion = await getLatestVSCodeVersion();
-    const versions = JSON.parse((await fs.promises.readFile(path.join(__dirname, 'package.json'))).toString()).dependencies;
+    const versions = JSON.parse((await fs.promises.readFile(path.join(__dirname, 'dependencyVersions', 'package.json'))).toString()).dependencies;
     versions["@types/vscode"] = vscodeVersion
     return versions;
 }
