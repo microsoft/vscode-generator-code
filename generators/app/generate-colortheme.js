@@ -48,8 +48,12 @@ module.exports = {
                 value: "vs"
             },
             {
-                name: "High Contrast",
+                name: "High Contrast Dark",
                 value: "hc-black"
+            },
+            {
+                name: "High Contrast Light",
+                value: "hc-light"
             }
             ]
         });
@@ -71,13 +75,8 @@ module.exports = {
             extensionConfig.themeContent.name = extensionConfig.themeName;
             generator.fs.copyTpl(generator.templatePath('themes/color-theme.json'), generator.destinationPath('themes', extensionConfig.themeFileName), extensionConfig);
         } else {
-            if (extensionConfig.themeBase === 'vs') {
-                generator.fs.copyTpl(generator.templatePath('themes/new-light-color-theme.json'), generator.destinationPath('themes', extensionConfig.themeFileName), extensionConfig);
-            } else if (extensionConfig.themeBase === 'hc') {
-                generator.fs.copyTpl(generator.templatePath('themes/new-hc-color-theme.json'), generator.destinationPath('themes', extensionConfig.themeFileName), extensionConfig);
-            } else {
-                generator.fs.copyTpl(generator.templatePath('themes/new-dark-color-theme.json'), generator.destinationPath('themes', extensionConfig.themeFileName), extensionConfig);
-            }
+            console.log('**' + extensionConfig.themeFileName);
+            generator.fs.copyTpl(generator.templatePath('themes/new-' + extensionConfig.themeBase + '-color-theme.json'), generator.destinationPath('themes', extensionConfig.themeFileName), extensionConfig);
         }
 
         generator.fs.copy(generator.templatePath('vscode'), generator.destinationPath('.vscode'));
@@ -144,17 +143,20 @@ function convertTheme(location, extensionConfig, inline, generator) {
         // load from url
         return request.xhr({ url: location }).then(r => {
             if (r.status == 200) {
-                var tmThemeFileName = null;
+                let tmThemeFileName = null;
                 if (!inline) {
-                    var contentDisposition = r.headers && r.headers['content-disposition'];
-                    if (contentDisposition) {
-                        var fileNameMatch = contentDisposition.match(/filename="([^"]*)/);
+                    let contentDisposition = r.headers && r.headers['content-disposition'];
+                    if (Array.isArray(contentDisposition)) {
+                        contentDisposition = contentDisposition[0];
+                    }
+                    if (typeof contentDisposition === 'string') {
+                        const fileNameMatch = contentDisposition.match(/filename="([^"]*)/);
                         if (fileNameMatch) {
                             tmThemeFileName = fileNameMatch[1];
                         }
                     }
                     if (!tmThemeFileName) {
-                        var lastSlash = location.lastIndexOf('/');
+                        const lastSlash = location.lastIndexOf('/');
                         if (lastSlash) {
                             tmThemeFileName = location.substr(lastSlash + 1);
                         } else {
@@ -169,14 +171,14 @@ function convertTheme(location, extensionConfig, inline, generator) {
         });
     } else {
         // load from disk
-        var body = null;
+        let body = null;
         try {
             body = fs.readFileSync(location);
         } catch (error) {
             return Promise.reject("Problems loading theme: " + error.message);
         }
         if (body) {
-            var fileName = null;
+            let fileName = null;
             if (!inline) {
                 fileName = path.basename(location);
             }
@@ -188,8 +190,8 @@ function convertTheme(location, extensionConfig, inline, generator) {
 }
 
 function processContent(extensionConfig, tmThemeFileName, body, generator) {
-    var themeNameMatch = body.match(/<key>name<\/key>\s*<string>([^<]*)/);
-    var themeName = themeNameMatch ? themeNameMatch[1] : '';
+    const themeNameMatch = body.match(/<key>name<\/key>\s*<string>([^<]*)/);
+    const themeName = themeNameMatch ? themeNameMatch[1] : '';
     try {
         extensionConfig.themeContent = migrate(body, tmThemeFileName, generator);
         if (tmThemeFileName) {
@@ -209,7 +211,7 @@ function processContent(extensionConfig, tmThemeFileName, body, generator) {
 };
 
 // mapping from old tmTheme setting to new workbench color ids
-var mappings = {
+const mappings = {
     "background": ["editor.background"],
     "foreground": ["editor.foreground"],
     "hoverHighlight": ["editor.hoverHighlightBackground"],
@@ -237,7 +239,7 @@ var mappings = {
 
 function migrate(content, tmThemeFileName, generator) {
     let result = {};
-    var theme;
+    let theme;
     try {
         theme = plistParser.parse(content);
     } catch (e) {
@@ -254,7 +256,7 @@ function migrate(content, tmThemeFileName, generator) {
                     entry.scope = parts;
                 }
             } else {
-                var entrySettings = entry.settings;
+                const entrySettings = entry.settings;
                 let notSupported = [];
                 for (let entry in entrySettings) {
                     let mapping = mappings[entry];

@@ -252,6 +252,50 @@ describe('test code generator', function () {
             }, done);
     });
 
+    it('theme new hc light', function (done) {
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-colortheme',
+                themeImportType: 'new',
+                name: 'testHCLTheme',
+                displayName: 'Test HCL Theme',
+                description: 'My HCL TestTheme',
+                themeName: 'Funky HCL',
+                themeBase: 'hc-light',
+                openWith: 'skip'
+            }) // Mock the prompt answers
+            .toPromise().then(runResult => {
+                const expectedPackageJSON = {
+                    "name": "testHCLTheme",
+                    "displayName": "Test HCL Theme",
+                    "description": "My HCL TestTheme",
+                    "version": "0.0.1",
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "categories": [
+                        "Themes"
+                    ],
+                    "contributes": {
+                        "themes": [{
+                            "label": "Funky HCL",
+                            "uiTheme": "hc-light",
+                            "path": "./themes/Funky HCL-color-theme.json"
+                        }]
+                    }
+                };
+                try {
+                    assertFiles(runResult, 'testHCLTheme', ['themes/Funky HCL-color-theme.json']);
+
+                    runResult.assertJsonFileContent('testHCLTheme/package.json', expectedPackageJSON);
+                    runResult.assertJsonFileContent('testHCLTheme/themes/Funky HCL-color-theme.json', { name: 'Funky HCL', colors: { 'editor.background': "#f5f5f5" } });
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }, done);
+    });
+
     it('language import', function (done) {
         this.timeout(10000);
 

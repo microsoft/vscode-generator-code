@@ -1,6 +1,5 @@
 {
 	"name": <%-JSON.stringify(themeName)%>,
-	"type": "hc",
 	"colors": {
 		"editor.background": "#000000",
 		"editor.foreground": "#ffffff"
