@@ -45,10 +45,10 @@
   "devDependencies": {
     "@types/mocha": "^9.1.0",
     "@types/node": "^16.11.6",
-    "@types/yeoman-generator": "^5.2.8",
+    "@types/yeoman-generator": "^5.2.9",
     "@types/yeoman-test": "^4.0.3",
-    "mocha": "^9.2.0",
+    "mocha": "^9.2.2",
     "yeoman-environment": "^3.9.1",
-    "yeoman-test": "^6.2.0"
+    "yeoman-test": "^6.3.0"
   }
 }

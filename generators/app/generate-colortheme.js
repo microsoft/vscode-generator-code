@@ -75,7 +75,6 @@ module.exports = {
             extensionConfig.themeContent.name = extensionConfig.themeName;
             generator.fs.copyTpl(generator.templatePath('themes/color-theme.json'), generator.destinationPath('themes', extensionConfig.themeFileName), extensionConfig);
         } else {
-            console.log('**' + extensionConfig.themeFileName);
             generator.fs.copyTpl(generator.templatePath('themes/new-' + extensionConfig.themeBase + '-color-theme.json'), generator.destinationPath('themes', extensionConfig.themeFileName), extensionConfig);
         }
 
