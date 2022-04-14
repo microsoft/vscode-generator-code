@@ -1077,6 +1077,71 @@ describe('test code generator', function () {
             });
     });
 
+    it('command-js with pnpm', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-command-js',
+                name: 'testCom',
+                displayName: 'Test Com',
+                description: 'My TestCom',
+                checkJavaScript: false,
+                gitInit: false,
+                pkgManager: 'pnpm',
+                openWith: 'skip'
+            }) // Mock the prompt answers
+            .toPromise().then(runResult => {
+                const expectedPackageJSON = {
+                    "name": "testCom",
+                    "displayName": 'Test Com',
+                    "description": "My TestCom",
+                    "version": "0.0.1",
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "activationEvents": [
+                        "onCommand:testCom.helloWorld"
+                    ],
+                    "devDependencies": devDependencies([
+                        "@types/vscode",
+                        "@types/glob",
+                        "@types/mocha",
+                        "@types/node",
+                        "eslint",
+                        "glob",
+                        "mocha",
+                        "typescript",
+                        "@vscode/test-electron"
+                    ]),
+                    "main": "./extension.js",
+                    "scripts": {
+                        "lint": "eslint .",
+                        "pretest": "pnpm run lint",
+                        "test": "node ./test/runTest.js"
+                    },
+                    "categories": [
+                        "Other"
+                    ],
+                    "contributes": {
+                        "commands": [{
+                            "command": "testCom.helloWorld",
+                            "title": "Hello World"
+                        }]
+                    }
+                };
+                try {
+                    assertFiles(runResult, 'testCom', ['extension.js', 'test/suite/extension.test.js', 'test/suite/index.js', 'jsconfig.json']);
+
+                    runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            });
+    });
+
     it('command-js with check JS', function (done) {
         this.timeout(10000);
 
