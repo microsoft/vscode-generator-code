@@ -1311,6 +1311,53 @@ describe('test code generator', function () {
             }, done);
     });
 
+    it('language pack with pnpm', function (done) {
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-localization',
+                name: "vscode-language-pack-ru",
+                displayName: "Russian Language Pack",
+                description: "Language pack extension for Russian",
+                lpLanguageId: 'ru',
+                lpLanguageName: 'Russian',
+                lpLocalizedLanguageName: 'русский',
+                pkgManager: 'pnpm',
+                openWith: 'skip'
+            }).toPromise().then(runResult => {
+                const expectedPackageJSON = {
+                    "name": "vscode-language-pack-ru",
+                    "displayName": "Russian Language Pack",
+                    "description": "Language pack extension for Russian",
+                    "version": "0.0.1",
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "categories": [
+                        "Language Packs"
+                    ],
+                    "contributes": {
+                        "localizations": [{
+                            "languageId": "ru",
+                            "languageName": "Russian",
+                            "localizedLanguageName": "русский"
+                        }]
+                    },
+                    "scripts": {
+                        "update": "cd ../vscode && pnpm run update-localization-extension ru"
+                    }
+                };
+                try {
+                    assertFiles(runResult, 'vscode-language-pack-ru', []);
+
+                    runResult.assertJsonFileContent('vscode-language-pack-ru/package.json', expectedPackageJSON);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }, done);
+    });
+
     it('command-web', function (done) {
         this.timeout(10000);
 
