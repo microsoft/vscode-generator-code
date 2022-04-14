@@ -1517,7 +1517,7 @@ describe('test code generator', function () {
                 rendererId: 'json-renderer',
                 rendererDisplayName: 'JSON Renderer',
                 gitInit: true,
-                pkgManager: 'yarn',
+                pkgManager: 'npm',
                 openWith: 'skip'
             }).toPromise().then(runResult => {
                 const expectedPackageJSON = {
@@ -1552,6 +1552,89 @@ describe('test code generator', function () {
                         "lint": "eslint src --ext ts",
                         "watch": "webpack --mode development --watch",
                         "pretest": "webpack --mode development && npm run lint",
+                        "test": "node ./out/test/runTest.js"
+                    },
+                    "devDependencies": devDependencies([
+                        "@types/glob",
+                        "@types/mocha",
+                        "@types/node",
+                        "@types/vscode",
+                        "@types/webpack-env",
+                        "@typescript-eslint/eslint-plugin",
+                        "@typescript-eslint/parser",
+                        "@types/vscode-notebook-renderer",
+                        "css-loader",
+                        "eslint",
+                        "fork-ts-checker-webpack-plugin",
+                        "glob",
+                        "mocha",
+                        "style-loader",
+                        "ts-loader",
+                        "typescript",
+                        "vscode-notebook-error-overlay",
+                        "@vscode/test-electron",
+                        "util",
+                        "webpack",
+                        "webpack-cli",
+                    ])
+                };
+                try {
+                    assertFiles(runResult, 'json-renderer-ext', ['webpack.config.js', '.gitignore', '.eslintrc.json']);
+
+                    runResult.assertJsonFileContent('json-renderer-ext/package.json', expectedPackageJSON);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }, done);
+    });
+
+    it('sample notebook renderer with pnpm', function (done) {
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-notebook-renderer',
+                name: 'json-renderer-ext',
+                displayName: 'Cool JSON Renderer Extension',
+                description: '',
+                rendererId: 'json-renderer',
+                rendererDisplayName: 'JSON Renderer',
+                gitInit: true,
+                pkgManager: 'pnpm',
+                openWith: 'skip'
+            }).toPromise().then(runResult => {
+                const expectedPackageJSON = {
+                    "name": "json-renderer-ext",
+                    "displayName": "Cool JSON Renderer Extension",
+                    "description": "",
+                    "version": "0.0.1",
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "keywords": [
+                        "notebookRenderer"
+                    ],
+                    "categories": [
+                        "Other"
+                    ],
+                    "activationEvents": [],
+                    "main": "./out/extension/extension.js",
+                    "contributes": {
+                        "notebookRenderer": [
+                            {
+                                "entrypoint": "./out/client/index.js",
+                                "id": "json-renderer",
+                                "displayName": "JSON Renderer",
+                                "mimeTypes": ["x-application/custom-json-output"]
+                            }
+                        ]
+                    },
+                    "scripts": {
+                        "vscode:prepublish": "pnpm run compile",
+                        "compile": "webpack --mode production",
+                        "lint": "eslint src --ext ts",
+                        "watch": "webpack --mode development --watch",
+                        "pretest": "webpack --mode development && pnpm run lint",
                         "test": "node ./out/test/runTest.js"
                     },
                     "devDependencies": devDependencies([
