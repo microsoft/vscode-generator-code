@@ -934,6 +934,84 @@ describe('test code generator', function () {
             });
     });
 
+    it('command-ts with webpack + pnpm', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-command-ts',
+                name: 'testCom',
+                displayName: 'Test Com',
+                description: 'My TestCom',
+                gitInit: true,
+                pkgManager: 'pnpm',
+                webpack: true,
+                openWith: 'skip'
+            }) // Mock the prompt answers
+            .toPromise().then(runResult => {
+                const expectedPackageJSON = {
+                    "name": "testCom",
+                    "displayName": 'Test Com',
+                    "description": "My TestCom",
+                    "version": "0.0.1",
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "activationEvents": [
+                        "onCommand:testCom.helloWorld"
+                    ],
+                    "devDependencies": devDependencies([
+                        "@types/vscode",
+                        "@types/glob",
+                        "@types/mocha",
+                        "@types/node",
+                        "@typescript-eslint/parser",
+                        "@typescript-eslint/eslint-plugin",
+                        "eslint",
+                        "glob",
+                        "mocha",
+                        "typescript",
+                        "@vscode/test-electron",
+                        "webpack",
+                        "webpack-cli",
+                        "ts-loader"
+                    ]),
+                    "main": "./dist/extension.js",
+                    "scripts": {
+                        "vscode:prepublish": "pnpm run package",
+                        "compile": "webpack",
+                        "watch": "webpack --watch",
+                        "package": "webpack --mode production --devtool hidden-source-map",
+                        "compile-tests": "tsc -p . --outDir out",
+                        "watch-tests": "tsc -p . -w --outDir out",
+                        "lint": "eslint src --ext ts",
+                        "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+                        "test": "node ./out/test/runTest.js"
+                    },
+                    "categories": [
+                        "Other"
+                    ],
+                    "contributes": {
+                        "commands": [{
+                            "command": "testCom.helloWorld",
+                            "title": "Hello World"
+                        }]
+                    }
+                };
+                try {
+
+
+                    assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
+
+                    runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            });
+    });
+
     it('command-js', function (done) {
         this.timeout(10000);
 
