@@ -771,6 +771,91 @@ describe('test code generator', function () {
             });
     });
 
+    it('command-ts with pnpm', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-command-ts',
+                name: 'testCom',
+                displayName: 'Test Com',
+                description: 'My TestCom',
+                gitInit: false,
+                pkgManager: 'pnpm',
+                openWith: 'skip'
+            }) // Mock the prompt answers
+            .toPromise().then(runResult => {
+                const expectedPackageJSON = {
+                    "name": "testCom",
+                    "displayName": 'Test Com',
+                    "description": "My TestCom",
+                    "version": "0.0.1",
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "activationEvents": [
+                        "onCommand:testCom.helloWorld"
+                    ],
+                    "devDependencies": devDependencies([
+                        "@types/vscode",
+                        "@types/glob",
+                        "@types/mocha",
+                        "@types/node",
+                        "eslint",
+                        "@typescript-eslint/parser",
+                        "@typescript-eslint/eslint-plugin",
+                        "glob",
+                        "mocha",
+                        "typescript",
+                        "@vscode/test-electron"
+                    ]),
+                    "main": "./out/extension.js",
+                    "scripts": {
+                        "vscode:prepublish": "pnpm run compile",
+                        "compile": "tsc -p ./",
+                        "lint": "eslint src --ext ts",
+                        "watch": "tsc -watch -p ./",
+                        "pretest": "pnpm run compile && pnpm run lint",
+                        "test": "node ./out/test/runTest.js"
+                    },
+                    "categories": [
+                        "Other"
+                    ],
+                    "contributes": {
+                        "commands": [{
+                            "command": "testCom.helloWorld",
+                            "title": "Hello World"
+                        }]
+                    }
+                };
+                const expectedTsConfig = {
+                    "compilerOptions": {
+                        "module": "commonjs",
+                        "target": "ES2020",
+                        "outDir": "out",
+                        "lib": [
+                            "ES2020"
+                        ],
+                        "sourceMap": true,
+                        "rootDir": "src",
+                        "strict": true
+                    }
+                };
+                try {
+                    assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', '.eslintrc.json', '.vscode/extensions.json']);
+
+                    runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
+
+                    const tsconfigBody = JSON.parse(stripComments(runResult.fs.read('testCom/tsconfig.json')));
+                    runResult.assertObjectContent(tsconfigBody, expectedTsConfig);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            });
+    });
+
     it('command-ts with webpack', function (done) {
         this.timeout(10000);
 
