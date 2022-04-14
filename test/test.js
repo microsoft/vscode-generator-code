@@ -1432,6 +1432,80 @@ describe('test code generator', function () {
             });
     });
 
+    it('command-web with pnpm', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-command-web',
+                name: 'testCom',
+                displayName: 'Test Com',
+                description: 'My TestCom',
+                gitInit: true,
+                pkgManager: 'pnpm',
+                openWith: 'skip'
+            }) // Mock the prompt answers
+            .toPromise().then(runResult => {
+                const expectedPackageJSON = {
+                    "name": "testCom",
+                    "displayName": 'Test Com',
+                    "description": "My TestCom",
+                    "version": "0.0.1",
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "activationEvents": [
+                        "onCommand:testCom.helloWorld"
+                    ],
+                    "devDependencies": devDependencies([
+                        "@types/vscode",
+                        "@types/mocha",
+                        "@types/webpack-env",
+                        "eslint",
+                        "@typescript-eslint/parser",
+                        "@typescript-eslint/eslint-plugin",
+                        "assert",
+                        "mocha",
+                        "process",
+                        "typescript",
+                        "ts-loader",
+                        "vscode-test-web",
+                        "webpack",
+                        "webpack-cli"
+                    ]),
+                    "browser": "./dist/web/extension.js",
+                    "scripts": {
+                        "test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js",
+                        "pretest": "pnpm run compile-web",
+                        "vscode:prepublish": "pnpm run package-web",
+                        "compile-web": "webpack",
+                        "watch-web": "webpack --watch",
+                        "package-web": "webpack --mode production --devtool hidden-source-map",
+                        "lint": "eslint src --ext ts",
+                        "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
+                    },
+                    "categories": [
+                        "Other"
+                    ],
+                    "contributes": {
+                        "commands": [{
+                            "command": "testCom.helloWorld",
+                            "title": "Hello World"
+                        }]
+                    }
+                };
+                try {
+                    assertFiles(runResult, 'testCom', ['src/web/extension.ts', 'webpack.config.js', 'src/web/test/suite/extension.test.ts', 'src/web/test/suite/index.ts', 'tsconfig.json']);
+
+                    runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            });
+    });
+
 
     it('sample notebook renderer', function (done) {
         helpers.run(path.join(__dirname, '../generators/app'))
