@@ -1,6 +1,6 @@
 {
   "name": "generator-code",
-  "version": "1.6.10",
+  "version": "1.6.11",
   "description": "Yeoman generator for Visual Studio Code Extensions",
   "keywords": [
     "yeoman-generator",
@@ -25,7 +25,7 @@
     "url": "https://github.com/Microsoft"
   },
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=12.10.0"
   },
   "scripts": {
     "test": "mocha",
@@ -47,7 +47,7 @@
     "@types/node": "^16.11.6",
     "@types/yeoman-generator": "^5.2.10",
     "@types/yeoman-test": "^4.0.3",
-    "mocha": "^9.2.2",
+    "mocha": "^10.0.0",
     "yeoman-environment": "^3.9.1",
     "yeoman-test": "^6.3.0"
   }
