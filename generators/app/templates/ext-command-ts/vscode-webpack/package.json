@@ -1,54 +1,54 @@
 {
   "name": <%- JSON.stringify(name) %>,
-	"displayName": <%- JSON.stringify(displayName) %>,
-	"description": <%- JSON.stringify(description) %>,
-	"version": "0.0.1",
-	"engines": {
-		"vscode": <%- JSON.stringify(vsCodeEngine) %>
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-        <%- JSON.stringify(`onCommand:${name}.helloWorld`) %>
-	],
-	"main": "./dist/extension.js",<% if (insiders) { %>
-	"enabledApiProposals": [],<% } %>
-	"contributes": {
-		"commands": [
-			{
-				"command": <%- JSON.stringify(`${name}.helloWorld`) %>,
-				"title": "Hello World"
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "<%= pkgManager %> run package",
-		"compile": "webpack",
-		"watch": "webpack --watch",
-		"package": "webpack --mode production --devtool hidden-source-map",
-		"compile-tests": "tsc -p . --outDir out",
-		"watch-tests": "tsc -p . -w --outDir out",
-		"pretest": "<%= pkgManager %> run compile-tests && <%= pkgManager %> run compile && <%= pkgManager %> run lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"<% if (insiders) { %>,
-		"update-proposed-api": "vscode-dts dev"<% } %>
-	},
-	"devDependencies": {
-		<%- dep("@types/vscode") %>,
-		<%- dep("@types/glob") %>,
-		<%- dep("@types/mocha") %>,
-		<%- dep("@types/node") %>,
-		<%- dep("@typescript-eslint/eslint-plugin") %>,
-		<%- dep("@typescript-eslint/parser") %>,
-		<%- dep("eslint") %>,
-		<%- dep("glob") %>,
-		<%- dep("mocha") %>,
-		<%- dep("typescript") %>,
-		<%- dep("ts-loader") %>,
-		<%- dep("webpack") %>,
-		<%- dep("webpack-cli") %>,
-		<%- dep("@vscode/test-electron") %><% if (insiders) { %>,
-		<%- dep("vscode-dts") %><% } %>
-	}
+  "displayName": <%- JSON.stringify(displayName) %>,
+  "description": <%- JSON.stringify(description) %>,
+  "version": "0.0.1",
+  "engines": {
+    "vscode": <%- JSON.stringify(vsCodeEngine) %>
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    <%- JSON.stringify(`onCommand:${name}.helloWorld`) %>
+  ],
+  "main": "./dist/extension.js",<% if (insiders) { %>
+  "enabledApiProposals": [],<% } %>
+  "contributes": {
+    "commands": [
+      {
+        "command": <%- JSON.stringify(`${name}.helloWorld`) %>,
+        "title": "Hello World"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "<%= pkgManager %> run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "<%= pkgManager %> run compile-tests && <%= pkgManager %> run compile && <%= pkgManager %> run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"<% if (insiders) { %>,
+    "update-proposed-api": "vscode-dts dev"<% } %>
+  },
+  "devDependencies": {
+    <%- dep("@types/vscode") %>,
+    <%- dep("@types/glob") %>,
+    <%- dep("@types/mocha") %>,
+    <%- dep("@types/node") %>,
+    <%- dep("@typescript-eslint/eslint-plugin") %>,
+    <%- dep("@typescript-eslint/parser") %>,
+    <%- dep("eslint") %>,
+    <%- dep("glob") %>,
+    <%- dep("mocha") %>,
+    <%- dep("typescript") %>,
+    <%- dep("ts-loader") %>,
+    <%- dep("webpack") %>,
+    <%- dep("webpack-cli") %>,
+    <%- dep("@vscode/test-electron") %><% if (insiders) { %>,
+    <%- dep("vscode-dts") %><% } %>
+  }
 }
