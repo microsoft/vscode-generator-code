@@ -1,52 +1,50 @@
 {
-	"name": <%- JSON.stringify(name) %>,
-	"displayName": <%- JSON.stringify(displayName) %>,
-	"description": <%- JSON.stringify(description) %>,
-	"version": "0.0.1",
-	"engines": {
-		"vscode": <%- JSON.stringify(vsCodeEngine) %>
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-        <%- JSON.stringify(`onCommand:${name
-		}.helloWorld`) %>
-	],
-	"browser": "./dist/web/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": <%- JSON.stringify(`${name
-				}.helloWorld`) %>,
-				"title": "Hello World"
-			}
-		]
-	},
-	"scripts": {
-		"test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js",
-		"pretest": "<%= pkgManager %> run compile-web",
-		"vscode:prepublish": "<%= pkgManager %> run package-web",
-		"compile-web": "webpack",
-		"watch-web": "webpack --watch",
-		"package-web": "webpack --mode production --devtool hidden-source-map",
-		"lint": "eslint src --ext ts",
-		"run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
-	},
-	"devDependencies": {
-		<%- dep("@types/vscode") %>,
-		<%- dep("@types/mocha") %>,
-		<%- dep("eslint") %>,
-		<%- dep("@typescript-eslint/eslint-plugin") %>,
-		<%- dep("@typescript-eslint/parser") %>,
-		<%- dep("mocha") %>,
-		<%- dep("typescript") %>,
-		<%- dep("@vscode/test-web") %>,
-		<%- dep("ts-loader") %>,
-		<%- dep("webpack") %>,
-		<%- dep("webpack-cli") %>,
-		<%- dep("@types/webpack-env") %>,
-		<%- dep("assert") %>,
-		<%- dep("process") %>
-	}
+  "name": <%- JSON.stringify(name) %>,
+  "displayName": <%- JSON.stringify(displayName) %>,
+  "description": <%- JSON.stringify(description) %>,
+  "version": "0.0.1",
+  "engines": {
+    "vscode": <%- JSON.stringify(vsCodeEngine) %>
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    <%- JSON.stringify(`onCommand:${name}.helloWorld`) %>
+  ],
+  "browser": "./dist/web/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": <%- JSON.stringify(`${name}.helloWorld`) %>,
+        "title": "Hello World"
+      }
+    ]
+  },
+  "scripts": {
+    "test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js",
+    "pretest": "<%= pkgManager %> run compile-web",
+    "vscode:prepublish": "<%= pkgManager %> run package-web",
+    "compile-web": "webpack",
+    "watch-web": "webpack --watch",
+    "package-web": "webpack --mode production --devtool hidden-source-map",
+    "lint": "eslint src --ext ts",
+    "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
+  },
+  "devDependencies": {
+    <%- dep("@types/vscode") %>,
+    <%- dep("@types/mocha") %>,
+    <%- dep("eslint") %>,
+    <%- dep("@typescript-eslint/eslint-plugin") %>,
+    <%- dep("@typescript-eslint/parser") %>,
+    <%- dep("mocha") %>,
+    <%- dep("typescript") %>,
+    <%- dep("@vscode/test-web") %>,
+    <%- dep("ts-loader") %>,
+    <%- dep("webpack") %>,
+    <%- dep("webpack-cli") %>,
+    <%- dep("@types/webpack-env") %>,
+    <%- dep("assert") %>,
+    <%- dep("process") %>
+  }
 }
