@@ -771,6 +771,91 @@ describe('test code generator', function () {
             });
     });
 
+    it('command-ts with pnpm', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-command-ts',
+                name: 'testCom',
+                displayName: 'Test Com',
+                description: 'My TestCom',
+                gitInit: false,
+                pkgManager: 'pnpm',
+                openWith: 'skip'
+            }) // Mock the prompt answers
+            .toPromise().then(runResult => {
+                const expectedPackageJSON = {
+                    "name": "testCom",
+                    "displayName": 'Test Com',
+                    "description": "My TestCom",
+                    "version": "0.0.1",
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "activationEvents": [
+                        "onCommand:testCom.helloWorld"
+                    ],
+                    "devDependencies": devDependencies([
+                        "@types/vscode",
+                        "@types/glob",
+                        "@types/mocha",
+                        "@types/node",
+                        "eslint",
+                        "@typescript-eslint/parser",
+                        "@typescript-eslint/eslint-plugin",
+                        "glob",
+                        "mocha",
+                        "typescript",
+                        "@vscode/test-electron"
+                    ]),
+                    "main": "./out/extension.js",
+                    "scripts": {
+                        "vscode:prepublish": "pnpm run compile",
+                        "compile": "tsc -p ./",
+                        "lint": "eslint src --ext ts",
+                        "watch": "tsc -watch -p ./",
+                        "pretest": "pnpm run compile && pnpm run lint",
+                        "test": "node ./out/test/runTest.js"
+                    },
+                    "categories": [
+                        "Other"
+                    ],
+                    "contributes": {
+                        "commands": [{
+                            "command": "testCom.helloWorld",
+                            "title": "Hello World"
+                        }]
+                    }
+                };
+                const expectedTsConfig = {
+                    "compilerOptions": {
+                        "module": "commonjs",
+                        "target": "ES2020",
+                        "outDir": "out",
+                        "lib": [
+                            "ES2020"
+                        ],
+                        "sourceMap": true,
+                        "rootDir": "src",
+                        "strict": true
+                    }
+                };
+                try {
+                    assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', '.eslintrc.json', '.vscode/extensions.json']);
+
+                    runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
+
+                    const tsconfigBody = JSON.parse(stripComments(runResult.fs.read('testCom/tsconfig.json')));
+                    runResult.assertObjectContent(tsconfigBody, expectedTsConfig);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            });
+    });
+
     it('command-ts with webpack', function (done) {
         this.timeout(10000);
 
@@ -849,6 +934,84 @@ describe('test code generator', function () {
             });
     });
 
+    it('command-ts with webpack + pnpm', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-command-ts',
+                name: 'testCom',
+                displayName: 'Test Com',
+                description: 'My TestCom',
+                gitInit: true,
+                pkgManager: 'pnpm',
+                webpack: true,
+                openWith: 'skip'
+            }) // Mock the prompt answers
+            .toPromise().then(runResult => {
+                const expectedPackageJSON = {
+                    "name": "testCom",
+                    "displayName": 'Test Com',
+                    "description": "My TestCom",
+                    "version": "0.0.1",
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "activationEvents": [
+                        "onCommand:testCom.helloWorld"
+                    ],
+                    "devDependencies": devDependencies([
+                        "@types/vscode",
+                        "@types/glob",
+                        "@types/mocha",
+                        "@types/node",
+                        "@typescript-eslint/parser",
+                        "@typescript-eslint/eslint-plugin",
+                        "eslint",
+                        "glob",
+                        "mocha",
+                        "typescript",
+                        "@vscode/test-electron",
+                        "webpack",
+                        "webpack-cli",
+                        "ts-loader"
+                    ]),
+                    "main": "./dist/extension.js",
+                    "scripts": {
+                        "vscode:prepublish": "pnpm run package",
+                        "compile": "webpack",
+                        "watch": "webpack --watch",
+                        "package": "webpack --mode production --devtool hidden-source-map",
+                        "compile-tests": "tsc -p . --outDir out",
+                        "watch-tests": "tsc -p . -w --outDir out",
+                        "lint": "eslint src --ext ts",
+                        "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+                        "test": "node ./out/test/runTest.js"
+                    },
+                    "categories": [
+                        "Other"
+                    ],
+                    "contributes": {
+                        "commands": [{
+                            "command": "testCom.helloWorld",
+                            "title": "Hello World"
+                        }]
+                    }
+                };
+                try {
+
+
+                    assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
+
+                    runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            });
+    });
+
     it('command-js', function (done) {
         this.timeout(10000);
 
@@ -890,6 +1053,71 @@ describe('test code generator', function () {
                     "scripts": {
                         "lint": "eslint .",
                         "pretest": "npm run lint",
+                        "test": "node ./test/runTest.js"
+                    },
+                    "categories": [
+                        "Other"
+                    ],
+                    "contributes": {
+                        "commands": [{
+                            "command": "testCom.helloWorld",
+                            "title": "Hello World"
+                        }]
+                    }
+                };
+                try {
+                    assertFiles(runResult, 'testCom', ['extension.js', 'test/suite/extension.test.js', 'test/suite/index.js', 'jsconfig.json']);
+
+                    runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            });
+    });
+
+    it('command-js with pnpm', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-command-js',
+                name: 'testCom',
+                displayName: 'Test Com',
+                description: 'My TestCom',
+                checkJavaScript: false,
+                gitInit: false,
+                pkgManager: 'pnpm',
+                openWith: 'skip'
+            }) // Mock the prompt answers
+            .toPromise().then(runResult => {
+                const expectedPackageJSON = {
+                    "name": "testCom",
+                    "displayName": 'Test Com',
+                    "description": "My TestCom",
+                    "version": "0.0.1",
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "activationEvents": [
+                        "onCommand:testCom.helloWorld"
+                    ],
+                    "devDependencies": devDependencies([
+                        "@types/vscode",
+                        "@types/glob",
+                        "@types/mocha",
+                        "@types/node",
+                        "eslint",
+                        "glob",
+                        "mocha",
+                        "typescript",
+                        "@vscode/test-electron"
+                    ]),
+                    "main": "./extension.js",
+                    "scripts": {
+                        "lint": "eslint .",
+                        "pretest": "pnpm run lint",
                         "test": "node ./test/runTest.js"
                     },
                     "categories": [
@@ -1083,6 +1311,53 @@ describe('test code generator', function () {
             }, done);
     });
 
+    it('language pack with pnpm', function (done) {
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-localization',
+                name: "vscode-language-pack-ru",
+                displayName: "Russian Language Pack",
+                description: "Language pack extension for Russian",
+                lpLanguageId: 'ru',
+                lpLanguageName: 'Russian',
+                lpLocalizedLanguageName: 'русский',
+                pkgManager: 'pnpm',
+                openWith: 'skip'
+            }).toPromise().then(runResult => {
+                const expectedPackageJSON = {
+                    "name": "vscode-language-pack-ru",
+                    "displayName": "Russian Language Pack",
+                    "description": "Language pack extension for Russian",
+                    "version": "0.0.1",
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "categories": [
+                        "Language Packs"
+                    ],
+                    "contributes": {
+                        "localizations": [{
+                            "languageId": "ru",
+                            "languageName": "Russian",
+                            "localizedLanguageName": "русский"
+                        }]
+                    },
+                    "scripts": {
+                        "update": "cd ../vscode && pnpm run update-localization-extension ru"
+                    }
+                };
+                try {
+                    assertFiles(runResult, 'vscode-language-pack-ru', []);
+
+                    runResult.assertJsonFileContent('vscode-language-pack-ru/package.json', expectedPackageJSON);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }, done);
+    });
+
     it('command-web', function (done) {
         this.timeout(10000);
 
@@ -1157,6 +1432,80 @@ describe('test code generator', function () {
             });
     });
 
+    it('command-web with pnpm', function (done) {
+        this.timeout(10000);
+
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-command-web',
+                name: 'testCom',
+                displayName: 'Test Com',
+                description: 'My TestCom',
+                gitInit: true,
+                pkgManager: 'pnpm',
+                openWith: 'skip'
+            }) // Mock the prompt answers
+            .toPromise().then(runResult => {
+                const expectedPackageJSON = {
+                    "name": "testCom",
+                    "displayName": 'Test Com',
+                    "description": "My TestCom",
+                    "version": "0.0.1",
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "activationEvents": [
+                        "onCommand:testCom.helloWorld"
+                    ],
+                    "devDependencies": devDependencies([
+                        "@types/vscode",
+                        "@types/mocha",
+                        "@types/webpack-env",
+                        "eslint",
+                        "@typescript-eslint/parser",
+                        "@typescript-eslint/eslint-plugin",
+                        "assert",
+                        "mocha",
+                        "process",
+                        "typescript",
+                        "ts-loader",
+                        "vscode-test-web",
+                        "webpack",
+                        "webpack-cli"
+                    ]),
+                    "browser": "./dist/web/extension.js",
+                    "scripts": {
+                        "test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js",
+                        "pretest": "pnpm run compile-web",
+                        "vscode:prepublish": "pnpm run package-web",
+                        "compile-web": "webpack",
+                        "watch-web": "webpack --watch",
+                        "package-web": "webpack --mode production --devtool hidden-source-map",
+                        "lint": "eslint src --ext ts",
+                        "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
+                    },
+                    "categories": [
+                        "Other"
+                    ],
+                    "contributes": {
+                        "commands": [{
+                            "command": "testCom.helloWorld",
+                            "title": "Hello World"
+                        }]
+                    }
+                };
+                try {
+                    assertFiles(runResult, 'testCom', ['src/web/extension.ts', 'webpack.config.js', 'src/web/test/suite/extension.test.ts', 'src/web/test/suite/index.ts', 'tsconfig.json']);
+
+                    runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            });
+    });
+
 
     it('sample notebook renderer', function (done) {
         helpers.run(path.join(__dirname, '../generators/app'))
@@ -1168,7 +1517,7 @@ describe('test code generator', function () {
                 rendererId: 'json-renderer',
                 rendererDisplayName: 'JSON Renderer',
                 gitInit: true,
-                pkgManager: 'yarn',
+                pkgManager: 'npm',
                 openWith: 'skip'
             }).toPromise().then(runResult => {
                 const expectedPackageJSON = {
@@ -1203,6 +1552,89 @@ describe('test code generator', function () {
                         "lint": "eslint src --ext ts",
                         "watch": "webpack --mode development --watch",
                         "pretest": "webpack --mode development && npm run lint",
+                        "test": "node ./out/test/runTest.js"
+                    },
+                    "devDependencies": devDependencies([
+                        "@types/glob",
+                        "@types/mocha",
+                        "@types/node",
+                        "@types/vscode",
+                        "@types/webpack-env",
+                        "@typescript-eslint/eslint-plugin",
+                        "@typescript-eslint/parser",
+                        "@types/vscode-notebook-renderer",
+                        "css-loader",
+                        "eslint",
+                        "fork-ts-checker-webpack-plugin",
+                        "glob",
+                        "mocha",
+                        "style-loader",
+                        "ts-loader",
+                        "typescript",
+                        "vscode-notebook-error-overlay",
+                        "@vscode/test-electron",
+                        "util",
+                        "webpack",
+                        "webpack-cli",
+                    ])
+                };
+                try {
+                    assertFiles(runResult, 'json-renderer-ext', ['webpack.config.js', '.gitignore', '.eslintrc.json']);
+
+                    runResult.assertJsonFileContent('json-renderer-ext/package.json', expectedPackageJSON);
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }, done);
+    });
+
+    it('sample notebook renderer with pnpm', function (done) {
+        helpers.run(path.join(__dirname, '../generators/app'))
+            .withPrompts({
+                type: 'ext-notebook-renderer',
+                name: 'json-renderer-ext',
+                displayName: 'Cool JSON Renderer Extension',
+                description: '',
+                rendererId: 'json-renderer',
+                rendererDisplayName: 'JSON Renderer',
+                gitInit: true,
+                pkgManager: 'pnpm',
+                openWith: 'skip'
+            }).toPromise().then(runResult => {
+                const expectedPackageJSON = {
+                    "name": "json-renderer-ext",
+                    "displayName": "Cool JSON Renderer Extension",
+                    "description": "",
+                    "version": "0.0.1",
+                    "engines": {
+                        "vscode": engineVersion
+                    },
+                    "keywords": [
+                        "notebookRenderer"
+                    ],
+                    "categories": [
+                        "Other"
+                    ],
+                    "activationEvents": [],
+                    "main": "./out/extension/extension.js",
+                    "contributes": {
+                        "notebookRenderer": [
+                            {
+                                "entrypoint": "./out/client/index.js",
+                                "id": "json-renderer",
+                                "displayName": "JSON Renderer",
+                                "mimeTypes": ["x-application/custom-json-output"]
+                            }
+                        ]
+                    },
+                    "scripts": {
+                        "vscode:prepublish": "pnpm run compile",
+                        "compile": "webpack --mode production",
+                        "lint": "eslint src --ext ts",
+                        "watch": "webpack --mode development --watch",
+                        "pretest": "webpack --mode development && pnpm run lint",
                         "test": "node ./out/test/runTest.js"
                     },
                     "devDependencies": devDependencies([

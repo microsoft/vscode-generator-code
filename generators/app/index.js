@@ -44,7 +44,7 @@ module.exports = class extends Generator {
         this.option('extensionId', { type: String, description: 'Id of the extension' });
         this.option('extensionDescription', { type: String, description: 'Description of the extension' });
 
-        this.option('pkgManager', { type: String, description: `'npm' or 'yarn'` });
+        this.option('pkgManager', { type: String, description: `'npm', 'yarn' or 'pnpm'` });
         this.option('webpack', { type: Boolean, description: `Bundle the extension with webpack` });
         this.option('gitInit', { type: Boolean, description: `Initialize a git repo` });
 

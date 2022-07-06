@@ -52,7 +52,7 @@ Options:
   -t,   --extensionType         # ts, js, colortheme, language, snippets, keymap...
         --extensionId           # Id of the extension
         --extensionDescription  # Description of the extension
-        --pkgManager            # 'npm' or 'yarn'
+        --pkgManager            # 'npm', 'yarn' or 'pnpm'
         --webpack               # Bundle the extension with webpack
         --gitInit               # Initialize a git repo
 

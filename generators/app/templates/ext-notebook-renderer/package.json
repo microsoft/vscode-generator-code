@@ -26,11 +26,11 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "<%= pkgManager %> run compile",
     "compile": "webpack --mode production",
     "lint": "eslint src --ext ts",
     "watch": "webpack --mode development --watch",
-    "pretest": "webpack --mode development && npm run lint",
+    "pretest": "webpack --mode development && <%= pkgManager %> run lint",
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
