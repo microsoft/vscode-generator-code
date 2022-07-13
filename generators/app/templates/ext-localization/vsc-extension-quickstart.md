@@ -21,11 +21,11 @@ To create/update the `translations` folder with the latest strings from transife
 * Get an API token from https://www.transifex.com/user/settings/api. The token needs to have access to the `vscode-editor`, `vscode-workbench` and `vscode-extensions` projects.
 * Set the API token to the environment variable `TRANSIFEX_API_TOKEN`.
 * Check out the `main` branch of the [VS Code repository](https://github.com/Microsoft/vscode).
-  * Preferably, place the VSCode repo next to the language pack extension (so both have the same parent folder).
+  * Preferably, place the VS Code repo next to the language pack extension (so both have the same parent folder).
   * `cd vscode` and run `yarn` to initialize the VS Code repo. More information on how to build VS Code you can find [here](https://github.com/Microsoft/vscode/wiki/How-to-Contribute).
   * If the language pack extension is placed next to the VS Code repository: `npm run update-localization-extension <%- lpLanguageId %>`
   * Otherwise: `npm run update-localization-extension {path_to_lang_pack_ext}`
-* This will download translation files to the folder `translations`
+* This will download translation files to the folder `translations`.
 * `package.json` will be modified and add a `translations` property with paths to each extension's translations will be added.
 
   ```json
