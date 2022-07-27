@@ -8,8 +8,8 @@
 ## Get up and running straight away
 
 * Press `F5` to open a new window with your extension loaded.
-* Press `Ctrl + .` instead of `Ctrl + Shift + P`
-* Verify that it will launch the Command Palette listing all available commands. The `Ctrl + .` keyboard shortcut was added as an example to you.
+* Press `Ctrl+.` instead of `Ctrl+Shift+P`.
+* Verify that it will launch the Command Palette listing all available commands. The `Ctrl+.` keyboard shortcut was added as an example to you.
 
 ## Make changes
 

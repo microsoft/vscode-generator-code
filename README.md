@@ -13,6 +13,7 @@ npm install -g yo generator-code
 ```
 
 ## Run Yo Code
+
 The Yeoman generator will walk you through the steps required to create your customization or extension prompting for the required information.
 
 To launch the generator simply type:
@@ -25,7 +26,8 @@ yo code
 
 ## Generator Output
 
-These templates will
+These templates will:
+
 * Create a base folder structure
 * Template out a rough `package.json`
 * Import any assets required for your extension e.g. tmBundles or the VS Code Library
@@ -65,17 +67,22 @@ Example usages:
 
 ## Run Generator using Docker
 
-If you don't want to install nodejs or any node packages, use this method to containerize the generator. \
-\
-Go into your project directory
+If you don't want to install nodejs or any node packages, use this method to containerize the generator.
+
+Go into your project directory.
+
 ```bash
 cd <project directory>
 ```
-Build the docker image from the docker file
+
+Build the docker image from the docker file.
+
 ```bash
 docker build -t vscode-generator-code .
 ```
-Create a docker container with volumes
+
+Create a docker container with volumes.
+
 ```bash
 docker run -v $(pwd):/usr/src/app vscode-generator-code
 ```
