@@ -10,7 +10,7 @@
 
 * Press `F5` to open a new window with your extension loaded.
 * Create a new file with a file name suffix matching your language.
-* Verify that your snippets are proposed on intellisense.
+* Verify that your snippets are proposed on IntelliSense.
 
 ## Make changes
 
