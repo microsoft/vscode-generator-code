@@ -49,6 +49,9 @@ const webExtensionConfig = {
 		}]
 	},
 	plugins: [
+		new webpack.optimize.LimitChunkCountPlugin({
+			maxChunks: 1 // disable chunks by default since web extensions must be a single bundle
+		}),
 		new webpack.ProvidePlugin({
 			process: 'process/browser', // provide a shim for the global `process` variable
 		}),
