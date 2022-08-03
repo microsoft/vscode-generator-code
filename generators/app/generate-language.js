@@ -53,7 +53,7 @@ module.exports = {
         generator.fs.copyTpl(generator.templatePath('language-configuration.json'), generator.destinationPath('language-configuration.json'), extensionConfig);
         generator.fs.copy(generator.templatePath('.vscodeignore'), generator.destinationPath('.vscodeignore'));
         if (extensionConfig.gitInit) {
-            generator.fs.copy(generator.templatePath('.gitignore'), generator.destinationPath('.gitignore'));
+            generator.fs.copy(generator.templatePath('gitignore'), generator.destinationPath('.gitignore'));
             generator.fs.copy(generator.templatePath('.gitattributes'), generator.destinationPath('.gitattributes'));
         }
     }

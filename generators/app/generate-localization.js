@@ -35,7 +35,7 @@ module.exports = {
         generator.fs.copyTpl(generator.templatePath('README.md'), generator.destinationPath('README.md'), extensionConfig);
         generator.fs.copyTpl(generator.templatePath('CHANGELOG.md'), generator.destinationPath('CHANGELOG.md'), extensionConfig);
         generator.fs.copy(generator.templatePath('.vscodeignore'), generator.destinationPath('.vscodeignore'));
-        generator.fs.copy(generator.templatePath('.gitignore'), generator.destinationPath('.gitignore'));
+        generator.fs.copy(generator.templatePath('gitignore'), generator.destinationPath('.gitignore'));
         generator.fs.copy(generator.templatePath('.gitattributes'), generator.destinationPath('.gitattributes'));
 
         if (extensionConfig.pkgManager === 'yarn') {
