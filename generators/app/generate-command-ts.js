@@ -44,7 +44,7 @@ module.exports = {
         }
 
         if (extensionConfig.gitInit) {
-            generator.fs.copy(generator.templatePath('.gitignore'), generator.destinationPath('.gitignore'));
+            generator.fs.copy(generator.templatePath('gitignore'), generator.destinationPath('.gitignore'));
         }
         generator.fs.copyTpl(generator.templatePath('README.md'), generator.destinationPath('README.md'), extensionConfig);
         generator.fs.copyTpl(generator.templatePath('CHANGELOG.md'), generator.destinationPath('CHANGELOG.md'), extensionConfig);

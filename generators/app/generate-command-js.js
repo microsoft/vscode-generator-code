@@ -42,7 +42,7 @@ module.exports = {
         generator.fs.copy(generator.templatePath('.vscodeignore'), generator.destinationPath('.vscodeignore'));
 
         if (extensionConfig.gitInit) {
-            generator.fs.copy(generator.templatePath('.gitignore'), generator.destinationPath('.gitignore'));
+            generator.fs.copy(generator.templatePath('gitignore'), generator.destinationPath('.gitignore'));
         }
 
         generator.fs.copyTpl(generator.templatePath('README.md'), generator.destinationPath('README.md'), extensionConfig);

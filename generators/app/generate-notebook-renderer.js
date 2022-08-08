@@ -45,7 +45,7 @@ module.exports = {
         generator.fs.copyTpl(generator.templatePath('src/extension/extension.ts'), generator.destinationPath('src/extension/extension.ts'), extensionConfig);
 
         if (extensionConfig.gitInit) {
-            generator.fs.copy(generator.templatePath('.gitignore'), generator.destinationPath('.gitignore'));
+            generator.fs.copy(generator.templatePath('gitignore'), generator.destinationPath('.gitignore'));
             generator.fs.copy(generator.templatePath('.gitattributes'), generator.destinationPath('.gitattributes'));
         }
 

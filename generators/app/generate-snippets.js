@@ -39,7 +39,7 @@ module.exports = {
         generator.fs.copyTpl(generator.templatePath('snippets/snippets.code-snippets'), generator.destinationPath('snippets/snippets.code-snippets'), extensionConfig);
         generator.fs.copy(generator.templatePath('.vscodeignore'), generator.destinationPath('.vscodeignore'));
         if (extensionConfig.gitInit) {
-            generator.fs.copy(generator.templatePath('.gitignore'), generator.destinationPath('.gitignore'));
+            generator.fs.copy(generator.templatePath('gitignore'), generator.destinationPath('.gitignore'));
             generator.fs.copy(generator.templatePath('.gitattributes'), generator.destinationPath('.gitattributes'));
         }
     }
