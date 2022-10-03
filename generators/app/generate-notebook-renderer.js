@@ -51,6 +51,8 @@ module.exports = {
 
         if (extensionConfig.pkgManager === 'yarn') {
             generator.fs.copyTpl(generator.templatePath('.yarnrc'), generator.destinationPath('.yarnrc'), extensionConfig);
+        } else if (extensionConfig.pkgManager === 'pnpm') {
+            generator.fs.copyTpl(generator.templatePath('.npmrc-pnpm'), generator.destinationPath('.npmrc'), extensionConfig);
         }
 
         extensionConfig.installDependencies = true;
