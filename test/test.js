@@ -842,7 +842,7 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', '.eslintrc.json', '.vscode/extensions.json']);
+                    assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', '.eslintrc.json', '.vscode/extensions.json', '.npmrc']);
 
                     runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
@@ -1001,7 +1001,7 @@ describe('test code generator', function () {
                 try {
 
 
-                    assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
+                    assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', '.npmrc']);
 
                     runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
@@ -1131,7 +1131,7 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assertFiles(runResult, 'testCom', ['extension.js', 'test/suite/extension.test.js', 'test/suite/index.js', 'jsconfig.json']);
+                    assertFiles(runResult, 'testCom', ['extension.js', 'test/suite/extension.test.js', 'test/suite/index.js', 'jsconfig.json', '.npmrc']);
 
                     runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
@@ -1495,7 +1495,7 @@ describe('test code generator', function () {
                     }
                 };
                 try {
-                    assertFiles(runResult, 'testCom', ['src/web/extension.ts', 'webpack.config.js', 'src/web/test/suite/extension.test.ts', 'src/web/test/suite/index.ts', 'tsconfig.json']);
+                    assertFiles(runResult, 'testCom', ['src/web/extension.ts', 'webpack.config.js', 'src/web/test/suite/extension.test.ts', 'src/web/test/suite/index.ts', 'tsconfig.json', '.npmrc']);
 
                     runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
@@ -1662,7 +1662,7 @@ describe('test code generator', function () {
                     ])
                 };
                 try {
-                    assertFiles(runResult, 'json-renderer-ext', ['webpack.config.js', '.gitignore', '.eslintrc.json']);
+                    assertFiles(runResult, 'json-renderer-ext', ['webpack.config.js', '.gitignore', '.eslintrc.json', '.npmrc']);
 
                     runResult.assertJsonFileContent('json-renderer-ext/package.json', expectedPackageJSON);
 
