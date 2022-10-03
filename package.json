@@ -25,7 +25,7 @@
     "url": "https://github.com/Microsoft"
   },
   "engines": {
-    "node": ">=12.10.0"
+    "node": ">=14.15.0"
   },
   "scripts": {
     "test": "mocha",
