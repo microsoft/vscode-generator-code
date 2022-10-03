@@ -1,4 +1,4 @@
-# <%- name %>
+# <%- name %> README
 
 ⚠️ Work-in-progress starter code for custom notebook renderers in VS Code. Expect this to change as notebooks matures. ⚠️
 
@@ -9,12 +9,12 @@ This starter includes:
  - ⚡ Support for hot module reloading and safe boilerplate
  - 🎨 CSS modules support
 
-### Running this Sample
+## Running this Sample
 
  1. `code-insiders <%- name %>`: Open the folder in VS Code Insiders
  1. Hit `F5` to build+debug
 
-### Structure
+## Structure
 
 A Notebook Renderer consists of code that runs in the VS Code Extension Host (Node.js), which registers the renderer and passes data into the UI code running inside a WebView (Browser/DOM).
 

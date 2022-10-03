@@ -121,7 +121,7 @@ exports.askForGit = (generator, extensionConfig) => {
 */
 exports.askForPackageManager = (generator, extensionConfig) => {
     let pkgManager = generator.options['pkgManager'];
-    if (pkgManager === 'npm' || pkgManager === 'yarn') {
+    if (pkgManager === 'npm' || pkgManager === 'yarn' || pkgManager === 'pnpm') {
         extensionConfig.pkgManager = pkgManager;
         return Promise.resolve();
     }
@@ -144,6 +144,10 @@ exports.askForPackageManager = (generator, extensionConfig) => {
             {
                 name: 'yarn',
                 value: 'yarn'
+            },
+            {
+                name: 'pnpm',
+                value: 'pnpm'
             }
         ]
     }).then(pckgManagerAnswer => {

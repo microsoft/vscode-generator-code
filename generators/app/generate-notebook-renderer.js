@@ -46,7 +46,7 @@ module.exports = {
 
         if (extensionConfig.gitInit) {
             generator.fs.copy(generator.templatePath('gitignore'), generator.destinationPath('.gitignore'));
-            generator.fs.copy(generator.templatePath('gitattributes'), generator.destinationPath('.gitattributes'));
+            generator.fs.copy(generator.templatePath('.gitattributes'), generator.destinationPath('.gitattributes'));
         }
 
         if (extensionConfig.pkgManager === 'yarn') {

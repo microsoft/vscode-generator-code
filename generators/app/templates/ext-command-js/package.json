@@ -1,40 +1,38 @@
 {
   "name": <%- JSON.stringify(name) %>,
-	"displayName": <%- JSON.stringify(displayName) %>,
-	"description": <%- JSON.stringify(description) %>,
-	"version": "0.0.1",
-	"engines": {
-		"vscode": <%- JSON.stringify(vsCodeEngine) %>
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-        <%- JSON.stringify(`onCommand:${name}.helloWorld`) %>
-	],
-	"main": "./extension.js",
-	"contributes": {
-		"commands": [{
-            "command": <%- JSON.stringify(`${name}.helloWorld`) %>,
-            "title": "Hello World"
-
-		}]
-	},
-	"scripts": {
-		"lint": "eslint .",
-		"pretest": "<%= pkgManager %> run lint",
-		"test": "node ./test/runTest.js"
-	},
-	"devDependencies": {
-        <%- dep("@types/vscode") %>,
-        <%- dep("@types/glob") %>,
-        <%- dep("@types/mocha") %>,
-        <%- dep("@types/node") %>,
-        <%- dep("eslint") %>,
-        <%- dep("glob") %>,
-        <%- dep("mocha") %>,
-        <%- dep("typescript") %>,
-        <%- dep("@vscode/test-electron") %>
-    }
-
+  "displayName": <%- JSON.stringify(displayName) %>,
+  "description": <%- JSON.stringify(description) %>,
+  "version": "0.0.1",
+  "engines": {
+    "vscode": <%- JSON.stringify(vsCodeEngine) %>
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    <%- JSON.stringify(`onCommand:${name}.helloWorld`) %>
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [{
+      "command": <%- JSON.stringify(`${name}.helloWorld`) %>,
+      "title": "Hello World"
+    }]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "<%= pkgManager %> run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    <%- dep("@types/vscode") %>,
+    <%- dep("@types/glob") %>,
+    <%- dep("@types/mocha") %>,
+    <%- dep("@types/node") %>,
+    <%- dep("eslint") %>,
+    <%- dep("glob") %>,
+    <%- dep("mocha") %>,
+    <%- dep("typescript") %>,
+    <%- dep("@vscode/test-electron") %>
+  }
 }

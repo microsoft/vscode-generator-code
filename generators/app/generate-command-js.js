@@ -39,7 +39,7 @@ module.exports = {
         generator.fs.copy(generator.templatePath('vscode'), generator.destinationPath('.vscode'));
         generator.fs.copy(generator.templatePath('test'), generator.destinationPath('test'));
 
-        generator.fs.copy(generator.templatePath('vscodeignore'), generator.destinationPath('.vscodeignore'));
+        generator.fs.copy(generator.templatePath('.vscodeignore'), generator.destinationPath('.vscodeignore'));
 
         if (extensionConfig.gitInit) {
             generator.fs.copy(generator.templatePath('gitignore'), generator.destinationPath('.gitignore'));
