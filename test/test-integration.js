@@ -6,7 +6,7 @@ const spawn = require('execa');
 const assert = require('assert');
 
 describe('integration tests', function () {
-    this.timeout(120000);
+    this.timeout(5 * 60 * 1000);
 
     it('command-ts integration test (install, compile and run extension tests)', async () => {
 
