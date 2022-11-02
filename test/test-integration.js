@@ -6,11 +6,11 @@ const spawn = require('execa');
 const assert = require('assert');
 
 describe('integration tests', function () {
-    this.timeout(90000);
+    this.timeout(120000);
 
-    it('command-ts integration test (install, compile and run extension tests)', function (done) {
+    it('command-ts integration test (install, compile and run extension tests)', async () => {
 
-        helpers.run(path.join(__dirname, '../generators/app')).withPrompts({
+        const runResult = await helpers.run(path.join(__dirname, '../generators/app')).withPrompts({
             type: 'ext-command-ts',
             name: 'testCom',
             displayName: 'Test Com',
@@ -18,39 +18,33 @@ describe('integration tests', function () {
             gitInit: false,
             pkgManager: 'npm',
             openWith: 'skip'
-        }).toPromise().then(async runResult => {
-            try {
-                //console.log('command-ts with test: Running npm install');
-                const res = await doSpawn('npm', ['i'], { cwd: runResult.env.cwd });
-                if (res.exitCode !== 0) {
-                    assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
-                }
+        }).toPromise();
 
-                const resAudit = await doSpawn('npm', ['audit'], { cwd: runResult.env.cwd });
-                if (resAudit.exitCode !== 0) {
-                    assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
-                }
+        //console.log('command-ts with test: Running npm install');
+        const res = await doSpawn('npm', ['i'], { cwd: runResult.env.cwd });
+        if (res.exitCode !== 0) {
+            assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
+        }
 
-                //console.log('command-ts with test: Running extension compile');
-                const res2 = await doSpawn('npm', ['run', 'test'], { cwd: runResult.env.cwd });
-                if (res2.exitCode !== 0) {
-                    assert.fail(`npm run test failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
-                }
+        const resAudit = await doSpawn('npm', ['audit'], { cwd: runResult.env.cwd });
+        if (resAudit.exitCode !== 0) {
+            assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
+        }
 
-                runResult.assertFile('testCom/out/extension.js');
-                runResult.assertFile('testCom/out/test/suite/index.js');
-                runResult.assertFile('testCom/out/test/runTest.js');
+        //console.log('command-ts with test: Running extension compile');
+        const res2 = await doSpawn('npm', ['run', 'test'], { cwd: runResult.env.cwd });
+        if (res2.exitCode !== 0) {
+            assert.fail(`npm run test failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
+        }
 
-                done();
-            } catch (e) {
-                done(e);
-            }
-        });
+        runResult.assertFile('testCom/out/extension.js');
+        runResult.assertFile('testCom/out/test/suite/index.js');
+        runResult.assertFile('testCom/out/test/runTest.js');
     });
 
-    it('command-ts-webpack integration test (install, pack and run extension tests)', function (done) {
+    it('command-ts-webpack integration test (install, pack and run extension tests)', async () => {
 
-        helpers.run(path.join(__dirname, '../generators/app')).withPrompts({
+        const runResult = await helpers.run(path.join(__dirname, '../generators/app')).withPrompts({
             type: 'ext-command-ts',
             name: 'testCom',
             displayName: 'Test Com',
@@ -59,39 +53,32 @@ describe('integration tests', function () {
             pkgManager: 'npm',
             webpack: true,
             openWith: 'skip'
-        }).toPromise().then(async runResult => {
-            try {
-                //console.log('command-ts-webpack with test: Running npm install');
-                const res = await doSpawn('npm', ['i'], { cwd: runResult.env.cwd });
-                if (res.exitCode !== 0) {
-                    assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
-                }
+        }).toPromise();
 
-                const resAudit = await doSpawn('npm', ['audit'], { cwd: runResult.env.cwd });
-                if (resAudit.exitCode !== 0) {
-                    assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
-                }
+        const res = await doSpawn('npm', ['i'], { cwd: runResult.env.cwd });
+        if (res.exitCode !== 0) {
+            assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
+        }
 
-                //console.log('command-ts-webpack with test: Running extension compile');
-                const res2 = await doSpawn('npm', ['run', 'test'], { cwd: runResult.env.cwd });
-                if (res2.exitCode !== 0) {
-                    assert.fail(`npm run compile failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
-                }
+        const resAudit = await doSpawn('npm', ['audit'], { cwd: runResult.env.cwd });
+        if (resAudit.exitCode !== 0) {
+            assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
+        }
 
-                runResult.assertFile('testCom/dist/extension.js');
-                runResult.assertFile('testCom/out/test/suite/index.js');
-                runResult.assertFile('testCom/out/test/runTest.js');
+        //console.log('command-ts-webpack with test: Running extension compile');
+        const res2 = await doSpawn('npm', ['run', 'test'], { cwd: runResult.env.cwd });
+        if (res2.exitCode !== 0) {
+            assert.fail(`npm run compile failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
+        }
 
-                done();
-            } catch (e) {
-                done(e);
-            }
-        });
+        runResult.assertFile('testCom/dist/extension.js');
+        runResult.assertFile('testCom/out/test/suite/index.js');
+        runResult.assertFile('testCom/out/test/runTest.js');
     });
 
-    it('command-ts-web integration test (install, pack and run extension tests)', function (done) {
+    it('command-ts-web integration test (install, pack and run extension tests)', async () => {
 
-        helpers.run(path.join(__dirname, '../generators/app')).withPrompts({
+        const runResult = await helpers.run(path.join(__dirname, '../generators/app')).withPrompts({
             type: 'ext-command-web',
             name: 'testCom',
             displayName: 'Test Com',
@@ -99,32 +86,26 @@ describe('integration tests', function () {
             gitInit: false,
             pkgManager: 'npm',
             openWith: 'skip'
-        }).toPromise().then(async runResult => {
-            try {
-                //console.log('command-ts-web with test: Running npm install');
-                const res = await doSpawn('npm', ['i'], { cwd: runResult.env.cwd });
-                if (res.exitCode !== 0) {
-                    assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
-                }
+        }).toPromise();
 
-                const resAudit = await doSpawn('npm', ['audit'], { cwd: runResult.env.cwd });
-                if (resAudit.exitCode !== 0) {
-                    assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
-                }
+        const res = await doSpawn('npm', ['i'], { cwd: runResult.env.cwd });
+        if (res.exitCode !== 0) {
+            assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
+        }
 
-                //console.log('command-ts-web with test: Running extension compile-web');
-                const res2 = await doSpawn('npm', ['run', 'test'], { cwd: runResult.env.cwd });
-                if (res2.exitCode !== 0) {
-                    assert.fail(`npm run test failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
-                }
+        const resAudit = await doSpawn('npm', ['audit'], { cwd: runResult.env.cwd });
+        if (resAudit.exitCode !== 0) {
+            assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
+        }
 
-                runResult.assertFile('testCom/dist/web/extension.js');
-                runResult.assertFile('testCom/dist/web/test/suite/index.js');
-                done();
-            } catch (e) {
-                done(e);
-            }
-        });
+        //console.log('command-ts-web with test: Running extension compile-web');
+        const res2 = await doSpawn('npm', ['run', 'test'], { cwd: runResult.env.cwd });
+        if (res2.exitCode !== 0) {
+            assert.fail(`npm run test failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
+        }
+
+        runResult.assertFile('testCom/dist/web/extension.js');
+        runResult.assertFile('testCom/dist/web/test/suite/index.js');
     });
 });
 
