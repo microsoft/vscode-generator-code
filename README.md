@@ -1,6 +1,8 @@
 # Yo Code - Extension and Customization Generator
-
-[![Build Status](https://github.com/microsoft/vscode-generator-code/actions/workflows/node.js.yml/badge.svg)](https://github.com/microsoft/vscode-generator-code/actions)
+[![npm Package](https://img.shields.io/npm/v/generator-code.svg?style=flat-square)](https://www.npmjs.org/package/generator-code)
+[![NPM Downloads](https://img.shields.io/npm/dm/generator-code.svg)](https://npmjs.org/package/generator-code)
+[![Build Status](https://github.com/microsoft/vscode-generator-code/actions/workflows/tests.yml/badge.svg)](https://github.com/microsoft/vscode-generator-code/actions/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 We have written a Yeoman generator to help get you started. We plan to add templates for most extension/customization types into this.
 
