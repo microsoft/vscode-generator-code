@@ -9,9 +9,7 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    <%- JSON.stringify(`onCommand:${name}.helloWorld`) %>
-  ],
+  "activationEvents": [],
   "main": "./dist/extension.js",<% if (insiders) { %>
   "enabledApiProposals": [],<% } %>
   "contributes": {
