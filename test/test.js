@@ -580,9 +580,7 @@ describe('test code generator', function () {
             "engines": {
                 "vscode": engineVersion
             },
-            "activationEvents": [
-                "onCommand:testCom.helloWorld"
-            ],
+            "activationEvents": [],
             "devDependencies": devDependencies([
                 "@types/vscode",
                 "@types/glob",
@@ -643,9 +641,7 @@ describe('test code generator', function () {
             "engines": {
                 "vscode": engineVersion
             },
-            "activationEvents": [
-                "onCommand:testCom.helloWorld"
-            ],
+            "activationEvents": [],
             "devDependencies": devDependencies([
                 "@types/vscode",
                 "@types/glob",
@@ -722,9 +718,7 @@ describe('test code generator', function () {
             "engines": {
                 "vscode": engineVersion
             },
-            "activationEvents": [
-                "onCommand:testCom.helloWorld"
-            ],
+            "activationEvents": [],
             "devDependencies": devDependencies([
                 "@types/vscode",
                 "@types/glob",
@@ -802,9 +796,7 @@ describe('test code generator', function () {
             "engines": {
                 "vscode": engineVersion
             },
-            "activationEvents": [
-                "onCommand:testCom.helloWorld"
-            ],
+            "activationEvents": [],
             "devDependencies": devDependencies([
                 "@types/vscode",
                 "@types/glob",
@@ -872,9 +864,7 @@ describe('test code generator', function () {
             "engines": {
                 "vscode": engineVersion
             },
-            "activationEvents": [
-                "onCommand:testCom.helloWorld"
-            ],
+            "activationEvents": [],
             "devDependencies": devDependencies([
                 "@types/vscode",
                 "@types/glob",
@@ -942,9 +932,7 @@ describe('test code generator', function () {
             "engines": {
                 "vscode": engineVersion
             },
-            "activationEvents": [
-                "onCommand:testCom.helloWorld"
-            ],
+            "activationEvents": [],
             "devDependencies": devDependencies([
                 "@types/vscode",
                 "@types/glob",
@@ -1001,9 +989,7 @@ describe('test code generator', function () {
             "engines": {
                 "vscode": engineVersion
             },
-            "activationEvents": [
-                "onCommand:testCom.helloWorld"
-            ],
+            "activationEvents": [],
             "devDependencies": devDependencies([
                 "@types/vscode",
                 "@types/glob",
@@ -1245,9 +1231,7 @@ describe('test code generator', function () {
             "engines": {
                 "vscode": engineVersion
             },
-            "activationEvents": [
-                "onCommand:testCom.helloWorld"
-            ],
+            "activationEvents": [],
             "devDependencies": devDependencies([
                 "@types/vscode",
                 "@types/mocha",
@@ -1313,9 +1297,7 @@ describe('test code generator', function () {
             "engines": {
                 "vscode": engineVersion
             },
-            "activationEvents": [
-                "onCommand:testCom.helloWorld"
-            ],
+            "activationEvents": [],
             "devDependencies": devDependencies([
                 "@types/vscode",
                 "@types/mocha",
