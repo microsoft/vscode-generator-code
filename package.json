@@ -1,6 +1,6 @@
 {
   "name": "generator-code",
-  "version": "1.7.3",
+  "version": "1.7.4",
   "description": "Yeoman generator for Visual Studio Code extensions.",
   "keywords": [
     "yeoman-generator",
@@ -39,7 +39,7 @@
     "request-light": "^0.7.0",
     "sanitize-filename": "^1.6.3",
     "which": "^3.0.0",
-    "yeoman-generator": "^5.7.0",
+    "yeoman-generator": "^5.8.0",
     "yosay": "^2.0.2"
   },
   "devDependencies": {
@@ -48,7 +48,7 @@
     "@types/yeoman-generator": "^5.2.11",
     "@types/yeoman-test": "^4.0.3",
     "mocha": "^10.2.0",
-    "yeoman-environment": "^3.13.0",
+    "yeoman-environment": "^3.15.1",
     "yeoman-test": "^6.3.0"
   }
 }
