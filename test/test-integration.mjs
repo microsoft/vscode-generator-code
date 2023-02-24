@@ -1,16 +1,24 @@
-"use strict";
-const path = require('path');
-const helpers = require('yeoman-test');
-const spawn = require('execa');
+/*---------------------------------------------------------
+ * Copyright (C) Microsoft Corporation. All rights reserved.
+ *--------------------------------------------------------*/
 
-const assert = require('assert');
+import * as path from 'path';
+import { createHelpers } from 'yeoman-test';
+import spawn from 'execa';
+
+import * as assert from 'assert';
+
+import { fileURLToPath } from 'url';
 
 describe('integration tests', function () {
     this.timeout(5 * 60 * 1000);
 
+    const helpers = createHelpers();
+    const appLocation = path.join(fileURLToPath(import.meta.url), '../../generators/app');
+
     it('command-ts integration test (install, compile and run extension tests)', async () => {
 
-        const runResult = await helpers.run(path.join(__dirname, '../generators/app')).withPrompts({
+        const runResult = await helpers.run(appLocation).withAnswers({
             type: 'ext-command-ts',
             name: 'testCom',
             displayName: 'Test Com',
@@ -18,7 +26,7 @@ describe('integration tests', function () {
             gitInit: false,
             pkgManager: 'npm',
             openWith: 'skip'
-        }).toPromise();
+        });
 
         //console.log('command-ts with test: Running npm install');
         const res = await doSpawn('npm', ['i'], { cwd: runResult.env.cwd });
@@ -44,7 +52,7 @@ describe('integration tests', function () {
 
     it('command-ts-webpack integration test (install, pack and run extension tests)', async () => {
 
-        const runResult = await helpers.run(path.join(__dirname, '../generators/app')).withPrompts({
+        const runResult = await helpers.run(appLocation).withAnswers({
             type: 'ext-command-ts',
             name: 'testCom',
             displayName: 'Test Com',
@@ -53,7 +61,7 @@ describe('integration tests', function () {
             pkgManager: 'npm',
             webpack: true,
             openWith: 'skip'
-        }).toPromise();
+        });
 
         const res = await doSpawn('npm', ['i'], { cwd: runResult.env.cwd });
         if (res.exitCode !== 0) {
@@ -78,7 +86,7 @@ describe('integration tests', function () {
 
     it('command-ts-web integration test (install, pack and run extension tests)', async () => {
 
-        const runResult = await helpers.run(path.join(__dirname, '../generators/app')).withPrompts({
+        const runResult = await helpers.run(appLocation).withAnswers({
             type: 'ext-command-web',
             name: 'testCom',
             displayName: 'Test Com',
@@ -86,7 +94,7 @@ describe('integration tests', function () {
             gitInit: false,
             pkgManager: 'npm',
             openWith: 'skip'
-        }).toPromise();
+        });
 
         const res = await doSpawn('npm', ['i'], { cwd: runResult.env.cwd });
         if (res.exitCode !== 0) {

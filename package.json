@@ -46,9 +46,8 @@
     "@types/mocha": "^10.0.1",
     "@types/node": "^16.x",
     "@types/yeoman-generator": "^5.2.11",
-    "@types/yeoman-test": "^4.0.3",
     "mocha": "^10.2.0",
     "yeoman-environment": "^3.15.1",
-    "yeoman-test": "^6.3.0"
+    "yeoman-test": "^7.3.0"
   }
 }
