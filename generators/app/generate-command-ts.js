@@ -28,35 +28,41 @@ module.exports = {
      * @param {Object} extensionConfig
      */
     writing: (generator, extensionConfig) => {
+        let copyPaste_Template = ( enviroment ) => { generator.fs.copy(generator.templatePath( enviroment ), generator.destinationPath( enviroment )); }
+        let copyPaste_Template_Origin_Destination = ( origin, destination ) => { generator.fs.copy(generator.templatePath( origin ), generator.destinationPath( destination )); }
+
+        let copyPaste_Extension = ( enviroment ) => { generator.fs.copyTpl(generator.templatePath( enviroment ), generator.destinationPath( enviroment ), extensionConfig); }
+        let copyPaste_Extension_Origin_Destination = ( origin, destination ) => { generator.fs.copyTpl(generator.templatePath( origin ), generator.destinationPath( destination ), extensionConfig); }
+
         if (extensionConfig.webpack) {
-            generator.fs.copy(generator.templatePath('vscode-webpack/vscode'), generator.destinationPath('.vscode'));
-            generator.fs.copyTpl(generator.templatePath('vscode-webpack/package.json'), generator.destinationPath('package.json'), extensionConfig);
-            generator.fs.copyTpl(generator.templatePath('vscode-webpack/tsconfig.json'), generator.destinationPath('tsconfig.json'), extensionConfig);
-            generator.fs.copyTpl(generator.templatePath('vscode-webpack/.vscodeignore'), generator.destinationPath('.vscodeignore'), extensionConfig);
-            generator.fs.copyTpl(generator.templatePath('vscode-webpack/webpack.config.js'), generator.destinationPath('webpack.config.js'), extensionConfig);
-            generator.fs.copyTpl(generator.templatePath('vscode-webpack/vsc-extension-quickstart.md'), generator.destinationPath('vsc-extension-quickstart.md'), extensionConfig);
+            copyPaste_Template_Origin_Destination ( 'vscode-webpack/vscode', '.vscode' );
+
+            copyPaste_Extension_Origin_Destination ('vscode-webpack/package.json', 'package.json');
+            copyPaste_Extension_Origin_Destination ('vscode-webpack/tsconfig.json', 'tsconfig.json');
+            copyPaste_Extension_Origin_Destination ('vscode-webpack/.vscodeignore', '.vscodeignore');
+            copyPaste_Extension_Origin_Destination ('vscode-webpack/webpack.config.js', 'webpack.config.js');
+            copyPaste_Extension_Origin_Destination ('vscode-webpack/vsc-extension-quickstart.md', 'vsc-extension-quickstart.md');
         } else {
-            generator.fs.copy(generator.templatePath('vscode'), generator.destinationPath('.vscode'));
-            generator.fs.copyTpl(generator.templatePath('package.json'), generator.destinationPath('package.json'), extensionConfig);
-            generator.fs.copyTpl(generator.templatePath('tsconfig.json'), generator.destinationPath('tsconfig.json'), extensionConfig);
-            generator.fs.copyTpl(generator.templatePath('.vscodeignore'), generator.destinationPath('.vscodeignore'), extensionConfig);
-            generator.fs.copyTpl(generator.templatePath('vsc-extension-quickstart.md'), generator.destinationPath('vsc-extension-quickstart.md'), extensionConfig);
+            copyPaste_Template_Origin_Destination('vscode','.vscode');
+
+            copyPaste_Extension ('package.json');
+            copyPaste_Extension ('tsconfig.json');
+            copyPaste_Extension ('.vscodeignore');
+            copyPaste_Extension ('vsc-extension-quickstart.md');
         }
 
-        if (extensionConfig.gitInit) {
-            generator.fs.copy(generator.templatePath('gitignore'), generator.destinationPath('.gitignore'));
-        }
-        generator.fs.copyTpl(generator.templatePath('README.md'), generator.destinationPath('README.md'), extensionConfig);
-        generator.fs.copyTpl(generator.templatePath('CHANGELOG.md'), generator.destinationPath('CHANGELOG.md'), extensionConfig);
-        generator.fs.copyTpl(generator.templatePath('src/extension.ts'), generator.destinationPath('src/extension.ts'), extensionConfig);
-        generator.fs.copy(generator.templatePath('src/test'), generator.destinationPath('src/test'));
-        generator.fs.copy(generator.templatePath('.eslintrc.json'), generator.destinationPath('.eslintrc.json'));
+        ( extensionConfig.gitInit )  &&  copyPaste_Template_Origin_Destination('gitignore', '.gitignore');
 
-        if (extensionConfig.pkgManager === 'yarn') {
-            generator.fs.copyTpl(generator.templatePath('.yarnrc'), generator.destinationPath('.yarnrc'), extensionConfig);
-        } else if (extensionConfig.pkgManager === 'pnpm') {
-            generator.fs.copyTpl(generator.templatePath('.npmrc-pnpm'), generator.destinationPath('.npmrc'), extensionConfig);
-        }
+        copyPaste_Extension('README.md');
+        copyPaste_Extension('CHANGELOG.md');
+        copyPaste_Extension('src/extension.ts');
+        copyPaste_Template('src/test');
+        copyPaste_Template('.eslintrc.json');
+
+        (extensionConfig.pkgManager === 'yarn')
+        ? copyPaste_Extension('.yarnrc')
+        : (extensionConfig.pkgManager === 'pnpm')
+            && copyPaste_Extension_Origin_Destination('.npmrc-pnpm','.npmrc');
 
         extensionConfig.installDependencies = true;
         extensionConfig.proposedAPI = extensionConfig.insiders;

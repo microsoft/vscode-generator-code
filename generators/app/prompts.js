@@ -45,9 +45,8 @@ exports.askForExtensionId = (generator, extensionConfig) => {
         return Promise.resolve();
     }
     let def = extensionConfig.name;
-    if (!def && extensionConfig.displayName) {
-        def = extensionConfig.displayName.toLowerCase().replace(/[^a-z0-9]/g, '-');
-    }
+    ( !def && extensionConfig.displayName )  &&  ( def = extensionConfig.displayName.toLowerCase().replace(/[^a-z0-9]/g, '-') );
+
     if (def && generator.options['quick']) {
         extensionConfig.name = def;
         return Promise.resolve();
@@ -130,7 +129,6 @@ exports.askForPackageManager = (generator, extensionConfig) => {
     if (generator.options['quick']) {
         return Promise.resolve();
     }
-
 
     return generator.prompt({
         type: 'list',

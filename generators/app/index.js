@@ -61,16 +61,13 @@ module.exports = class extends Generator {
     }
 
     async initializing() {
-        if (this.options['insiders']) {
-            this.extensionConfig.insiders = true;
-        }
+        (this.options['insiders'])  &&  ( this.extensionConfig.insiders = true );
 
         // Welcome
-        if (!this.extensionConfig.insiders) {
-            this.log(yosay('Welcome to the Visual Studio Code Extension generator!'));
-        } else {
-            this.log(yosay('Welcome to the Visual Studio Code Insiders Extension generator!'));
-        }
+        ( !this.extensionConfig.insiders )
+        ? this.log(yosay('Welcome to the Visual Studio Code Extension generator!'))
+        : this.log(yosay('Welcome to the Visual Studio Code Insiders Extension generator!'));
+
 
         const destination = this.options['destination'];
         if (destination) {
@@ -108,9 +105,7 @@ module.exports = class extends Generator {
             const choices = [];
             for (const g of extensionGenerators) {
                 const name = this.extensionConfig.insiders ? g.insidersName : g.name;
-                if (name) {
-                    choices.push({ name, value: g.id })
-                }
+                ( name )  &&  ( choices.push({ name, value: g.id }) );
             }
             this.extensionConfig.type = (await this.prompt({
                 type: 'list',
@@ -119,9 +114,7 @@ module.exports = class extends Generator {
                 pageSize: choices.length,
                 choices,
             })).type;
-
         }
-
         this.extensionGenerator = extensionGenerators.find(g => g.id === this.extensionConfig.type);
         try {
             await this.extensionGenerator.prompting(this, this.extensionConfig);
@@ -135,9 +128,8 @@ module.exports = class extends Generator {
         if (this.abort) {
             return;
         }
-        if (!this.options['destination'] && !this.extensionGenerator.update) {
-            this.destinationRoot(this.destinationPath(this.extensionConfig.name))
-        }
+        (!this.options['destination'] && !this.extensionGenerator.update)  &&  ( this.destinationRoot(this.destinationPath(this.extensionConfig.name)) );
+
         this.env.cwd = this.destinationPath();
 
         this.log();
@@ -154,11 +146,9 @@ module.exports = class extends Generator {
             this.env.options.skipInstall = true;
             return;
         }
-        if (this.extensionConfig.installDependencies) {
-            this.env.options.nodePackageManager = this.extensionConfig.pkgManager;
-        } else {
-            this.env.options.skipInstall = true;
-        }
+        (this.extensionConfig.installDependencies)
+        ? this.env.options.nodePackageManager = this.extensionConfig.pkgManager
+        : this.env.options.skipInstall = true;
     }
 
     // End
@@ -173,24 +163,20 @@ module.exports = class extends Generator {
             this.log('');
             this.log('To start editing with Visual Studio Code, use the following commands:');
             this.log('');
-            if (!this.extensionConfig.insiders) {
-                this.log('     code .');
-            } else {
-                this.log('     code-insiders .');
-            }
+            (!this.extensionConfig.insiders)
+            ? this.log('     code .')
+            : this.log('     code-insiders .');
+
             this.log(`     ${this.extensionConfig.pkgManager} run compile-web`);
             this.log('');
             return;
         }
 
         // Git init
-        if (this.extensionConfig.gitInit) {
-            this.spawnCommand('git', ['init', '--quiet', '--initial-branch=main']);
-        }
+        (this.extensionConfig.gitInit)  &&  ( this.spawnCommand('git', ['init', '--quiet', '--initial-branch=main']) );
 
-        if (this.extensionConfig.proposedAPI) {
-            this.spawnCommand(this.extensionConfig.pkgManager, ['run', 'update-proposed-api']);
-        }
+        (this.extensionConfig.proposedAPI)  &&  ( this.spawnCommand(this.extensionConfig.pkgManager, ['run', 'update-proposed-api']) );
+
         this.log('');
 
         this.log('Your extension ' + this.extensionConfig.name + ' has been created!');
@@ -203,20 +189,17 @@ module.exports = class extends Generator {
 
             this.log('To start editing with Visual Studio Code, use the following commands:');
             this.log('');
-            if (!this.extensionConfig.insiders) {
-                this.log('     code ' + cdLocation);
-            } else {
-                this.log('     code-insiders ' + cdLocation);
-            }
+            (!this.extensionConfig.insiders)
+            ? this.log('     code ' + cdLocation)
+            : this.log('     code-insiders ' + cdLocation);
+
             this.log('');
         }
         this.log('Open vsc-extension-quickstart.md inside the new extension for further instructions');
         this.log('on how to modify, test and publish your extension.');
         this.log('');
 
-        if (this.extensionGenerator.endMessage) {
-            this.extensionGenerator.endMessage(this, this.extensionConfig);
-        }
+        (this.extensionGenerator.endMessage)  &&  ( this.extensionGenerator.endMessage(this, this.extensionConfig) );
 
         this.log('For more information, also visit http://code.visualstudio.com and follow us @code.');
         this.log('\r\n');
@@ -240,12 +223,10 @@ module.exports = class extends Generator {
                 this.spawnCommand(codeInsidersLocation || codeStableLocation, [this.destinationPath()]);
             } else {
                 const choices = [];
-                if (codeInsidersLocation) {
-                    choices.push({ name: "Open with `code-insiders`", value: codeInsidersLocation });
-                }
-                if (codeStableLocation) {
-                    choices.push({ name: "Open with `code`", value: codeStableLocation });
-                }
+                (codeInsidersLocation)  &&  ( choices.push({ name: "Open with `code-insiders`", value: codeInsidersLocation }) );
+
+                (codeStableLocation)  &&  ( choices.push({ name: "Open with `code`", value: codeStableLocation }) );
+
                 choices.push({ name: "Skip", value: 'skip' });
 
                 const answer = await this.prompt({
@@ -254,9 +235,7 @@ module.exports = class extends Generator {
                     message: "Do you want to open the new folder with Visual Studio Code?",
                     choices
                 });
-                if (answer && answer.openWith && answer.openWith !== 'skip') {
-                    this.spawnCommand(answer.openWith, [this.destinationPath()]);
-                }
+                (answer && answer.openWith && answer.openWith !== 'skip')  &&  ( this.spawnCommand(answer.openWith, [this.destinationPath()]) );
             }
         }
     }

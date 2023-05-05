@@ -54,9 +54,7 @@ function askForSnippetsInfo(generator, extensionConfig) {
 
     if (snippetFolderParam) {
         let count = processSnippetFolder(snippetFolderParam, generator);
-        if (count <= 0) {
-            generator.log('')
-        }
+        (count <= 0)  &&  generator.log('');
         return Promise.resolve();
     }
     generator.log("Folder location that contains Text Mate (.tmSnippet) and Sublime snippets (.sublime-snippet) or press ENTER to start with a new snippet file.");
@@ -80,10 +78,7 @@ function askForSnippetsInfo(generator, extensionConfig) {
                 extensionConfig.snippets = {};
                 extensionConfig.languageId = null;
             }
-
-            if (count < 0) {
-                return snippetPrompt();
-            }
+            return (count < 0)  &&  snippetPrompt();
         });
     };
     return snippetPrompt();
@@ -100,16 +95,13 @@ function askForSnippetLanguage(generator, extensionConfig) {
         extensionConfig.languageId = snippetLanguage;
         return Promise.resolve();
     }
-
     generator.log('Enter the language for which the snippets should appear. The id is an identifier and is single, lower-case name such as \'php\', \'javascript\'');
     return generator.prompt({
         type: 'input',
         name: 'languageId',
         message: 'Language id:',
         default: extensionConfig.languageId
-    }).then(idAnswer => {
-        extensionConfig.languageId = idAnswer.languageId;
-    });
+    }).then(idAnswer => { extensionConfig.languageId = idAnswer.languageId; });
 }
 
 function processSnippetFolder(folderPath, generator) {
@@ -137,11 +129,11 @@ function processSnippetFolder(folderPath, generator) {
         files.forEach(function (fileName) {
             var extension = path.extname(fileName).toLowerCase();
             var snippet;
-            if (extension === '.tmsnippet') {
-                snippet = convertTextMate(path.join(folderPath, fileName));
-            } else if (extension === '.sublime-snippet') {
-                snippet = convertSublime(path.join(folderPath, fileName));
-            }
+            (extension === '.tmsnippet')
+            ? snippet = convertTextMate(path.join(folderPath, fileName))
+            : (extension === '.sublime-snippet')
+                && ( snippet = convertSublime(path.join(folderPath, fileName)) );
+
             if (snippet) {
                 if (snippet.prefix && snippet.body) {
                     snippets[getId(snippet.prefix)] = snippet;
@@ -149,11 +141,9 @@ function processSnippetFolder(folderPath, generator) {
                     guessLanguage(snippet.scope);
                 } else {
                     var filePath = path.join(folderPath, fileName);
-                    if (!snippet.prefix) {
-                        errors.push(filePath + ": Missing property 'tabTrigger'. Snippet skipped.");
-                    } else {
-                        errors.push(filePath + ": Missing property 'content'. Snippet skipped.");
-                    }
+                    (!snippet.prefix)
+                    ? errors.push(filePath + ": Missing property 'tabTrigger'. Snippet skipped.")
+                    : errors.push(filePath + ": Missing property 'content'. Snippet skipped.");
                 }
             }
 
@@ -176,9 +166,7 @@ function processSnippetFolder(folderPath, generator) {
     function guessLanguage(scopeName) {
         if (!languageId && scopeName) {
             var match;
-            if (match = /(source|text)\.(\w+)/.exec(scopeName)) {
-                languageId = match[2];
-            }
+            ( match = /(source|text)\.(\w+)/.exec(scopeName) )  &&  ( languageId = match[2] );
         }
     }
 
@@ -240,9 +228,7 @@ function getFolderContent(folderPath, errors) {
 function getFileContent(filePath, errors) {
     try {
         var content = fs.readFileSync(filePath).toString();
-        if (content === '') {
-            errors.push(filePath + ": Empty file content");
-        }
+        (content === '')  &&  ( errors.push(filePath + ": Empty file content") );
         return content;
     } catch (e) {
         errors.push(filePath + ": Problems loading file content: " + e.message);

@@ -39,26 +39,27 @@ module.exports = {
             type: 'list',
             name: 'themeBase',
             message: 'Select a base theme:',
-            choices: [{
-                name: "Dark",
-                value: "vs-dark"
-            },
-            {
-                name: "Light",
-                value: "vs"
-            },
-            {
-                name: "High Contrast Dark",
-                value: "hc-black"
-            },
-            {
-                name: "High Contrast Light",
-                value: "hc-light"
-            }
+            choices:
+            [
+                {
+                    name: "Dark",
+                    value: "vs-dark"
+                },
+                {
+                    name: "Light",
+                    value: "vs"
+                },
+                {
+                    name: "High Contrast Dark",
+                    value: "hc-black"
+                },
+                {
+                    name: "High Contrast Light",
+                    value: "hc-light"
+                }
             ]
         });
         extensionConfig.themeBase = themeBase.themeBase;
-
 
         await prompts.askForGit(generator, extensionConfig);
     },
@@ -67,9 +68,8 @@ module.exports = {
      * @param {Object} extensionConfig
      */
     writing: (generator, extensionConfig) => {
-        if (extensionConfig.tmThemeFileName) {
-            generator.fs.copyTpl(generator.templatePath('themes/theme.tmTheme'), generator.destinationPath('themes', extensionConfig.tmThemeFileName), extensionConfig);
-        }
+        (extensionConfig.tmThemeFileName)
+            &&  ( generator.fs.copyTpl(generator.templatePath('themes/theme.tmTheme'), generator.destinationPath('themes', extensionConfig.tmThemeFileName), extensionConfig) );
         extensionConfig.themeFileName = sanitize(extensionConfig.themeName + '-color-theme.json');
         if (extensionConfig.themeContent) {
             extensionConfig.themeContent.name = extensionConfig.themeName;
@@ -99,7 +99,6 @@ async function askForThemeInfo(generator, extensionConfig) {
     if (generator.options['quick']) {
         return Promise.resolve();
     }
-
 
     const answer = await generator.prompt({
         type: 'list',
@@ -145,22 +144,14 @@ function convertTheme(location, extensionConfig, inline, generator) {
                 let tmThemeFileName = null;
                 if (!inline) {
                     let contentDisposition = r.headers && r.headers['content-disposition'];
-                    if (Array.isArray(contentDisposition)) {
-                        contentDisposition = contentDisposition[0];
-                    }
+                    ( Array.isArray(contentDisposition) )  &&  ( contentDisposition = contentDisposition[0] );
                     if (typeof contentDisposition === 'string') {
                         const fileNameMatch = contentDisposition.match(/filename="([^"]*)/);
-                        if (fileNameMatch) {
-                            tmThemeFileName = fileNameMatch[1];
-                        }
+                        ( fileNameMatch )  &&  ( tmThemeFileName = fileNameMatch[1] );
                     }
                     if (!tmThemeFileName) {
                         const lastSlash = location.lastIndexOf('/');
-                        if (lastSlash) {
-                            tmThemeFileName = location.substr(lastSlash + 1);
-                        } else {
-                            tmThemeFileName = 'theme.tmTheme';
-                        }
+                        ( lastSlash )  ?  ( tmThemeFileName = location.substr(lastSlash + 1) )  :  ( tmThemeFileName = 'theme.tmTheme' );
                     }
                 }
                 return processContent(extensionConfig, tmThemeFileName, r.responseText, generator);
@@ -178,9 +169,7 @@ function convertTheme(location, extensionConfig, inline, generator) {
         }
         if (body) {
             let fileName = null;
-            if (!inline) {
-                fileName = path.basename(location);
-            }
+            (!inline)  &&  ( fileName = path.basename(location) );
             return processContent(extensionConfig, fileName, body.toString(), generator);
         } else {
             return Promise.reject("Problems loading theme: Not found");
@@ -194,9 +183,7 @@ function processContent(extensionConfig, tmThemeFileName, body, generator) {
     try {
         extensionConfig.themeContent = migrate(body, tmThemeFileName, generator);
         if (tmThemeFileName) {
-            if (tmThemeFileName.indexOf('.tmTheme') === -1) {
-                tmThemeFileName = tmThemeFileName + '.tmTheme';
-            }
+            ( tmThemeFileName.indexOf('.tmTheme') === -1 )  &&  ( tmThemeFileName = tmThemeFileName + '.tmTheme' );
             extensionConfig.tmThemeFileName = tmThemeFileName;
             extensionConfig.tmThemeContent = body;
         }
@@ -206,7 +193,6 @@ function processContent(extensionConfig, tmThemeFileName, body, generator) {
     } catch (e) {
         return Promise.reject(e);
     }
-
 };
 
 // mapping from old tmTheme setting to new workbench color ids
@@ -251,9 +237,7 @@ function migrate(content, tmThemeFileName, generator) {
             let scope = entry.scope;
             if (scope) {
                 let parts = scope.split(',').map(p => p.trim());
-                if (parts.length > 1) {
-                    entry.scope = parts;
-                }
+                (parts.length > 1)  &&  ( entry.scope = parts );
             } else {
                 const entrySettings = entry.settings;
                 let notSupported = [];
@@ -263,23 +247,16 @@ function migrate(content, tmThemeFileName, generator) {
                         for (let newKey of mapping) {
                             colorMap[newKey] = entrySettings[entry];
                         }
-                        if (entry !== 'foreground' && entry !== 'background') {
-                            delete entrySettings[entry];
-                        }
+                        ( entry !== 'foreground' && entry !== 'background' )  &&  ( delete entrySettings[entry] );
                     } else {
                         notSupported.push(entry);
                     }
                 }
-                if (notSupported.length > 0) {
-                    generator.log('Note: the following theming properties are not supported by VS Code and will be ignored: ' + notSupported.join(', '))
-                }
+                ( notSupported.length > 0 )
+                    &&  ( generator.log('Note: the following theming properties are not supported by VS Code and will be ignored: ' + notSupported.join(', ')) );
             }
         }
-        if (!tmThemeFileName) {
-            result.tokenColors = settings;
-        } else {
-            result.tokenColors = './' + tmThemeFileName;
-        }
+        ( !tmThemeFileName )  ?  ( result.tokenColors = settings )  :  ( result.tokenColors = './' + tmThemeFileName );
         result.colors = colorMap;
     }
     return result;

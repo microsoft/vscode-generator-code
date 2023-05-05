@@ -2,6 +2,8 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
+import Environment from "yeoman-environment";
+
 const prompts = require("./prompts");
 
 module.exports = {
@@ -36,29 +38,25 @@ module.exports = {
      * @param {Object} extensionConfig
      */
     writing: (generator, extensionConfig) => {
-        generator.fs.copy(generator.templatePath('vscode'), generator.destinationPath('.vscode'));
-        generator.fs.copy(generator.templatePath('test'), generator.destinationPath('test'));
+        let copyPasteTemplate = ( enviroment ) => { generator.fs.copy(generator.templatePath(enviroment), generator.destinationPath(enviroment)); }
+            generator.fs.copy(generator.templatePath('vscode'), generator.destinationPath('.vscode'));
+            copyPasteTemplate('test');
+            copyPasteTemplate('.vscodeignore');
 
-        generator.fs.copy(generator.templatePath('.vscodeignore'), generator.destinationPath('.vscodeignore'));
+        ( extensionConfig.gitInit )  && ( generator.fs.copy(generator.templatePath('gitignore'), generator.destinationPath('.gitignore')) );
 
-        if (extensionConfig.gitInit) {
-            generator.fs.copy(generator.templatePath('gitignore'), generator.destinationPath('.gitignore'));
-        }
+        let copyPasteExtension = ( environment ) => { generator.fs.copyTpl(generator.templatePath(environment), generator.destinationPath(environment), extensionConfig); }
+            copyPasteExtension( 'README.md' );
+            copyPasteExtension( 'CHANGELOG.md' );
+            copyPasteExtension( 'vsc-extension-quickstart.md' );
+            copyPasteExtension( 'jsconfig.json' );
+            copyPasteExtension( 'extension.js' );
+            copyPasteExtension( '.eslintrc.json' );
 
-        generator.fs.copyTpl(generator.templatePath('README.md'), generator.destinationPath('README.md'), extensionConfig);
-        generator.fs.copyTpl(generator.templatePath('CHANGELOG.md'), generator.destinationPath('CHANGELOG.md'), extensionConfig);
-        generator.fs.copyTpl(generator.templatePath('vsc-extension-quickstart.md'), generator.destinationPath('vsc-extension-quickstart.md'), extensionConfig);
-        generator.fs.copyTpl(generator.templatePath('jsconfig.json'), generator.destinationPath('jsconfig.json'), extensionConfig);
-
-        generator.fs.copyTpl(generator.templatePath('extension.js'), generator.destinationPath('extension.js'), extensionConfig);
-        generator.fs.copyTpl(generator.templatePath('package.json'), generator.destinationPath('package.json'), extensionConfig);
-        generator.fs.copyTpl(generator.templatePath('.eslintrc.json'), generator.destinationPath('.eslintrc.json'), extensionConfig);
-
-        if (extensionConfig.pkgManager === 'yarn') {
-            generator.fs.copyTpl(generator.templatePath('.yarnrc'), generator.destinationPath('.yarnrc'), extensionConfig);
-        } else if (extensionConfig.pkgManager === 'pnpm') {
-            generator.fs.copyTpl(generator.templatePath('.npmrc-pnpm'), generator.destinationPath('.npmrc'), extensionConfig);
-        }
+        (extensionConfig.pkgManager === 'yarn')
+        ? copyPasteExtension('.yarnrc')
+        : ( extensionConfig.pkgManager === 'pnpm' )
+            && ( generator.fs.copyTpl(generator.templatePath('.npmrc-pnpm'), generator.destinationPath('.npmrc'), extensionConfig) );
 
         extensionConfig.installDependencies = true;
     }
