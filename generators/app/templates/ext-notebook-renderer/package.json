@@ -34,7 +34,6 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    <%- dep("@types/glob") %>,
     <%- dep("@types/mocha") %>,
     <%- dep("@types/node") %>,
     <%- dep("@types/webpack-env") %>,
