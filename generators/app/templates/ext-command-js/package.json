@@ -24,7 +24,6 @@
   },
   "devDependencies": {
     <%- dep("@types/vscode") %>,
-    <%- dep("@types/glob") %>,
     <%- dep("@types/mocha") %>,
     <%- dep("@types/node") %>,
     <%- dep("eslint") %>,
