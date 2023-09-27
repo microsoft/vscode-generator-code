@@ -642,7 +642,6 @@ describe('test code generator', function () {
         "activationEvents": [],
         "devDependencies": devDependencies([
           "@types/vscode",
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "@typescript-eslint/parser",
@@ -707,7 +706,6 @@ describe('test code generator', function () {
         "activationEvents": [],
         "devDependencies": devDependencies([
           "@types/vscode",
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "eslint",
@@ -788,7 +786,6 @@ describe('test code generator', function () {
         "activationEvents": [],
         "devDependencies": devDependencies([
           "@types/vscode",
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "eslint",
@@ -870,7 +867,6 @@ describe('test code generator', function () {
         "activationEvents": [],
         "devDependencies": devDependencies([
           "@types/vscode",
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "@typescript-eslint/parser",
@@ -942,7 +938,6 @@ describe('test code generator', function () {
         "activationEvents": [],
         "devDependencies": devDependencies([
           "@types/vscode",
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "@typescript-eslint/parser",
@@ -1014,7 +1009,6 @@ describe('test code generator', function () {
         "activationEvents": [],
         "devDependencies": devDependencies([
           "@types/vscode",
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "eslint",
@@ -1075,7 +1069,6 @@ describe('test code generator', function () {
         "activationEvents": [],
         "devDependencies": devDependencies([
           "@types/vscode",
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "eslint",
@@ -1503,7 +1496,6 @@ describe('test code generator', function () {
           "test": "node ./out/test/runTest.js"
         },
         "devDependencies": devDependencies([
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "@types/vscode",
@@ -1587,7 +1579,6 @@ describe('test code generator', function () {
           "test": "node ./out/test/runTest.js"
         },
         "devDependencies": devDependencies([
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "@types/vscode",

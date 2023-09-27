@@ -5,6 +5,9 @@
     "lib": [
       "ES2019"
     ],
+    "paths": {
+        "glob": ["./node_modules/glob/dist/commonjs"] // https://github.com/isaacs/node-glob/issues/557
+    },
     "types": ["node"],
     "moduleResolution": "node",
     "sourceMap": true,
