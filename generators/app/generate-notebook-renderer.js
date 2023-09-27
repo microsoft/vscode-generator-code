@@ -33,7 +33,7 @@ module.exports = {
         generator.fs.copy(generator.templatePath('vscode'), generator.destinationPath('.vscode'));
         generator.fs.copy(generator.templatePath('tsconfig.json'), generator.destinationPath('tsconfig.json'));
         generator.fs.copy(generator.templatePath('.vscodeignore'), generator.destinationPath('.vscodeignore'));
-        generator.fs.copy(generator.templatePath('webpack.config.js'), generator.destinationPath('webpack.config.js'));
+        generator.fs.copy(generator.templatePath('webpack.config.cjs'), generator.destinationPath('webpack.config.cjs'));
         generator.fs.copy(generator.templatePath('.eslintrc.json'), generator.destinationPath('.eslintrc.json'));
 
         generator.fs.copyTpl(generator.templatePath('package.json'), generator.destinationPath('package.json'), extensionConfig);

@@ -33,7 +33,7 @@ module.exports = {
             generator.fs.copyTpl(generator.templatePath('vscode-webpack/package.json'), generator.destinationPath('package.json'), extensionConfig);
             generator.fs.copyTpl(generator.templatePath('vscode-webpack/tsconfig.json'), generator.destinationPath('tsconfig.json'), extensionConfig);
             generator.fs.copyTpl(generator.templatePath('vscode-webpack/.vscodeignore'), generator.destinationPath('.vscodeignore'), extensionConfig);
-            generator.fs.copyTpl(generator.templatePath('vscode-webpack/webpack.config.js'), generator.destinationPath('webpack.config.js'), extensionConfig);
+            generator.fs.copyTpl(generator.templatePath('vscode-webpack/webpack.config.cjs'), generator.destinationPath('webpack.config.cjs'), extensionConfig);
             generator.fs.copyTpl(generator.templatePath('vscode-webpack/vsc-extension-quickstart.md'), generator.destinationPath('vsc-extension-quickstart.md'), extensionConfig);
         } else {
             generator.fs.copy(generator.templatePath('vscode'), generator.destinationPath('.vscode'));
