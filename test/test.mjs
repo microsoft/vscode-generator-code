@@ -642,7 +642,6 @@ describe('test code generator', function () {
         "activationEvents": [],
         "devDependencies": devDependencies([
           "@types/vscode",
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "@typescript-eslint/parser",
@@ -707,7 +706,6 @@ describe('test code generator', function () {
         "activationEvents": [],
         "devDependencies": devDependencies([
           "@types/vscode",
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "eslint",
@@ -739,11 +737,11 @@ describe('test code generator', function () {
       };
       const expectedTsConfig = {
         "compilerOptions": {
-          "module": "commonjs",
-          "target": "ES2020",
+          "module": "Node16",
+          "target": "ES2022",
           "outDir": "out",
           "lib": [
-            "ES2020"
+            "ES2022"
           ],
           "sourceMap": true,
           "rootDir": "src",
@@ -788,7 +786,6 @@ describe('test code generator', function () {
         "activationEvents": [],
         "devDependencies": devDependencies([
           "@types/vscode",
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "eslint",
@@ -820,11 +817,11 @@ describe('test code generator', function () {
       };
       const expectedTsConfig = {
         "compilerOptions": {
-          "module": "commonjs",
-          "target": "ES2020",
+          "module": "Node16",
+          "target": "ES2022",
           "outDir": "out",
           "lib": [
-            "ES2020"
+            "ES2022"
           ],
           "sourceMap": true,
           "rootDir": "src",
@@ -870,7 +867,6 @@ describe('test code generator', function () {
         "activationEvents": [],
         "devDependencies": devDependencies([
           "@types/vscode",
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "@typescript-eslint/parser",
@@ -942,7 +938,6 @@ describe('test code generator', function () {
         "activationEvents": [],
         "devDependencies": devDependencies([
           "@types/vscode",
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "@typescript-eslint/parser",
@@ -1014,7 +1009,6 @@ describe('test code generator', function () {
         "activationEvents": [],
         "devDependencies": devDependencies([
           "@types/vscode",
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "eslint",
@@ -1075,7 +1069,6 @@ describe('test code generator', function () {
         "activationEvents": [],
         "devDependencies": devDependencies([
           "@types/vscode",
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "eslint",
@@ -1125,11 +1118,11 @@ describe('test code generator', function () {
     try {
       const expectedJSConfig = {
         "compilerOptions": {
-          "module": "commonjs",
-          "target": "ES2020",
+          "module": "Node16",
+          "target": "ES2022",
           "checkJs": true,
           "lib": [
-            "ES2020"
+            "ES2022"
           ]
         },
         "exclude": [
@@ -1503,7 +1496,6 @@ describe('test code generator', function () {
           "test": "node ./out/test/runTest.js"
         },
         "devDependencies": devDependencies([
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "@types/vscode",
@@ -1587,7 +1579,6 @@ describe('test code generator', function () {
           "test": "node ./out/test/runTest.js"
         },
         "devDependencies": devDependencies([
-          "@types/glob",
           "@types/mocha",
           "@types/node",
           "@types/vscode",

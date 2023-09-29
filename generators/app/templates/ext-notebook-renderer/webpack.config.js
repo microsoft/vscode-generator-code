@@ -2,7 +2,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const path = require('path');
 
-const makeConfig = (argv, { entry, out, target, library = 'commonjs' }) => ({
+const makeConfig = (argv, { entry, out, target, library = 'Node16' }) => ({
     mode: argv.mode,
     devtool: argv.mode === 'production' ? false : 'inline-source-map',
     entry,
