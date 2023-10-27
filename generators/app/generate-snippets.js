@@ -1,18 +1,18 @@
 /*---------------------------------------------------------
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
+import Generator from 'yeoman-generator';
+import * as prompts from "./prompts.js";
+import * as path from 'path';
+import * as fs from 'fs';
+import * as plistParser from 'fast-plist';
 
-const prompts = require("./prompts");
-const path = require('path');
-const fs = require('fs');
-const plistParser = require('fast-plist');
-
-module.exports = {
+export default {
     id: 'ext-snippets',
     aliases: ['snippets'],
     name: 'New Code Snippets',
     /**
-     * @param {import('yeoman-generator')} generator
+     * @param {Generator} generator
      * @param {Object} extensionConfig
      */
     prompting: async (generator, extensionConfig) => {
@@ -27,7 +27,7 @@ module.exports = {
 
     },
     /**
-     * @param {import('yeoman-generator')} generator
+     * @param {Generator} generator
      * @param {Object} extensionConfig
      */
     writing: (generator, extensionConfig) => {
@@ -45,7 +45,7 @@ module.exports = {
     }
 }
 /**
- * @param {import('yeoman-generator')} generator
+ * @param {Generator} generator
  * @param {Object} extensionConfig
  */
 function askForSnippetsInfo(generator, extensionConfig) {
@@ -90,7 +90,7 @@ function askForSnippetsInfo(generator, extensionConfig) {
 }
 
 /**
- * @param {import('yeoman-generator')} generator
+ * @param {Generator} generator
  * @param {Object} extensionConfig
  */
 function askForSnippetLanguage(generator, extensionConfig) {

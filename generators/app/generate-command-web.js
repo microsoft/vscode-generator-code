@@ -1,16 +1,18 @@
 /*---------------------------------------------------------
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
+import Generator from 'yeoman-generator';
+import { Chalk } from 'chalk';
+import * as prompts from './prompts.js';
 
-const chalk = require("chalk");
-const prompts = require("./prompts");
+const chalk = new Chalk();
 
-module.exports = {
+export default {
     id: 'ext-command-web',
     aliases: ['web', 'command-web'],
     name: 'New Web Extension (TypeScript)',
     /**
-     * @param {import('yeoman-generator')} generator
+     * @param {Generator} generator
      * @param {Object} extensionConfig
      */
     prompting: async (generator, extensionConfig) => {
@@ -22,7 +24,7 @@ module.exports = {
         await prompts.askForPackageManager(generator, extensionConfig);
     },
     /**
-     * @param {import('yeoman-generator')} generator
+     * @param {Generator} generator
      * @param {Object} extensionConfig
      */
     writing: (generator, extensionConfig) => {
@@ -55,7 +57,7 @@ module.exports = {
         extensionConfig.proposedAPI = false;
     },
     /**
-     * @param {import('yeoman-generator')} generator
+     * @param {Generator} generator
      * @param {Object} extensionConfig
      */
     endMessage: (generator, extensionConfig) => {
