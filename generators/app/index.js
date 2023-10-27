@@ -3,30 +3,29 @@
  *--------------------------------------------------------*/
 'use strict';
 
-const Generator = require('yeoman-generator');
-const yosay = require('yosay');
-
-const path = require('path');
-const env = require('./env');
-const which = require('which');
-
-const colortheme = require('./generate-colortheme');
-const commandjs = require('./generate-command-js');
-const commandts = require('./generate-command-ts');
-const commandweb = require('./generate-command-web');
-const extensionpack = require('./generate-extensionpack');
-const keymap = require('./generate-keymap');
-const language = require('./generate-language');
-const localization = require('./generate-localization');
-const notebook = require('./generate-notebook-renderer');
-const snippets = require('./generate-snippets');
+import Generator from 'yeoman-generator';
+import yosay from 'yosay';
+import { fileURLToPath } from 'url';
+import * as path from 'path';
+import * as env from './env.js';
+import which from 'which';
+import colortheme from './generate-colortheme.js';
+import commandjs from './generate-command-js.js';
+import commandts from './generate-command-ts.js';
+import commandweb from './generate-command-web.js';
+import extensionpack from './generate-extensionpack.js';
+import keymap from './generate-keymap.js';
+import language from './generate-language.js';
+import localization from './generate-localization.js';
+import notebook from './generate-notebook-renderer.js';
+import snippets from './generate-snippets.js';
 
 const extensionGenerators = [
     commandts, commandjs, colortheme, language, snippets, keymap, extensionpack, localization,
     commandweb, notebook
 ]
 
-module.exports = class extends Generator {
+export default class extends Generator {
 
     constructor(args, opts) {
         super(args, opts);
@@ -126,6 +125,7 @@ module.exports = class extends Generator {
         try {
             await this.extensionGenerator.prompting(this, this.extensionConfig);
         } catch (e) {
+            console.log(e);
             this.abort = true;
         }
 
@@ -143,7 +143,8 @@ module.exports = class extends Generator {
         this.log();
         this.log(`Writing in ${this.destinationPath()}...`);
 
-        this.sourceRoot(path.join(__dirname, './templates/' + this.extensionConfig.type));
+        const currentFilename = fileURLToPath(import.meta.url);
+        this.sourceRoot(path.join(currentFilename, '../templates/' + this.extensionConfig.type));
 
         return this.extensionGenerator.writing(this, this.extensionConfig);
     }
@@ -151,12 +152,15 @@ module.exports = class extends Generator {
     // Installation
     install() {
         if (this.abort) {
+            // @ts-ignore
             this.env.options.skipInstall = true;
             return;
         }
         if (this.extensionConfig.installDependencies) {
+            // @ts-ignore
             this.env.options.nodePackageManager = this.extensionConfig.pkgManager;
         } else {
+            // @ts-ignore
             this.env.options.skipInstall = true;
         }
     }

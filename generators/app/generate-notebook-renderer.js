@@ -1,15 +1,15 @@
 /*---------------------------------------------------------
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
+import Generator from 'yeoman-generator';
+import * as prompts from './prompts.js';
 
-const prompts = require("./prompts");
-
-module.exports = {
+export default {
     id: 'ext-notebook-renderer',
     aliases: ['notebook'],
     name: 'New Notebook Renderer (TypeScript)',
     /**
-     * @param {import('yeoman-generator')} generator
+     * @param {Generator} generator
      * @param {Object} extensionConfig
      */
     prompting: async (generator, extensionConfig) => {
@@ -24,7 +24,7 @@ module.exports = {
 
     },
     /**
-     * @param {import('yeoman-generator')} generator
+     * @param {Generator} generator
      * @param {Object} extensionConfig
      */
     writing: (generator, extensionConfig) => {
@@ -60,7 +60,7 @@ module.exports = {
 }
 
 /**
- * @param {import('yeoman-generator')} generator
+ * @param {Generator} generator
  * @param {Object} extensionConfig
  */
 async function askForNotebookRendererInfo(generator, extensionConfig) {

@@ -1,16 +1,16 @@
 /*---------------------------------------------------------
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
+import Generator from 'yeoman-generator';
+import * as prompts from './prompts.js';
+import * as childProcess from 'child_process';
 
-const prompts = require("./prompts");
-let childProcess = require('child_process');
-
-module.exports = {
+export default {
     id: 'ext-extensionpack',
     aliases: ['extensionpack'],
     name: 'New Extension Pack',
     /**
-     * @param {import('yeoman-generator')} generator
+     * @param {Generator} generator
      * @param {Object} extensionConfig
      */
     prompting: async (generator, extensionConfig) => {
@@ -24,7 +24,7 @@ module.exports = {
         await prompts.askForGit(generator, extensionConfig);
     },
     /**
-     * @param {import('yeoman-generator')} generator
+     * @param {Generator} generator
      * @param {Object} extensionConfig
      */
     writing: (generator, extensionConfig) => {

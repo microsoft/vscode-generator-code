@@ -1,16 +1,18 @@
 /*---------------------------------------------------------
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
+import Generator from 'yeoman-generator';
+import * as prompts from './prompts.js';
+import { Chalk } from 'chalk';
 
-const prompts = require("./prompts");
-const chalk = require("chalk");
+const chalk = new Chalk();
 
-module.exports = {
+export default {
     id: 'ext-localization',
     aliases: ['localization'],
     name: 'New Language Pack (Localization)',
     /**
-     * @param {import('yeoman-generator')} generator
+     * @param {Generator} generator
      * @param {Object} extensionConfig
      */
     prompting: async (generator, extensionConfig) => {
@@ -26,7 +28,7 @@ module.exports = {
         await prompts.askForPackageManager(generator, extensionConfig);
     },
     /**
-     * @param {import('yeoman-generator')} generator
+     * @param {Generator} generator
      * @param {Object} extensionConfig
      */
     writing: (generator, extensionConfig) => {
@@ -54,7 +56,7 @@ module.exports = {
 }
 
 /**
- * @param {import('yeoman-generator')} generator
+ * @param {Generator} generator
  * @param {Object} extensionConfig
  */
 function askForLanguageId(generator, extensionConfig) {
@@ -74,7 +76,7 @@ function askForLanguageId(generator, extensionConfig) {
 }
 
 /**
- * @param {import('yeoman-generator')} generator
+ * @param {Generator} generator
  * @param {Object} extensionConfig
  */
 function askForLanguageName(generator, extensionConfig) {
@@ -97,7 +99,7 @@ function askForLanguageName(generator, extensionConfig) {
 }
 
 /**
- * @param {import('yeoman-generator')} generator
+ * @param {Generator} generator
  * @param {Object} extensionConfig
  */
 function askForLocalizedLanguageName(generator, extensionConfig) {

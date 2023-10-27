@@ -3,14 +3,16 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
-const validator = require('./validator');
-const path = require('path');
+import Generator from 'yeoman-generator';
+
+import * as validator from './validator.js';
+import * as path from 'path';
 
 /**
-* @param {import('yeoman-generator')} generator
+* @param {Generator} generator
 * @param {Object} extensionConfig
 */
-exports.askForExtensionDisplayName = (generator, extensionConfig) => {
+export function askForExtensionDisplayName(generator, extensionConfig) {
     let extensionDisplayName = generator.options['extensionDisplayName'];
     if (extensionDisplayName) {
         extensionConfig.displayName = extensionDisplayName;
@@ -35,10 +37,10 @@ exports.askForExtensionDisplayName = (generator, extensionConfig) => {
 
 /**
  * Ask for extension id ("name" in package.json)
-* @param {import('yeoman-generator')} generator
+* @param {Generator} generator
 * @param {Object} extensionConfig
 */
-exports.askForExtensionId = (generator, extensionConfig) => {
+export function askForExtensionId(generator, extensionConfig) {
     let extensionName = generator.options['extensionId'];
     if (extensionName) {
         extensionConfig.name = extensionName;
@@ -66,10 +68,10 @@ exports.askForExtensionId = (generator, extensionConfig) => {
 
 /**
  * Ask for extension description
-* @param {import('yeoman-generator')} generator
+* @param {Generator} generator
 * @param {Object} extensionConfig
 */
-exports.askForExtensionDescription = (generator, extensionConfig) => {
+export function askForExtensionDescription(generator, extensionConfig) {
     let extensionDescription = generator.options['extensionDescription'];
     if (extensionDescription) {
         extensionConfig.description = extensionDescription;
@@ -91,10 +93,10 @@ exports.askForExtensionDescription = (generator, extensionConfig) => {
 }
 
 /**
-* @param {import('yeoman-generator')} generator
+* @param {Generator} generator
 * @param {Object} extensionConfig
 */
-exports.askForGit = (generator, extensionConfig) => {
+export function askForGit(generator, extensionConfig) {
     let gitInit = generator.options['gitInit'];
     if (typeof gitInit === 'boolean') {
         extensionConfig.gitInit = Boolean(gitInit);
@@ -116,10 +118,10 @@ exports.askForGit = (generator, extensionConfig) => {
 }
 
 /**
-* @param {import('yeoman-generator')} generator
+* @param {Generator} generator
 * @param {Object} extensionConfig
 */
-exports.askForPackageManager = (generator, extensionConfig) => {
+export function askForPackageManager(generator, extensionConfig) {
     let pkgManager = generator.options['pkgManager'];
     if (pkgManager === 'npm' || pkgManager === 'yarn' || pkgManager === 'pnpm') {
         extensionConfig.pkgManager = pkgManager;
@@ -156,10 +158,10 @@ exports.askForPackageManager = (generator, extensionConfig) => {
 }
 
 /**
-* @param {import('yeoman-generator')} generator
+* @param {Generator} generator
 * @param {Object} extensionConfig
 */
-exports.askForWebpack = (generator, extensionConfig) => {
+export function askForWebpack(generator, extensionConfig) {
     let webpack = generator.options['webpack'];
     if (typeof webpack === 'boolean') {
         extensionConfig.webpack = Boolean(webpack);

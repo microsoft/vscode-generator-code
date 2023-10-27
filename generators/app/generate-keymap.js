@@ -1,15 +1,15 @@
 /*---------------------------------------------------------
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
+import Generator from 'yeoman-generator';
+import * as prompts from './prompts.js';
 
-const prompts = require("./prompts");
-
-module.exports = {
+export default {
     id: 'ext-keymap',
     aliases: ['keymap'],
     name: 'New Keymap',
     /**
-     * @param {import('yeoman-generator')} generator
+     * @param {Generator} generator
      * @param {Object} extensionConfig
      */
     prompting: async (generator, extensionConfig) => {
@@ -20,7 +20,7 @@ module.exports = {
         await prompts.askForGit(generator, extensionConfig);
     },
     /**
-     * @param {import('yeoman-generator')} generator
+     * @param {Generator} generator
      * @param {Object} extensionConfig
      */
     writing: (generator, extensionConfig) => {

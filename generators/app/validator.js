@@ -3,7 +3,10 @@
  *--------------------------------------------------------*/
 var nameRegex = /^[a-z0-9][a-z0-9\-]*$/i;
 
-module.exports.validatePublisher = function(publisher) {
+/**
+ * @param {string} publisher
+ */
+export function validatePublisher(publisher) {
     if (!publisher) {
         return "Missing publisher name";
     }
@@ -15,7 +18,10 @@ module.exports.validatePublisher = function(publisher) {
     return true;
 }
 
-module.exports.validateExtensionId = function(id) {
+/**
+ * @param {string} id
+ */
+export function validateExtensionId(id) {
     if (!id) {
         return "Missing extension identifier";
     }
@@ -27,6 +33,27 @@ module.exports.validateExtensionId = function(id) {
     return true;
 }
 
-module.exports.validateNonEmpty = function(name) {
+/**
+ * @param {string | any[]} name
+ */
+export function validateNonEmpty(name) {
     return name && name.length > 0;
 }
+
+const illegalRe = /[\/\?<>\\:\*\|"]/g;
+const controlRe = /[\x00-\x1f\x80-\x9f]/g;
+const reservedRe = /^\.+$/;
+const windowsReservedRe = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i;
+const windowsTrailingRe = /[\. ]+$/;
+
+/**
+ * @param {string} input
+ */
+export function sanitizeFilename(input) {
+    return input
+        .replace(illegalRe, '')
+        .replace(controlRe, '')
+        .replace(reservedRe, '')
+        .replace(windowsReservedRe, '')
+        .replace(windowsTrailingRe, '');
+};

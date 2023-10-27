@@ -2,14 +2,15 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 'use strict';
-const request = require('request-light');
-const fs = require('fs');
-const path = require('path');
+import request from 'request-light';
+import * as fs from 'fs';
+import * as path from 'path';
+import { fileURLToPath } from 'url';
 
 const fallbackVersion = '^1.54.0';
 let versionPromise = undefined;
 
-function getLatestVSCodeVersion() {
+export function getLatestVSCodeVersion() {
     if (!versionPromise) {
         versionPromise = request.xhr({ url: 'https://update.code.visualstudio.com/api/releases/stable', headers: { "X-API-Version": "2" } }).then(res => {
             if (res.status === 200) {
@@ -37,11 +38,11 @@ function getLatestVSCodeVersion() {
     }
     return versionPromise;
 };
-module.exports.getLatestVSCodeVersion = getLatestVSCodeVersion;
 
-module.exports.getDependencyVersions = async function () {
+export async function getDependencyVersions() {
     const vscodeVersion = await getLatestVSCodeVersion();
-    const versions = JSON.parse((await fs.promises.readFile(path.join(__dirname, 'dependencyVersions', 'package.json'))).toString()).dependencies;
+    const currentFileName = fileURLToPath(import.meta.url);
+    const versions = JSON.parse((await fs.promises.readFile(path.join(currentFileName, '..', 'dependencyVersions', 'package.json'))).toString()).dependencies;
     versions["@types/vscode"] = vscodeVersion
     return versions;
 }
