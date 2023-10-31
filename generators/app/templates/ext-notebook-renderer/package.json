@@ -31,7 +31,7 @@
     "lint": "eslint src --ext ts",
     "watch": "webpack --mode development --watch",
     "pretest": "webpack --mode development && <%= pkgManager %> run lint",
-    "test": "node ./out/test/runTest.js"
+    "test": "vscode-test"
   },
   "devDependencies": {
     <%- dep("@types/mocha") %>,
@@ -50,6 +50,7 @@
     <%- dep("ts-loader") %>,
     <%- dep("typescript") %>,
     <%- dep("vscode-notebook-error-overlay") %>,
+    <%- dep("@vscode/test-cli") %>,
     <%- dep("@vscode/test-electron") %>,
     <%- dep("util") %>,
     <%- dep("webpack") %>,

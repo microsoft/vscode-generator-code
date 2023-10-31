@@ -52,6 +52,7 @@ export default {
         generator.fs.copyTpl(generator.templatePath('CHANGELOG.md'), generator.destinationPath('CHANGELOG.md'), extensionConfig);
         generator.fs.copyTpl(generator.templatePath('src/extension.ts'), generator.destinationPath('src/extension.ts'), extensionConfig);
         generator.fs.copy(generator.templatePath('src/test'), generator.destinationPath('src/test'));
+        generator.fs.copy(generator.templatePath('.vscode-test.mjs'), generator.destinationPath('.vscode-test.mjs'));
         generator.fs.copy(generator.templatePath('.eslintrc.json'), generator.destinationPath('.eslintrc.json'));
 
         if (extensionConfig.pkgManager === 'yarn') {

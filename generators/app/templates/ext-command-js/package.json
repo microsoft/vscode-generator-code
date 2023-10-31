@@ -20,16 +20,15 @@
   "scripts": {
     "lint": "eslint .",
     "pretest": "<%= pkgManager %> run lint",
-    "test": "node ./test/runTest.js"
+    "test": "vscode-test"
   },
   "devDependencies": {
     <%- dep("@types/vscode") %>,
     <%- dep("@types/mocha") %>,
     <%- dep("@types/node") %>,
     <%- dep("eslint") %>,
-    <%- dep("glob") %>,
-    <%- dep("mocha") %>,
     <%- dep("typescript") %>,
+    <%- dep("@vscode/test-cli") %>,
     <%- dep("@vscode/test-electron") %>
   }
 }

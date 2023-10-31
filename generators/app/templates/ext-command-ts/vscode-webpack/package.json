@@ -29,7 +29,7 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "<%= pkgManager %> run compile-tests && <%= pkgManager %> run compile && <%= pkgManager %> run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"<% if (insiders) { %>,
+    "test": "vscode-test"<% if (insiders) { %>,
     "update-proposed-api": "vscode-dts dev"<% } %>
   },
   "devDependencies": {
@@ -39,12 +39,11 @@
     <%- dep("@typescript-eslint/eslint-plugin") %>,
     <%- dep("@typescript-eslint/parser") %>,
     <%- dep("eslint") %>,
-    <%- dep("glob") %>,
-    <%- dep("mocha") %>,
     <%- dep("typescript") %>,
     <%- dep("ts-loader") %>,
     <%- dep("webpack") %>,
     <%- dep("webpack-cli") %>,
+    <%- dep("@vscode/test-cli") %>,
     <%- dep("@vscode/test-electron") %><% if (insiders) { %>,
     <%- dep("vscode-dts") %><% } %>
   }

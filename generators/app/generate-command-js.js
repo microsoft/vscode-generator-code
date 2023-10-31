@@ -52,6 +52,7 @@ export default {
 
         generator.fs.copyTpl(generator.templatePath('extension.js'), generator.destinationPath('extension.js'), extensionConfig);
         generator.fs.copyTpl(generator.templatePath('package.json'), generator.destinationPath('package.json'), extensionConfig);
+        generator.fs.copy(generator.templatePath('.vscode-test.mjs'), generator.destinationPath('.vscode-test.mjs'));
         generator.fs.copyTpl(generator.templatePath('.eslintrc.json'), generator.destinationPath('.eslintrc.json'), extensionConfig);
 
         if (extensionConfig.pkgManager === 'yarn') {
