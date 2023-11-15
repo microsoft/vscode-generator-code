@@ -46,8 +46,7 @@ describe('integration tests', function () {
         }
 
         runResult.assertFile('testCom/out/extension.js');
-        runResult.assertFile('testCom/out/test/suite/index.js');
-        runResult.assertFile('testCom/out/test/runTest.js');
+        runResult.assertFile('testCom/out/test/extension.test.js');
     });
 
     it('command-ts-webpack integration test (install, pack and run extension tests)', async () => {
@@ -80,8 +79,7 @@ describe('integration tests', function () {
         }
 
         runResult.assertFile('testCom/dist/extension.js');
-        runResult.assertFile('testCom/out/test/suite/index.js');
-        runResult.assertFile('testCom/out/test/runTest.js');
+        runResult.assertFile('testCom/out/test/extension.test.js');
     });
 
     it('command-ts-web integration test (install, pack and run extension tests)', async () => {

@@ -647,9 +647,8 @@ describe('test code generator', function () {
           "@typescript-eslint/parser",
           "@typescript-eslint/eslint-plugin",
           "eslint",
-          "glob",
-          "mocha",
           "typescript",
+          "@vscode/test-cli",
           "@vscode/test-electron"
         ]),
         "main": "./out/extension.js",
@@ -659,7 +658,7 @@ describe('test code generator', function () {
           "lint": "eslint src --ext ts",
           "watch": "tsc -watch -p ./",
           "pretest": "npm run compile && npm run lint",
-          "test": "node ./out/test/runTest.js"
+          "test": "vscode-test"
         },
         "categories": [
           "Other"
@@ -672,7 +671,7 @@ describe('test code generator', function () {
         }
       };
 
-      assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
+      assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/extension.test.ts', 'tsconfig.json']);
 
       runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
     } finally {
@@ -711,9 +710,8 @@ describe('test code generator', function () {
           "eslint",
           "@typescript-eslint/parser",
           "@typescript-eslint/eslint-plugin",
-          "glob",
-          "mocha",
           "typescript",
+          "@vscode/test-cli",
           "@vscode/test-electron"
         ]),
         "main": "./out/extension.js",
@@ -723,7 +721,7 @@ describe('test code generator', function () {
           "lint": "eslint src --ext ts",
           "watch": "tsc -watch -p ./",
           "pretest": "yarn run compile && yarn run lint",
-          "test": "node ./out/test/runTest.js"
+          "test": "vscode-test"
         },
         "categories": [
           "Other"
@@ -749,7 +747,7 @@ describe('test code generator', function () {
         }
       };
 
-      assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', '.eslintrc.json', '.vscode/extensions.json']);
+      assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/extension.test.ts', 'tsconfig.json', '.eslintrc.json', '.vscode-test.mjs', '.vscode/extensions.json']);
 
       runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
@@ -791,9 +789,8 @@ describe('test code generator', function () {
           "eslint",
           "@typescript-eslint/parser",
           "@typescript-eslint/eslint-plugin",
-          "glob",
-          "mocha",
           "typescript",
+          "@vscode/test-cli",
           "@vscode/test-electron"
         ]),
         "main": "./out/extension.js",
@@ -803,7 +800,7 @@ describe('test code generator', function () {
           "lint": "eslint src --ext ts",
           "watch": "tsc -watch -p ./",
           "pretest": "pnpm run compile && pnpm run lint",
-          "test": "node ./out/test/runTest.js"
+          "test": "vscode-test"
         },
         "categories": [
           "Other"
@@ -829,7 +826,7 @@ describe('test code generator', function () {
         }
       };
 
-      assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', '.eslintrc.json', '.vscode/extensions.json', '.npmrc']);
+      assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/extension.test.ts', 'tsconfig.json', '.eslintrc.json', '.vscode-test.mjs', '.vscode/extensions.json', '.npmrc']);
 
       runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
@@ -872,9 +869,8 @@ describe('test code generator', function () {
           "@typescript-eslint/parser",
           "@typescript-eslint/eslint-plugin",
           "eslint",
-          "glob",
-          "mocha",
           "typescript",
+          "@vscode/test-cli",
           "@vscode/test-electron",
           "webpack",
           "webpack-cli",
@@ -890,7 +886,7 @@ describe('test code generator', function () {
           "watch-tests": "tsc -p . -w --outDir out",
           "lint": "eslint src --ext ts",
           "pretest": "npm run compile-tests && npm run compile && npm run lint",
-          "test": "node ./out/test/runTest.js"
+          "test": "vscode-test"
         },
         "categories": [
           "Other"
@@ -903,7 +899,7 @@ describe('test code generator', function () {
         }
       };
 
-      assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json']);
+      assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/extension.test.ts', 'tsconfig.json']);
 
       runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
     } finally {
@@ -943,9 +939,8 @@ describe('test code generator', function () {
           "@typescript-eslint/parser",
           "@typescript-eslint/eslint-plugin",
           "eslint",
-          "glob",
-          "mocha",
           "typescript",
+          "@vscode/test-cli",
           "@vscode/test-electron",
           "webpack",
           "webpack-cli",
@@ -961,7 +956,7 @@ describe('test code generator', function () {
           "watch-tests": "tsc -p . -w --outDir out",
           "lint": "eslint src --ext ts",
           "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
-          "test": "node ./out/test/runTest.js"
+          "test": "vscode-test"
         },
         "categories": [
           "Other"
@@ -974,7 +969,7 @@ describe('test code generator', function () {
         }
       };
 
-      assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/suite/extension.test.ts', 'src/test/suite/index.ts', 'tsconfig.json', '.npmrc']);
+      assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/extension.test.ts', 'tsconfig.json', '.npmrc']);
 
       runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
     } finally {
@@ -1012,16 +1007,15 @@ describe('test code generator', function () {
           "@types/mocha",
           "@types/node",
           "eslint",
-          "glob",
-          "mocha",
           "typescript",
+          "@vscode/test-cli",
           "@vscode/test-electron"
         ]),
         "main": "./extension.js",
         "scripts": {
           "lint": "eslint .",
           "pretest": "npm run lint",
-          "test": "node ./test/runTest.js"
+          "test": "vscode-test"
         },
         "categories": [
           "Other"
@@ -1034,7 +1028,7 @@ describe('test code generator', function () {
         }
       };
 
-      assertFiles(runResult, 'testCom', ['extension.js', 'test/suite/extension.test.js', 'test/suite/index.js', 'jsconfig.json']);
+      assertFiles(runResult, 'testCom', ['extension.js', 'test/extension.test.js', 'jsconfig.json']);
 
       runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
     } finally {
@@ -1072,16 +1066,15 @@ describe('test code generator', function () {
           "@types/mocha",
           "@types/node",
           "eslint",
-          "glob",
-          "mocha",
           "typescript",
+          "@vscode/test-cli",
           "@vscode/test-electron"
         ]),
         "main": "./extension.js",
         "scripts": {
           "lint": "eslint .",
           "pretest": "pnpm run lint",
-          "test": "node ./test/runTest.js"
+          "test": "vscode-test"
         },
         "categories": [
           "Other"
@@ -1094,7 +1087,7 @@ describe('test code generator', function () {
         }
       };
 
-      assertFiles(runResult, 'testCom', ['extension.js', 'test/suite/extension.test.js', 'test/suite/index.js', 'jsconfig.json', '.npmrc']);
+      assertFiles(runResult, 'testCom', ['extension.js', 'test/extension.test.js', 'jsconfig.json', '.npmrc']);
 
       runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
     } finally {
@@ -1493,7 +1486,7 @@ describe('test code generator', function () {
           "lint": "eslint src --ext ts",
           "watch": "webpack --mode development --watch",
           "pretest": "webpack --mode development && npm run lint",
-          "test": "node ./out/test/runTest.js"
+          "test": "vscode-test"
         },
         "devDependencies": devDependencies([
           "@types/mocha",
@@ -1506,12 +1499,11 @@ describe('test code generator', function () {
           "css-loader",
           "eslint",
           "fork-ts-checker-webpack-plugin",
-          "glob",
-          "mocha",
           "style-loader",
           "ts-loader",
           "typescript",
           "vscode-notebook-error-overlay",
+          "@vscode/test-cli",
           "@vscode/test-electron",
           "util",
           "webpack",
@@ -1519,7 +1511,7 @@ describe('test code generator', function () {
         ])
       };
 
-      assertFiles(runResult, 'json-renderer-ext', ['webpack.config.js', '.gitignore', '.eslintrc.json']);
+      assertFiles(runResult, 'json-renderer-ext', ['webpack.config.js', '.gitignore', '.vscode-test.mjs', '.eslintrc.json']);
 
       runResult.assertJsonFileContent('json-renderer-ext/package.json', expectedPackageJSON);
     } finally {
@@ -1576,7 +1568,7 @@ describe('test code generator', function () {
           "lint": "eslint src --ext ts",
           "watch": "webpack --mode development --watch",
           "pretest": "webpack --mode development && pnpm run lint",
-          "test": "node ./out/test/runTest.js"
+          "test": "vscode-test"
         },
         "devDependencies": devDependencies([
           "@types/mocha",
@@ -1589,12 +1581,11 @@ describe('test code generator', function () {
           "css-loader",
           "eslint",
           "fork-ts-checker-webpack-plugin",
-          "glob",
-          "mocha",
           "style-loader",
           "ts-loader",
           "typescript",
           "vscode-notebook-error-overlay",
+          "@vscode/test-cli",
           "@vscode/test-electron",
           "util",
           "webpack",
@@ -1602,7 +1593,7 @@ describe('test code generator', function () {
         ])
       };
 
-      assertFiles(runResult, 'json-renderer-ext', ['webpack.config.js', '.gitignore', '.eslintrc.json', '.npmrc']);
+      assertFiles(runResult, 'json-renderer-ext', ['webpack.config.js', '.gitignore', '.eslintrc.json', '.vscode-test.mjs', '.npmrc']);
 
       runResult.assertJsonFileContent('json-renderer-ext/package.json', expectedPackageJSON);
     } finally {

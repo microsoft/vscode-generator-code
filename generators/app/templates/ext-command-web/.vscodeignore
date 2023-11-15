@@ -11,3 +11,4 @@ webpack.config.js
 **/.eslintrc.json
 **/*.map
 **/*.ts
+**/.vscode-test.*
