@@ -5,16 +5,19 @@
 import * as path from 'path';
 import { createHelpers } from 'yeoman-test';
 import * as cp from 'child_process';
+import which from 'which';
 
 import * as assert from 'assert';
 
 import { fileURLToPath } from 'url';
 
-describe('integration tests', function () {
+describe('integration tests', async function () {
     this.timeout(5 * 60 * 1000);
 
     const helpers = createHelpers();
     const appLocation = path.join(fileURLToPath(import.meta.url), '../../generators/app');
+
+    const npmLocation = await which('npm')
 
     it('command-ts integration test (install, compile and run extension tests)', async () => {
 
@@ -29,18 +32,18 @@ describe('integration tests', function () {
         });
 
         //console.log('command-ts with test: Running npm install');
-        const res = await doSpawn('npm', ['i'], { cwd: runResult.env.cwd });
+        const res = await doSpawn(npmLocation, ['i'], { cwd: runResult.env.cwd });
         if (res.exitCode !== 0) {
             assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
         }
 
-        const resAudit = await doSpawn('npm', ['audit'], { cwd: runResult.env.cwd });
+        const resAudit = await doSpawn(npmLocation, ['audit'], { cwd: runResult.env.cwd });
         if (resAudit.exitCode !== 0) {
             assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
         }
 
         //console.log('command-ts with test: Running extension compile');
-        const res2 = await doSpawn('npm', ['run', 'test'], { cwd: runResult.env.cwd });
+        const res2 = await doSpawn(npmLocation, ['run', 'test'], { cwd: runResult.env.cwd });
         if (res2.exitCode !== 0) {
             assert.fail(`npm run test failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
         }
@@ -62,18 +65,18 @@ describe('integration tests', function () {
             openWith: 'skip'
         });
 
-        const res = await doSpawn('npm', ['i'], { cwd: runResult.env.cwd });
+        const res = await doSpawn(npmLocation, ['i'], { cwd: runResult.env.cwd });
         if (res.exitCode !== 0) {
             assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
         }
 
-        const resAudit = await doSpawn('npm', ['audit'], { cwd: runResult.env.cwd });
+        const resAudit = await doSpawn(npmLocation, ['audit'], { cwd: runResult.env.cwd });
         if (resAudit.exitCode !== 0) {
             assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
         }
 
         //console.log('command-ts-webpack with test: Running extension compile');
-        const res2 = await doSpawn('npm', ['run', 'test'], { cwd: runResult.env.cwd });
+        const res2 = await doSpawn(npmLocation, ['run', 'test'], { cwd: runResult.env.cwd });
         if (res2.exitCode !== 0) {
             assert.fail(`npm run compile failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
         }
@@ -94,18 +97,18 @@ describe('integration tests', function () {
             openWith: 'skip'
         });
 
-        const res = await doSpawn('npm', ['i'], { cwd: runResult.env.cwd });
+        const res = await doSpawn(npmLocation, ['i'], { cwd: runResult.env.cwd });
         if (res.exitCode !== 0) {
             assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
         }
 
-        const resAudit = await doSpawn('npm', ['audit'], { cwd: runResult.env.cwd });
+        const resAudit = await doSpawn(npmLocation, ['audit'], { cwd: runResult.env.cwd });
         if (resAudit.exitCode !== 0) {
             assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
         }
 
         //console.log('command-ts-web with test: Running extension compile-web');
-        const res2 = await doSpawn('npm', ['run', 'test'], { cwd: runResult.env.cwd });
+        const res2 = await doSpawn(npmLocation, ['run', 'test'], { cwd: runResult.env.cwd });
         if (res2.exitCode !== 0) {
             assert.fail(`npm run test failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
         }
@@ -126,3 +129,4 @@ async function doSpawn(execName, allArguments, options) {
         });
     });
 }
+
