@@ -4,7 +4,7 @@
 
 import * as path from 'path';
 import { createHelpers } from 'yeoman-test';
-import spawn from 'execa';
+import * as cp from 'child_process';
 
 import * as assert from 'assert';
 
@@ -115,9 +115,14 @@ describe('integration tests', function () {
     });
 });
 
-async function doSpawn(execName, allArguments, options,) {
-    const resAudit = spawn(execName, allArguments, options)
-    resAudit.stdout.pipe(process.stdout);
-    resAudit.stderr.pipe(process.stderr);
-    return await resAudit;
+async function doSpawn(execName, allArguments, options) {
+    return new Promise((resolve, reject) => {
+        const child = cp.spawn(execName, allArguments, { stdio: 'inherit', ...options });
+        child.on('error', (err) => {
+            reject(err);
+        });
+        child.on('exit', (exitCode) => {
+            resolve({ exitCode });
+        });
+    });
 }
