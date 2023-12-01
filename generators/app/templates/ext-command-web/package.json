@@ -32,6 +32,7 @@
   "devDependencies": {
     <%- dep("@types/vscode") %>,
     <%- dep("@types/mocha") %>,
+    <%- dep("@types/assert") %>,
     <%- dep("eslint") %>,
     <%- dep("@typescript-eslint/eslint-plugin") %>,
     <%- dep("@typescript-eslint/parser") %>,
