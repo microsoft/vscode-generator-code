@@ -86,7 +86,7 @@ docker build -t vscode-generator-code .
 Create a docker container with volumes.
 
 ```bash
-docker run -v $(pwd):/usr/src/app vscode-generator-code
+docker run -it -v $(pwd):/usr/src/app vscode-generator-code
 ```
 
 ## Local development
