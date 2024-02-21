@@ -189,11 +189,11 @@ export default class extends Generator {
 
         // Git init
         if (this.extensionConfig.gitInit) {
-            this.spawnCommand('git', ['init', '--quiet']);
+            await this.spawn('git', ['init', '--quiet']);
         }
 
         if (this.extensionConfig.proposedAPI) {
-            this.spawnCommand(this.extensionConfig.pkgManager, ['run', 'update-proposed-api']);
+            await this.spawn(this.extensionConfig.pkgManager, ['run', 'update-proposed-api']);
         }
         this.log('');
 
@@ -228,20 +228,20 @@ export default class extends Generator {
         if (this.options["open"]) {
             if (codeStableLocation) {
                 this.log(`Opening ${this.destinationPath()} in Visual Studio Code...`);
-                this.spawnCommand(codeStableLocation, [this.destinationPath()]);
+                await this.spawn(codeStableLocation, [this.destinationPath()]);
             } else {
                 this.log(`'code' command not found.`);
             }
         } else if (this.options["openInInsiders"]) {
             if (codeInsidersLocation) {
                 this.log(`Opening ${this.destinationPath()} with Visual Studio Code Insiders...`);
-                this.spawnCommand(codeInsidersLocation, [this.destinationPath()]);
+                await this.spawn(codeInsidersLocation, [this.destinationPath()]);
             } else {
                 this.log(`'code-insiders' command not found.`);
             }
         } else if (codeInsidersLocation || codeStableLocation) {
             if (this.options["quick"]) {
-                this.spawnCommand(codeInsidersLocation || codeStableLocation, [this.destinationPath()]);
+                await this.spawn(codeInsidersLocation || codeStableLocation, [this.destinationPath()]);
             } else {
                 const choices = [];
                 if (codeInsidersLocation) {
@@ -259,7 +259,7 @@ export default class extends Generator {
                     choices
                 });
                 if (answer && answer.openWith && answer.openWith !== 'skip') {
-                    this.spawnCommand(answer.openWith, [this.destinationPath()]);
+                    await this.spawn(answer.openWith, [this.destinationPath()]);
                 }
             }
         }
