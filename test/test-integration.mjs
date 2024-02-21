@@ -119,12 +119,19 @@ describe('integration tests', function () {
 
 async function doSpawn(execName, allArguments, options) {
     return new Promise((resolve, reject) => {
-        const child = cp.execFile(execName, allArguments, { stdio: 'inherit', ...options });
+        const child = cp.execFile(execName, allArguments, { stdio: 'pipe', ...options });
+        let stdout = [], stderr = [];
+        child.stdout.on('data', (data) => {
+            stdout.push(data.toString());
+        });
+        child.stderr.on('data', (data) => {
+            stderr.push(data.toString());
+        });
         child.on('error', (err) => {
             reject(err);
         });
         child.on('exit', (exitCode) => {
-            resolve({ exitCode });
+            resolve({ exitCode, stdout: stdout.join(''), stderr: stderr.join('')});
         });
     });
 }
