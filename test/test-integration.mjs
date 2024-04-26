@@ -31,18 +31,18 @@ describe('integration tests', function () {
         });
 
         //console.log('command-ts with test: Running npm install');
-        const res = await doSpawn(npmCommand, ['i'], { cwd: runResult.env.cwd });
+        const res = await doSpawn(npmCommand, ['i'], { cwd: runResult.env.cwd, shell: true });
         if (res.exitCode !== 0) {
             assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
         }
 
-        const resAudit = await doSpawn(npmCommand, ['audit'], { cwd: runResult.env.cwd });
+        const resAudit = await doSpawn(npmCommand, ['audit'], { cwd: runResult.env.cwd, shell: true });
         if (resAudit.exitCode !== 0) {
             assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
         }
 
         //console.log('command-ts with test: Running extension compile');
-        const res2 = await doSpawn(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd });
+        const res2 = await doSpawn(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd, shell: true });
         if (res2.exitCode !== 0) {
             assert.fail(`npm run test failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
         }
@@ -64,18 +64,18 @@ describe('integration tests', function () {
             openWith: 'skip'
         });
 
-        const res = await doSpawn(npmCommand, ['i'], { cwd: runResult.env.cwd });
+        const res = await doSpawn(npmCommand, ['i'], { cwd: runResult.env.cwd, shell: true });
         if (res.exitCode !== 0) {
             assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
         }
 
-        const resAudit = await doSpawn(npmCommand, ['audit'], { cwd: runResult.env.cwd });
+        const resAudit = await doSpawn(npmCommand, ['audit'], { cwd: runResult.env.cwd, shell: true });
         if (resAudit.exitCode !== 0) {
             assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
         }
 
         //console.log('command-ts-webpack with test: Running extension compile');
-        const res2 = await doSpawn(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd });
+        const res2 = await doSpawn(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd, shell: true });
         if (res2.exitCode !== 0) {
             assert.fail(`npm run compile failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
         }
@@ -96,18 +96,18 @@ describe('integration tests', function () {
             openWith: 'skip'
         });
 
-        const res = await doSpawn(npmCommand, ['i'], { cwd: runResult.env.cwd });
+        const res = await doSpawn(npmCommand, ['i'], { cwd: runResult.env.cwd, shell: true });
         if (res.exitCode !== 0) {
             assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
         }
 
-        const resAudit = await doSpawn(npmCommand, ['audit'], { cwd: runResult.env.cwd });
+        const resAudit = await doSpawn(npmCommand, ['audit'], { cwd: runResult.env.cwd, shell: true });
         if (resAudit.exitCode !== 0) {
             assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
         }
 
         //console.log('command-ts-web with test: Running extension compile-web');
-        const res2 = await doSpawn(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd });
+        const res2 = await doSpawn(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd, shell: true });
         if (res2.exitCode !== 0) {
             assert.fail(`npm run test failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
         }
