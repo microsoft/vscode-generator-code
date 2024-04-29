@@ -60,7 +60,7 @@ describe('integration tests', function () {
             description: 'My TestCom',
             gitInit: false,
             pkgManager: 'npm',
-            webpack: true,
+            bundler: 'webpack',
             openWith: 'skip'
         });
 
@@ -75,6 +75,39 @@ describe('integration tests', function () {
         }
 
         //console.log('command-ts-webpack with test: Running extension compile');
+        const res2 = await doSpawn(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd, shell: true });
+        if (res2.exitCode !== 0) {
+            assert.fail(`npm run compile failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
+        }
+
+        runResult.assertFile('testCom/dist/extension.js');
+        runResult.assertFile('testCom/out/test/extension.test.js');
+    });
+
+    it('command-ts-esbuild integration test (install, pack and run extension tests)', async () => {
+
+        const runResult = await helpers.run(appLocation).withAnswers({
+            type: 'ext-command-ts',
+            name: 'testCom',
+            displayName: 'Test Com',
+            description: 'My TestCom',
+            gitInit: false,
+            pkgManager: 'npm',
+            bundler: 'esbuild',
+            openWith: 'skip'
+        });
+
+        const res = await doSpawn(npmCommand, ['i'], { cwd: runResult.env.cwd, shell: true });
+        if (res.exitCode !== 0) {
+            assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
+        }
+
+        const resAudit = await doSpawn(npmCommand, ['audit'], { cwd: runResult.env.cwd, shell: true });
+        if (resAudit.exitCode !== 0) {
+            assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
+        }
+
+        //console.log('command-ts-esbuild with test: Running extension compile');
         const res2 = await doSpawn(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd, shell: true });
         if (res2.exitCode !== 0) {
             assert.fail(`npm run compile failed: stdout ${res2.stdout} stderr ${res2.stderr}`);

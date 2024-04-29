@@ -161,24 +161,41 @@ export function askForPackageManager(generator, extensionConfig) {
 * @param {Generator} generator
 * @param {Object} extensionConfig
 */
-export function askForWebpack(generator, extensionConfig) {
-    let webpack = generator.options['webpack'];
-    if (typeof webpack === 'boolean') {
-        extensionConfig.webpack = Boolean(webpack);
+export function askForBundler(generator, extensionConfig) {
+    let bundler = generator.options['bundler'];
+    if (bundler === 'webpack' || bundler === 'esbuild') {
+        extensionConfig.bundler = bundler;
         return Promise.resolve();
     }
-
+    let webpack = generator.options['webpack']; // backwards compatibility
+    if (typeof webpack === 'boolean' && webpack) {
+        extensionConfig.bundler = 'webpack';
+        return Promise.resolve();
+    }
     if (generator.options['quick']) {
-        extensionConfig.webpack = false;
+        extensionConfig.bundler = undefined;
         return Promise.resolve();
     }
 
     return generator.prompt({
-        type: 'confirm',
-        name: 'webpack',
-        message: 'Bundle the source code with webpack?',
-        default: false
-    }).then(gitAnswer => {
-        extensionConfig.webpack = gitAnswer.webpack;
+        type: 'list',
+        name: 'bundler',
+        message: 'Which bundler to use?',
+        choices: [
+            {
+                name: 'none',
+                value: 'none'
+            },
+            {
+                name: 'webpack',
+                value: 'webpack'
+            },
+            {
+                name: 'esbuild',
+                value: 'esbuild'
+            }
+        ]
+    }).then(bundlerAnswer => {
+        extensionConfig.bundler = bundlerAnswer.bundler;
     });
 }
