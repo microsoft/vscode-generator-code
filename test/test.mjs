@@ -902,7 +902,7 @@ describe('test code generator', function () {
         }
       };
 
-      assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/extension.test.ts', 'tsconfig.json']);
+      assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/extension.test.ts', 'tsconfig.json', 'webpack.config.js']);
 
       runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
     } finally {
@@ -972,7 +972,79 @@ describe('test code generator', function () {
         }
       };
 
-      assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/extension.test.ts', 'tsconfig.json', '.npmrc']);
+      assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/extension.test.ts', 'tsconfig.json', '.npmrc', 'webpack.config.js']);
+
+      runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
+    } finally {
+      cleanup(runResult);
+    }
+  });
+
+  it('command-ts with esbuild + yarn', async () => {
+    this.timeout(10000);
+
+    const runResult = await helpers.run(appLocation).withAnswers({
+      type: 'ext-command-ts',
+      name: 'testCom',
+      displayName: 'Test Com',
+      description: 'My TestCom',
+      gitInit: true,
+      pkgManager: 'yarn',
+      bundler: 'esbuild',
+      openWith: 'skip'
+    }); // Mock the prompt answers
+
+
+    try {
+      const expectedPackageJSON = {
+        "name": "testCom",
+        "displayName": 'Test Com',
+        "description": "My TestCom",
+        "version": "0.0.1",
+        "engines": {
+          "vscode": engineVersion
+        },
+        "activationEvents": [],
+        "devDependencies": devDependencies([
+          "@types/vscode",
+          "@types/mocha",
+          "@types/node",
+          "@typescript-eslint/parser",
+          "@typescript-eslint/eslint-plugin",
+          "eslint",
+          "esbuild",
+          "npm-run-all",
+          "typescript",
+          "@vscode/test-cli",
+          "@vscode/test-electron",
+        ]),
+        "main": "./dist/extension.js",
+        "scripts": {
+          "vscode:prepublish": "yarn run package",
+          "compile": "yarn run check-types && yarn run lint && node esbuild.js",
+          "watch": "npm-run-all -p watch:*",
+          "watch:esbuild": "node esbuild.js --watch",
+          "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+          "package": "yarn run check-types && yarn run lint && node esbuild.js --production",
+          "compile-tests": "tsc -p . --outDir out",
+          "watch-tests": "tsc -p . -w --outDir out",
+          "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+          "check-types": "tsc --noEmit",
+          "lint": "eslint src --ext ts",
+          "test": "vscode-test"
+        },
+        "categories": [
+          "Other"
+        ],
+        "contributes": {
+          "commands": [{
+            "command": "testCom.helloWorld",
+            "title": "Hello World"
+          }]
+        }
+      };
+
+      assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/extension.test.ts', 'tsconfig.json', '.yarnrc', 'esbuild.js']);
 
       runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
     } finally {

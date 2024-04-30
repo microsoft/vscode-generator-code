@@ -45,7 +45,6 @@
     <%- dep("esbuild") %>,
     <%- dep("npm-run-all") %>,
     <%- dep("typescript") %>,
-    <%- dep("ts-loader") %>,
     <%- dep("@vscode/test-cli") %>,
     <%- dep("@vscode/test-electron") %><% if (insiders) { %>,
     <%- dep("vscode-dts") %><% } %>
