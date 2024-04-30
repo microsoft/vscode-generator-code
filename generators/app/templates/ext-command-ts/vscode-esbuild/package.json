@@ -21,18 +21,19 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run package",
-    "compile": "node esbuild.js",
+    "vscode:prepublish": "<%= pkgManager %> run package",
+    "compile": "<%= pkgManager %> run check-types && <%= pkgManager %> run lint && node esbuild.js",
     "watch": "npm-run-all -p watch:*",
     "watch:esbuild": "node esbuild.js --watch",
     "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "package": "<%= pkgManager %> run check-types && <%= pkgManager %> run lint && node esbuild.js --production",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "npm run compile-tests && npm run lint",
+    "pretest": "<%= pkgManager %> run compile-tests && <%= pkgManager %> run compile && <%= pkgManager %> run lint",
     "check-types": "tsc --noEmit",
     "lint": "eslint src --ext ts",
-    "test": "vscode-test"
+    "test": "vscode-test"<% if (insiders) { %>,
+    "update-proposed-api": "vscode-dts dev"<% } %>
   },
   "devDependencies": {
     <%- dep("@types/vscode") %>,

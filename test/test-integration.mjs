@@ -27,6 +27,7 @@ describe('integration tests', function () {
             description: 'My TestCom',
             gitInit: false,
             pkgManager: 'npm',
+            bundler: 'none',
             openWith: 'skip'
         });
 
@@ -126,6 +127,7 @@ describe('integration tests', function () {
             description: 'My TestCom',
             gitInit: false,
             pkgManager: 'npm',
+            bundler: 'webpack',
             openWith: 'skip'
         });
 

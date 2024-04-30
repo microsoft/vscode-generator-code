@@ -173,12 +173,13 @@ export function askForBundler(generator, extensionConfig) {
         return Promise.resolve();
     }
     if (generator.options['quick']) {
-        extensionConfig.bundler = undefined;
+        extensionConfig.bundler = 'none';
         return Promise.resolve();
     }
 
     return generator.prompt({
         type: 'list',
+        default: 'none',
         name: 'bundler',
         message: 'Which bundler to use?',
         choices: [

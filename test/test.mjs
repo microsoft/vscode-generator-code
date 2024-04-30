@@ -627,6 +627,7 @@ describe('test code generator', function () {
       description: 'My TestCom',
       gitInit: true,
       pkgManager: 'npm',
+      bundler: 'none',
       openWith: 'skip'
     }); // Mock the prompt answers
 
@@ -689,6 +690,7 @@ describe('test code generator', function () {
       description: 'My TestCom',
       gitInit: false,
       pkgManager: 'yarn',
+      bundler: 'none',
       openWith: 'skip'
     }); // Mock the prompt answers
 
@@ -768,6 +770,7 @@ describe('test code generator', function () {
       description: 'My TestCom',
       gitInit: false,
       pkgManager: 'pnpm',
+      bundler: 'none',
       openWith: 'skip'
     }); // Mock the prompt answers
 
@@ -847,7 +850,7 @@ describe('test code generator', function () {
       description: 'My TestCom',
       gitInit: true,
       pkgManager: 'npm',
-      webpack: true,
+      bundler: 'webpack',
       openWith: 'skip'
     }); // Mock the prompt answers
 
@@ -917,7 +920,7 @@ describe('test code generator', function () {
       description: 'My TestCom',
       gitInit: true,
       pkgManager: 'pnpm',
-      webpack: true,
+      bundler: 'webpack',
       openWith: 'skip'
     }); // Mock the prompt answers
 
@@ -1309,6 +1312,7 @@ describe('test code generator', function () {
       description: 'My TestCom',
       gitInit: true,
       pkgManager: 'npm',
+      bundler: 'webpack',
       openWith: 'skip'
     }); // Mock the prompt answers
 
@@ -1379,6 +1383,7 @@ describe('test code generator', function () {
       description: 'My TestCom',
       gitInit: true,
       pkgManager: 'pnpm',
+      bundler: 'webpack',
       openWith: 'skip'
     }); // Mock the prompt answers
 
@@ -1450,6 +1455,7 @@ describe('test code generator', function () {
       rendererDisplayName: 'JSON Renderer',
       gitInit: true,
       pkgManager: 'npm',
+      bundler: 'webpack',
       openWith: 'skip'
     });
 
@@ -1530,6 +1536,7 @@ describe('test code generator', function () {
       rendererDisplayName: 'JSON Renderer',
       gitInit: true,
       pkgManager: 'pnpm',
+      bundler: 'webpack',
       openWith: 'skip'
     });
 

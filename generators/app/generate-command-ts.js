@@ -33,11 +33,12 @@ export default {
         const bundler = extensionConfig.bundler;
         if (bundler && (bundler === 'webpack' || bundler === 'esbuild')) {
             const bundlerPath = bundler === 'esbuild' ? 'vscode-esbuild' : 'vscode-webpack';
+            const bundlerFile = bundler === 'esbuild' ? 'esbuild.js' : 'webpack.config.js';
             generator.fs.copy(generator.templatePath(bundlerPath, 'vscode'), generator.destinationPath('.vscode'));
             generator.fs.copyTpl(generator.templatePath(bundlerPath, 'package.json'), generator.destinationPath('package.json'), extensionConfig);
             generator.fs.copyTpl(generator.templatePath(bundlerPath, 'tsconfig.json'), generator.destinationPath('tsconfig.json'), extensionConfig);
             generator.fs.copyTpl(generator.templatePath(bundlerPath, '.vscodeignore'), generator.destinationPath('.vscodeignore'), extensionConfig);
-            generator.fs.copyTpl(generator.templatePath(bundlerPath, 'webpack.config.js'), generator.destinationPath('webpack.config.js'), extensionConfig);
+            generator.fs.copyTpl(generator.templatePath(bundlerPath, bundlerFile), generator.destinationPath(bundlerFile), extensionConfig);
             generator.fs.copyTpl(generator.templatePath(bundlerPath, 'vsc-extension-quickstart.md'), generator.destinationPath('vsc-extension-quickstart.md'), extensionConfig);
         } else {
             generator.fs.copy(generator.templatePath('vscode'), generator.destinationPath('.vscode'));
