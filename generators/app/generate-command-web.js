@@ -21,6 +21,7 @@ export default {
         await prompts.askForExtensionDescription(generator, extensionConfig);
 
         await prompts.askForGit(generator, extensionConfig);
+        await prompts.askForBundler(generator, extensionConfig, false, 'webpack');
         await prompts.askForPackageManager(generator, extensionConfig);
     },
     /**
@@ -28,8 +29,12 @@ export default {
      * @param {Object} extensionConfig
      */
     writing: (generator, extensionConfig) => {
-        generator.fs.copy(generator.templatePath('vscode'), generator.destinationPath('.vscode'));
-        generator.fs.copy(generator.templatePath('src/web/test'), generator.destinationPath('src/web/test'));
+        const bundler = extensionConfig.bundler;
+        if (bundler === 'esbuild') {
+            generator.fs.copy(generator.templatePath('vscode-esbuild'), generator.destinationPath('.vscode'));
+        } else {
+            generator.fs.copy(generator.templatePath('vscode-webpack'), generator.destinationPath('.vscode'));
+        }
 
         generator.fs.copy(generator.templatePath('.vscodeignore'), generator.destinationPath('.vscodeignore'));
         if (extensionConfig.gitInit) {
@@ -42,8 +47,17 @@ export default {
 
         generator.fs.copyTpl(generator.templatePath('src/web/extension.ts'), generator.destinationPath('src/web/extension.ts'), extensionConfig);
 
-        generator.fs.copyTpl(generator.templatePath('webpack.config.js'), generator.destinationPath('webpack.config.js'), extensionConfig);
-        generator.fs.copyTpl(generator.templatePath('package.json'), generator.destinationPath('package.json'), extensionConfig);
+        generator.fs.copy(generator.templatePath('src/web/test/suite/extension.test.ts'), generator.destinationPath('src/web/test/suite/extension.test.ts'));
+
+        if (bundler === 'esbuild') {
+            generator.fs.copyTpl(generator.templatePath('esbuild.js'), generator.destinationPath('esbuild.js'), extensionConfig);
+            generator.fs.copyTpl(generator.templatePath('esbuild-package.json'), generator.destinationPath('package.json'), extensionConfig);
+            generator.fs.copy(generator.templatePath('src/web/test/suite/esbuild-mochaTestRunner.ts'), generator.destinationPath('src/web/test/suite/mochaTestRunner.ts'));
+        } else {
+            generator.fs.copyTpl(generator.templatePath('webpack.config.js'), generator.destinationPath('webpack.config.js'), extensionConfig);
+            generator.fs.copyTpl(generator.templatePath('webpack-package.json'), generator.destinationPath('package.json'), extensionConfig);
+            generator.fs.copy(generator.templatePath('src/web/test/suite/webpack-mochaTestRunner.ts'), generator.destinationPath('src/web/test/suite/index.ts'));
+        }
 
         generator.fs.copy(generator.templatePath('.eslintrc.json'), generator.destinationPath('.eslintrc.json'));
 

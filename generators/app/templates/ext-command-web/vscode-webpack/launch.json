@@ -7,7 +7,7 @@
 	"configurations": [
 		{
 			"name": "Run Web Extension ",
-			"type": "pwa-extensionHost",
+			"type": "extensionHost",
 			"debugWebWorkerHost": true,
 			"request": "launch",
 			"args": [
@@ -17,7 +17,7 @@
 			"outFiles": [
 				"${workspaceFolder}/dist/web/**/*.js"
 			],
-			"preLaunchTask": "npm: watch-web"
+			"preLaunchTask": "${defaultBuildTask}"
 		},
 		{
 			"name": "Extension Tests",
@@ -32,7 +32,7 @@
 			"outFiles": [
 				"${workspaceFolder}/dist/web/**/*.js"
 			],
-			"preLaunchTask": "npm: watch-web"
+			"preLaunchTask": "${defaultBuildTask}"
 		}
 	]
 }

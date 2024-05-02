@@ -41,7 +41,7 @@ export function askForExtensionDisplayName(generator, extensionConfig) {
 * @param {Object} extensionConfig
 */
 export function askForExtensionId(generator, extensionConfig) {
-    let extensionName = generator.options['extensionId'];
+    const extensionName = generator.options['extensionId'];
     if (extensionName) {
         extensionConfig.name = extensionName;
         return Promise.resolve();
@@ -72,7 +72,7 @@ export function askForExtensionId(generator, extensionConfig) {
 * @param {Object} extensionConfig
 */
 export function askForExtensionDescription(generator, extensionConfig) {
-    let extensionDescription = generator.options['extensionDescription'];
+    const extensionDescription = generator.options['extensionDescription'];
     if (extensionDescription) {
         extensionConfig.description = extensionDescription;
         return Promise.resolve();
@@ -97,7 +97,7 @@ export function askForExtensionDescription(generator, extensionConfig) {
 * @param {Object} extensionConfig
 */
 export function askForGit(generator, extensionConfig) {
-    let gitInit = generator.options['gitInit'];
+    const gitInit = generator.options['gitInit'];
     if (typeof gitInit === 'boolean') {
         extensionConfig.gitInit = Boolean(gitInit);
         return Promise.resolve();
@@ -122,7 +122,7 @@ export function askForGit(generator, extensionConfig) {
 * @param {Object} extensionConfig
 */
 export function askForPackageManager(generator, extensionConfig) {
-    let pkgManager = generator.options['pkgManager'];
+    const pkgManager = generator.options['pkgManager'];
     if (pkgManager === 'npm' || pkgManager === 'yarn' || pkgManager === 'pnpm') {
         extensionConfig.pkgManager = pkgManager;
         return Promise.resolve();
@@ -161,32 +161,31 @@ export function askForPackageManager(generator, extensionConfig) {
 * @param {Generator} generator
 * @param {Object} extensionConfig
 */
-export function askForBundler(generator, extensionConfig) {
-    let bundler = generator.options['bundler'];
+export function askForBundler(generator, extensionConfig, allowNone = true, defaultBundler = 'none') {
+    const bundler = generator.options['bundler'];
     if (bundler === 'webpack' || bundler === 'esbuild') {
         extensionConfig.bundler = bundler;
         return Promise.resolve();
     }
-    let webpack = generator.options['webpack']; // backwards compatibility
+    const webpack = generator.options['webpack']; // backwards compatibility
     if (typeof webpack === 'boolean' && webpack) {
         extensionConfig.bundler = 'webpack';
         return Promise.resolve();
     }
     if (generator.options['quick']) {
-        extensionConfig.bundler = 'none';
+        extensionConfig.bundler = defaultBundler;
         return Promise.resolve();
     }
 
+    const choices = allowNone ? [{ name: 'none', value: 'none' }] : [];
+
     return generator.prompt({
         type: 'list',
-        default: 'none',
+        default: defaultBundler,
         name: 'bundler',
         message: 'Which bundler to use?',
         choices: [
-            {
-                name: 'none',
-                value: 'none'
-            },
+            ...choices,
             {
                 name: 'webpack',
                 value: 'webpack'
