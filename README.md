@@ -57,7 +57,7 @@ Options:
         --extensionId           # Id of the extension
         --extensionDescription  # Description of the extension
         --pkgManager            # 'npm', 'yarn' or 'pnpm'
-        --webpack               # Bundle the extension with webpack
+        --bundle                # 'webpack', 'esbuild'. Bundle the extension with webpack or esbuild
         --gitInit               # Initialize a git repo
 
 Example usages:
