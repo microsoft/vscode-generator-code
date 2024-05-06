@@ -1,0 +1,52 @@
+{
+  "name": <%- JSON.stringify(name) %>,
+  "displayName": <%- JSON.stringify(displayName) %>,
+  "description": <%- JSON.stringify(description) %>,
+  "version": "0.0.1",
+  "engines": {
+    "vscode": <%- JSON.stringify(vsCodeEngine) %>
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",<% if (insiders) { %>
+  "enabledApiProposals": [],<% } %>
+  "contributes": {
+    "commands": [
+      {
+        "command": <%- JSON.stringify(`${name}.helloWorld`) %>,
+        "title": "Hello World"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "<%= pkgManager %> run package",
+    "compile": "<%= pkgManager %> run check-types && <%= pkgManager %> run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "<%= pkgManager %> run check-types && <%= pkgManager %> run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "<%= pkgManager %> run compile-tests && <%= pkgManager %> run compile && <%= pkgManager %> run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test"<% if (insiders) { %>,
+    "update-proposed-api": "vscode-dts dev"<% } %>
+  },
+  "devDependencies": {
+    <%- dep("@types/vscode") %>,
+    <%- dep("@types/mocha") %>,
+    <%- dep("@types/node") %>,
+    <%- dep("@typescript-eslint/eslint-plugin") %>,
+    <%- dep("@typescript-eslint/parser") %>,
+    <%- dep("eslint") %>,
+    <%- dep("esbuild") %>,
+    <%- dep("npm-run-all") %>,
+    <%- dep("typescript") %>,
+    <%- dep("@vscode/test-cli") %>,
+    <%- dep("@vscode/test-electron") %><% if (insiders) { %>,
+    <%- dep("vscode-dts") %><% } %>
+  }
+}
