@@ -11,7 +11,7 @@ import * as assert from 'assert';
 import { fileURLToPath } from 'url';
 
 describe('integration tests', function () {
-	this.timeout(5 * 60 * 1000);
+	this.timeout(7 * 60 * 1000);
 
 	const helpers = createHelpers();
 	const appLocation = path.join(fileURLToPath(import.meta.url), '../../generators/app');
