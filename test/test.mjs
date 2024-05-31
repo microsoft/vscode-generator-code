@@ -627,7 +627,7 @@ describe('test code generator', function () {
 			description: 'My TestCom',
 			gitInit: true,
 			pkgManager: 'npm',
-			bundler: 'none',
+			bundler: 'unbundled',
 			openWith: 'skip'
 		}); // Mock the prompt answers
 
@@ -690,7 +690,7 @@ describe('test code generator', function () {
 			description: 'My TestCom',
 			gitInit: false,
 			pkgManager: 'yarn',
-			bundler: 'none',
+			bundler: 'unbundled',
 			openWith: 'skip'
 		}); // Mock the prompt answers
 
@@ -770,7 +770,7 @@ describe('test code generator', function () {
 			description: 'My TestCom',
 			gitInit: false,
 			pkgManager: 'pnpm',
-			bundler: 'none',
+			bundler: 'unbundled',
 			openWith: 'skip'
 		}); // Mock the prompt answers
 

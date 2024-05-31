@@ -27,7 +27,7 @@ describe('integration tests', function () {
 			description: 'My TestCom',
 			gitInit: false,
 			pkgManager: 'npm',
-			bundler: 'none',
+			bundler: 'unbundled',
 			openWith: 'skip'
 		});
 

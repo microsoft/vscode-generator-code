@@ -161,7 +161,7 @@ export function askForPackageManager(generator, extensionConfig) {
 * @param {Generator} generator
 * @param {Object} extensionConfig
 */
-export function askForBundler(generator, extensionConfig, allowNone = true, defaultBundler = 'none') {
+export function askForBundler(generator, extensionConfig, allowNone = true, defaultBundler = 'unbundled') {
     const bundler = generator.options['bundler'];
     if (bundler === 'webpack' || bundler === 'esbuild') {
         extensionConfig.bundler = bundler;
@@ -177,7 +177,7 @@ export function askForBundler(generator, extensionConfig, allowNone = true, defa
         return Promise.resolve();
     }
 
-    const choices = allowNone ? [{ name: 'none', value: 'none' }] : [];
+    const choices = allowNone ? [{ name: 'unbundled', value: 'unbundled' }] : [];
 
     return generator.prompt({
         type: 'list',
