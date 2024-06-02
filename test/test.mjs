@@ -2090,7 +2090,7 @@ it('sample notebook renderer with bun', async () => {
 		rendererId: 'json-renderer',
 		rendererDisplayName: 'JSON Renderer',
 		gitInit: true,
-		pkgManager: 'pnpm',
+		pkgManager: 'bun',
 		bundler: 'webpack',
 		openWith: 'skip'
 	});
