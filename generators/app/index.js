@@ -43,7 +43,7 @@ export default class extends Generator {
         this.option('extensionId', { type: String, description: 'Id of the extension' });
         this.option('extensionDescription', { type: String, description: 'Description of the extension' });
 
-        this.option('pkgManager', { type: String, description: `'npm', 'yarn' or 'pnpm'` });
+        this.option('pkgManager', { type: String, description: `'npm', 'yarn', 'pnpm' or 'bun` });
         this.option('bundler', { type: String, description: `Bundle the extension: 'webpack', 'esbuild'` });
         this.option('gitInit', { type: Boolean, description: `Initialize a git repo` });
 
