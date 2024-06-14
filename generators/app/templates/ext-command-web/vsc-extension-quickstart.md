@@ -13,7 +13,7 @@
 
 ## Get up and running the Web Extension
 
-* Run `npm install`.
+* Run `<%= pkgManager %> install`.
 * Place breakpoints in `src/web/extension.ts`.
 * Debug via F5 (Run Web Extension).
 * Execute extension code via `F1 > Hello world`.
