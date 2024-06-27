@@ -5,13 +5,24 @@ import Generator from 'yeoman-generator';
 import * as prompts from './prompts.js';
 import * as childProcess from 'child_process';
 
+
+/**
+ * @typedef {{
+*   extensionList: string[],
+*   isCustomization: boolean
+* } & import('./index.js').ExtensionConfig} ExtensionConfig
+*/
+
+/**
+ * @type {import('./index.js').ExtensionGenerator}
+ */
 export default {
     id: 'ext-extensionpack',
     aliases: ['extensionpack'],
     name: 'New Extension Pack',
     /**
      * @param {Generator} generator
-     * @param {Object} extensionConfig
+     * @param {ExtensionConfig} extensionConfig
      */
     prompting: async (generator, extensionConfig) => {
 
@@ -25,7 +36,7 @@ export default {
     },
     /**
      * @param {Generator} generator
-     * @param {Object} extensionConfig
+     * @param {ExtensionConfig} extensionConfig
      */
     writing: (generator, extensionConfig) => {
         generator.fs.copy(generator.templatePath('vscode'), generator.destinationPath('.vscode'));
@@ -40,7 +51,10 @@ export default {
         }
     }
 }
-
+/**
+ * @param {Generator} generator
+ * @param {ExtensionConfig} extensionConfig
+ */
 function askForExtensionPackInfo(generator, extensionConfig) {
     extensionConfig.isCustomization = true;
     const defaultExtensionList = ['publisher.extensionName'];
@@ -51,7 +65,7 @@ function askForExtensionPackInfo(generator, extensionConfig) {
                 'code --list-extensions',
                 (error, stdout, stderr) => {
                     if (error) {
-                        generator.env.error(error);
+                        generator.log.error(error);
                     } else {
                         let out = stdout.trim();
                         if (out.length > 0) {

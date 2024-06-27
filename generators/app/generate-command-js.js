@@ -4,13 +4,23 @@
 import Generator from 'yeoman-generator';
 import * as prompts from './prompts.js';
 
+
+/**
+ * @typedef {{
+*   checkJavaScript: boolean
+* } & import('./index.js').ExtensionConfig} ExtensionConfig
+*/
+
+/**
+ * @type {import('./index.js').ExtensionGenerator}
+ */
 export default {
     id: 'ext-command-js',
     aliases: ['js', 'command-js'],
     name: 'New Extension (JavaScript)',
     /**
      * @param {Generator} generator
-     * @param {Object} extensionConfig
+     * @param {ExtensionConfig} extensionConfig
      */
     prompting: async (generator, extensionConfig) => {
         await prompts.askForExtensionDisplayName(generator, extensionConfig);
@@ -33,7 +43,7 @@ export default {
 
     /**
      * @param {Generator} generator
-     * @param {Object} extensionConfig
+     * @param {ExtensionConfig} extensionConfig
      */
     writing: (generator, extensionConfig) => {
         generator.fs.copy(generator.templatePath('vscode'), generator.destinationPath('.vscode'));

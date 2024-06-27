@@ -9,8 +9,12 @@ import * as validator from './validator.js';
 import * as path from 'path';
 
 /**
+ * @typedef {import('./index.js').ExtensionConfig} ExtensionConfig
+*/
+
+/**
 * @param {Generator} generator
-* @param {Object} extensionConfig
+* @param {ExtensionConfig} extensionConfig
 */
 export function askForExtensionDisplayName(generator, extensionConfig) {
     let extensionDisplayName = generator.options['extensionDisplayName'];
@@ -38,7 +42,7 @@ export function askForExtensionDisplayName(generator, extensionConfig) {
 /**
  * Ask for extension id ("name" in package.json)
 * @param {Generator} generator
-* @param {Object} extensionConfig
+* @param {ExtensionConfig} extensionConfig
 */
 export function askForExtensionId(generator, extensionConfig) {
     const extensionName = generator.options['extensionId'];
@@ -69,7 +73,7 @@ export function askForExtensionId(generator, extensionConfig) {
 /**
  * Ask for extension description
 * @param {Generator} generator
-* @param {Object} extensionConfig
+* @param {ExtensionConfig} extensionConfig
 */
 export function askForExtensionDescription(generator, extensionConfig) {
     const extensionDescription = generator.options['extensionDescription'];
@@ -94,7 +98,7 @@ export function askForExtensionDescription(generator, extensionConfig) {
 
 /**
 * @param {Generator} generator
-* @param {Object} extensionConfig
+* @param {ExtensionConfig} extensionConfig
 */
 export function askForGit(generator, extensionConfig) {
     const gitInit = generator.options['gitInit'];
@@ -119,7 +123,7 @@ export function askForGit(generator, extensionConfig) {
 
 /**
 * @param {Generator} generator
-* @param {Object} extensionConfig
+* @param {ExtensionConfig} extensionConfig
 */
 export function askForPackageManager(generator, extensionConfig) {
     const pkgManager = generator.options['pkgManager'];
@@ -158,8 +162,9 @@ export function askForPackageManager(generator, extensionConfig) {
 }
 
 /**
-* @param {Generator} generator
-* @param {Object} extensionConfig
+ * @param {Generator} generator
+ * @param {ExtensionConfig} extensionConfig
+ * @param {'webpack' | 'esbuild' | 'unbundled'} defaultBundler
 */
 export function askForBundler(generator, extensionConfig, allowNone = true, defaultBundler = 'unbundled') {
     const bundler = generator.options['bundler'];
