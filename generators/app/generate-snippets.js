@@ -7,13 +7,25 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as plistParser from 'fast-plist';
 
+
+/**
+ * @typedef {{
+ *      snippets: object,
+ *      languageId: string,
+ *      isCustomization: boolean
+ * } & import('./index.js').ExtensionConfig} ExtensionConfig
+*/
+
+/**
+ * @type {import('./index.js').ExtensionGenerator}
+ */
 export default {
     id: 'ext-snippets',
     aliases: ['snippets'],
     name: 'New Code Snippets',
     /**
      * @param {Generator} generator
-     * @param {Object} extensionConfig
+     * @param {ExtensionConfig} extensionConfig
      */
     prompting: async (generator, extensionConfig) => {
         await askForSnippetsInfo(generator, extensionConfig);
@@ -28,7 +40,7 @@ export default {
     },
     /**
      * @param {Generator} generator
-     * @param {Object} extensionConfig
+     * @param {ExtensionConfig} extensionConfig
      */
     writing: (generator, extensionConfig) => {
         generator.fs.copy(generator.templatePath('vscode'), generator.destinationPath('.vscode'));
@@ -46,14 +58,14 @@ export default {
 }
 /**
  * @param {Generator} generator
- * @param {Object} extensionConfig
+ * @param {ExtensionConfig} extensionConfig
  */
 function askForSnippetsInfo(generator, extensionConfig) {
     extensionConfig.isCustomization = true;
     let snippetFolderParam = generator.options['snippetFolder'] || generator.options['extensionParam'];
 
     if (snippetFolderParam) {
-        let count = processSnippetFolder(snippetFolderParam, generator);
+        let count = processSnippetFolder(snippetFolderParam, generator, extensionConfig);
         if (count <= 0) {
             generator.log('')
         }
@@ -72,7 +84,7 @@ function askForSnippetsInfo(generator, extensionConfig) {
             let snippetPath = snippetAnswer.snippetPath;
 
             if (typeof snippetPath === 'string' && snippetPath.length > 0) {
-                const count = processSnippetFolder(snippetPath, generator);
+                const count = processSnippetFolder(snippetPath, generator, extensionConfig);
                 if (count <= 0) {
                     return snippetPrompt();
                 }
@@ -91,7 +103,7 @@ function askForSnippetsInfo(generator, extensionConfig) {
 
 /**
  * @param {Generator} generator
- * @param {Object} extensionConfig
+ * @param {ExtensionConfig} extensionConfig
  */
 function askForSnippetLanguage(generator, extensionConfig) {
     let snippetLanguage = generator.options['snippetLanguage'] || generator.options['extensionParam2'];
@@ -111,8 +123,12 @@ function askForSnippetLanguage(generator, extensionConfig) {
         extensionConfig.languageId = idAnswer.languageId;
     });
 }
-
-function processSnippetFolder(folderPath, generator) {
+/**
+ * @param {string} folderPath
+ * @param {Generator} generator
+ * @param {ExtensionConfig} extensionConfig
+ */
+function processSnippetFolder(folderPath, generator, extensionConfig) {
     var errors = [], snippets = {};
     var snippetCount = 0;
     var languageId = null;
@@ -122,8 +138,8 @@ function processSnippetFolder(folderPath, generator) {
         generator.log("No valid snippets found in " + folderPath + (errors.length > 0 ? '.\n' + errors.join('\n') : ''));
         return count;
     }
-    generator.extensionConfig.snippets = snippets;
-    generator.extensionConfig.languageId = languageId;
+    extensionConfig.snippets = snippets;
+    extensionConfig.languageId = languageId;
     generator.log(count + " snippet(s) found and converted." + (errors.length > 0 ? '\n\nProblems while converting: \n' + errors.join('\n') : ''));
     return count;
 

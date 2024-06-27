@@ -9,13 +9,27 @@ import * as fs from 'fs';
 import * as plistParser from 'fast-plist';
 import request from 'request-light';
 
+/**
+ * @typedef {{
+*   themeContent: Object,
+*   themeName: string,
+*   themeBase: string,
+*   themeFileName: string,
+*   tmThemeFileName: string,
+*   tmThemeContent: string,
+* } & import('./index.js').ExtensionConfig} ExtensionConfig
+*/
+
+/**
+ * @type {import('./index.js').ExtensionGenerator}
+ */
 export default {
     id: 'ext-colortheme',
     aliases: ['colortheme'],
     name: 'New Color Theme',
     /**
      * @param {Generator} generator
-     * @param {Object} extensionConfig
+     * @param {ExtensionConfig} extensionConfig
      */
     prompting: async (generator, extensionConfig) => {
 
@@ -63,7 +77,7 @@ export default {
     },
     /**
      * @param {Generator} generator
-     * @param {Object} extensionConfig
+     * @param {ExtensionConfig} extensionConfig
      */
     writing: (generator, extensionConfig) => {
         if (extensionConfig.tmThemeFileName) {
@@ -92,7 +106,7 @@ export default {
 
 /**
  * @param {Generator} generator
- * @param {Object} extensionConfig
+ * @param {ExtensionConfig} extensionConfig
  */
 async function askForThemeInfo(generator, extensionConfig) {
     if (generator.options['quick']) {
@@ -132,7 +146,12 @@ async function askForThemeInfo(generator, extensionConfig) {
         await convertTheme(null, extensionConfig, false, generator);
     }
 }
-
+/**
+ * @param {string} location
+ * @param {ExtensionConfig} extensionConfig
+ * @param {boolean} inline
+ * @param {Generator} generator
+ */
 function convertTheme(location, extensionConfig, inline, generator) {
     if (!location) {
         extensionConfig.tmThemeFileName = '';
@@ -187,6 +206,12 @@ function convertTheme(location, extensionConfig, inline, generator) {
     }
 }
 
+/**
+ * @param {ExtensionConfig} extensionConfig
+ * @param {string} tmThemeFileName
+ * @param {string} body
+ * @param {Generator} generator
+ */
 function processContent(extensionConfig, tmThemeFileName, body, generator) {
     const themeNameMatch = body.match(/<key>name<\/key>\s*<string>([^<]*)/);
     const themeName = themeNameMatch ? themeNameMatch[1] : '';
@@ -235,6 +260,11 @@ const mappings = {
     "ansiBrightCyan": ["terminal.ansiBrightCyan"], "ansiBrightWhite": ["terminal.ansiBrightWhite"]
 };
 
+/**
+ * @param {string} content
+ * @param {string} tmThemeFileName
+ * @param {Generator} generator
+ */
 function migrate(content, tmThemeFileName, generator) {
     let result = {};
     let theme;

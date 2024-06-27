@@ -20,12 +20,52 @@ import localization from './generate-localization.js';
 import notebook from './generate-notebook-renderer.js';
 import snippets from './generate-snippets.js';
 
+
+
+/**
+ * @typedef {{
+ * insiders: boolean,
+ * installDependencies: boolean,
+ * dependencyVersions: Object.<string, string>,
+ * dep: (name: string) => string,
+ * vsCodeEngine: string,
+ * type: string,
+ * name: string,
+ * description: string,
+ * displayName: string,
+ * pkgManager: 'npm' | 'yarn' | 'pnpm',
+ * gitInit: boolean,
+ * bundler: 'webpack' | 'esbuild' | 'unbundled',
+ * proposedAPI: boolean,
+ * }} ExtensionConfig
+ *
+ * @typedef {{
+ * id: string,
+ * insidersName?: string,
+ * aliases: string[],
+ * name: string,
+ * update?: boolean,
+ * prompting: (generator: Generator, extensionConfig: ExtensionConfig) => Promise<void>,
+ * writing: (generator: Generator, extensionConfig: ExtensionConfig) => void,
+ * endMessage?: (generator: Generator, extensionConfig: ExtensionConfig) => void,
+ * }} ExtensionGenerator
+ */
+
+
+/**
+ * @type {ExtensionGenerator[]}
+ */
 const extensionGenerators = [
     commandts, commandjs, colortheme, language, snippets, keymap, extensionpack, localization,
     commandweb, notebook
 ]
 
 export default class extends Generator {
+
+    /**
+     * @type {ExtensionConfig}
+     */
+    extensionConfig;
 
     constructor(args, opts) {
         super(args, opts);

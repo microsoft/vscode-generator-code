@@ -5,15 +5,27 @@ import Generator from 'yeoman-generator';
 import * as prompts from './prompts.js';
 import { Chalk } from 'chalk';
 
+/**
+ * @typedef {{
+ *      lpLanguageId: string,
+ *      lpLanguageName: string,
+ *      lpLocalizedLanguageName: string,
+ *      isCustomization: boolean
+ * } & import('./index.js').ExtensionConfig} ExtensionConfig
+ */
+
 const chalk = new Chalk();
 
+/**
+ * @type {import('./index.js').ExtensionGenerator}
+ */
 export default {
     id: 'ext-localization',
     aliases: ['localization'],
     name: 'New Language Pack (Localization)',
     /**
      * @param {Generator} generator
-     * @param {Object} extensionConfig
+     * @param {ExtensionConfig} extensionConfig
      */
     prompting: async (generator, extensionConfig) => {
 
@@ -29,7 +41,7 @@ export default {
     },
     /**
      * @param {Generator} generator
-     * @param {Object} extensionConfig
+     * @param {ExtensionConfig} extensionConfig
      */
     writing: (generator, extensionConfig) => {
         generator.fs.copyTpl(generator.templatePath('package.json'), generator.destinationPath('package.json'), extensionConfig);
@@ -57,7 +69,7 @@ export default {
 
 /**
  * @param {Generator} generator
- * @param {Object} extensionConfig
+ * @param {ExtensionConfig} extensionConfig
  */
 function askForLanguageId(generator, extensionConfig) {
     extensionConfig.isCustomization = true;
@@ -77,7 +89,7 @@ function askForLanguageId(generator, extensionConfig) {
 
 /**
  * @param {Generator} generator
- * @param {Object} extensionConfig
+ * @param {ExtensionConfig} extensionConfig
  */
 function askForLanguageName(generator, extensionConfig) {
     extensionConfig.isCustomization = true;
@@ -100,7 +112,7 @@ function askForLanguageName(generator, extensionConfig) {
 
 /**
  * @param {Generator} generator
- * @param {Object} extensionConfig
+ * @param {ExtensionConfig} extensionConfig
  */
 function askForLocalizedLanguageName(generator, extensionConfig) {
     extensionConfig.isCustomization = true;

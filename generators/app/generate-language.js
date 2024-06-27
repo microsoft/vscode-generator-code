@@ -9,13 +9,28 @@ import * as plistParser from 'fast-plist';
 import request from 'request-light';
 import * as validator from './validator.js';
 
+/**
+ * @typedef {{
+*   languageId: string,
+*   languageName: string,
+*   languageExtensions: string[],
+*   languageScopeName: string,
+*   languageContent: string,
+*   languageFileName: string,
+*   isCustomization: boolean
+* } & import('./index.js').ExtensionConfig} ExtensionConfig
+*/
+
+/**
+ * @type {import('./index.js').ExtensionGenerator}
+ */
 export default {
     id: 'ext-language',
     aliases: ['language'],
     name: 'New Language Support',
     /**
      * @param {Generator} generator
-     * @param {Object} extensionConfig
+     * @param {ExtensionConfig} extensionConfig
      */
     prompting: async (generator, extensionConfig) => {
         await askForLanguageInfo(generator, extensionConfig);
@@ -34,7 +49,7 @@ export default {
     },
     /**
      * @param {Generator} generator
-     * @param {Object} extensionConfig
+     * @param {ExtensionConfig} extensionConfig
      */
     writing: (generator, extensionConfig) => {
         if (!extensionConfig.languageContent) {
@@ -60,7 +75,7 @@ export default {
 }
 /**
  * @param {Generator} generator
- * @param {Object} extensionConfig
+ * @param {ExtensionConfig} extensionConfig
  */
 function askForLanguageInfo(generator, extensionConfig) {
     extensionConfig.isCustomization = true;
@@ -77,7 +92,7 @@ function askForLanguageInfo(generator, extensionConfig) {
 
 /**
  * @param {Generator} generator
- * @param {Object} extensionConfig
+ * @param {ExtensionConfig} extensionConfig
  */
 function askForLanguageId(generator, extensionConfig) {
     generator.log('Enter the id of the language. The id is an identifier and is single, lower-case name such as \'php\', \'javascript\'');
@@ -93,7 +108,7 @@ function askForLanguageId(generator, extensionConfig) {
 
 /**
  * @param {Generator} generator
- * @param {Object} extensionConfig
+ * @param {ExtensionConfig} extensionConfig
  */
 function askForLanguageName(generator, extensionConfig) {
     generator.log('Enter the name of the language. The name will be shown in the VS Code editor mode selector.');
@@ -109,7 +124,7 @@ function askForLanguageName(generator, extensionConfig) {
 
 /**
  * @param {Generator} generator
- * @param {Object} extensionConfig
+ * @param {ExtensionConfig} extensionConfig
  */
 function askForLanguageExtensions(generator, extensionConfig) {
     generator.log('Enter the file extensions of the language. Use commas to separate multiple entries (e.g. .ruby, .rb)');
@@ -125,7 +140,7 @@ function askForLanguageExtensions(generator, extensionConfig) {
 
 /**
  * @param {Generator} generator
- * @param {Object} extensionConfig
+ * @param {ExtensionConfig} extensionConfig
  */
 function askForLanguageScopeName(generator, extensionConfig) {
     generator.log('Enter the root scope name of the grammar (e.g. source.ruby)');
@@ -139,6 +154,10 @@ function askForLanguageScopeName(generator, extensionConfig) {
     });
 }
 
+/**
+ * @param {string} location
+ * @param {ExtensionConfig} extensionConfig
+ */
 function convertGrammar(location, extensionConfig) {
     extensionConfig.languageId = '';
     extensionConfig.languageName = '';
@@ -189,6 +208,11 @@ function convertGrammar(location, extensionConfig) {
     }
 }
 
+/**
+ * @param {ExtensionConfig} extensionConfig
+ * @param {string} fileName
+ * @param {string} body
+ */
 function processContent(extensionConfig, fileName, body) {
     let languageInfo;
     if (path.extname(fileName) === '.json') {
@@ -251,5 +275,5 @@ function processContent(extensionConfig, fileName, body) {
         extensionConfig.languageExtensions = languageId ? ['.' + languageId] : [];
     }
     extensionConfig.languageContent = body;
-    return Promise.resolve(extensionConfig);
+    return Promise.resolve();
 };

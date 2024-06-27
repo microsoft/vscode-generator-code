@@ -4,13 +4,20 @@
 import Generator from 'yeoman-generator';
 import * as prompts from './prompts.js';
 
+/**
+ * @typedef {import('./index.js').ExtensionConfig} ExtensionConfig
+*/
+
+/**
+ * @type {import('./index.js').ExtensionGenerator}
+ */
 export default {
     id: 'ext-notebook-renderer',
     aliases: ['notebook'],
     name: 'New Notebook Renderer (TypeScript)',
     /**
      * @param {Generator} generator
-     * @param {Object} extensionConfig
+     * @param {ExtensionConfig} extensionConfig
      */
     prompting: async (generator, extensionConfig) => {
         await prompts.askForExtensionDisplayName(generator, extensionConfig);
@@ -25,7 +32,7 @@ export default {
     },
     /**
      * @param {Generator} generator
-     * @param {Object} extensionConfig
+     * @param {ExtensionConfig} extensionConfig
      */
     writing: (generator, extensionConfig) => {
 
@@ -62,7 +69,7 @@ export default {
 
 /**
  * @param {Generator} generator
- * @param {Object} extensionConfig
+ * @param {ExtensionConfig} extensionConfig
  */
 async function askForNotebookRendererInfo(generator, extensionConfig) {
     const answers = await generator.prompt([
