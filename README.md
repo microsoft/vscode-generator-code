@@ -102,6 +102,8 @@ You can learn more about Yeoman generator development on its
 * 1.0.0: Generates a VS Code extension for TypeScript 2.0.3
 * 0.10.x: Generates a VS Code extension for TypeScript 1.8.10
 
+
+
 ## License
 
 [MIT](LICENSE)
