@@ -9,7 +9,7 @@
 ## Get up and running straight away
 
 * Press `F5` to open a new window with your extension loaded.
-* Open `File > Preferences > Theme > Color Theme` and pick your color theme.
+* Open the color theme picker with  the `File > Preferences > Theme > Color Theme` menu item, or use the `Preferences: Color Theme command (Ctrl+K Ctrl+T)` and pick your theme
 * Open a file that has a language associated. The languages' configured grammar will tokenize the text and assign 'scopes' to the tokens. To examine these scopes, invoke the `Developer: Inspect Editor Tokens and Scopes` command from the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P` on Mac).
 
 ## Make changes
