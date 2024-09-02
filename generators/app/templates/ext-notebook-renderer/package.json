@@ -28,7 +28,7 @@
   "scripts": {
     "vscode:prepublish": "<%= pkgManager %> run compile",
     "compile": "webpack --mode production",
-    "lint": "eslint src --ext ts",
+    "lint": "eslint src",
     "watch": "webpack --mode development --watch",
     "pretest": "webpack --mode development && <%= pkgManager %> run lint",
     "test": "vscode-test"

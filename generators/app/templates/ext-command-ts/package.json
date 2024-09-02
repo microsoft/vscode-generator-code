@@ -25,7 +25,7 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "<%= pkgManager %> run compile && <%= pkgManager %> run lint",
-    "lint": "eslint src --ext ts",
+    "lint": "eslint src",
     "test": "vscode-test"<% if (insiders) { %>,
     "update-proposed-api": "vscode-dts dev"<% } %>
   },

@@ -27,7 +27,6 @@
     <%- dep("@types/mocha") %>,
     <%- dep("@types/node") %>,
     <%- dep("eslint") %>,
-    <%- dep("typescript") %>,
     <%- dep("@vscode/test-cli") %>,
     <%- dep("@vscode/test-electron") %>
   }

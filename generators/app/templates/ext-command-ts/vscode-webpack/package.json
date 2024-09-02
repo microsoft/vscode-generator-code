@@ -28,7 +28,7 @@
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "<%= pkgManager %> run compile-tests && <%= pkgManager %> run compile && <%= pkgManager %> run lint",
-    "lint": "eslint src --ext ts",
+    "lint": "eslint src",
     "test": "vscode-test"<% if (insiders) { %>,
     "update-proposed-api": "vscode-dts dev"<% } %>
   },
