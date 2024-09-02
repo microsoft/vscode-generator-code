@@ -31,7 +31,7 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "<%= pkgManager %> run compile-tests && <%= pkgManager %> run compile && <%= pkgManager %> run lint",
     "check-types": "tsc --noEmit",
-    "lint": "eslint src --ext ts",
+    "lint": "eslint src",
     "test": "vscode-test"<% if (insiders) { %>,
     "update-proposed-api": "vscode-dts dev"<% } %>
   },

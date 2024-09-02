@@ -65,7 +65,7 @@ export default {
             generator.fs.copy(generator.templatePath('src/web/test/suite/webpack-mochaTestRunner.ts'), generator.destinationPath('src/web/test/suite/index.ts'));
         }
 
-        generator.fs.copy(generator.templatePath('.eslintrc.json'), generator.destinationPath('.eslintrc.json'));
+        generator.fs.copy(generator.templatePath('eslint.config.mjs'), generator.destinationPath('eslint.config.mjs'));
 
         if (extensionConfig.pkgManager === 'yarn') {
             generator.fs.copyTpl(generator.templatePath('.yarnrc'), generator.destinationPath('.yarnrc'), extensionConfig);

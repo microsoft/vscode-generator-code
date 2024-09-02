@@ -29,7 +29,7 @@
     "watch-web:tsc": "tsc --noEmit --watch --project tsconfig.json",
     "package-web": "<%= pkgManager %> run check-types && <%= pkgManager %> run lint && node esbuild.js --production",
     "check-types": "tsc --noEmit",
-    "lint": "eslint src --ext ts",
+    "lint": "eslint src",
     "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
   },
   "devDependencies": {
