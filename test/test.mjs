@@ -1082,7 +1082,6 @@ describe('test code generator', function () {
 					"@types/mocha",
 					"@types/node",
 					"eslint",
-					"typescript",
 					"@vscode/test-cli",
 					"@vscode/test-electron"
 				]),
@@ -1141,7 +1140,6 @@ describe('test code generator', function () {
 					"@types/mocha",
 					"@types/node",
 					"eslint",
-					"typescript",
 					"@vscode/test-cli",
 					"@vscode/test-electron"
 				]),

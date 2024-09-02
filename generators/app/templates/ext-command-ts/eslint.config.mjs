@@ -2,7 +2,7 @@ import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 
 export default [{
-    files: ["**/*.ts", "**/*.tsx"],
+    files: ["**/*.ts"],
 }, {
     plugins: {
         "@typescript-eslint": typescriptEslint,
@@ -10,7 +10,7 @@ export default [{
 
     languageOptions: {
         parser: tsParser,
-        ecmaVersion: 6,
+        ecmaVersion: 2022,
         sourceType: "module",
     },
 

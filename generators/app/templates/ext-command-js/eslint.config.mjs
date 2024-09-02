@@ -2,24 +2,15 @@ import globals from "globals";
 
 export default [{
     files: ["**/*.js"],
-
     languageOptions: {
-
         globals: {
-            ...Object.fromEntries(Object.entries(globals.browser).map(([key]) => [key, "off"])),
             ...globals.commonjs,
             ...globals.node,
             ...globals.mocha,
         },
 
-        ecmaVersion: 2018,
+        ecmaVersion: 2022,
         sourceType: "module",
-
-        parserOptions: {
-            ecmaFeatures: {
-                jsx: true,
-            },
-        },
     },
 
     rules: {
