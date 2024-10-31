@@ -1,6 +1,6 @@
 # Yo Code - Extension and Customization Generator
 
-
+[![Build Status](https://dev.azure.com/ms/vscode-generator-code/_apis/build/status/Microsoft.vscode-generator-code)](https://dev.azure.com/ms/vscode-generator-code/_build/latest?definitionId=17)
 We have written a Yeoman generator to help get you started. We plan to add templates for most extension/customization types into this.
 
 ## Install the Generator
@@ -50,7 +50,3 @@ docker run -v $(pwd):/usr/src/app vscode-generator-code
 
 * 1.0.0: Generates a VS Code extension for TypeScript 2.0.3
 * 0.10.x: Generates a VS Code extension for TypeScript 1.8.10
-
-## License
-
-[MIT](LICENSE)
