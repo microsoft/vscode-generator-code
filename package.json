@@ -47,6 +47,7 @@
     "@types/node": "^18.19.57",
     "mocha": "^10.7.3",
     "yeoman-environment": "^4.4.3",
-    "yeoman-test": "^10.0.1"
+    "yeoman-test": "^10.0.1",
+    "jsonc-parser": "^3.3.1"
   }
 }
