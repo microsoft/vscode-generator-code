@@ -15,7 +15,7 @@
         "typescript": "^5.7.3",
         "@vscode/test-cli": "^0.0.10",
         "@vscode/test-electron": "^2.4.1",
-        "@vscode/test-web": "^0.0.65",
+        "@vscode/test-web": "^0.0.66",
         "@types/webpack-env": "^1.18.8",
         "@types/vscode-notebook-renderer": "^1.72.3",
         "concurrently": "^9.1.2",
