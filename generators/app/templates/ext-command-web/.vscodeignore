@@ -3,7 +3,7 @@
 src/**
 out/**
 node_modules/**
-dist/test/**
+dist/**/test/**
 .gitignore
 vsc-extension-quickstart.md
 webpack.config.js
