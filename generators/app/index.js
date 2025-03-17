@@ -77,7 +77,7 @@ export default class extends Generator {
         this.option('quick', { type: Boolean, alias: 'q', description: 'Quick mode, skip all optional prompts and use defaults' });
         this.option('open', { type: Boolean, alias: 'o', description: 'Open the generated extension in Visual Studio Code' });
         this.option('openInInsiders', { type: Boolean, alias: 'O', description: 'Open the generated extension in Visual Studio Code Insiders' });
-
+        this.option('skipOpen', { type: Boolean, alias:'s', description: 'Skip opening the generated extension in Visual Studio Code' });
         this.option('extensionType', { type: String, alias: 't', description: extensionGenerators.slice(0, 6).map(e => e.aliases[0]).join(', ') + '...' });
         this.option('extensionDisplayName', { type: String, alias: 'n', description: 'Display name of the extension' });
         this.option('extensionId', { type: String, description: 'Id of the extension' });
@@ -242,7 +242,7 @@ export default class extends Generator {
 
         const [codeStableLocation, codeInsidersLocation] = await Promise.all([which('code').catch(() => undefined), which('code-insiders').catch(() => undefined)]);
 
-        if (!this.extensionConfig.insiders && !this.options['open'] && !this.options['openInInsiders'] && !this.options['quick']) {
+        if (!this.extensionConfig.insiders && !this.options['open'] && !this.options['openInInsiders'] && !this.options['quick'] && !this.options['skipOpen']) {
             const cdLocation = this.options['destination'] || this.extensionConfig.name;
 
             this.log('To start editing with Visual Studio Code, use the following commands:');
@@ -264,6 +264,10 @@ export default class extends Generator {
 
         this.log('For more information, also visit http://code.visualstudio.com and follow us @code.');
         this.log('\r\n');
+
+        if (this.options['skipOpen']) {
+            return;
+        }
 
         if (this.options["open"]) {
             if (codeStableLocation) {
