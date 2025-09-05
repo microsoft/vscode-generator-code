@@ -1,0 +1,2960 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة الرواتب المتكامل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background-color: var(--primary);
+            color: white;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px var(--shadow);
+        }
+
+        .btn.success {
+            background-color: var(--success);
+        }
+
+        .btn.success:hover {
+            background-color: #15803d;
+        }
+
+        .btn.danger {
+            background-color: var(--danger);
+        }
+
+        .btn.danger:hover {
+            background-color: #b91c1c;
+        }
+
+        .btn.light {
+            background-color: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--border);
+        }
+
+        .btn.light:hover {
+            background-color: #e2e8f0;
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            background-color: white;
+            border: none;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+        }
+
+        .tab:hover {
+            background-color: var(--primary-light);
+        }
+
+        .tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .section {
+            display: none;
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section h2 {
+            margin-bottom: 20px;
+            color: var(--primary);
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--primary-light);
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .actions a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        .actions a:hover {
+            color: var(--primary-dark);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: var(--primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .alert.success {
+            background-color: #dcfce7;
+            color: var(--success);
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert.danger {
+            background-color: #fee2e2;
+            color: var(--danger);
+            border: 1px solid #fecaca;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px var(--shadow);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .stat-card p {
+            color: var(--gray);
+            margin: 0;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-container input,
+        .search-container select {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .payslip {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 30px;
+            border: 1px solid #ccc;
+        }
+
+        .payslip-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .payslip-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .payslip-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .payslip-total {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .signature-section {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .activity-item {
+            display: flex;
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            font-size: 1.5rem;
+            margin-left: 15px;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .activity-time {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .theme-selector {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .theme-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .theme-option.active {
+            border-color: var(--dark);
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+            }
+
+            .tab {
+                min-width: 100px;
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .payslip-details {
+                grid-template-columns: 1fr;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+        }
+
+        .payroll-settings-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        @media (max-width: 992px) {
+            .payroll-settings-container {
+                flex-direction: column;
+            }
+        }
+        
+        /* تنسيقات إضافية للتنبيهات */
+        .salary-alert {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- شاشة تسجيل الدخول -->
+    <div id="login-screen" class="container">
+        <div class="card" style="max-width: 400px; margin: 100px auto; padding: 30px;">
+            <h2 style="text-align: center; margin-bottom: 30px; color: var(--primary);">تسجيل الدخول</h2>
+            <div class="form-group">
+                <label>اسم المستخدم</label>
+                <input type="text" id="username" placeholder="أدخل اسم المستخدم">
+            </div>
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="password" placeholder="أدخل كلمة المرور">
+            </div>
+            <button class="btn" onclick="login()" style="width: 100%;">تسجيل الدخول</button>
+            <div id="login-error" class="alert danger hidden" style="margin-top: 15px;"></div>
+        </div>
+    </div>
+
+    <!-- النظام الرئيسي (مخفي حتى تسجيل الدخول) -->
+    <div id="main-system" class="container hidden">
+        <div class="header">
+            <h1>نظام إدارة الرواتب المتكامل</h1>
+            <div class="user-info">
+                <span id="user-name"></span>
+                <button class="btn light" onclick="logout()">تسجيل الخروج</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showSection('dashboard')">الرئيسية</button>
+            <button class="tab" onclick="showSection('employees')">الموظفون</button>
+            <button class="tab" onclick="showSection('deductions')">الغيابات والجزاءات</button>
+            <button class="tab" onclick="showSection('withdrawals')">المسحوبات</button>
+            <button class="tab" onclick="showSection('loans')">السلف</button>
+            <button class="tab" onclick="showSection('payroll')">كشوف</button>
+            <button class="tab" onclick="showSection('reports')">التقارير</button>
+            <button class="tab" onclick="showSection('settings')">الإعدادات</button>
+        </div>
+
+        <!-- لوحة التحكم -->
+        <div id="dashboard-section" class="section active">
+            <h2>لوحة التحكم</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 id="total-employees">0</h3>
+                    <p>عدد الموظفين</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="total-salaries">0</h3>
+                    <p>إجمالي الرواتب</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="total-absences">0</h3>
+                    <p>الغيابات الشهرية</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="total-penalties">0</h3>
+                    <p>الجزاءات الشهرية</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="total-withdrawals">0</h3>
+                    <p>المسحوبات الشهرية</p>
+                </div>
+            </div>
+
+            <h3>الأنشطة الأخيرة</h3>
+            <div class="card" style="padding: 20px;">
+                <div id="recent-activities">
+                    <!-- سيتم ملؤها ديناميكيًا -->
+                </div>
+            </div>
+        </div>
+
+        <!-- إدارة الموظفين -->
+        <div id="employees-section" class="section">
+            <h2>إدارة الموظفين</h2>
+            <div class="search-container">
+                <input type="text" id="employee-search" placeholder="ابحث في الموظفين..." oninput="filterEmployees()">
+                <button class="btn" onclick="showAddEmployeeForm()">إضافة موظف جديد</button>
+            </div>
+            <table>
+                <tr>
+                    <th>الاسم</th>
+                    <th>الراتب الأساسي</th>
+                    <th>راتب التأمين</th>
+                    <th>القسم</th>
+                    <th>الوظيفة</th>
+                    <th>تاريخ التعيين</th>
+                    <th>الإجراءات</th>
+                </tr>
+                <tbody id="employees-table-body"></tbody>
+            </table>
+        </div>
+
+        <!-- الغيابات والجزاءات -->
+        <div id="deductions-section" class="section">
+            <h2>إدارة الغيابات والجزاءات</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>اختر موظف</label>
+                    <select id="deduction-employee">
+                        <option value="">اختر موظفًا</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>نوع الخصم</label>
+                    <select id="deduction-type">
+                        <option value="absence">غياب</option>
+                        <option value="penalty">جزاء</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>عدد الأيام (يمكن إدخال كسر)</label>
+                    <input type="number" id="deduction-days" placeholder="أدخل عدد الأيام" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>التاريخ</label>
+                    <input type="date" id="deduction-date">
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                    <label>السبب</label>
+                    <textarea id="deduction-reason" rows="2" placeholder="سبب الغياب أو الجزاء"></textarea>
+                </div>
+            </div>
+            <button class="btn" onclick="addDeduction()">تسجيل الخصم</button>
+            <div class="search-container" style="margin-top: 30px;">
+                <input type="text" id="deduction-search" placeholder="ابحث في الغيابات والجزاءات..." oninput="filterDeductions()">
+            </div>
+            <h3 style="margin-top: 20px;">سجل الخصومات</h3>
+            <table id="deductions-table">
+                <tr>
+                    <th>الموظف</th>
+                    <th>النوع</th>
+                    <th>الأيام</th>
+                    <th>التاريخ</th>
+                    <th>السبب</th>
+                    <th>الإجراءات</th>
+                </tr>
+                <tbody id="deductions-table-body"></tbody>
+            </table>
+        </div>
+
+        <!-- المسحوبات -->
+        <div id="withdrawals-section" class="section">
+            <h2>إدارة المسحوبات</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>اختر موظف</label>
+                    <select id="withdrawal-employee">
+                        <option value="">اختر موظفًا</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>المبلغ</label>
+                    <input type="number" id="withdrawal-amount" placeholder="أدخل المبلغ" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>التاريخ</label>
+                    <input type="date" id="withdrawal-date">
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                    <label>الوصف</label>
+                    <textarea id="withdrawal-desc" rows="2" placeholder="وصف المسحوبات"></textarea>
+                </div>
+            </div>
+            <button class="btn" onclick="addWithdrawal()">تسجيل المسحوبات</button>
+            
+            <div class="search-container" style="margin-top: 30px;">
+                <select id="withdrawal-search-employee" onchange="searchWithdrawals()">
+                    <option value="">اختر موظفًا</option>
+                </select>
+                <input type="month" id="withdrawal-search-month" onchange="searchWithdrawals()">
+                <button class="btn light" onclick="searchWithdrawals()">بحث</button>
+                <button class="btn success" onclick="exportWithdrawalsToExcel()">تصدير إلى Excel</button>
+                <button class="btn" onclick="printWithdrawals()">🖨️ طباعة</button>
+            </div>
+            
+            <h3 style="margin-top: 20px;">سجل المسحوبات 
+                <span id="total-withdrawal-amount" style="float: left; font-size: 1rem; color: var(--primary);"></span>
+            </h3>
+            <table id="withdrawals-table">
+                <tr>
+                    <th>الموظف</th>
+                    <th>المبلغ</th>
+                    <th>التاريخ</th>
+                    <th>الوصف</th>
+                    <th>الإجراءات</th>
+                </tr>
+                <tbody id="withdrawals-table-body"></tbody>
+            </table>
+        </div>
+
+        <!-- السلف -->
+        <div id="loans-section" class="section">
+            <h2>إدارة السلف</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>اختر موظف</label>
+                    <select id="loan-employee">
+                        <option value="">اختر موظفًا</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>المبلغ الكلي</label>
+                    <input type="number" id="loan-amount" placeholder="أدخل المبلغ الكلي" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>قيمة القسط الشهري</label>
+                    <input type="number" id="loan-installment" placeholder="أدخل قيمة القسط" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>تاريخ البدء</label>
+                    <input type="date" id="loan-start-date">
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                    <label>الوصف</label>
+                    <textarea id="loan-desc" rows="2" placeholder="وصف السلفة"></textarea>
+                </div>
+            </div>
+            <button class="btn" onclick="addLoan()">تسجيل السلفة</button>
+            
+            <h3 style="margin-top: 30px;">سجل السلف</h3>
+            <table>
+                <tr>
+                    <th>الموظف</th>
+                    <th>المبلغ الكلي</th>
+                    <th>القسط الشهري</th>
+                    <th>تاريخ البدء</th>
+                    <th>الوصف</th>
+                    <th>الإجراءات</th>
+                </tr>
+                <tbody id="loans-table-body"></tbody>
+            </table>
+        </div>
+
+        <!-- كشوف المرتبات -->
+        <div id="payroll-section" class="section">
+            <h2>كشوف المرتبات</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>اختر موظف</label>
+                    <select id="payroll-employee">
+                        <option value="all">جميع الموظفين</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>اختر الشهر</label>
+                    <input type="month" id="payroll-month">
+                </div>
+            </div>
+            <button class="btn" onclick="generatePayroll()">توليد كشف الراتب</button>
+            <button class="btn success" onclick="printPayroll()" style="margin-right: 10px;">طباعة كشف الراتب</button>
+            <div id="payroll-container" class="payslip" style="margin-top: 30px; display: none;"></div>
+        </div>
+
+        <!-- التقارير -->
+        <div id="reports-section" class="section">
+            <h2>تقارير النظام</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>اختر نوع التقرير</label>
+                    <select id="report-type">
+                        <option value="payroll">تقرير الرواتب</option>
+                        <option value="absences">تقرير الغيابات</option>
+                        <option value="penalties">تقرير الجزاءات</option>
+                        <option value="insurance">تقرير التأمينات</option>
+                        <option value="welfareFund">تقرير صندوق الزمالة</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>اختر الشهر</label>
+                    <input type="month" id="report-month">
+                </div>
+                <div class="form-group">
+                    <label>اختر القسم</label>
+                    <select id="report-department">
+                        <option value="all">جميع الأقسام</option>
+                        <option value="الإدارة">الإدارة</option>
+                        <option value="الحسابات">الحسابات</option>
+                        <option value="المبيعات">المبيعات</option>
+                        <option value="المخازن">المخازن</option>
+                        <option value="الحركة ">الحركة</option>
+                        <option value="الصيانة">الصيانة</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn" onclick="generateReport()">إنشاء التقرير</button>
+            <button class="btn success" onclick="exportReportToPDF()" style="margin-right: 10px;">تصدير إلى PDF</button>
+            <button class="btn" onclick="exportReportToExcel()">تصدير إلى Excel</button>
+            
+            <div class="report-output" id="report-output" style="margin-top: 30px; display: none;">
+                <h3 id="report-title"></h3>
+                <div id="report-content"></div>
+            </div>
+        </div>
+
+        <!-- الإعدادات -->
+        <div id="settings-section" class="section">
+            <h2>إعدادات النظام</h2>
+            
+            <div class="card" style="padding: 20px; margin-bottom: 20px;">
+                <h3>صندوق الزمالة</h3>
+                <div class="form-group">
+                    <label>قيمة الاشتراك في صندوق الزمالة (بالجنيه)</label>
+                    <input type="number" id="welfare-fund-amount" placeholder="أدخل قيمة الاشتراك" min="0" step="0.01">
+                </div>
+                <button class="btn" onclick="updateWelfareFundSettings()">حفظ الإعدادات</button>
+                <div id="welfare-fund-result" class="alert hidden" style="margin-top: 10px;"></div>
+            </div>
+            
+            <div class="card" style="padding: 20px; margin-bottom: 20px;">
+                <h3>تغيير كلمة المرور</h3>
+                <div class="form-group">
+                    <label>كلمة المرور الحالية</label>
+                    <input type="password" id="current-password">
+                </div>
+                <div class="form-group">
+                    <label>كلمة المرور الجديدة</label>
+                    <input type="password" id="new-password">
+                </div>
+                <div class="form-group">
+                    <label>تأكيد كلمة المرور الجديدة</label>
+                    <input type="password" id="confirm-password">
+                </div>
+                <button class="btn" onclick="updatePassword()">تغيير كلمة المرور</button>
+                <div id="password-change-result" class="alert hidden" style="margin-top: 10px;"></div>
+            </div>
+            
+            <div class="card" style="padding: 20px; margin-bottom: 20px;">
+                <h3>النسخ الاحتياطي والاستعادة</h3>
+                <p>قم بتحميل نسخة احتياطية من بيانات النظام أو استعادة البيانات من ملف.</p>
+                <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn" onclick="downloadBackup()">💾 تحميل نسخة احتياطية</button>
+                    <input type="file" id="restore-file" accept=".json" style="display: none;" onchange="restoreBackup(event)">
+                    <button class="btn light" onclick="document.getElementById('restore-file').click()">📤 استعادة من ملف</button>
+                    <button class="btn" onclick="syncWithGoogleSheet()">🔄 مزامنة مع Google Sheet</button>
+                </div>
+                <div id="restore-result" class="alert hidden" style="margin-top: 10px;"></div>
+            </div>
+            
+            <div class="card" style="padding: 20px; margin-bottom: 20px;">
+                <h3>تغيير السمة</h3>
+                <div class="theme-selector">
+                    <div class="theme-option active" style="background-color: #2563eb;" onclick="changeTheme('#2563eb')"></div>
+                    <div class="theme-option" style="background-color: #dc2626;" onclick="changeTheme('#dc2626')"></div>
+                    <div class="theme-option" style="background-color: #16a34a;" onclick="changeTheme('#16a34a')"></div>
+                    <div class="theme-option" style="background-color: #f59e0b;" onclick="changeTheme('#f59e0b')"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة/تعديل موظف -->
+    <div id="add-employee-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="employee-modal-title">إضافة موظف جديد</h3>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>الاسم الكامل</label>
+                        <input type="text" id="employee-name" placeholder="أدخل الاسم الكامل">
+                    </div>
+                    <div class="form-group">
+                        <label>الراتب الأساسي</label>
+                        <input type="number" id="employee-salary" placeholder="أدخل الراتب الأساسي" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>راتب التأمين</label>
+                        <input type="number" id="employee-insurance-salary" placeholder="أدخل راتب التأمين" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>القسم</label>
+                        <select id="employee-department">
+                            <option value="الإدارة">الإدارة</option>
+                            <option value="الحسابات">الحسابات</option>
+                            <option value="المبيعات">المبيعات</option>
+                            <option value="المخازن">المخازن</option>
+                            <option value="الحركة ">الحركة</option>
+                            <option value="الصيانة">الصيانة</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>الوظيفة</label>
+                        <input type="text" id="employee-job-title" placeholder="أدخل المسمى الوظيفي">
+                    </div>
+                    <div class="form-group">
+                        <label>رقم الهوية</label>
+                        <input type="text" id="employee-id" placeholder="أدخل رقم الهوية">
+                    </div>
+                    <div class="form-group">
+                        <label>رقم التأمين</label>
+                        <input type="text" id="employee-insurance-number" placeholder="أدخل رقم التأمين">
+                    </div>
+                    <div class="form-group">
+                        <label>تاريخ التعيين</label>
+                        <input type="date" id="employee-hire-date">
+                    </div>
+                    <div class="form-group">
+                        <label>الموافقة على صندوق الزمالة</label>
+                        <select id="employee-welfare-fund">
+                            <option value="نعم">نعم</option>
+                            <option value="لا">لا</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button id="save-employee-btn" onclick="saveEmployee()" class="btn">حفظ الموظف</button>
+                    <button onclick="closeModal()" class="btn light">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تعديل الغياب/الجزاء -->
+    <div id="edit-deduction-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تعديل الغياب/الجزاء</h3>
+                <button class="close-btn" onclick="closeEditDeductionModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="edit-deduction-id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>الموظف</label>
+                        <select id="edit-deduction-employee" disabled>
+                            <option value="">اختر موظفًا</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>نوع الخصم</label>
+                        <select id="edit-deduction-type">
+                            <option value="absence">غياب</option>
+	                        <option value="penalty">جزاء</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>عدد الأيام (يمكن إدخال كسر)</label>
+                        <input type="number" id="edit-deduction-days" placeholder="أدخل عدد الأيام" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>التاريخ</label>
+                        <input type="date" id="edit-deduction-date">
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>السبب</label>
+                        <textarea id="edit-deduction-reason" rows="2" placeholder="سبب الغياب أو الجزاء"></textarea>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button onclick="updateDeduction()" class="btn">تحديث الخصم</button>
+                    <button onclick="closeEditDeductionModal()" class="btn light">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تعديل المسحوبات -->
+    <div id="edit-withdrawal-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تعديل المسحوبات</h3>
+                <button class="close-btn" onclick="closeEditWithdrawalModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="edit-withdrawal-id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>الموظف</label>
+                        <select id="edit-withdrawal-employee" disabled>
+                            <option value="">اختر موظفًا</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>المبلغ</label>
+                        <input type="number" id="edit-withdrawal-amount" placeholder="أدخل المبلغ" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>التاريخ</label>
+                        <input type="date" id="edit-withdrawal-date">
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>الوصف</label>
+                        <textarea id="edit-withdrawal-desc" rows="2" placeholder="وصف المسحوبات"></textarea>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button onclick="updateWithdrawal()" class="btn">تحديث المسحوبات</button>
+                    <button onclick="closeEditWithdrawalModal()" class="btn light">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تعديل السلف -->
+    <div id="edit-loan-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تعديل السلفة</h3>
+                <button class="close-btn" onclick="closeEditLoanModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="edit-loan-id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>الموظف</label>
+                        <select id="edit-loan-employee" disabled>
+                            <option value="">اختر موظفًا</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>المبلغ الكلي</label>
+                        <input type="number" id="edit-loan-amount" placeholder="أدخل المبلغ الكلي" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>قيمة القسط الشهري</label>
+                        <input type="number" id="edit-loan-installment" placeholder="أدخل قيمة القسط" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>تاريخ البدء</label>
+                        <input type="date" id="edit-loan-start-date">
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>الوصف</label>
+                        <textarea id="edit-loan-desc" rows="2" placeholder="وصف السلفة"></textarea>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button onclick="updateLoan()" class="btn">تحديث السلفة</button>
+                    <button onclick="closeEditLoanModal()" class="btn light">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // المتغيرات العامة
+        let employees = [];
+        let deductions = [];
+        let withdrawals = [];
+        let loans = [];
+        let activities = [];
+        let currentUser = null;
+        let editingEmployeeId = null;
+        let welfareFundAmount = 0; // قيمة الاشتراك في صندوق الزمالة
+        
+        // بيانات المستخدمين
+        const users = [
+            { username: 'admin', password: '1234', name: 'المدير العام' },
+            { username: 'hr', password: 'hr123', name: 'موظف الموارد البشرية' }
+        ];
+
+        // عنوان Google Apps Script Web App
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBjbQkDHo-HrURXn3kftIyrUkFDxcaq0KkMbk1KPwsI3eFrcVwRLfzxJDph7HRCIW3/exec";
+        const SPREADSHEET_ID = "1Zy7HNoe_jJrmz8lbHZw9uJLLGxDrQv5Xg0jV6zhKJd8";
+
+        // تهيئة التطبيق
+        function initApp() {
+            // تحقق من وجود بيانات محفوظة
+            loadData();
+            populateEmployeeDropdowns();
+            
+            // تعيين التاريخ الحالي كافتراضي
+            const today = new Date();
+            document.getElementById('deduction-date').value = today.toISOString().split('T')[0];
+            document.getElementById('withdrawal-date').value = today.toISOString().split('T')[0];
+            document.getElementById('loan-start-date').value = today.toISOString().split('T')[0];
+            
+            // تعيين الشهر الحالي كافتراضي
+            const currentMonth = today.toISOString().slice(0, 7);
+            document.getElementById('payroll-month').value = currentMonth;
+            document.getElementById('report-month').value = currentMonth;
+            document.getElementById('withdrawal-search-month').value = currentMonth;
+            
+            // تحديث لوحة التحكم
+            updateDashboard();
+            
+            // تحميل إعدادات صندوق الزمالة
+            loadWelfareFundSettings();
+            
+            // التحقق من تسجيل الدخول
+            if (localStorage.getItem('currentUser')) {
+                currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                showPayrollSystem();
+            }
+        }
+
+        // تسجيل الدخول
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('login-error');
+            
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                document.getElementById('login-screen').classList.add('hidden');
+                showPayrollSystem();
+            } else {
+                errorDiv.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة';
+                errorDiv.classList.remove('hidden');
+            }
+        }
+
+        // إظهار نظام الرواتب
+        function showPayrollSystem() {
+            document.getElementById('main-system').classList.remove('hidden');
+            document.getElementById('user-name').textContent = currentUser.name;
+            updateDashboard();
+        }
+
+        // تسجيل الخروج
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            document.getElementById('main-system').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('login-error').classList.add('hidden');
+        }
+
+        // تحميل البيانات من LocalStorage أو Google Sheet
+        async function loadData() {
+            try {
+                // محاولة تحميل من Google Sheet أولاً
+                const data = await fetchGoogleSheetData();
+                if (data && data.employees) {
+                    employees = data.employees || [];
+                    deductions = data.deductions || [];
+                    withdrawals = data.withdrawals || [];
+                    loans = data.loans || [];
+                    activities = data.activities || [];
+                    welfareFundAmount = data.welfareFundAmount || 0;
+                    console.log("تم تحميل البيانات من Google Sheet");
+                } else {
+                    // إذا فشل التحميل من Google Sheet، استخدم LocalStorage
+                    const savedData = localStorage.getItem('payrollSystemData');
+                    if (savedData) {
+                        const data = JSON.parse(savedData);
+                        employees = data.employees || [];
+                        deductions = data.deductions || [];
+                        withdrawals = data.withdrawals || [];
+                        loans = data.loans || [];
+                        activities = data.activities || [];
+                        welfareFundAmount = data.welfareFundAmount || 0;
+                    }
+                    console.log("تم تحميل البيانات من LocalStorage");
+                }
+            } catch (error) {
+                console.error("خطأ في تحميل البيانات:", error);
+                // في حالة الخطأ، استخدم LocalStorage
+                const savedData = localStorage.getItem('payrollSystemData');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    employees = data.employees || [];
+                    deductions = data.deductions || [];
+                    withdrawals = data.withdrawals || [];
+                    loans = data.loans || [];
+                    activities = data.activities || [];
+                    welfareFundAmount = data.welfareFundAmount || 0;
+                }
+            }
+            
+            // تحديث واجهة المستخدم
+            renderEmployeesTable();
+            renderDeductionsTable();
+            renderWithdrawalsTable();
+            renderLoansTable();
+            populateEmployeeDropdowns();
+            updateDashboard();
+            loadWelfareFundSettings();
+        }
+
+        // حفظ البيانات إلى LocalStorage وGoogle Sheet
+        async function saveData() {
+            const data = {
+                employees,
+                deductions,
+                withdrawals,
+                loans,
+                activities,
+                welfareFundAmount
+            };
+            
+            // حفظ إلى LocalStorage
+            localStorage.setItem('payrollSystemData', JSON.stringify(data));
+            
+            // حفظ إلى Google Sheet
+            try {
+                await saveToGoogleSheet(data);
+                console.log("تم حفظ البيانات إلى Google Sheet");
+            } catch (error) {
+                console.error("خطأ في حفظ البيانات إلى Google Sheet:", error);
+            }
+        }
+
+        // جلب البيانات من Google Sheet
+        async function fetchGoogleSheetData() {
+            try {
+                const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getAllData`);
+                if (!response.ok) throw new Error("فشل في جلب البيانات");
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error("خطأ في جلب البيانات من Google Sheet:", error);
+                return null;
+            }
+        }
+
+        // حفظ البيانات إلى Google Sheet
+        async function saveToGoogleSheet(data) {
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'saveAllData',
+                        data: data
+                    })
+                });
+                
+                if (!response.ok) throw new Error("فشل في حفظ البيانات");
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                console.error("خطأ في حفظ البيانات إلى Google Sheet:", error);
+                throw error;
+            }
+        }
+
+        // مزامنة مع Google Sheet
+        async function syncWithGoogleSheet() {
+            const resultDiv = document.getElementById('restore-result');
+            try {
+                const data = await fetchGoogleSheetData();
+                if (data && data.employees) {
+                    employees = data.employees || [];
+                    deductions = data.deductions || [];
+                    withdrawals = data.withdrawals || [];
+                    loans = data.loans || [];
+                    activities = data.activities || [];
+                    welfareFundAmount = data.welfareFundAmount || 0;
+                    
+                    saveData(); // حفظ البيانات المحلية بعد المزامنة
+                    updateDashboard();
+                    renderEmployeesTable();
+                    renderDeductionsTable();
+                    renderWithdrawalsTable();
+                    renderLoansTable();
+                    populateEmployeeDropdowns();
+                    loadWelfareFundSettings();
+                    
+                    resultDiv.textContent = 'تم مزامنة البيانات مع Google Sheet بنجاح';
+                    resultDiv.className = 'alert success';
+                } else {
+                    resultDiv.textContent = 'لا توجد بيانات في Google Sheet';
+                    resultDiv.className = 'alert danger';
+                }
+            } catch (error) {
+                resultDiv.textContent = 'حدث خطأ أثناء مزامنة البيانات: ' + error.message;
+                resultDiv.className = 'alert danger';
+            }
+            resultDiv.classList.remove('hidden');
+        }
+
+        // تحميل إعدادات صندوق الزمالة
+        function loadWelfareFundSettings() {
+            const savedAmount = localStorage.getItem('welfareFundAmount');
+            if (savedAmount) {
+                welfareFundAmount = parseFloat(savedAmount);
+                document.getElementById('welfare-fund-amount').value = welfareFundAmount;
+            }
+        }
+
+        // حفظ إعدادات صندوق الزمالة
+        function updateWelfareFundSettings() {
+            const amount = parseFloat(document.getElementById('welfare-fund-amount').value) || 0;
+            welfareFundAmount = amount;
+            localStorage.setItem('welfareFundAmount', amount);
+            
+            const resultDiv = document.getElementById('welfare-fund-result');
+            resultDiv.textContent = 'تم حفظ إعدادات صندوق الزمالة بنجاح';
+            resultDiv.className = 'alert success';
+            resultDiv.classList.remove('hidden');
+            
+            // إضافة نشاط
+            addActivity(`تم تحديث إعدادات صندوق الزمالة إلى ${amount} جنيه`);
+            
+            // حفظ البيانات
+            saveData();
+        }
+
+        // تغيير كلمة المرور
+        function updatePassword() {
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const resultDiv = document.getElementById('password-change-result');
+            
+            if (newPassword !== confirmPassword) {
+                resultDiv.textContent = 'كلمة المرور الجديدة وتأكيدها غير متطابقين';
+                resultDiv.className = 'alert danger';
+                resultDiv.classList.remove('hidden');
+                return;
+            }
+            
+            if (currentUser.password !== currentPassword) {
+                resultDiv.textContent = 'كلمة المرور الحالية غير صحيحة';
+                resultDiv.className = 'alert danger';
+                resultDiv.classList.remove('hidden');
+                return;
+            }
+            
+            // تحديث كلمة المرور
+            currentUser.password = newPassword;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            resultDiv.textContent = 'تم تغيير كلمة المرور بنجاح';
+            resultDiv.className = 'alert success';
+            resultDiv.classList.remove('hidden');
+            
+            // مسح الحقول
+            document.getElementById('current-password').value = '';
+            document.getElementById('new-password').value = '';
+            document.getElementById('confirm-password').value = '';
+        }
+
+        // تحميل النسخة الاحتياطية
+        function downloadBackup() {
+            const dataStr = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
+                employees,
+                deductions,
+                withdrawals,
+                loans,
+                activities,
+                welfareFundAmount
+            }, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "backup_payroll_system.json");
+            document.body.appendChild(downloadAnchorNode); // required for firefox
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+            
+            // إضافة نشاط
+            addActivity(`تم تحميل نسخة احتياطية`);
+        }
+
+        // استعادة النسخة الاحتياطية
+        function restoreBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    employees = data.employees || [];
+                    deductions = data.deductions || [];
+                    withdrawals = data.withdrawals || [];
+                    loans = data.loans || [];
+                    activities = data.activities || [];
+                    welfareFundAmount = data.welfareFundAmount || 0;
+                    
+                    saveData();
+                    updateDashboard();
+                    renderEmployeesTable();
+                    renderDeductionsTable();
+                    renderWithdrawalsTable();
+                    renderLoansTable();
+                    populateEmployeeDropdowns();
+                    loadWelfareFundSettings();
+                    
+                    const resultDiv = document.getElementById('restore-result');
+                    resultDiv.textContent = 'تم استعادة البيانات بنجاح';
+                    resultDiv.className = 'alert success';
+                    resultDiv.classList.remove('hidden');
+                    
+                    // إضافة نشاط
+                    addActivity(`تم استعادة نسخة احتياطية`);
+                } catch (error) {
+                    const resultDiv = document.getElementById('restore-result');
+                    resultDiv.textContent = 'حدث خطأ أثناء استعادة البيانات: ' + error.message;
+                    resultDiv.className = 'alert danger';
+                    resultDiv.classList.remove('hidden');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // إظهار قسم معين
+        function showSection(sectionName) {
+            // إخفاء جميع الأقسام
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // إزالة الفعالية من جميع التبويبات
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // إظهار القسم المطلوب
+            document.getElementById(sectionName + '-section').classList.add('active');
+            
+            // جعل التبويب المطلوب نشطًا
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                if (tab.textContent.includes(
+                    sectionName === 'dashboard' ? 'الرئيسية' :
+                    sectionName === 'employees' ? 'الموظفون' :
+                    sectionName === 'deductions' ? 'الغيابات' :
+                    sectionName === 'withdrawals' ? 'المسحوبات' :
+                    sectionName === 'loans' ? 'السلف' :
+                    sectionName === 'reports' ? 'التقارير' :
+                    sectionName === 'payroll' ? 'كشوف' :
+                    sectionName === 'settings' ? 'الإعدادات' : ''
+                )) {
+                    tab.classList.add('active');
+                }
+            });
+        }
+
+        // تحديث لوحة التحكم
+        function updateDashboard() {
+            document.getElementById('total-employees').textContent = employees.length;
+            
+            const totalSalaries = employees.reduce((sum, emp) => sum + emp.salary, 0);
+            document.getElementById('total-salaries').textContent = totalSalaries.toLocaleString() + ' جنيه';
+            
+            const now = new Date();
+            const currentMonth = now.toISOString().slice(0, 7);
+            
+            const totalAbsences = deductions.filter(d => d.type === 'absence' && d.month === currentMonth).reduce((sum, d) => sum + d.days, 0);
+            document.getElementById('total-absences').textContent = totalAbsences + ' يوم';
+            
+            const totalPenalties = deductions.filter(d => d.type === 'penalty' && d.month === currentMonth).reduce((sum, d) => sum + d.days, 0);
+            document.getElementById('total-penalties').textContent = totalPenalties + ' يوم';
+            
+            const totalWithdrawals = withdrawals.filter(w => w.month === currentMonth).reduce((sum, w) => sum + w.amount, 0);
+            document.getElementById('total-withdrawals').textContent = totalWithdrawals.toLocaleString() + ' جنيه';
+            
+            renderActivities();
+        }
+
+        // إضافة نشاط
+        function addActivity(description) {
+            const activity = {
+                id: Date.now(),
+                description: description,
+                time: new Date().toLocaleString('ar-EG')
+            };
+            activities.unshift(activity); // إضافة في البداية
+            activities = activities.slice(0, 10); // الاحتفاظ بأحدث 10 أنشطة
+            saveData();
+            renderActivities(); // تحديث عرض الأنشطة
+        }
+
+        // عرض الأنشطة
+        function renderActivities() {
+            const activitiesContainer = document.getElementById('recent-activities');
+            if (!activitiesContainer) return;
+            
+            activitiesContainer.innerHTML = '';
+            
+            if (activities.length === 0) {
+                activitiesContainer.innerHTML = '<p>لا توجد أنشطة حديثة</p>';
+                return;
+            }
+            
+            activities.forEach(activity => {
+                const activityItem = document.createElement('div');
+                activityItem.className = 'activity-item';
+                activityItem.innerHTML = `
+                    <div class="activity-icon">📋</div>
+                    <div class="activity-content">
+                        <div class="activity-title">${activity.description}</div>
+                        <div class="activity-time">${activity.time}</div>
+                    </div>
+                `;
+                activitiesContainer.appendChild(activityItem);
+            });
+        }
+
+        // ملء قوائم الموظفين
+        function populateEmployeeDropdowns() {
+            const employeeSelects = document.querySelectorAll('select[id$="-employee"]');
+            employeeSelects.forEach(select => {
+                const currentValue = select.value;
+                select.innerHTML = '<option value="">اختر موظفًا</option>';
+                employees.forEach(employee => {
+                    const option = document.createElement('option');
+                    option.value = employee.id;
+                    option.textContent = employee.name;
+                    select.appendChild(option);
+                });
+                select.value = currentValue; // الحفاظ على القيمة المحددة إن وجدت
+            });
+            
+            // تحديث قائمة الموظفين لكشوف الرواتب
+            const payrollEmployeeSelect = document.getElementById('payroll-employee');
+            if (payrollEmployeeSelect) {
+                const currentValue = payrollEmployeeSelect.value;
+                payrollEmployeeSelect.innerHTML = '<option value="all">جميع الموظفين</option>';
+                employees.forEach(employee => {
+                    const option = document.createElement('option');
+                    option.value = employee.id;
+                    option.textContent = employee.name;
+                    payrollEmployeeSelect.appendChild(option);
+                });
+                payrollEmployeeSelect.value = currentValue;
+            }
+            
+            // تحديث قائمة البحث في المسحوبات
+            const withdrawalSearchEmployeeSelect = document.getElementById('withdrawal-search-employee');
+            if (withdrawalSearchEmployeeSelect) {
+                const currentValue = withdrawalSearchEmployeeSelect.value;
+                withdrawalSearchEmployeeSelect.innerHTML = '<option value="">اختر موظفًا</option>';
+                employees.forEach(employee => {
+                    const option = document.createElement('option');
+                    option.value = employee.id;
+                    option.textContent = employee.name;
+                    withdrawalSearchEmployeeSelect.appendChild(option);
+                });
+                withdrawalSearchEmployeeSelect.value = currentValue;
+            }
+        }
+
+        // عرض جدول الموظفين
+        function renderEmployeesTable() {
+            const tableBody = document.getElementById('employees-table-body');
+            tableBody.innerHTML = '';
+            
+            employees.forEach(employee => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${employee.name}</td>
+                    <td>${employee.salary.toLocaleString()} جنيه</td>
+                    <td>${employee.insuranceSalary.toLocaleString()} جنيه</td>
+                    <td>${employee.department}</td>
+                    <td>${employee.jobTitle}</td>
+                    <td>${employee.hireDate}</td>
+                    <td class="actions">
+                        <a href="#" onclick="editEmployee(${employee.id})" title="تعديل">✏️</a>
+                        <a href="#" onclick="deleteEmployee(${employee.id})" title="حذف">🗑️</a>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // إضافة موظف
+        function saveEmployee() {
+            const employee = {
+                id: editingEmployeeId || Date.now(),
+                name: document.getElementById('employee-name').value,
+                salary: parseFloat(document.getElementById('employee-salary').value) || 0,
+                insuranceSalary: parseFloat(document.getElementById('employee-insurance-salary').value) || 0,
+                department: document.getElementById('employee-department').value,
+                jobTitle: document.getElementById('employee-job-title').value,
+                idNumber: document.getElementById('employee-id').value,
+                insuranceNumber: document.getElementById('employee-insurance-number').value,
+                hireDate: document.getElementById('employee-hire-date').value,
+                welfareFundConsent: document.getElementById('employee-welfare-fund').value
+            };
+            
+            if (!employee.name || !employee.salary) {
+                alert('يرجى ملء جميع الحقول المطلوبة');
+                return;
+            }
+            
+            if (editingEmployeeId) {
+                // تحديث الموظف الموجود
+                const index = employees.findIndex(emp => emp.id === editingEmployeeId);
+                if (index !== -1) {
+                    employees[index] = employee;
+                }
+                addActivity(`تم تعديل بيانات الموظف: ${employee.name}`);
+            } else {
+                // إضافة موظف جديد
+                employees.push(employee);
+                addActivity(`تمت إضافة موظف جديد: ${employee.name}`);
+            }
+            
+            saveData();
+            renderEmployeesTable();
+            populateEmployeeDropdowns();
+            updateDashboard();
+            closeModal();
+            
+            // إعادة تعيين النموذج
+            document.getElementById('employee-name').value = '';
+            document.getElementById('employee-salary').value = '';
+            document.getElementById('employee-insurance-salary').value = '';
+            document.getElementById('employee-job-title').value = '';
+            document.getElementById('employee-id').value = '';
+            document.getElementById('employee-insurance-number').value = '';
+            editingEmployeeId = null;
+            document.getElementById('employee-modal-title').textContent = 'إضافة موظف جديد';
+            document.getElementById('save-employee-btn').textContent = 'حفظ الموظف';
+        }
+
+        // تعديل موظف
+        function editEmployee(employeeId) {
+            const employee = employees.find(emp => emp.id === employeeId);
+            if (!employee) return;
+            
+            editingEmployeeId = employeeId;
+            document.getElementById('employee-modal-title').textContent = 'تعديل بيانات الموظف';
+            document.getElementById('save-employee-btn').textContent = 'تحديث الموظف';
+            
+            document.getElementById('employee-name').value = employee.name;
+            document.getElementById('employee-salary').value = employee.salary;
+            document.getElementById('employee-insurance-salary').value = employee.insuranceSalary;
+            document.getElementById('employee-department').value = employee.department;
+            document.getElementById('employee-job-title').value = employee.jobTitle;
+            document.getElementById('employee-id').value = employee.idNumber;
+            document.getElementById('employee-insurance-number').value = employee.insuranceNumber;
+            document.getElementById('employee-hire-date').value = employee.hireDate;
+            document.getElementById('employee-welfare-fund').value = employee.welfareFundConsent;
+            
+            document.getElementById('add-employee-modal').style.display = 'flex';
+        }
+
+        // حذف موظف
+        function deleteEmployee(employeeId) {
+            if (confirm('هل أنت متأكد من حذف هذا الموظف وكل بياناته؟')) {
+                employees = employees.filter(emp => emp.id !== employeeId);
+                
+                // حذف السجلات المرتبطة
+                deductions = deductions.filter(d => d.employeeId !== employeeId);
+                withdrawals = withdrawals.filter(w => w.employeeId !== employeeId);
+                loans = loans.filter(l => l.employeeId !== employeeId);
+                
+                saveData();
+                renderEmployeesTable();
+                renderDeductionsTable();
+                renderWithdrawalsTable();
+                renderLoansTable();
+                populateEmployeeDropdowns();
+                updateDashboard();
+                
+                // إضافة نشاط
+                addActivity(`تم حذف موظف`);
+            }
+        }
+
+        // إغلاق النافذة المنبثقة
+        function closeModal() {
+            document.getElementById('add-employee-modal').style.display = 'none';
+        }
+
+        // البحث في الموظفين
+        function filterEmployees() {
+            const searchTerm = document.getElementById('employee-search').value.toLowerCase();
+            const rows = document.querySelectorAll('#employees-table-body tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        }
+
+        // إظهار نموذج إضافة موظف
+        function showAddEmployeeForm() {
+            document.getElementById('add-employee-modal').style.display = 'flex';
+        }
+
+        // عرض جدول الغيابات والجزاءات
+        function renderDeductionsTable() {
+            const tableBody = document.getElementById('deductions-table-body');
+            tableBody.innerHTML = '';
+            
+            deductions.forEach(deduction => {
+                const employee = employees.find(emp => emp.id === deduction.employeeId);
+                const employeeName = employee ? employee.name : 'غير معروف';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${employeeName}</td>
+                    <td>${deduction.type === 'absence' ? 'غياب' : 'جزاء'}</td>
+                    <td>${deduction.days}</td>
+                    <td>${deduction.date}</td>
+                    <td>${deduction.reason}</td>
+                    <td class="actions">
+                        <a href="#" onclick="editDeduction(${deduction.id})" title="تعديل">✏️</a>
+                        <a href="#" onclick="deleteDeduction(${deduction.id})" title="حذف">🗑️</a>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // إضافة خصم
+        function addDeduction() {
+            const employeeId = document.getElementById('deduction-employee').value;
+            const type = document.getElementById('deduction-type').value;
+            const days = parseFloat(document.getElementById('deduction-days').value);
+            const date = document.getElementById('deduction-date').value;
+            const reason = document.getElementById('deduction-reason').value;
+            
+            if (!employeeId || !days || !date) {
+                alert('يرجى ملء جميع الحقول المطلوبة');
+                return;
+            }
+            
+            const deduction = {
+                id: Date.now(),
+                employeeId: parseInt(employeeId),
+                type: type,
+                days: days,
+                date: date,
+                month: date.substring(0, 7), // حفظ الشهر للتصفية
+                reason: reason
+            };
+            
+            deductions.push(deduction);
+            saveData();
+            renderDeductionsTable();
+            updateDashboard();
+            clearDeductionForm();
+            
+            // إضافة نشاط
+            const employee = employees.find(emp => emp.id === parseInt(employeeId));
+            const deductionTypeText = type === 'absence' ? 'غياب' : 'جزاء';
+            addActivity(`تسجيل ${deductionTypeText} للموظف ${employee ? employee.name : 'غير معروف'}`);
+        }
+
+        // مسح نموذج الخصم
+        function clearDeductionForm() {
+            document.getElementById('deduction-employee').value = '';
+            document.getElementById('deduction-type').value = 'absence';
+            document.getElementById('deduction-days').value = '';
+            document.getElementById('deduction-reason').value = '';
+            // التاريخ يبقى كما هو
+        }
+
+        // تعديل خصم
+        function editDeduction(deductionId) {
+            const deduction = deductions.find(d => d.id === deductionId);
+            if (!deduction) return;
+            
+            document.getElementById('edit-deduction-id').value = deduction.id;
+            document.getElementById('edit-deduction-employee').value = deduction.employeeId;
+            document.getElementById('edit-deduction-type').value = deduction.type;
+            document.getElementById('edit-deduction-days').value = deduction.days;
+            document.getElementById('edit-deduction-date').value = deduction.date;
+            document.getElementById('edit-deduction-reason').value = deduction.reason;
+            
+            // ملء قائمة الموظفين في نافذة التعديل
+            const employeeSelect = document.getElementById('edit-deduction-employee');
+            employeeSelect.innerHTML = '';
+            employees.forEach(employee => {
+                const option = document.createElement('option');
+                option.value = employee.id;
+                option.textContent = employee.name;
+                employeeSelect.appendChild(option);
+            });
+            employeeSelect.value = deduction.employeeId;
+            
+            document.getElementById('edit-deduction-modal').style.display = 'flex';
+        }
+
+        // تحديث الخصم
+        function updateDeduction() {
+            const id = parseInt(document.getElementById('edit-deduction-id').value);
+            const employeeId = document.getElementById('edit-deduction-employee').value;
+            const type = document.getElementById('edit-deduction-type').value;
+            const days = parseFloat(document.getElementById('edit-deduction-days').value);
+            const date = document.getElementById('edit-deduction-date').value;
+            const reason = document.getElementById('edit-deduction-reason').value;
+            
+            const index = deductions.findIndex(d => d.id === id);
+            if (index !== -1) {
+                deductions[index] = {
+                    ...deductions[index],
+                    employeeId,
+                    type,
+                    days,
+                    date,
+                    month: date.substring(0, 7),
+                    reason
+                };
+                
+                saveData();
+                renderDeductionsTable();
+                updateDashboard();
+                closeEditDeductionModal();
+                
+                // إضافة نشاط
+                addActivity(`تم تعديل ${type === 'absence' ? 'غياب' : 'جزاء'} للموظف`);
+            }
+        }
+
+        // إغلاق نافذة تعديل الخصم
+        function closeEditDeductionModal() {
+            document.getElementById('edit-deduction-modal').style.display = 'none';
+        }
+
+        // حذف خصم
+        function deleteDeduction(deductionId) {
+            if (confirm('هل أنت متأكد من حذف هذا الخصم؟')) {
+                deductions = deductions.filter(d => d.id !== deductionId);
+                saveData();
+                renderDeductionsTable();
+                updateDashboard();
+                
+                // إضافة نشاط
+                addActivity(`تم حذف خصم`);
+            }
+        }
+
+        // البحث في الغيابات والجزاءات
+        function filterDeductions() {
+            const searchTerm = document.getElementById('deduction-search').value.toLowerCase();
+            const rows = document.querySelectorAll('#deductions-table-body tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        }
+
+        // عرض جدول المسحوبات
+        function renderWithdrawalsTable() {
+            const tableBody = document.getElementById('withdrawals-table-body');
+            tableBody.innerHTML = '';
+            
+            withdrawals.forEach(withdrawal => {
+                const employee = employees.find(emp => emp.id === withdrawal.employeeId);
+                const employeeName = employee ? employee.name : 'غير معروف';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${employeeName}</td>
+                    <td>${withdrawal.amount.toLocaleString()} جنيه</td>
+                    <td>${withdrawal.date}</td>
+                    <td>${withdrawal.description}</td>
+                    <td class="actions">
+                        <a href="#" onclick="editWithdrawal(${withdrawal.id})" title="تعديل">✏️</a>
+                        <a href="#" onclick="deleteWithdrawal(${withdrawal.id})" title="حذف">🗑️</a>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            updateWithdrawalsTotal(); // تحديث الإجمالي
+        }
+
+        // تحديث إجمالي المسحوبات
+        function updateWithdrawalsTotal() {
+            const employeeId = document.getElementById('withdrawal-search-employee').value;
+            const month = document.getElementById('withdrawal-search-month').value;
+            
+            let filteredWithdrawals = withdrawals;
+            
+            if (employeeId) {
+                filteredWithdrawals = filteredWithdrawals.filter(w => w.employeeId == employeeId);
+            }
+            
+            if (month) {
+                filteredWithdrawals = filteredWithdrawals.filter(w => w.month === month);
+            }
+            
+            const total = filteredWithdrawals.reduce((sum, w) => sum + w.amount, 0);
+            document.getElementById('total-withdrawal-amount').textContent = total.toLocaleString() + ' جنيه';
+        }
+
+        // إضافة مسحوبات
+        function addWithdrawal() {
+            const employeeId = document.getElementById('withdrawal-employee').value;
+            const amount = parseFloat(document.getElementById('withdrawal-amount').value);
+            const date = document.getElementById('withdrawal-date').value;
+            const description = document.getElementById('withdrawal-desc').value;
+            
+            if (!employeeId || !amount || !date) {
+                alert('يرجى ملء جميع الحقول المطلوبة');
+                return;
+            }
+            
+            const withdrawal = {
+                id: Date.now(),
+                employeeId: parseInt(employeeId),
+                amount: amount,
+                date: date,
+                month: date.substring(0, 7), // حفظ الشهر للتصفية
+                description: description
+            };
+            
+            withdrawals.push(withdrawal);
+            saveData();
+            renderWithdrawalsTable();
+            updateDashboard();
+            clearWithdrawalForm();
+            
+            // إضافة نشاط
+            const employee = employees.find(emp => emp.id === parseInt(employeeId));
+            addActivity(`تسجيل مسحوبات للموظف ${employee ? employee.name : 'غير معروف'}`);
+        }
+
+        // مسح نموذج المسحوبات
+        function clearWithdrawalForm() {
+            document.getElementById('withdrawal-employee').value = '';
+            document.getElementById('withdrawal-amount').value = '';
+            document.getElementById('withdrawal-desc').value = '';
+            // التاريخ يبقى كما هو
+        }
+
+        // تعديل مسحوبات
+        function editWithdrawal(withdrawalId) {
+            const withdrawal = withdrawals.find(w => w.id === withdrawalId);
+            if (!withdrawal) return;
+            
+            document.getElementById('edit-withdrawal-id').value = withdrawal.id;
+            document.getElementById('edit-withdrawal-employee').value = withdrawal.employeeId;
+            document.getElementById('edit-withdrawal-amount').value = withdrawal.amount;
+            document.getElementById('edit-withdrawal-date').value = withdrawal.date;
+            document.getElementById('edit-withdrawal-desc').value = withdrawal.description;
+            
+            // ملء قائمة الموظفين في نافذة التعديل
+            const employeeSelect = document.getElementById('edit-withdrawal-employee');
+            employeeSelect.innerHTML = '';
+            employees.forEach(employee => {
+                const option = document.createElement('option');
+                option.value = employee.id;
+                option.textContent = employee.name;
+                employeeSelect.appendChild(option);
+            });
+            employeeSelect.value = withdrawal.employeeId;
+            
+            document.getElementById('edit-withdrawal-modal').style.display = 'flex';
+        }
+
+        // تحديث المسحوبات
+        function updateWithdrawal() {
+            const id = parseInt(document.getElementById('edit-withdrawal-id').value);
+            const employeeId = document.getElementById('edit-withdrawal-employee').value;
+            const amount = parseFloat(document.getElementById('edit-withdrawal-amount').value);
+            const date = document.getElementById('edit-withdrawal-date').value;
+            const description = document.getElementById('edit-withdrawal-desc').value;
+            
+            const index = withdrawals.findIndex(w => w.id === id);
+            if (index !== -1) {
+                withdrawals[index] = {
+                    ...withdrawals[index],
+                    employeeId,
+                    amount,
+                    date,
+                    month: date.substring(0, 7),
+                    description
+                };
+                
+                saveData();
+                renderWithdrawalsTable();
+                updateDashboard();
+                closeEditWithdrawalModal();
+                
+                // إضافة نشاط
+                addActivity(`تم تعديل مسحوبات للموظف`);
+            }
+        }
+
+        // إغلاق نافذة تعديل المسحوبات
+        function closeEditWithdrawalModal() {
+            document.getElementById('edit-withdrawal-modal').style.display = 'none';
+        }
+
+        // حذف مسحوبات
+        function deleteWithdrawal(withdrawalId) {
+            if (confirm('هل أنت متأكد من حذف هذه المسحوبات؟')) {
+                withdrawals = withdrawals.filter(w => w.id !== withdrawalId);
+                saveData();
+                renderWithdrawalsTable();
+                updateDashboard();
+                
+                // إضافة نشاط
+                addActivity(`تم حذف مسحوبات`);
+            }
+        }
+
+        // البحث في المسحوبات
+        function searchWithdrawals() {
+            const employeeId = document.getElementById('withdrawal-search-employee').value;
+            const month = document.getElementById('withdrawal-search-month').value;
+            
+            let filteredWithdrawals = withdrawals;
+            
+            if (employeeId) {
+                filteredWithdrawals = filteredWithdrawals.filter(w => w.employeeId == employeeId);
+            }
+            
+            if (month) {
+                filteredWithdrawals = filteredWithdrawals.filter(w => w.month === month);
+            }
+            
+            // تحديث الجدول
+            const tableBody = document.getElementById('withdrawals-table-body');
+            tableBody.innerHTML = '';
+            
+            filteredWithdrawals.forEach(withdrawal => {
+                const employee = employees.find(emp => emp.id === withdrawal.employeeId);
+                const employeeName = employee ? employee.name : 'غير معروف';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${employeeName}</td>
+                    <td>${withdrawal.amount.toLocaleString()} جنيه</td>
+                    <td>${withdrawal.date}</td>
+                    <td>${withdrawal.description}</td>
+                    <td class="actions">
+                        <a href="#" onclick="editWithdrawal(${withdrawal.id})" title="تعديل">✏️</a>
+                        <a href="#" onclick="deleteWithdrawal(${withdrawal.id})" title="حذف">🗑️</a>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            // تحديث الإجمالي
+            const total = filteredWithdrawals.reduce((sum, w) => sum + w.amount, 0);
+            document.getElementById('total-withdrawal-amount').textContent = total.toLocaleString() + ' جنيه';
+        }
+
+        // تصدير المسحوبات إلى Excel
+        function exportWithdrawalsToExcel() {
+            const table = document.getElementById('withdrawals-table');
+            if (!table) {
+                alert('لا يوجد بيانات لتصديرها');
+                return;
+            }
+            
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.table_to_sheet(table);
+            XLSX.utils.book_append_sheet(wb, ws, 'المسحوبات');
+            XLSX.writeFile(wb, 'مسحوبات_الموظفين.xlsx');
+        }
+
+        // طباعة المسحوبات
+        function printWithdrawals() {
+            const printContent = `
+                <html>
+                <head>
+                    <title>طباعة المسحوبات</title>
+                    <style>
+                        body { 
+                            font-family: 'Tajawal', sans-serif; 
+                            direction: rtl; 
+                            margin: 20px;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-top: 20px;
+                        }
+                        th, td {
+                            padding: 10px;
+                            text-align: right;
+                            border: 1px solid #000;
+                        }
+                        th {
+                            background-color: #f0f0f0;
+                        }
+                        h2 {
+                            text-align: center;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h2>تقرير المسحوبات</h2>
+                    ${document.getElementById('withdrawals-table').outerHTML}
+                </body>
+                </html>
+            `;
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // عرض جدول السلف
+        function renderLoansTable() {
+            const tableBody = document.getElementById('loans-table-body');
+            tableBody.innerHTML = '';
+            
+            loans.forEach(loan => {
+                const employee = employees.find(emp => emp.id === loan.employeeId);
+                const employeeName = employee ? employee.name : 'غير معروف';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${employeeName}</td>
+                    <td>${loan.amount.toLocaleString()} جنيه</td>
+                    <td>${loan.installment.toLocaleString()} جنيه</td>
+                    <td>${loan.startDate}</td>
+                    <td>${loan.description}</td>
+                    <td class="actions">
+                        <a href="#" onclick="editLoan(${loan.id})" title="تعديل">✏️</a>
+                        <a href="#" onclick="deleteLoan(${loan.id})" title="حذف">🗑️</a>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // إضافة سلفة
+        function addLoan() {
+            const employeeId = document.getElementById('loan-employee').value;
+            const amount = parseFloat(document.getElementById('loan-amount').value);
+            const installment = parseFloat(document.getElementById('loan-installment').value);
+            const startDate = document.getElementById('loan-start-date').value;
+            const description = document.getElementById('loan-desc').value;
+            
+            if (!employeeId || !amount || !installment || !startDate) {
+                alert('يرجى ملء جميع الحقول المطلوبة');
+                return;
+            }
+            
+            const loan = {
+                id: Date.now(),
+                employeeId: parseInt(employeeId),
+                amount: amount,
+                installment: installment,
+                startDate: startDate,
+                description: description
+            };
+            
+            loans.push(loan);
+            saveData();
+            renderLoansTable();
+            clearLoanForm();
+            
+            // إضافة نشاط
+            const employee = employees.find(emp => emp.id === parseInt(employeeId));
+            addActivity(`إضافة سلفة للموظف ${employee ? employee.name : 'غير معروف'}`);
+        }
+
+        // مسح نموذج السلف
+        function clearLoanForm() {
+            document.getElementById('loan-employee').value = '';
+            document.getElementById('loan-amount').value = '';
+            document.getElementById('loan-installment').value = '';
+            document.getElementById('loan-desc').value = '';
+            // التاريخ يبقى كما هو
+        }
+
+        // تعديل سلفة
+        function editLoan(loanId) {
+            const loan = loans.find(l => l.id === loanId);
+            if (!loan) return;
+            
+            document.getElementById('edit-loan-id').value = loan.id;
+            document.getElementById('edit-loan-employee').value = loan.employeeId;
+            document.getElementById('edit-loan-amount').value = loan.amount;
+            document.getElementById('edit-loan-installment').value = loan.installment;
+            document.getElementById('edit-loan-start-date').value = loan.startDate;
+            document.getElementById('edit-loan-desc').value = loan.description;
+            
+            // ملء قائمة الموظفين في نافذة التعديل
+            const employeeSelect = document.getElementById('edit-loan-employee');
+            employeeSelect.innerHTML = '';
+            employees.forEach(employee => {
+                const option = document.createElement('option');
+                option.value = employee.id;
+                option.textContent = employee.name;
+                employeeSelect.appendChild(option);
+            });
+            employeeSelect.value = loan.employeeId;
+            
+            document.getElementById('edit-loan-modal').style.display = 'flex';
+        }
+
+        // تحديث السلفة
+        function updateLoan() {
+            const id = parseInt(document.getElementById('edit-loan-id').value);
+            const employeeId = document.getElementById('edit-loan-employee').value;
+            const amount = parseFloat(document.getElementById('edit-loan-amount').value);
+            const installment = parseFloat(document.getElementById('edit-loan-installment').value);
+            const startDate = document.getElementById('edit-loan-start-date').value;
+            const description = document.getElementById('edit-loan-desc').value;
+            
+            const index = loans.findIndex(l => l.id === id);
+            if (index !== -1) {
+                loans[index] = {
+                    ...loans[index],
+                    employeeId,
+                    amount,
+                    installment,
+                    startDate,
+                    description
+                };
+                
+                saveData();
+                renderLoansTable();
+                closeEditLoanModal();
+                
+                // إضافة نشاط
+                addActivity(`تم تعديل سلفة للموظف`);
+            }
+        }
+
+        // إغلاق نافذة تعديل السلف
+        function closeEditLoanModal() {
+            document.getElementById('edit-loan-modal').style.display = 'none';
+        }
+
+        // حذف سلفة
+        function deleteLoan(loanId) {
+            if (confirm('هل أنت متأكد من حذف هذه السلفة؟')) {
+                loans = loans.filter(l => l.id !== loanId);
+                saveData();
+                renderLoansTable();
+                
+                // إضافة نشاط
+                addActivity(`تم حذف سلفة`);
+            }
+        }
+
+        // توليد كشف الراتب
+        function generatePayroll() {
+            const employeeId = document.getElementById('payroll-employee').value;
+            const month = document.getElementById('payroll-month').value;
+            
+            if (!month) {
+                alert('يرجى اختيار الشهر');
+                return;
+            }
+            
+            let targetEmployees = [];
+            if (employeeId === 'all') {
+                targetEmployees = employees;
+            } else {
+                const employee = employees.find(emp => emp.id == employeeId);
+                if (employee) {
+                    targetEmployees = [employee];
+                }
+            }
+            
+            if (targetEmployees.length === 0) {
+                alert('لم يتم العثور على الموظفين');
+                return;
+            }
+            
+            let payrollContent = '';
+            
+            targetEmployees.forEach(employee => {
+                // حساب الغيابات والجزاءات
+                const employeeDeductions = deductions.filter(d => 
+                    d.employeeId === employee.id && d.month === month
+                );
+                
+                const totalAbsenceDays = employeeDeductions
+                    .filter(d => d.type === 'absence')
+                    .reduce((sum, d) => sum + d.days, 0);
+                
+                const totalPenaltyDays = employeeDeductions
+                    .filter(d => d.type === 'penalty')
+                    .reduce((sum, d) => sum + d.days, 0);
+                
+                // حساب قيمة الخصومات (باستخدام أيام الشهر الفعلية)
+                const monthDays = new Date(parseInt(month.substring(0, 4)), parseInt(month.substring(5, 7)) - 1, 0).getDate();
+                const dailySalary = employee.salary / monthDays;
+                const absenceDeduction = totalAbsenceDays * dailySalary;
+                const penaltyDeduction = totalPenaltyDays * dailySalary * 0.5; // خصم 50% لجزاءات
+                
+                // حساب المسحوبات
+                const employeeWithdrawals = withdrawals.filter(w => 
+                    w.employeeId === employee.id && w.month === month
+                );
+                
+                const totalWithdrawals = employeeWithdrawals.reduce((sum, w) => sum + w.amount, 0);
+                
+                // حساب السلف (فقط السلف النشطة في هذا الشهر)
+                let totalLoanDeduction = 0;
+                const currentMonthDate = new Date(month + '-01');
+                
+                loans.forEach(loan => {
+                    if (loan.employeeId === employee.id) {
+                        const loanStartDate = new Date(loan.startDate);
+                        // تحقق إذا كان القرض نشط في شهر كشف الرواتب الحالي
+                        if (loanStartDate <= currentMonthDate) {
+                            // حساب المبلغ المتبقي من القرض
+                            const monthsPaid = Math.floor((currentMonthDate - loanStartDate) / (30.44 * 24 * 60 * 60 * 1000));
+                            const paidAmount = monthsPaid * loan.installment;
+                            const remainingAmount = loan.amount - paidAmount;
+                            
+                            // خصم القسط فقط إذا كان هناك مبلغ متبقي
+                            if (remainingAmount > 0) {
+                                totalLoanDeduction += Math.min(loan.installment, remainingAmount);
+                            }
+                        }
+                    }
+                });
+                
+                // حساب صندوق الزمالة
+                let welfareFundDeduction = 0;
+                if (employee.welfareFundConsent === 'نعم') {
+                    welfareFundDeduction = welfareFundAmount;
+                }
+                
+                // حساب التأمينات (تغيير نسبة صاحب العمل إلى 18.75%)
+                const insuranceEmployee = employee.insuranceSalary * 0.11; // 11% من موظف
+                const insuranceEmployer = employee.insuranceSalary * 0.1875; // 18.75% من جهة العمل
+                
+                // حساب الراتب الصافي
+                const totalDeductions = absenceDeduction + penaltyDeduction + totalWithdrawals + totalLoanDeduction + welfareFundDeduction + insuranceEmployee;
+                const netSalary = employee.salary - totalDeductions;
+                
+                // تنبيه إذا كان الراتب الصافي سالبًا
+                let salaryAlert = '';
+                if (netSalary < 0) {
+                    salaryAlert = `<div class="salary-alert">⚠️ تنبيه: الراتب الصافي سالب! (${Math.abs(netSalary).toLocaleString()} جنيه خصم أكثر من الراتب)</div>`;
+                }
+                
+                // إنشاء كشف الراتب
+                payrollContent += `
+                <div class="payslip">
+                    ${salaryAlert}
+                    <div class="payslip-header">
+                        <h2>كشف راتب</h2>
+                        <p>الشهر: ${month}</p>
+                    </div>
+                    
+                    <div class="payslip-details">
+                        <div>
+                            <p><strong>اسم الموظف:</strong> ${employee.name}</p>
+                            <p><strong>الوظيفة:</strong> ${employee.jobTitle}</p>
+                            <p><strong>القسم:</strong> ${employee.department}</p>
+                        </div>
+                        <div>
+                            <p><strong>تاريخ التعيين:</strong> ${employee.hireDate}</p>
+                            <p><strong>رقم التأمين:</strong> ${employee.insuranceNumber}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="payslip-details">
+                        <div>
+                            <div class="payslip-row">
+                                <span>الراتب الأساسي:</span>
+                                <span>${employee.salary.toLocaleString()} جنيه</span>
+                            </div>
+                            <div class="payslip-row">
+                                <span>راتب التأمين:</span>
+                                <span>${employee.insuranceSalary.toLocaleString()} جنيه</span>
+                            </div>
+                        </div>
+                        <div>
+                            <!-- فراغ للتنسيق -->
+                        </div>
+                    </div>
+                    
+                    <h3>الخصومات</h3>
+                    <div class="payslip-details">
+                        <div>
+                            <div class="payslip-row">
+                                <span>غيابات (${totalAbsenceDays} يوم):</span>
+                                <span>${absenceDeduction.toLocaleString()} جنيه</span>
+                            </div>
+                            <div class="payslip-row">
+                                <span>جزاءات (${totalPenaltyDays} يوم):</span>
+                                <span>${penaltyDeduction.toLocaleString()} جنيه</span>
+                            </div>
+                            <div class="payslip-row">
+                                <span>مسحوبات:</span>
+                                <span>${totalWithdrawals.toLocaleString()} جنيه</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="payslip-row">
+                                <span>سلف:</span>
+                                <span>${totalLoanDeduction.toLocaleString()} جنيه</span>
+                            </div>
+                            <div class="payslip-row">
+                                <span>صندوق الزمالة:</span>
+                                <span>${welfareFundDeduction.toLocaleString()} جنيه</span>
+                            </div>
+                            <div class="payslip-row">
+                                <span>تأمين موظف (11%):</span>
+                                <span>${insuranceEmployee.toLocaleString()} جنيه</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="payslip-row payslip-total">
+                        <strong>إجمالي الخصومات:</strong>
+                        <strong>${totalDeductions.toLocaleString()} جنيه</strong>
+                    </div>
+                    
+                    <div class="payslip-row payslip-total">
+                        <strong>الراتب الصافي:</strong>
+                        <strong>${netSalary.toLocaleString()} جنيه</strong>
+                    </div>
+                    
+                    <div class="signature-section">
+                        <div>توقيع الموظف: ...................</div>
+                        <div>توقيع المحاسب: ...................</div>
+                    </div>
+                </div>
+                <div style="page-break-after: always;"></div>
+                `;
+            });
+            
+            document.getElementById('payroll-container').innerHTML = payrollContent;
+            document.getElementById('payroll-container').style.display = 'block';
+        }
+
+        // طباعة كشف الرواتب
+        function printPayroll() {
+            const payrollContent = document.getElementById('payroll-container');
+            if (!payrollContent || payrollContent.style.display === 'none') {
+                alert('لا يوجد كشف راتب لطباعته');
+                return;
+            }
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>كشف الرواتب</title>
+                    <style>
+                        body { 
+                            font-family: 'Tajawal', sans-serif; 
+                            direction: rtl; 
+                        }
+                        .payslip { 
+                            max-width: 800px; 
+                            margin: 20px auto; 
+                            padding: 30px; 
+                            border: 1px solid #ccc; 
+                        }
+                        .payslip-header {
+                            text-align: center;
+                            margin-bottom: 30px;
+                        }
+                        .payslip-details {
+                            display: grid;
+                            grid-template-columns: repeat(2, 1fr);
+                            gap: 15px;
+                            margin-bottom: 30px;
+                        }
+                        .payslip-row {
+                            display: flex;
+                            justify-content: space-between;
+                            padding: 8px 0;
+                            border-bottom: 1px dashed #ddd;
+                        }
+                        .payslip-total {
+                            font-weight: bold;
+                            font-size: 1.1rem;
+                            margin-top: 10px;
+                        }
+                        .signature-section {
+                            margin-top: 40px;
+                            display: flex;
+                            justify-content: space-between;
+                        }
+                        .salary-alert {
+                            background-color: #fff3cd;
+                            border: 1px solid #ffeaa7;
+                            color: #856404;
+                            padding: 10px;
+                            border-radius: 5px;
+                            margin-bottom: 15px;
+                            font-weight: bold;
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${payrollContent.innerHTML}
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // توليد تقرير
+        function generateReport() {
+            const reportType = document.getElementById('report-type').value;
+            const month = document.getElementById('report-month').value;
+            const department = document.getElementById('report-department').value;
+            
+            if (!month) {
+                alert('يرجى اختيار الشهر');
+                return;
+            }
+            
+            let title = '';
+            let content = '';
+            
+            if (reportType === 'payroll') {
+                title = `تقرير الرواتب لشهر ${month}`;
+                content = generatePayrollReport(month, department);
+            } else if (reportType === 'absences') {
+                title = `تقرير الغيابات لشهر ${month}`;
+                content = generateAbsencesReport(month, department);
+            } else if (reportType === 'penalties') {
+                title = `تقرير الجزاءات لشهر ${month}`;
+                content = generatePenaltiesReport(month, department);
+            } else if (reportType === 'insurance') {
+                title = `تقرير التأمينات لشهر ${month}`;
+                content = generateInsuranceReport(month, department);
+            } else if (reportType === 'welfareFund') {
+                title = `تقرير صندوق الزمالة لشهر ${month}`;
+                content = generateWelfareFundReport(month, department);
+            }
+            
+            document.getElementById('report-title').textContent = title;
+            document.getElementById('report-content').innerHTML = content;
+            document.getElementById('report-output').style.display = 'block';
+        }
+
+        // توليد تقرير الرواتب
+        function generatePayrollReport(month, department) {
+            let filteredEmployees = employees;
+            if (department !== 'all') {
+                filteredEmployees = employees.filter(emp => emp.department === department);
+            }
+            
+            let reportContent = `
+                <table>
+                    <tr>
+                        <th>اسم الموظف</th>
+                        <th>الراتب الأساسي</th>
+                        <th>الغيابات</th>
+                        <th>قيمة الغيابات</th>
+                        <th>الجزاءات</th>
+                        <th>قيمة الجزاءات</th>
+                        <th>المسحوبات</th>
+                        <th>السلف</th>
+                        <th>صندوق الزمالة</th>
+                        <th>تأمين موظف</th>
+                        <th>الراتب الصافي</th>
+                    </tr>
+            `;
+            
+            let totalSalary = 0;
+            let totalAbsenceDeduction = 0;
+            let totalPenaltyDeduction = 0;
+            let totalWithdrawals = 0;
+            let totalLoans = 0;
+            let totalWelfareFund = 0;
+            let totalInsurance = 0;
+            let totalNetSalary = 0;
+            
+            filteredEmployees.forEach(employee => {
+                // حساب الغيابات والجزاءات
+                const employeeDeductions = deductions.filter(d => 
+                    d.employeeId === employee.id && d.month === month
+                );
+                
+                const totalAbsenceDays = employeeDeductions
+                    .filter(d => d.type === 'absence')
+                    .reduce((sum, d) => sum + d.days, 0);
+                
+                const totalPenaltyDays = employeeDeductions
+                    .filter(d => d.type === 'penalty')
+                    .reduce((sum, d) => sum + d.days, 0);
+                
+                // حساب قيمة الخصومات
+                const dailySalary = employee.salary / 30;
+                const absenceDeduction = totalAbsenceDays * dailySalary;
+                const penaltyDeduction = totalPenaltyDays * dailySalary * 0.5;
+                
+                // حساب المسحوبات
+                const employeeWithdrawals = withdrawals.filter(w => 
+                    w.employeeId === employee.id && w.month === month
+                );
+                
+                const totalWithdrawalAmount = employeeWithdrawals.reduce((sum, w) => sum + w.amount, 0);
+                
+                // حساب السلف
+                const employeeLoans = loans.filter(l => l.employeeId === employee.id);
+                let totalLoanAmount = 0;
+                
+                employeeLoans.forEach(loan => {
+                    totalLoanAmount += loan.installment;
+                });
+                
+                // حساب صندوق الزمالة
+                let welfareFundAmount = 0;
+                if (employee.welfareFundConsent === 'نعم') {
+                    welfareFundAmount = welfareFundAmount;
+                }
+                
+                // حساب التأمينات (تغيير نسبة صاحب العمل إلى 18.75%)
+                const insuranceEmployee = employee.insuranceSalary * 0.11;
+                const insuranceEmployer = employee.insuranceSalary * 0.1875;
+                
+                // حساب الراتب الصافي
+                const totalDeductions = absenceDeduction + penaltyDeduction + totalWithdrawalAmount + totalLoanAmount + welfareFundAmount + insuranceEmployee;
+                const netSalary = employee.salary - totalDeductions;
+                
+                reportContent += `
+                    <tr>
+                        <td>${employee.name}</td>
+                        <td>${employee.salary.toLocaleString()}</td>
+                        <td>${totalAbsenceDays}</td>
+                        <td>${absenceDeduction.toLocaleString()}</td>
+                        <td>${totalPenaltyDays}</td>
+                        <td>${penaltyDeduction.toLocaleString()}</td>
+                        <td>${totalWithdrawalAmount.toLocaleString()}</td>
+                        <td>${totalLoanAmount.toLocaleString()}</td>
+                        <td>${welfareFundAmount.toLocaleString()}</td>
+                        <td>${insuranceEmployee.toLocaleString()}</td>
+                        <td>${netSalary.toLocaleString()}</td>
+                    </tr>
+                `;
+                
+                // تحديث المجاميع
+                totalSalary += employee.salary;
+                totalAbsenceDeduction += absenceDeduction;
+                totalPenaltyDeduction += penaltyDeduction;
+                totalWithdrawals += totalWithdrawalAmount;
+                totalLoans += totalLoanAmount;
+                totalWelfareFund += welfareFundAmount;
+                totalInsurance += insuranceEmployee;
+                totalNetSalary += netSalary;
+            });
+            
+            reportContent += `
+                    <tr style="background-color: #f0f0f0; font-weight: bold;">
+                        <td>الإجمالي</td>
+                        <td>${totalSalary.toLocaleString()}</td>
+                        <td></td>
+                        <td>${totalAbsenceDeduction.toLocaleString()}</td>
+                        <td></td>
+                        <td>${totalPenaltyDeduction.toLocaleString()}</td>
+                        <td>${totalWithdrawals.toLocaleString()}</td>
+                        <td>${totalLoans.toLocaleString()}</td>
+                        <td>${totalWelfareFund.toLocaleString()}</td>
+                        <td>${totalInsurance.toLocaleString()}</td>
+                        <td>${totalNetSalary.toLocaleString()}</td>
+                    </tr>
+                </table>
+            `;
+            
+            return reportContent;
+        }
+
+        // توليد تقرير الغيابات
+        function generateAbsencesReport(month, department) {
+            let filteredEmployees = employees;
+            if (department !== 'all') {
+                filteredEmployees = employees.filter(emp => emp.department === department);
+            }
+            
+            // تصفية الغيابات لشهر معين
+            const monthAbsences = deductions.filter(d => 
+                d.type === 'absence' && d.month === month
+            );
+            
+            let reportContent = `
+                <table>
+                    <tr>
+                        <th>اسم الموظف</th>
+                        <th>عدد أيام الغياب</th>
+                        <th>قيمة الغيابات</th>
+                        <th>التاريخ</th>
+                        <th>السبب</th>
+                    </tr>
+            `;
+            
+            let totalAbsenceDays = 0;
+            let totalAbsenceValue = 0;
+            
+            monthAbsences.forEach(absence => {
+                const employee = filteredEmployees.find(emp => emp.id === absence.employeeId);
+                if (employee) {
+                    const absenceValue = (employee.salary / 30) * absence.days;
+                    
+                    reportContent += `
+                        <tr>
+                            <td>${employee.name}</td>
+                            <td>${absence.days}</td>
+                            <td>${absenceValue.toLocaleString()}</td>
+                            <td>${absence.date}</td>
+                            <td>${absence.reason}</td>
+                        </tr>
+                    `;
+                    
+                    totalAbsenceDays += absence.days;
+                    totalAbsenceValue += absenceValue;
+                }
+            });
+            
+            reportContent += `
+                    <tr style="background-color: #f0f0f0; font-weight: bold;">
+                        <td>الإجمالي</td>
+                        <td>${totalAbsenceDays}</td>
+                        <td>${totalAbsenceValue.toLocaleString()}</td>
+                        <td colspan="2"></td>
+                    </tr>
+                </table>
+            `;
+            
+            return reportContent;
+        }
+
+        // توليد تقرير الجزاءات
+        function generatePenaltiesReport(month, department) {
+            let filteredEmployees = employees;
+            if (department !== 'all') {
+                filteredEmployees = employees.filter(emp => emp.department === department);
+            }
+            
+            // تصفية الجزاءات لشهر معين
+            const monthPenalties = deductions.filter(d => 
+                d.type === 'penalty' && d.month === month
+            );
+            
+            let reportContent = `
+                <table>
+                    <tr>
+                        <th>اسم الموظف</th>
+                        <th>عدد أيام الجزاء</th>
+                        <th>قيمة الجزاءات</th>
+                        <th>التاريخ</th>
+                        <th>السبب</th>
+                    </tr>
+            `;
+            
+            let totalPenaltyDays = 0;
+            let totalPenaltyValue = 0;
+            
+            monthPenalties.forEach(penalty => {
+                const employee = filteredEmployees.find(emp => emp.id === penalty.employeeId);
+                if (employee) {
+                    // خصم 50% من الراتب اليومي للجزاءات
+                    const penaltyValue = (employee.salary / 30) * penalty.days * 0.5;
+                    
+                    reportContent += `
+                        <tr>
+                            <td>${employee.name}</td>
+                            <td>${penalty.days}</td>
+                            <td>${penaltyValue.toLocaleString()}</td>
+                            <td>${penalty.date}</td>
+                            <td>${penalty.reason}</td>
+                        </tr>
+                    `;
+                    
+                    totalPenaltyDays += penalty.days;
+                    totalPenaltyValue += penaltyValue;
+                }
+            });
+            
+            reportContent += `
+                    <tr style="background-color: #f0f0f0; font-weight: bold;">
+                        <td>الإجمالي</td>
+                        <td>${totalPenaltyDays}</td>
+                        <td>${totalPenaltyValue.toLocaleString()}</td>
+                        <td colspan="2"></td>
+                    </tr>
+                </table>
+            `;
+            
+            return reportContent;
+        }
+
+        // توليد تقرير التأمينات
+        function generateInsuranceReport(month, department) {
+            let filteredEmployees = employees;
+            if (department !== 'all') {
+                filteredEmployees = employees.filter(emp => emp.department === department);
+            }
+            
+            let reportContent = `
+                <table>
+                    <tr>
+                        <th>اسم الموظف</th>
+                        <th>راتب التأمين</th>
+                        <th>تأمين موظف (11%)</th>
+                        <th>تأمين جهة عمل (18.75%)</th>
+                        <th>إجمالي التأمين</th>
+                    </tr>
+            `;
+            
+            let totalInsuranceSalary = 0;
+            let totalEmployeeInsurance = 0;
+            let totalEmployerInsurance = 0;
+            let totalInsurance = 0;
+            
+            filteredEmployees.forEach(employee => {
+                // تغيير نسبة صاحب العمل إلى 18.75%
+                const insuranceEmployee = employee.insuranceSalary * 0.11;
+                const insuranceEmployer = employee.insuranceSalary * 0.1875;
+                const totalInsuranceAmount = insuranceEmployee + insuranceEmployer;
+                
+                reportContent += `
+                    <tr>
+                        <td>${employee.name}</td>
+                        <td>${employee.insuranceSalary.toLocaleString()}</td>
+                        <td>${insuranceEmployee.toLocaleString()}</td>
+                        <td>${insuranceEmployer.toLocaleString()}</td>
+                        <td>${totalInsuranceAmount.toLocaleString()}</td>
+                    </tr>
+                `;
+                
+                // تحديث المجاميع
+                totalInsuranceSalary += employee.insuranceSalary;
+                totalEmployeeInsurance += insuranceEmployee;
+                totalEmployerInsurance += insuranceEmployer;
+                totalInsurance += totalInsuranceAmount;
+            });
+            
+            reportContent += `
+                    <tr style="background-color: #f0f0f0; font-weight: bold;">
+                        <td>الإجمالي</td>
+                        <td>${totalInsuranceSalary.toLocaleString()}</td>
+                        <td>${totalEmployeeInsurance.toLocaleString()}</td>
+                        <td>${totalEmployerInsurance.toLocaleString()}</td>
+                        <td>${totalInsurance.toLocaleString()}</td>
+                    </tr>
+                </table>
+            `;
+            
+            return reportContent;
+        }
+
+        // توليد تقرير صندوق الزمالة
+        function generateWelfareFundReport(month, department) {
+            let filteredEmployees = employees;
+            if (department !== 'all') {
+                filteredEmployees = employees.filter(emp => emp.department === department);
+            }
+            
+            // تصفية الموظفين الذين وافقوا على صندوق الزمالة
+            const welfareFundEmployees = filteredEmployees.filter(emp => emp.welfareFundConsent === 'نعم');
+            
+            let reportContent = `
+                <table>
+                    <tr>
+                        <th>اسم الموظف</th>
+                        <th>قيمة الاشتراك</th>
+                    </tr>
+            `;
+            
+            let totalWelfareFund = 0;
+            
+            welfareFundEmployees.forEach(employee => {
+                reportContent += `
+                    <tr>
+                        <td>${employee.name}</td>
+                        <td>${welfareFundAmount.toLocaleString()}</td>
+                    </tr>
+                `;
+                
+                totalWelfareFund += welfareFundAmount;
+            });
+            
+            reportContent += `
+                    <tr style="background-color: #f0f0f0; font-weight: bold;">
+                        <td>عدد المشتركين: ${welfareFundEmployees.length}</td>
+                        <td>الإجمالي: ${totalWelfareFund.toLocaleString()}</td>
+                    </tr>
+                </table>
+            `;
+            
+            return reportContent;
+        }
+
+        // تصدير التقرير إلى PDF
+        function exportReportToPDF() {
+            const reportOutput = document.getElementById('report-output');
+            if (!reportOutput || reportOutput.style.display === 'none') {
+                alert('لا يوجد تقرير لتصديره');
+                return;
+            }
+            
+            const element = reportOutput.cloneNode(true);
+            element.style.display = 'block';
+            
+            const options = {
+                margin: 10,
+                filename: 'تقرير_النظام.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            html2pdf().from(element).set(options).save();
+        }
+
+        // تصدير التقرير إلى Excel
+        function exportReportToExcel() {
+            const reportOutput = document.getElementById('report-output');
+            if (!reportOutput || reportOutput.style.display === 'none') {
+                alert('لا يوجد تقرير لتصديره');
+                return;
+            }
+            
+            const table = reportOutput.querySelector('table');
+            if (!table) {
+                alert('لا يوجد جدول في التقرير لتصديره');
+                return;
+            }
+            
+            const wb = XLSX.utils.table_to_book(table, { sheet: "تقرير" });
+            XLSX.writeFile(wb, 'تقرير_النظام.xlsx');
+        }
+
+        // تغيير سمة البرنامج
+        function changeTheme(color) {
+            // تحديث ألوان CSS المتغيرة
+            document.documentElement.style.setProperty('--primary', color);
+            
+            // تظليل أغمق للون الأساسي
+            const darkerColor = shadeColor(color, -20);
+            document.documentElement.style.setProperty('--primary-dark', darkerColor);
+            
+            // تظليل أفتح للون الأساسي
+            const lighterColor = shadeColor(color, 80);
+            document.documentElement.style.setProperty('--primary-light', lighterColor);
+            
+            // تحديث العناصر النشطة
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // حفظ السمة في التخزين المحلي
+            localStorage.setItem('themeColor', color);
+        }
+
+        // وظيفة مساعدة لتوليد درجات الألوان
+        function shadeColor(color, percent) {
+            let R = parseInt(color.substring(1, 3), 16);
+            let G = parseInt(color.substring(3, 5), 16);
+            let B = parseInt(color.substring(5, 7), 16);
+            
+            R = parseInt(R * (100 + percent) / 100);
+            G = parseInt(G * (100 + percent) / 100);
+            B = parseInt(B * (100 + percent) / 100);
+            
+            R = (R < 255) ? R : 255;
+            G = (G < 255) ? G : 255;
+            B = (B < 255) ? B : 255;
+            
+            R = Math.round(R);
+            G = Math.round(G);
+            B = Math.round(B);
+            
+            const RR = ((R.toString(16).length == 1) ? "0" + R.toString(16) : R.toString(16));
+            const GG = ((G.toString(16).length == 1) ? "0" + G.toString(16) : G.toString(16));
+            const BB = ((B.toString(16).length == 1) ? "0" + B.toString(16) : B.toString(16));
+            
+            return "#" + RR + GG + BB;
+        }
+
+        // تهيئة التطبيق عند تحميل الصفحة
+        window.onload = initApp;
+    </script>
+</body>
+</html>
