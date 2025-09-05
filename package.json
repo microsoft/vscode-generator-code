@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
-    "@types/node": "^18.19.57",
+    "@types/node": "^20.x",
     "mocha": "^11.7.1",
     "yeoman-environment": "^4.4.3",
     "yeoman-test": "^10.1.1",
