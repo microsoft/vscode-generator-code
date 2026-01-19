@@ -48,6 +48,7 @@
     "mocha": "^11.7.5",
     "yeoman-environment": "^5.1.2",
     "yeoman-test": "^11.2.0",
+    "@yeoman/adapter": "^3.1.1",
     "jsonc-parser": "^3.3.1"
   }
 }
