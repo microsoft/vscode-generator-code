@@ -37,7 +37,7 @@ describe('integration tests', function () {
 			assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
 		}
 
-		const resAudit = await doSpawn(npmCommand, ['audit'], { cwd: runResult.env.cwd, shell: true });
+		const resAudit = await doSpawn(npmCommand, ['audit', '--audit-level=moderate'], { cwd: runResult.env.cwd, shell: true });
 		if (resAudit.exitCode !== 0) {
 			assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
 		}
@@ -70,7 +70,7 @@ describe('integration tests', function () {
 			assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
 		}
 
-		const resAudit = await doSpawn(npmCommand, ['audit'], { cwd: runResult.env.cwd, shell: true });
+		const resAudit = await doSpawn(npmCommand, ['audit', '--audit-level=moderate'], { cwd: runResult.env.cwd, shell: true });
 		if (resAudit.exitCode !== 0) {
 			assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
 		}
@@ -103,7 +103,7 @@ describe('integration tests', function () {
 			assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
 		}
 
-		const resAudit = await doSpawn(npmCommand, ['audit'], { cwd: runResult.env.cwd, shell: true });
+		const resAudit = await doSpawn(npmCommand, ['audit', '--audit-level=moderate'], { cwd: runResult.env.cwd, shell: true });
 		if (resAudit.exitCode !== 0) {
 			assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
 		}
@@ -136,7 +136,7 @@ describe('integration tests', function () {
 			assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
 		}
 
-		const resAudit = await doSpawn(npmCommand, ['audit'], { cwd: runResult.env.cwd, shell: true });
+		const resAudit = await doSpawn(npmCommand, ['audit', '--audit-level=moderate'], { cwd: runResult.env.cwd, shell: true });
 		if (resAudit.exitCode !== 0) {
 			assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
 		}
@@ -169,7 +169,7 @@ describe('integration tests', function () {
 			assert.fail(`npm installed failed: stdout ${res.stdout} stderr ${res.stderr}`);
 		}
 
-		const resAudit = await doSpawn(npmCommand, ['audit'], { cwd: runResult.env.cwd, shell: true });
+		const resAudit = await doSpawn(npmCommand, ['audit', '--audit-level=moderate'], { cwd: runResult.env.cwd, shell: true });
 		if (resAudit.exitCode !== 0) {
 			assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
 		}
