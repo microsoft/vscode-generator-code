@@ -1,4 +1,4 @@
-FROM node:lts-alpine3.12
+FROM node:22-alpine
 LABEL Maintainer="contact@snpranav.com"
 
 # Installing GIT
