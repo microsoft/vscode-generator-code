@@ -34,15 +34,12 @@ extends:
         testPlatforms:
           - name: Linux
             nodeVersions:
-              - 20.x
               - 22.x
           - name: MacOS
             nodeVersions:
-              - 20.x
               - 22.x
           - name: Windows
             nodeVersions:
-              - 20.x
               - 22.x
 
         testSteps:
