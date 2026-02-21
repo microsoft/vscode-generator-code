@@ -30,14 +30,14 @@
     "update-proposed-api": "vscode-dts dev"<% } %>
   },
   "devDependencies": {
-    <%- dep("@types/vscode") %>,
     <%- dep("@types/mocha") %>,
     <%- dep("@types/node") %>,
-    <%- dep("typescript-eslint") %>,
-    <%- dep("eslint") %>,
-    <%- dep("typescript") %>,
+    <%- dep("@types/vscode") %>,
     <%- dep("@vscode/test-cli") %>,
     <%- dep("@vscode/test-electron") %><% if (insiders) { %>,
+    <%- dep("eslint") %>,
+    <%- dep("typescript-eslint") %>,
+    <%- dep("typescript") %>,
     <%- dep("vscode-dts") %><% } %>
   }
 }
