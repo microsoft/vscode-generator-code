@@ -33,18 +33,18 @@
     "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
   },
   "devDependencies": {
-    <%- dep("@types/vscode") %>,
-    <%- dep("@types/mocha") %>,
-    <%- dep("@types/assert") %>,
-    <%- dep("eslint") %>,
-    <%- dep("typescript-eslint") %>,
-    <%- dep("mocha") %>,
-    <%- dep("typescript") %>,
-    <%- dep("@vscode/test-web") %>,
-    <%- dep("esbuild") %>,
-    <%- dep("glob") %>,
-    <%- dep("npm-run-all") %>,
     <%- dep("@esbuild-plugins/node-globals-polyfill") %>,
+    <%- dep("@types/assert") %>,
+    <%- dep("@types/mocha") %>,
+    <%- dep("@types/vscode") %>,
+    <%- dep("@vscode/test-web") %>,
     <%- dep("assert") %>
+    <%- dep("esbuild") %>,
+    <%- dep("eslint") %>,
+    <%- dep("glob") %>,
+    <%- dep("mocha") %>,
+    <%- dep("npm-run-all") %>,
+    <%- dep("typescript-eslint") %>,
+    <%- dep("typescript") %>,
   }
 }
