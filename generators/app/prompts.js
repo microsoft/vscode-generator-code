@@ -127,7 +127,7 @@ export function askForGit(generator, extensionConfig) {
 */
 export function askForPackageManager(generator, extensionConfig) {
     const pkgManager = generator.options['pkgManager'];
-    if (pkgManager === 'npm' || pkgManager === 'yarn' || pkgManager === 'pnpm') {
+    if (pkgManager === 'npm' || pkgManager === 'yarn' || pkgManager === 'pnpm' || pkgManager === 'bun') {
         extensionConfig.pkgManager = pkgManager;
         return Promise.resolve();
     }
@@ -154,6 +154,10 @@ export function askForPackageManager(generator, extensionConfig) {
             {
                 name: 'pnpm',
                 value: 'pnpm'
+            },
+            {
+                name: 'bun', 
+                value: 'bun'
             }
         ]
     }).then(pckgManagerAnswer => {
