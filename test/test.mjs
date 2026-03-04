@@ -4,12 +4,12 @@
 
 import * as path from 'path';
 import { fileURLToPath } from 'url';
+import { before, describe, it } from 'node:test';
 import { createHelpers } from 'yeoman-test';
 import { parse } from 'jsonc-parser';
 import * as env from '../generators/app/env.js';
 
-describe('test code generator', function () {
-	this.timeout(10000);
+describe('test code generator', { timeout: 10000 }, () => {
 
 	const helpers = createHelpers();
 	const appLocation = path.join(fileURLToPath(import.meta.url), '../../generators/app');
@@ -275,8 +275,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('language import', async () => {
-		this.timeout(10000);
+	it('language import', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-language',
@@ -327,8 +326,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('language import 2', async () => {
-		this.timeout(10000);
+	it('language import 2', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-language',
@@ -379,8 +377,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('language new', async () => {
-		this.timeout(10000);
+	it('language new', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-language',
@@ -436,8 +433,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('snippet new', async () => {
-		this.timeout(10000);
+	it('snippet new', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-snippets',
@@ -478,8 +474,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('snippet import', async () => {
-		this.timeout(10000);
+	it('snippet import', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-snippets',
@@ -547,8 +542,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('keymap new', async () => {
-		this.timeout(10000);
+	it('keymap new', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-keymap',
@@ -587,8 +581,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('command-ts', async () => {
-		this.timeout(10000);
+	it('command-ts', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-command-ts',
@@ -650,8 +643,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('command-ts with yarn', async () => {
-		this.timeout(10000);
+	it('command-ts with yarn', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-command-ts',
@@ -730,8 +722,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('command-ts with pnpm', async () => {
-		this.timeout(10000);
+	it('command-ts with pnpm', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-command-ts',
@@ -810,8 +801,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('command-ts with webpack', async () => {
-		this.timeout(10000);
+	it('command-ts with webpack', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-command-ts',
@@ -880,8 +870,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('command-ts with webpack + pnpm', async () => {
-		this.timeout(10000);
+	it('command-ts with webpack + pnpm', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-command-ts',
@@ -950,8 +939,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('command-ts with esbuild + yarn', async () => {
-		this.timeout(10000);
+	it('command-ts with esbuild + yarn', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-command-ts',
@@ -1022,8 +1010,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('command-js', async () => {
-		this.timeout(10000);
+	it('command-js', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-command-js',
@@ -1080,8 +1067,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('command-js with pnpm', async () => {
-		this.timeout(10000);
+	it('command-js with pnpm', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-command-js',
@@ -1138,8 +1124,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('command-js with check JS', async () => {
-		this.timeout(10000);
+	it('command-js with check JS', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-command-js',
@@ -1342,8 +1327,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('command-web', async () => {
-		this.timeout(10000);
+	it('command-web', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-command-web',
@@ -1413,8 +1397,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('command-web with pnpm', async () => {
-		this.timeout(10000);
+	it('command-web with pnpm', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-command-web',
@@ -1484,8 +1467,7 @@ describe('test code generator', function () {
 		}
 	});
 
-	it('command-web-esbuild with yarn', async () => {
-		this.timeout(10000);
+	it('command-web-esbuild with yarn', { timeout: 10000 }, async () => {
 
 		const runResult = await helpers.run(appLocation).withAnswers({
 			type: 'ext-command-web',
