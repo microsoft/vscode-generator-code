@@ -5,13 +5,13 @@
 import * as path from 'path';
 import { createHelpers } from 'yeoman-test';
 import * as cp from 'child_process';
+import { describe, it } from 'node:test';
 
-import * as assert from 'assert';
+import * as assert from 'node:assert';
 
 import { fileURLToPath } from 'url';
 
-describe('integration tests', function () {
-	this.timeout(7 * 60 * 1000);
+describe('integration tests', { timeout: 7 * 60 * 1000 }, () => {
 
 	const helpers = createHelpers();
 	const appLocation = path.join(fileURLToPath(import.meta.url), '../../generators/app');
@@ -25,7 +25,7 @@ describe('integration tests', function () {
 			if (resAudit.stdout.indexOf('https://github.com/advisories/GHSA-73rr-hh4g-fpgx') === -1) { // diff vulnerability
 				assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
 			} else {
-				console.warn('npm audit vulnerability for `diff` ignored for now, waiting for a mocha update');
+				console.warn('npm audit vulnerability for `diff` ignored for now, waiting for a dependency update');
 			}
 		}
 	}

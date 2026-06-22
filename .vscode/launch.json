@@ -22,8 +22,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Mocha Tests",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "name": "Node Tests",
+            "runtimeArgs": ["--enable-source-maps", "--test", "test/*.mjs"],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "internalConsoleOptions": "openOnSessionStart"
