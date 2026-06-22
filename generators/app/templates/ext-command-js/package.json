@@ -29,5 +29,9 @@
     <%- dep("eslint") %>,
     <%- dep("@vscode/test-cli") %>,
     <%- dep("@vscode/test-electron") %>
+  },
+  "overrides": {
+    <%- dep("diff") %>,
+    <%- dep("serialize-javascript") %>
   }
 }

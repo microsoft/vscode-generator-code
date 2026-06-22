@@ -46,5 +46,9 @@
     <%- dep("npm-run-all") %>,
     <%- dep("@esbuild-plugins/node-globals-polyfill") %>,
     <%- dep("assert") %>
+  },
+  "overrides": {
+    <%- dep("diff") %>,
+    <%- dep("serialize-javascript") %>
   }
 }

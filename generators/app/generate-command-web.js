@@ -49,17 +49,17 @@ export default {
         generator.fs.copyTpl(generator.templatePath('README.md'), generator.destinationPath('README.md'), extensionConfig);
         generator.fs.copyTpl(generator.templatePath('CHANGELOG.md'), generator.destinationPath('CHANGELOG.md'), extensionConfig);
         generator.fs.copyTpl(generator.templatePath('vsc-extension-quickstart.md'), generator.destinationPath('vsc-extension-quickstart.md'), extensionConfig);
-        generator.fs.copyTpl(generator.templatePath('tsconfig.json'), generator.destinationPath('tsconfig.json'), extensionConfig);
-
         generator.fs.copyTpl(generator.templatePath('src/web/extension.ts'), generator.destinationPath('src/web/extension.ts'), extensionConfig);
 
         generator.fs.copy(generator.templatePath('src/web/test/suite/extension.test.ts'), generator.destinationPath('src/web/test/suite/extension.test.ts'));
 
         if (bundler === 'esbuild') {
+            generator.fs.copyTpl(generator.templatePath('esbuild-tsconfig.json'), generator.destinationPath('tsconfig.json'), extensionConfig);
             generator.fs.copyTpl(generator.templatePath('esbuild.js'), generator.destinationPath('esbuild.js'), extensionConfig);
             generator.fs.copyTpl(generator.templatePath('esbuild-package.json'), generator.destinationPath('package.json'), extensionConfig);
             generator.fs.copy(generator.templatePath('src/web/test/suite/esbuild-mochaTestRunner.ts'), generator.destinationPath('src/web/test/suite/mochaTestRunner.ts'));
         } else {
+            generator.fs.copyTpl(generator.templatePath('webpack-tsconfig.json'), generator.destinationPath('tsconfig.json'), extensionConfig);
             generator.fs.copyTpl(generator.templatePath('webpack.config.js'), generator.destinationPath('webpack.config.js'), extensionConfig);
             generator.fs.copyTpl(generator.templatePath('webpack-package.json'), generator.destinationPath('package.json'), extensionConfig);
             generator.fs.copy(generator.templatePath('src/web/test/suite/webpack-mochaTestRunner.ts'), generator.destinationPath('src/web/test/suite/index.ts'));
