@@ -5,7 +5,8 @@
 import * as path from 'path';
 import { createHelpers } from 'yeoman-test';
 import * as cp from 'child_process';
-import { describe, it } from 'node:test';
+import { describe, it, before } from 'node:test';
+import { mkdtempSync, rmSync } from 'node:fs';
 
 import * as assert from 'node:assert';
 
@@ -13,10 +14,21 @@ import { fileURLToPath } from 'url';
 
 describe('integration tests', { timeout: 7 * 60 * 1000 }, () => {
 
-	const helpers = createHelpers();
 	const appLocation = path.join(fileURLToPath(import.meta.url), '../../generators/app');
 
 	const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+	let helpers;
+
+	before(async function () {
+		helpers = createHelpers({});
+	});
+
+	// Use a short temp dir to avoid exceeding the 103-char Unix socket path limit.
+	// macOS TMPDIR resolves to a deep /private/var/folders/... path which, combined
+	// with the .vscode-test/user-data/*.sock suffix, exceeds the limit.
+	function makeTmpDir() {
+		return mkdtempSync('/tmp/vsc-');
+	}
 
 	async function checkAudit(cwd) {
 
@@ -32,7 +44,7 @@ describe('integration tests', { timeout: 7 * 60 * 1000 }, () => {
 
 	it('command-ts integration test (install, compile and run extension tests)', async () => {
 
-		const runResult = await helpers.run(appLocation).withAnswers({
+		const runResult = await helpers.run(appLocation).inDir(makeTmpDir()).withAnswers({
 			type: 'ext-command-ts',
 			name: 'testCom',
 			displayName: 'Test Com',
@@ -63,7 +75,7 @@ describe('integration tests', { timeout: 7 * 60 * 1000 }, () => {
 
 	it('command-ts-webpack integration test (install, pack and run extension tests)', async () => {
 
-		const runResult = await helpers.run(appLocation).withAnswers({
+		const runResult = await helpers.run(appLocation).inDir(makeTmpDir()).withAnswers({
 			type: 'ext-command-ts',
 			name: 'testCom',
 			displayName: 'Test Com',
@@ -93,7 +105,7 @@ describe('integration tests', { timeout: 7 * 60 * 1000 }, () => {
 
 	it('command-ts-esbuild integration test (install, pack and run extension tests)', async () => {
 
-		const runResult = await helpers.run(appLocation).withAnswers({
+		const runResult = await helpers.run(appLocation).inDir(makeTmpDir()).withAnswers({
 			type: 'ext-command-ts',
 			name: 'testCom',
 			displayName: 'Test Com',
@@ -123,7 +135,7 @@ describe('integration tests', { timeout: 7 * 60 * 1000 }, () => {
 
 	it('command-ts-web-webpack integration test (install, pack and run extension tests)', async () => {
 
-		const runResult = await helpers.run(appLocation).withAnswers({
+		const runResult = await helpers.run(appLocation).inDir(makeTmpDir()).withAnswers({
 			type: 'ext-command-web',
 			name: 'testCom',
 			displayName: 'Test Com',
@@ -153,7 +165,7 @@ describe('integration tests', { timeout: 7 * 60 * 1000 }, () => {
 
 	it('command-ts-web-esbuild integration test (install, pack and run extension tests)', async () => {
 
-		const runResult = await helpers.run(appLocation).withAnswers({
+		const runResult = await helpers.run(appLocation).inDir(makeTmpDir()).withAnswers({
 			type: 'ext-command-web',
 			name: 'testCom',
 			displayName: 'Test Com',

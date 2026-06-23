@@ -39,5 +39,9 @@
     <%- dep("@vscode/test-cli") %>,
     <%- dep("@vscode/test-electron") %><% if (insiders) { %>,
     <%- dep("vscode-dts") %><% } %>
+  },
+  "overrides": {
+    <%- dep("diff") %>,
+    <%- dep("serialize-javascript") %>
   }
 }

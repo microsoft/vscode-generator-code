@@ -11,14 +11,15 @@ import * as env from '../generators/app/env.js';
 
 describe('test code generator', { timeout: 10000 }, () => {
 
-	const helpers = createHelpers();
 	const appLocation = path.join(fileURLToPath(import.meta.url), '../../generators/app');
 	const fixturesLocation = path.join(fileURLToPath(import.meta.url), '../fixtures');
 
 	let engineVersion;
 	let dependencyVersions;
+	let helpers;
 
 	before(async function () {
+		helpers = createHelpers({});
 		engineVersion = await env.getLatestVSCodeVersion();
 		console.info('    expecting engine version ' + engineVersion);
 
