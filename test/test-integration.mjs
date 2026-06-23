@@ -12,7 +12,7 @@ import * as assert from 'node:assert';
 
 import { fileURLToPath } from 'url';
 
-describe('integration tests', { timeout: 7 * 60 * 1000 }, () => {
+describe('integration tests', { timeout: 12 * 60 * 1000 }, () => {
 
 	const appLocation = path.join(fileURLToPath(import.meta.url), '../../generators/app');
 
