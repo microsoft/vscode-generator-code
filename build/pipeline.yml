@@ -56,6 +56,7 @@ extends:
             displayName: Test npm package
             env:
               DISPLAY: ':99.0'
+            failOnStderr: true
 
         publishPackage: ${{ parameters.publishPackage }}
         publishRequiresApproval: false
