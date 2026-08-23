@@ -44,5 +44,9 @@
     <%- dep("@types/webpack-env") %>,
     <%- dep("assert") %>,
     <%- dep("process") %>
+  },
+  "overrides": {
+    <%- dep("diff") %>,
+    <%- dep("serialize-javascript") %>
   }
 }

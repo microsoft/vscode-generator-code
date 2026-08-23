@@ -1,13 +1,17 @@
 {
-	"compilerOptions": {
-		"module": "Node16",
-		"target": "ES2022",
-		"checkJs": <%- JSON.stringify(checkJavaScript) %>,  /* Typecheck .js files. */
-		"lib": [
-			"ES2022"
-		]
-	},
-	"exclude": [
-		"node_modules"
-	]
+    "compilerOptions": {
+        "module": "Node16",
+        "target": "ES2022",
+        "checkJs": <%- JSON.stringify(checkJavaScript) %>, /* Typecheck .js files. */
+        "lib": [
+            "ES2022"
+        ],
+        "types": [
+            "node",
+            "mocha",
+        ],
+    },
+    "exclude": [
+        "node_modules"
+    ]
 }
