@@ -64,7 +64,7 @@ describe('integration tests', { timeout: 12 * 60 * 1000 }, () => {
 		await checkAudit(runResult.env.cwd);
 
 		//console.log('command-ts with test: Running extension compile');
-		const res2 = await doSpawn(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd, shell: true });
+		const res2 = await doSpawnWithNetworkRetry(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd, shell: true });
 		if (res2.exitCode !== 0) {
 			assert.fail(`npm run test failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
 		}
@@ -94,7 +94,7 @@ describe('integration tests', { timeout: 12 * 60 * 1000 }, () => {
 		await checkAudit(runResult.env.cwd);
 
 		//console.log('command-ts-webpack with test: Running extension compile');
-		const res2 = await doSpawn(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd, shell: true });
+		const res2 = await doSpawnWithNetworkRetry(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd, shell: true });
 		if (res2.exitCode !== 0) {
 			assert.fail(`npm run compile failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
 		}
@@ -124,7 +124,7 @@ describe('integration tests', { timeout: 12 * 60 * 1000 }, () => {
 		await checkAudit(runResult.env.cwd);
 
 		//console.log('command-ts-esbuild with test: Running extension compile');
-		const res2 = await doSpawn(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd, shell: true });
+		const res2 = await doSpawnWithNetworkRetry(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd, shell: true });
 		if (res2.exitCode !== 0) {
 			assert.fail(`npm run compile failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
 		}
@@ -154,7 +154,7 @@ describe('integration tests', { timeout: 12 * 60 * 1000 }, () => {
 		await checkAudit(runResult.env.cwd);
 
 		//console.log('command-ts-web with test: Running extension compile-web');
-		const res2 = await doSpawn(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd, shell: true });
+		const res2 = await doSpawnWithNetworkRetry(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd, shell: true });
 		if (res2.exitCode !== 0) {
 			assert.fail(`npm run test failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
 		}
@@ -184,7 +184,7 @@ describe('integration tests', { timeout: 12 * 60 * 1000 }, () => {
 		await checkAudit(runResult.env.cwd);
 
 		//console.log('command-ts-web with test: Running extension compile-web');
-		const res2 = await doSpawn(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd, shell: true });
+		const res2 = await doSpawnWithNetworkRetry(npmCommand, ['run', 'test'], { cwd: runResult.env.cwd, shell: true });
 		if (res2.exitCode !== 0) {
 			assert.fail(`npm run test failed: stdout ${res2.stdout} stderr ${res2.stderr}`);
 		}
@@ -213,3 +213,12 @@ async function doSpawn(execName, allArguments, options) {
 	});
 }
 
+async function doSpawnWithNetworkRetry(execName, allArguments, options) {
+	for (let attempt = 1; attempt <= 3; attempt++) {
+		const result = await doSpawn(execName, allArguments, options);
+		if (result.exitCode === 0 || !/ETIMEDOUT/.test(`${result.stdout}\n${result.stderr}`) || attempt === 3) {
+			return result;
+		}
+		await new Promise(resolve => setTimeout(resolve, 1000));
+	}
+}
