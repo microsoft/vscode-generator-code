@@ -791,7 +791,7 @@ describe('test code generator', { timeout: 20000 }, () => {
 				}
 			};
 
-			assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/extension.test.ts', 'tsconfig.json', 'eslint.config.mjs', '.vscode-test.mjs', '.vscode/extensions.json', '.npmrc']);
+			assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/extension.test.ts', 'tsconfig.json', 'eslint.config.mjs', '.vscode-test.mjs', '.vscode/extensions.json', 'pnpm-workspace.yaml']);
 
 			runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 
@@ -932,7 +932,7 @@ describe('test code generator', { timeout: 20000 }, () => {
 				}
 			};
 
-			assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/extension.test.ts', 'tsconfig.json', '.npmrc', 'webpack.config.js']);
+			assertFiles(runResult, 'testCom', ['src/extension.ts', 'src/test/extension.test.ts', 'tsconfig.json', 'pnpm-workspace.yaml', 'webpack.config.js']);
 
 			runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 		} finally {
@@ -1117,7 +1117,7 @@ describe('test code generator', { timeout: 20000 }, () => {
 				}
 			};
 
-			assertFiles(runResult, 'testCom', ['extension.js', 'test/extension.test.js', 'jsconfig.json', '.npmrc']);
+			assertFiles(runResult, 'testCom', ['extension.js', 'test/extension.test.js', 'jsconfig.json', 'pnpm-workspace.yaml']);
 
 			runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 		} finally {
@@ -1460,7 +1460,7 @@ describe('test code generator', { timeout: 20000 }, () => {
 				}
 			};
 
-			assertFiles(runResult, 'testCom', ['src/web/extension.ts', 'webpack.config.js', 'src/web/test/suite/extension.test.ts', 'src/web/test/suite/index.ts', 'tsconfig.json', '.npmrc']);
+			assertFiles(runResult, 'testCom', ['src/web/extension.ts', 'webpack.config.js', 'src/web/test/suite/extension.test.ts', 'src/web/test/suite/index.ts', 'tsconfig.json', 'pnpm-workspace.yaml']);
 
 			runResult.assertJsonFileContent('testCom/package.json', expectedPackageJSON);
 		} finally {
@@ -1696,7 +1696,7 @@ describe('test code generator', { timeout: 20000 }, () => {
 				])
 			};
 
-			assertFiles(runResult, 'json-renderer-ext', ['webpack.config.js', '.gitignore', 'eslint.config.mjs', '.vscode-test.mjs', '.npmrc']);
+			assertFiles(runResult, 'json-renderer-ext', ['webpack.config.js', '.gitignore', 'eslint.config.mjs', '.vscode-test.mjs', 'pnpm-workspace.yaml']);
 
 			runResult.assertJsonFileContent('json-renderer-ext/package.json', expectedPackageJSON);
 		} finally {
