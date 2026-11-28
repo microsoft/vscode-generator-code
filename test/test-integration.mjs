@@ -30,16 +30,46 @@ describe('integration tests', { timeout: 12 * 60 * 1000 }, () => {
 		return mkdtempSync(path.join(os.tmpdir(), 'foo-'));
 	}
 
+	// Advisories that no released version of the generated projects' dependencies resolves yet.
+	const ignoredAdvisories = new Set([
+		'https://github.com/advisories/GHSA-73rr-hh4g-fpgx', // diff
+		'https://github.com/advisories/GHSA-3g3m-2fjr-6pw4', // glob, via mocha and @vscode/test-cli
+		'https://github.com/advisories/GHSA-g3hv-75wg-m249', // minimatch, via mocha and c8
+	]);
+
 	async function checkAudit(cwd) {
 
-		const resAudit = await doSpawn(npmCommand, ['audit'], { cwd: cwd, shell: true });
-		if (resAudit.exitCode !== 0) {
-			if (resAudit.stdout.indexOf('https://github.com/advisories/GHSA-73rr-hh4g-fpgx') === -1) { // diff vulnerability
-				assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
-			} else {
-				console.warn('npm audit vulnerability for `diff` ignored for now, waiting for a dependency update');
+		const resAudit = await doSpawn(npmCommand, ['audit', '--json'], { cwd: cwd, shell: true });
+		if (resAudit.exitCode === 0) {
+			return;
+		}
+
+		let report;
+		try {
+			report = JSON.parse(resAudit.stdout);
+		} catch {
+			assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
+		}
+
+		const advisories = new Map();
+		for (const vulnerability of Object.values(report.vulnerabilities ?? {})) {
+			for (const via of vulnerability.via) {
+				if (typeof via === 'object') {
+					advisories.set(via.url, via);
+				}
 			}
 		}
+
+		if (advisories.size === 0) {
+			assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
+		}
+
+		const unexpected = [...advisories.values()].filter(advisory => !ignoredAdvisories.has(advisory.url));
+		if (unexpected.length > 0) {
+			assert.fail(`npm audit failed:\n${unexpected.map(advisory => `${advisory.name} ${advisory.range}: ${advisory.title} (${advisory.url})`).join('\n')}`);
+		}
+
+		console.warn(`npm audit vulnerabilities ignored for now, waiting for dependency updates: ${[...advisories.keys()].join(', ')}`);
 	}
 
 	it('command-ts integration test (install, compile and run extension tests)', async () => {
