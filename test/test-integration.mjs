@@ -30,7 +30,7 @@ describe('integration tests', { timeout: 12 * 60 * 1000 }, () => {
 		return mkdtempSync(path.join(os.tmpdir(), 'foo-'));
 	}
 
-	// Advisories that no released version of the generated projects' dependencies resolves yet.
+	// Advisories in transitive dependencies of generated projects that no released version resolves yet.
 	const ignoredAdvisories = new Set([
 		'https://github.com/advisories/GHSA-73rr-hh4g-fpgx', // diff
 		'https://github.com/advisories/GHSA-3g3m-2fjr-6pw4', // glob, via mocha and @vscode/test-cli
@@ -51,25 +51,31 @@ describe('integration tests', { timeout: 12 * 60 * 1000 }, () => {
 			assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
 		}
 
-		const advisories = new Map();
+		const ignored = new Set();
+		const unexpected = new Set();
 		for (const vulnerability of Object.values(report.vulnerabilities ?? {})) {
 			for (const via of vulnerability.via) {
-				if (typeof via === 'object') {
-					advisories.set(via.url, via);
+				if (typeof via !== 'object') {
+					continue;
+				}
+				// Direct dependencies must use a patched version even when the advisory is ignored for transitive copies.
+				if (ignoredAdvisories.has(via.url) && !vulnerability.isDirect) {
+					ignored.add(via.url);
+				} else {
+					unexpected.add(`${via.name} ${via.range}${vulnerability.isDirect ? ' (direct dependency)' : ''}: ${via.title} (${via.url})`);
 				}
 			}
 		}
 
-		if (advisories.size === 0) {
+		if (ignored.size === 0 && unexpected.size === 0) {
 			assert.fail(`npm audit failed: stdout ${resAudit.stdout} stderr ${resAudit.stderr}`);
 		}
 
-		const unexpected = [...advisories.values()].filter(advisory => !ignoredAdvisories.has(advisory.url));
-		if (unexpected.length > 0) {
-			assert.fail(`npm audit failed:\n${unexpected.map(advisory => `${advisory.name} ${advisory.range}: ${advisory.title} (${advisory.url})`).join('\n')}`);
+		if (unexpected.size > 0) {
+			assert.fail(`npm audit failed:\n${[...unexpected].join('\n')}`);
 		}
 
-		console.warn(`npm audit vulnerabilities ignored for now, waiting for dependency updates: ${[...advisories.keys()].join(', ')}`);
+		console.warn(`npm audit vulnerabilities in transitive dependencies ignored for now, waiting for dependency updates: ${[...ignored].join(', ')}`);
 	}
 
 	it('command-ts integration test (install, compile and run extension tests)', async () => {
